@@ -4,7 +4,7 @@
   "id": "./",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "rgb(2,2,86)",
+  "background_color": "rgb(0, 169, 22)",
   "theme_color": "#03173d",
   "prefer_related_applications": false,
   "scope": "./",
