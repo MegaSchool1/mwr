@@ -1,0 +1,142 @@
+﻿@page "/72/{TikTokId}"
+@using MegaSchool1.Components
+
+<Centered><MudImage Src="/images/72-hour-money-challenge.png" /></Centered>
+<br/>
+<br/>
+<Centered><MudText Typo="Typo.h3" Style="color:white;">The Challenge</MudText></Centered>
+<br />
+<Centered>
+    <MudCard >
+        <iframe src="@($"https://www.youtube.com/embed/LtNcG_jxW7E")"
+                width="560"
+                height="315"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+        </iframe>
+    </MudCard>
+</Centered>
+<br/>
+<br/>
+<Centered><MudText Typo="Typo.h3" Style="color:white;">FAQ</MudText></Centered>
+<br />
+<Centered>
+    <MudCard >
+        <iframe src="@($"https://www.youtube.com/embed/csDw2CVLCxA")"
+                width="560"
+                height="315"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+        </iframe>
+    </MudCard>
+</Centered>
+<br />
+<br />
+<Centered><MudText Style="color:white;" Align="Align.Center">To take the challenge or learn more, text<br/><br/>'@TikTokId' to 224-310-9357</MudText></Centered>
+
+@if (ValidYouTube)
+{
+    <MudStack Style="width:100%; height:100%; position:relative;">
+        <MudSpacer />
+        <MudStack Row="true">
+            <MudSpacer />
+            <MudCard>
+                <iframe src="@($"https://www.youtube.com/embed/{YouTube}")"
+                        width="560"
+                        height="315"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+                </iframe>
+            </MudCard>
+            <MudSpacer />
+        </MudStack>
+        <MudSpacer />
+    </MudStack>
+}
+ 
+@if (ValidVimeo)
+{
+    <MudStack Style="width:100%; height:100%; position:relative;">
+        <MudSpacer />
+        <MudStack Row="true">
+            <MudSpacer />
+            <MudCard>
+                <iframe src="@($"https://player.vimeo.com/video/{Vimeo}{(string.IsNullOrWhiteSpace(VimeoHash) ? string.Empty : $"?h={VimeoHash}")}")" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen="" data-ready="true"></iframe>
+            </MudCard>
+            <MudSpacer />
+        </MudStack>
+        <MudSpacer />
+    </MudStack>
+}
+
+@if (ValidTikTok)
+{
+    <MudStack Style="width:100%; height:100%; position:relative;">
+        <MudSpacer />
+        <MudStack Row="true">
+            <MudSpacer />
+            <MudCard>
+                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@@@(TikTokUserHandle)/video/@TikTok" data-video-id="@TikTok" style="max-width: 605px;min-width: 325px;">
+                    <section/> 
+                </blockquote>
+                <script async src="https://www.tiktok.com/embed.js"></script>
+            </MudCard>
+            <MudSpacer />
+        </MudStack>
+        <MudSpacer />
+    </MudStack>
+}
+
+@if ( false && !(ValidYouTube || ValidVimeo || ValidTikTok) )
+{
+    <MudStack Style="width:100%; height:100%; position:relative;">
+        <MudSpacer />
+        <MudStack Row="true">
+            <MudSpacer />
+            <MudCard>
+                <MudText Align="Align.Center">Video Failed to Load</MudText>
+            </MudCard>
+            <MudSpacer />
+        </MudStack>
+        <MudSpacer />
+    </MudStack>
+}
+
+@code {
+    [Parameter]
+    public string? TikTokId { get; set; }
+
+    [SupplyParameterFromQuery(Name = "y")]
+    public string? YouTube { get; set; }
+
+    [SupplyParameterFromQuery(Name = "v")]
+    public string? Vimeo { get; set; }
+
+    /// <summary>
+    ///     Required for private Vimeo videos. See https://www.drupal.org/project/video_embed_field/issues/3238136
+    /// </summary>
+    [SupplyParameterFromQuery(Name = "h")]
+    public string? VimeoHash { get; set; }
+
+    [SupplyParameterFromQuery(Name = "t")]
+    public string? TikTok { get; set; }
+
+    [SupplyParameterFromQuery(Name = "th")]
+    public string? TikTokUserHandle { get; set; }
+
+    private bool ValidYouTube => !string.IsNullOrWhiteSpace(YouTube);
+    private bool ValidVimeo => !string.IsNullOrWhiteSpace(Vimeo);
+    private bool ValidTikTok => !string.IsNullOrWhiteSpace(TikTok) && !string.IsNullOrWhiteSpace(TikTokUserHandle);
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"YouTube Video ID: {YouTube}");
+        Console.WriteLine($"Vimeo Video ID: {Vimeo}");
+        Console.WriteLine($"Vimeo Private Video Hash: {VimeoHash}");
+        Console.WriteLine($"TikTok User Handle: {TikTokUserHandle}");
+        Console.WriteLine($"TikTok Video ID: {TikTok}");
+    }
+}

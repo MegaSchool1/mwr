@@ -242,9 +242,9 @@ public class Constants(UISettings ui)
     };
     public Dictionary<Strategy, Shareable> MoneyChallenge => _moneyChallengeShareable;
 
-    public static readonly Shareable CheatSheet = new(
-        $"MWR Cheat Sheet App",
-        new($"MWR Cheat Sheet App{Environment.NewLine}{PointingDownEmoji}{Environment.NewLine}https://makewealthreal.github.io/", "Shareable copied!", "https://www.ms1.megaschool.me/72hr-money-challenge"),
+    public static readonly Shareable AppShareable = new(
+        $"Mega School App",
+        new($"Mega School App{Environment.NewLine}{PointingDownEmoji}{Environment.NewLine}https://megaschool1.github.io/", "Shareable copied!", "https://www.ms1.megaschool.me/72hr-money-challenge"),
         null,
         GetImageUrl(Image.CheatSheetPreview),
         null,

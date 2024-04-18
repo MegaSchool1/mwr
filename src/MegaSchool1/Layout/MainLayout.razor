@@ -11,66 +11,80 @@
 @inject ILocalStorageService LocalStorage
 @inject IDialogService Dialog
 
-<PageTitle>Mega School 1</PageTitle>
+<PageTitle>@((IsMoneyChallengePage ? "72-Hour Money Challenge!" : "Mega School 1"))</PageTitle>
 
 <MudThemeProvider IsDarkMode="true"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<div class="page mud-layout">
+@if (IsMoneyChallengePage)
+{
+    <div class="page mud-layout" style="background-color:rgb(22,19,44);">
 
-    <div class="sidebar mud-elevation-1">
-        <div class="top-row mud-drawer-head" style="background-color:@(Colors.Green.Default);">
-            <div>
-                <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 1</a>
-            </div>
-        </div>
-
-        <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-        <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-            <CascadingValue Value="_appState">
-                <NavMenu/>
-            </CascadingValue>
-        </div>
-
-    </div>
-
-    <main>
-        <div class="top-row px-4" style="background-color:@(Colors.Green.Default);">
-            <MudStack Row="true" Style="width:100%;">
-                @if (_componentInitialized && _appState.AppIsInstallable)
-                {
-                    <MudButton OnClick="OnInstallClick" EndIcon="@Icons.Material.Filled.InstallMobile" Variant="Variant.Filled" Color="Color.Primary">Install</MudButton>
-                }
-                else
-                {
-                    <MudStack Row="true">
-                        <MudText Style="color:white;">Hello @_appState.UserName! <MudIconButton OnClick="OnShowMembershipEnrollmentDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
-                    </MudStack>
-                }
-                <MudSpacer />
-                <MudText Style="color:white;">@GetTitle()</MudText>
-            </MudStack>
-        </div>
-
-        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-2 pt-2">
-            <CascadingValue Value="_appState">
+        <main>
+            <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-2 pt-2">
                 @Body
-                @if (_showAppUpdatePrompt)
-                {
-                    <MudFab Style="position:fixed; bottom:0; right:0; padding-right:5;" 
-                            Color="Color.Primary"
-                            EndIcon="@Icons.Material.Filled.Refresh"
-                            OnClick="@(e => NavigationManager.NavigateTo(NavigationManager.BaseUri, true))"
-                            Label="Load Update" />
-                }
-                <MudScrollToTop>
-                    <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowCircleUp" />
-                </MudScrollToTop>
-            </CascadingValue>
-        </MudContainer>
-    </main>
-</div>
+            </MudContainer>
+        </main>
+    </div>
+}
+else
+{
+    <div class="page mud-layout">
+
+        <div class="sidebar mud-elevation-1">
+            <div class="top-row mud-drawer-head" style="background-color:@(Colors.Green.Default);">
+                <div>
+                    <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 1</a>
+                </div>
+            </div>
+
+            <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+            <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+                <CascadingValue Value="_appState">
+                    <NavMenu />
+                </CascadingValue>
+            </div>
+
+        </div>
+
+        <main>
+            <div class="top-row px-4" style="background-color:@(Colors.Green.Default);">
+                <MudStack Row="true" Style="width:100%;">
+                    @if (_componentInitialized && _appState.AppIsInstallable)
+                    {
+                        <MudButton OnClick="OnInstallClick" EndIcon="@Icons.Material.Filled.InstallMobile" Variant="Variant.Filled" Color="Color.Primary">Install</MudButton>
+                    }
+                    else
+                    {
+                        <MudStack Row="true">
+                            <MudText Style="color:white;">Hello @_appState.UserName! <MudIconButton OnClick="OnShowMembershipEnrollmentDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
+                        </MudStack>
+                    }
+                    <MudSpacer />
+                    <MudText Style="color:white;">@GetTitle()</MudText>
+                </MudStack>
+            </div>
+
+            <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-2 pt-2">
+                <CascadingValue Value="_appState">
+                    @Body
+                    @if (_showAppUpdatePrompt)
+                    {
+                        <MudFab Style="position:fixed; bottom:0; right:0; padding-right:5;"
+                                Color="Color.Primary"
+                                EndIcon="@Icons.Material.Filled.Refresh"
+                                OnClick="@(e => NavigationManager.NavigateTo(NavigationManager.BaseUri, true))"
+                                Label="Load Update" />
+                    }
+                    <MudScrollToTop>
+                        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowCircleUp" />
+                    </MudScrollToTop>
+                </CascadingValue>
+            </MudContainer>
+        </main>
+    </div>
+}
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
@@ -91,6 +105,8 @@
     {
         _thisComponentReference?.Dispose();
     }
+
+    private bool IsMoneyChallengePage => NavigationManager.Uri.Contains("/72/");
 
     private void OnShowMembershipEnrollmentDialog()
     {

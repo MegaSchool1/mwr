@@ -7,7 +7,7 @@
             <MudText Typo="Typo.h6">@((MarkupString)Header.Replace(Environment.NewLine, "<br/>"))</MudText>
         </CardHeaderContent>
     </MudCardHeader>
-    <Center><MudImage Src="@ImageUri" Fluid="true" /></Center>
+    <Centered><MudImage Src="@ImageUri" Fluid="true" /></Centered>
     <MudCardContent>
         <MudStack>
             <MudText Typo="Typo.body2" Align="Align.Center">@((Recurrence.Day is null ? "Daily" : $"{Recurrence.Day}s")) @@ @GetNextEvent(this.Recurrence.Day is null ? DateTime.Now.DayOfWeek : this.Recurrence.Day.Value, this.Recurrence.Time, this.Recurrence.TimeZone).ToOffset(TimeZoneInfo.Local.BaseUtcOffset).ToString(" h:mm tt") @TimeZoneInfo.Local.StandardName</MudText>

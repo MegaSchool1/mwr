@@ -1,5 +1,6 @@
 ﻿@using MegaSchool1.Dialog
 @using MegaSchool1.Model
+@using MegaSchool1.Components
 @inherits Components.ComponentBase
 @inject IDialogService Dialog
 @inject NavigationManager NavigationManager
@@ -16,7 +17,7 @@
     <MudNavLink Href="/par" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Science">Experimental</MudNavLink>
     <MudNavLink Href="https://youtu.be/_qRCOdGK1d4" Target="_blank" Icon="@Icons.Material.Filled.PersonalVideo">Watch App Demo</MudNavLink>
     <MudNavLink Href="https://us06web.zoom.us/j/85317466777" Target="_blank" Icon="@Icons.Material.Filled.LiveHelp">Live Support via Zoom</MudNavLink>
-    <MudNavLink OnClick="OnShowCheatSheetShareableDialog" Icon="@Icons.Material.Filled.MobileScreenShare">Share This App!</MudNavLink>
+    <MudNavLink OnClick="@(() => _showAppShareable = true)" Icon="@Icons.Material.Filled.MobileScreenShare">Share This App!</MudNavLink>
     <MudNavLink Href="https://cash.app/$JeromeCyrusBell/12.00" Target="_blank" Icon="@Icons.Material.Filled.Payment">Pay Annual Subscription</MudNavLink>
     <MudDivider Class="my-2" />
     <MudStack Row="true">
@@ -34,8 +35,19 @@
     </MudStack>
 </MudNavMenu>
 
+<MudDialog @bind-IsVisible="_showAppShareable" Options="@(new DialogOptions() { NoHeader = true })">
+    <DialogContent>
+        <ShareableVideo Description="@Constants.AppShareable.Description"
+                        Url="@Constants.AppShareable.PreviewUrl"
+                        Tooltip="@Constants.AppShareable.English.Tooltip"
+                        TextToCopy="@Constants.AppShareable.English.Message"
+                        ImageUrl="@Constants.AppShareable.ImageUrl" />
+    </DialogContent>
+</MudDialog>
+
 @code {
     private bool _updateAvailable;
+    private bool _showAppShareable;
 
     protected override async Task OnInitializedAsync()
     {
@@ -51,12 +63,5 @@
         {
             MainLayout.Refresh();
         }
-    }
-
-    private void OnShowCheatSheetShareableDialog()
-    {
-        var options = new DialogOptions() { NoHeader = true };
-
-        Dialog.Show<ShareCheatSheetDialog>("72-Hour Money Challenge", options);
     }
 }
