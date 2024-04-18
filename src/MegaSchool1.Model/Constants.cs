@@ -49,7 +49,7 @@ public enum Image
     MWRBanner = 2,
     HealthShare = 3,
     MembershipLogo = 4,
-    CheatSheetPreview = 5,
+    AppScreenshot = 5,
     Overview1On1English = 6,
     RevenueShare1On1English = 7,
     Overview1On1Spanish = 8,
@@ -174,7 +174,7 @@ public class Constants(UISettings ui)
         Image.HealthShare => "/images/mwr-healthshare.png",
         Image.MembershipLogo => "/images/mwr-membership-logo.jpg",
         Image.MoneyChallengeLogo => "/images/72hour-money-challenge-logo.png",
-        Image.CheatSheetPreview => "images/mwr-cheatsheet-preview.jpeg?v=2",
+        Image.AppScreenshot => "images/app-screenshot.jpeg",
         Image.Overview1On1English => "images/72-HourMoneyChallengeOverview_1on1_ENG.png",
         Image.RevenueShare1On1English => "images/72-HourMoneyChallengeRevenueSharing-1on1-ENG.png",
         Image.Overview1On1Spanish => "images/72-HourMoneyChallengeOverview_1on1_SPANISH.png",
@@ -246,7 +246,7 @@ public class Constants(UISettings ui)
         $"Mega School App",
         new($"Mega School App{Environment.NewLine}{PointingDownEmoji}{Environment.NewLine}https://megaschool1.github.io/", "Shareable copied!", "https://www.ms1.megaschool.me/72hr-money-challenge"),
         null,
-        GetImageUrl(Image.CheatSheetPreview),
+        GetImageUrl(Image.AppScreenshot),
         null,
         null!);
 
