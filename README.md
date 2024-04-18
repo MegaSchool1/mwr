@@ -1,6 +1,6 @@
-# MWR Cheat Sheet
+# Mega School 1 App
 
 [![](../../workflows/gh-pages/badge.svg)](../../actions)
 
 
-Visit site @ https://makewealthreal.github.io
+Visit site @ https://megaschool1.github.io
