@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MWRCheatSheet.Model;
+namespace MegaSchool1.Model;
 
 public class VideoResource
 {

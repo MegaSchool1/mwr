@@ -1,6 +1,5 @@
-﻿@using MWRCheatSheet.Model
+﻿@using MegaSchool1.Model
 @inherits Components.ComponentBase
-@using Components
 
 <div style="display:@(!this.Filter.Any() || this.Filter.All(f => this.Highlights.Contains(f)) ? "block" : "none");">
     <MudCard>

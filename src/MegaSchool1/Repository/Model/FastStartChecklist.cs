@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace MWRCheatSheet.Repository.Model;
+namespace MegaSchool1.Repository.Model;
 
 public class FastStartChecklist
 {

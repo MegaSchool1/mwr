@@ -1,6 +1,6 @@
-﻿using MWRCheatSheet.Model.UI;
+﻿using MegaSchool1.Model.UI;
 
-namespace MWRCheatSheet.Model;
+namespace MegaSchool1.Model;
 
 public enum Rank
 {
@@ -112,21 +112,21 @@ public enum Language
 
 public enum ExtraDigitMovementPipeline
 {
-	None = 0,
+    None = 0,
     Enqueue = 1,
-	Question = 2,
-	Connection = 3,
-	Invitation = 4,
-	Decision = 5,
+    Question = 2,
+    Connection = 3,
+    Invitation = 4,
+    Decision = 5,
 }
 
 public enum MegaSchoolPipeline
 {
-	None = 0,
-	Enqueue = 1,
-	Share = 2,
-	MembershipInvitation = 3,
-	MembershipDecision = 4,
+    None = 0,
+    Enqueue = 1,
+    Share = 2,
+    MembershipInvitation = 3,
+    MembershipDecision = 4,
     Connection = 5,
     BusinessOpportunityInvitation = 6,
     BusinessOpportunityDecision = 7,

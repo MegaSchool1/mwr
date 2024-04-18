@@ -1,6 +1,6 @@
-﻿@inherits Components.ComponentBase
+﻿@using MegaSchool1.Model
+@inherits Components.ComponentBase
 @page "/settings"
-@using MWRCheatSheet.Model
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <MudStack>
@@ -34,7 +34,7 @@
     {
         if (await localStorage.ContainKeyAsync(SettingsKey))
         {
-            _settings = await localStorage.GetItemAsync<MWRCheatSheet.Repository.Model.Settings>(SettingsKey) ?? _settings;
+            _settings = await localStorage.GetItemAsync<MegaSchool1.Repository.Model.Settings>(SettingsKey) ?? _settings;
         }
     }
 

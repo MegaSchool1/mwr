@@ -1,12 +1,11 @@
 ﻿@page "/events"
-@inherits Components.ComponentBase
 @using Blazored.LocalStorage
-@using Components
-@using MWRCheatSheet.Components
-@using MWRCheatSheet.Model
-@using MWRCheatSheet.Repository.Model
-@using MWRCheatSheet.ViewModel
-@inject MWRCheatSheet.Model.UISettings UI
+@using MegaSchool1.Components
+@using MegaSchool1.Model
+@using MegaSchool1.ViewModel
+@using MWRCheatSheet
+@inherits Components.ComponentBase
+@inject UISettings UI
 @inject NavigationManager NavigationManager
 @inject ILocalStorageService LocalStorage
 @inject Repository.Repository Repo

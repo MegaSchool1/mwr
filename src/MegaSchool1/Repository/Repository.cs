@@ -1,7 +1,8 @@
 ﻿using Blazored.LocalStorage;
-using MWRCheatSheet.Repository.Model;
+using MegaSchool1.Model;
+using MegaSchool1.Repository.Model;
 
-namespace MWRCheatSheet.Repository;
+namespace MegaSchool1.Repository;
 
 public class Repository
 {

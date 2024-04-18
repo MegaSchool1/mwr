@@ -1,4 +1,4 @@
-﻿namespace MWRCheatSheet.Model;
+﻿namespace MegaSchool1.Model;
 
 public static class ExtentionMethods
 {

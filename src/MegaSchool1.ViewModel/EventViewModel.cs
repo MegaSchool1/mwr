@@ -1,6 +1,6 @@
-﻿using MWRCheatSheet.Model;
+﻿using MegaSchool1.Model;
 
-namespace MWRCheatSheet.ViewModel;
+namespace MegaSchool1.ViewModel;
 
 public class EventViewModel
 {

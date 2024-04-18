@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using MWRCheatSheet.Model;
+using MegaSchool1.Model;
 
-namespace MWRCheatSheet.Repository.Model;
+namespace MegaSchool1.Repository.Model;
 
 public class Settings
 {

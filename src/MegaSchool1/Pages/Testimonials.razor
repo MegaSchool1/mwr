@@ -1,7 +1,7 @@
 ﻿@page "/testimonials"
-@using MWRCheatSheet.Model
-@using MWRCheatSheet.Components
-@inject MWRCheatSheet.Model.UISettings UI
+@using MegaSchool1.Components
+@using MegaSchool1.Model
+@inject UISettings UI
 
 <MudChipSet @bind-SelectedChips="_selected" MultiSelection="true" Filter="true">
     @foreach(var filterableValueable in Highlights)
@@ -53,7 +53,7 @@
 </MudStack>
 
 @code {
-    private static readonly (Highlight Highlight, string Description)[] Highlights =
+    private static readonly (Model.Highlight Highlight, string Description)[] Highlights =
     [
         (Highlight.MoneyChallenge, "72Hr Money Challenge"),
         (Highlight.ReduceMyTaxes, "Reduce My Taxes"),

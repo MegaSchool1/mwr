@@ -1,12 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MWRCheatSheet.Model;
+namespace MegaSchool1.Model;
 
 public class UISettings
 {
     [JsonPropertyName("localizations")]
     public I18N[] Localizations { get; set; } = default!;
 
-    public I18N EnglishLocale => this.Localizations.First(l => l.Language == "en-US");
-    public I18N SpanishLocale => this.Localizations.First(l => l.Language == "es-MX");
+    public I18N EnglishLocale => Localizations.First(l => l.Language == "en-US");
+    public I18N SpanishLocale => Localizations.First(l => l.Language == "es-MX");
 }

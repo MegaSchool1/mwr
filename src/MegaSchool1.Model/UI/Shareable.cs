@@ -1,4 +1,4 @@
-﻿namespace MWRCheatSheet.Model.UI;
+﻿namespace MegaSchool1.Model.UI;
 
 public record Content(string Message, string Tooltip, string YouTubeId);
 

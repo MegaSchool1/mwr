@@ -1,4 +1,4 @@
-﻿namespace MWRCheatSheet;
+﻿namespace MegaSchool1;
 
 public class AppState
 {

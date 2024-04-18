@@ -1,8 +1,7 @@
-﻿using MWRCheatSheet.Model;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 
-namespace MWRCheatSheet;
+namespace MegaSchool1.Model;
 
 public class Util
 {

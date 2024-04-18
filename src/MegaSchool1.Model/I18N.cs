@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MWRCheatSheet.Model;
+namespace MegaSchool1.Model;
 
 public class I18N
 {
@@ -20,7 +20,7 @@ public class I18N
     {
         get
         {
-            return this.Videos.Content(content);
+            return Videos.Content(content);
         }
     }
 }

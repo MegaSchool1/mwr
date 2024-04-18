@@ -1,4 +1,4 @@
-﻿namespace MWRCheatSheet.ViewModel;
+﻿namespace MegaSchool1.ViewModel;
 
 public class MegaSchoolPipeline : Pipeline<Model.MegaSchoolPipeline>
 {

@@ -1,14 +1,15 @@
 using Append.Blazor.WebShare;
 using Blazored.LocalStorage;
+using MegaSchool1.Model;
+using MegaSchool1.Repository;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using MWRCheatSheet;
-using MWRCheatSheet.Model;
-using MWRCheatSheet.Repository;
 using System.ComponentModel;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
+using MegaSchool1;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

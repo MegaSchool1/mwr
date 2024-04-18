@@ -1,4 +1,4 @@
-﻿namespace MWRCheatSheet.Model;
+﻿namespace MegaSchool1.Model;
 
 public class TeamLevel
 {
@@ -7,19 +7,19 @@ public class TeamLevel
     public TeamLevel(string name, int personalEnrollments, TeamLevel? previousLevel)
     {
         _previousLevel = previousLevel;
-        this.Name = name;
-        this.PersonalEnrollments = personalEnrollments;
-        this.QualifiedMarketingDirectorTotal = personalEnrollments * _previousLevel?.QualifiedMarketingDirectorTotal ?? personalEnrollments;
+        Name = name;
+        PersonalEnrollments = personalEnrollments;
+        QualifiedMarketingDirectorTotal = personalEnrollments * _previousLevel?.QualifiedMarketingDirectorTotal ?? personalEnrollments;
 
         // every QMD should have 1 customer
-        this.CustomerTotal = this.QualifiedMarketingDirectorTotal;
+        CustomerTotal = QualifiedMarketingDirectorTotal;
     }
 
     public string Name { get; }
     public int PersonalEnrollments { get; }
     public int QualifiedMarketingDirectorTotal { get; }
     public int CustomerTotal { get; }
-    public int TeamMembersTotal => this.QualifiedMarketingDirectorTotal + this.CustomerTotal + (_previousLevel?.TeamMembersTotal ?? 0);
+    public int TeamMembersTotal => QualifiedMarketingDirectorTotal + CustomerTotal + (_previousLevel?.TeamMembersTotal ?? 0);
 
     public static TeamLevel[] GetTeamDistribution(int[] enrollmentDistribution)
     {
@@ -33,7 +33,7 @@ public class TeamLevel
             }
             else
             {
-                teamDistribution.Add(new($"Level {(i + 1)}", enrollmentDistribution[i], teamDistribution[i - 1]));
+                teamDistribution.Add(new($"Level {i + 1}", enrollmentDistribution[i], teamDistribution[i - 1]));
             }
         }
 

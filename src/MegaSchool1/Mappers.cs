@@ -1,5 +1,5 @@
-﻿using MWRCheatSheet.Model;
-using MWRCheatSheet.ViewModel;
+﻿using MegaSchool1.Model;
+using MegaSchool1.ViewModel;
 using Riok.Mapperly.Abstractions;
 
 namespace MWRCheatSheet;
