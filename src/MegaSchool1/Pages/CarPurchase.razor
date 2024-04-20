@@ -1,0 +1,78 @@
+﻿@page "/"
+
+<MudText Align="Align.Center" Typo="Typo.h4">How a Teen Should Purchase Their First Car<br/>($3,000 Car)</MudText>
+
+<MudTimeline>
+    @foreach (var step in _steps)
+    {
+        <MudTimelineItem Color="@GetColor(step)" Size="Size.Small">
+            <ItemOpposite>
+                <MudText Color="@GetColor(step)" Typo="Typo.h5">Step @(_steps.IndexOf(step) + 1)</MudText>
+            </ItemOpposite>
+            <ItemContent>
+                <MudText Color="@GetColor(step)" Typo="Typo.h6" GutterBottom="true">@step.Title</MudText>
+                <MudStack>
+                    @foreach (var detail in step.Details)
+                    {
+                        <MudStack Row="true">
+                            <MudText>&#x2022;</MudText>
+                            <MudText>@FormatDescription(detail)</MudText>
+                        </MudStack>
+                    }
+                </MudStack>
+            </ItemContent>
+        </MudTimelineItem>
+    }
+</MudTimeline>
+
+@code {
+    private readonly MudTheme _theme = new();
+
+    private readonly List<(string Title, string[] Details)> _steps = 
+    [
+        ("Hire Team of Financial Experts", ["Father purchases MWR Business Account for $250 ($100 1-time business activation + $150/mo membership fee)", "Mother likewise purchases MWR Business Account on behalf of teen", "Teen owes their mother $100 1-time business activation fee along with $150/mo membership fee"]),
+        ("Father Nets $500+/mo Cash Back", ["Father nets $500+/mo cash back from the 72-Hour Money Challenge ($650+/mo cash back - $150/mo membership)", "Father's $150/mo membership is self-funded", "Mother's $150/mo membership is self-funded", "$200/mo to spare!", "If the father can't get $650/mo in cash back then this strategy simply won't work for their family."]),
+        ("Teen Creates Their Own Bank", ["Teen opens Diversified Cashflow Account (DCA)", "This DCA is funded $200/mo by parents (see Step 2) as a college fund investment"]),
+        ("Parents Fund Teen's Bank", ["Parents fund their teen's DCA w/ $3,000 (transferred from existing college fund elsewhere)"]),
+        ("Teen Issues Car Loan to THEMSELF", ["Teen borrows $3,000 from their DCA"]),
+        ("Teen Buys Car CASH!", ["Teen buys their car CASH from the loan they gave themself in Step 5"]),
+        ("Teen Plans Car Loan Repayment", ["Teen plans car loan repayment via \"Eliminate My Debt\""]),
+        ("Teen Budgets Their Bank Interest", ["Teen updates their car loan repayment plan w/ higher monthly payments from their DCA's uninterrupted, compound interest"]),
+        ("Teen Earns $600/mo PASSIVELY", ["Teen sells 12 MWR Memberships via the 72-Hour Money Challenge and receives $600/mo in residual commissions", "$200/mo (of the $600/mo) pays the car loan payment", "$200/mo (of the $600/mo) pays the car insurance", "$200/mo (of the $600/mo) pays for gas"]),
+        ("Teen Builds Their Credit", ["Teen builds credit by paying their monthly car loan payments with a secured credit card", "Teen pays $200/mo to repay the loan in 15 months"]),
+        ("Teen Pays Off Car", ["Teen pays off $3,000 car loan in 15 months ($200/mo from Step 9)"]),
+        ("Teen Reimburses Parents", ["Teen reimburses mother for the MWR Business Account purchased on their behalf in Step 1", "Teen reimburses mother $200/mo until she's fully reimbursed"]),
+        ("Teen Regularly Deposits into Their Bank", ["Parents stop depositing $200/mo into teen's DCA", "Teen starts depositing $200/mo into their DCA (freed up from completing car loan payment)" ]),
+        ("Teen 'Double Dips' w/ Investments", ["Teen earns uninterrupted compound interest in their DCA", "Teen borrows against their DCA and uses the money to invest in assets" ]),
+    ];
+
+    private Color GetColor((string Title, string[] Details) step) => (_steps.IndexOf(step) % 4) switch
+    {
+        0 => Color.Info,
+        1 => Color.Success,
+        2 => Color.Primary,
+        3 => Color.Warning,
+    };
+
+    private (Color Color, string Pallette) GetColor(int step) => (step % 4) switch
+    {
+        0 => (Color.Info, _theme.Palette.Info.Value),
+        1 => (Color.Success, _theme.Palette.Success.Value),
+        2 => (Color.Primary, _theme.Palette.Primary.Value),
+        3 => (Color.Warning, _theme.Palette.Warning.Value),
+    };
+
+    private MarkupString FormatDescription(string description)
+    {
+        var formatted = description;
+
+        for(var i = 0; i<_steps.Count; i++)
+        {
+            var targetPhrase = $"Step {i+1}";
+
+            formatted = formatted.Replace(targetPhrase, $@"<span style=""color:{GetColor(i).Pallette};"">{targetPhrase}</span>");
+        }
+
+        return (MarkupString)formatted;
+    }
+}
