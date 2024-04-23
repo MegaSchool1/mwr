@@ -65,6 +65,16 @@
                                 ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
             </MudStack>
         </MudTabPanel>
+        <MudTabPanel Text="Faith & Finance">
+            <MudStack>
+                <ShareableVideo Description="Faith & Finance"
+                                Duration="new(0, 2, 0)"
+                                Url="@(UI.EnglishLocale[Model.Content.FaithAndFinance]!.MinimalistUrl())"
+                                Tooltip="Shareable copied!"
+                                TextToCopy="@($"MWR Faith & Finance{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(2min){Environment.NewLine}{UI.EnglishLocale[Model.Content.FaithAndFinance]!.MinimalistUrl()}")"
+                                ImageUrl="@Constants.GetImageUrl(Image.FaithAndFinance)" />
+            </MudStack>
+        </MudTabPanel>
     </MudTabs>
 </Collapsable>
 <br/>
