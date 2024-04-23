@@ -7,20 +7,31 @@
 @inject UISettings UI
 
 <Collapsable Title="Essentials" ExpandPrompt="Show">
-    <MudTabs Elevation="0" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <Centered>
+        <MudSelect T="Strategy" Label="Strategy" Variant="Variant.Outlined" FullWidth="true" Style="width:100%;" SelectedValuesChanged="@(selectedValues => _strategy.ActivePanelIndex = (int)selectedValues.First())">
+            <MudSelectItem Value="@Strategy.MegaSchool">@((MarkupString)Pad("Mega School"))</MudSelectItem>
+            <MudSelectItem Value="@Strategy.Corporate">@((MarkupString)Pad("Corporate"))</MudSelectItem>
+            <MudSelectItem Value="@Strategy.ExtraDigitMovement">Extra Digit Movement</MudSelectItem>
+            <MudSelectItem Value="@Strategy.FaithAndFinance">@((MarkupString)Pad("Faith & Finance"))</MudSelectItem>
+            <MudSelectItem Value="@Strategy.RealEstate">@((MarkupString)Pad("Real Estate"))</MudSelectItem>
+            <MudSelectItem Value="@Strategy.Latino">@((MarkupString)Pad("Latino"))</MudSelectItem>
+        </MudSelect>
+    </Centered>
+
+    <MudTabs @ref="_strategy" TabHeaderClass="d-none" Elevation="0" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
         <MudTabPanel Text="Mega School">
             <MudStack>
                 <ShareableVideoMultilingual Description="@Constants.MoneyChallenge[Strategy.MegaSchool].Description"
                                             Duration="@Constants.MoneyChallenge[Strategy.MegaSchool].Duration"
                                             Url="@Constants.MoneyChallenge[Strategy.MegaSchool].PreviewUrl"
-                                           
+
                                             EnglishTextToCopy="@(Constants.MoneyChallenge[Strategy.MegaSchool].English.Message)"
                                             EnglishTooltip="@(Constants.MoneyChallenge[Strategy.MegaSchool].English.Tooltip)"
                                             EnglishImageUrl="@(Constants.MoneyChallenge[Strategy.MegaSchool].ImageUrl)"
-                                            
+
                                             SpanishTextToCopy="@(Constants.MoneyChallenge[Strategy.MegaSchool].Spanish!.Message)"
                                             SpanishTooltip="@(Constants.MoneyChallenge[Strategy.MegaSchool].Spanish!.Tooltip)"
-                                            SpanishImageUrl="@(Constants.MoneyChallenge[Strategy.MegaSchool].ImageUrl)" />
+                                            SpanishImageUrl="@(Constants.MoneyChallenge[Strategy.MegaSchool].ImageUrl)"/>
             </MudStack>
         </MudTabPanel>
         <MudTabPanel Text="Corporate">
@@ -28,25 +39,25 @@
                 <ShareableVideoMultilingual Description="@Constants.MoneyChallenge[Strategy.Corporate].Description"
                                             Duration="@Constants.MoneyChallenge[Strategy.Corporate].Duration"
                                             Url="@Constants.MoneyChallenge[Strategy.Corporate].PreviewUrl"
-                                        
+
                                             EnglishTextToCopy="@(Constants.MoneyChallenge[Strategy.Corporate].English.Message)"
                                             EnglishTooltip="@(Constants.MoneyChallenge[Strategy.Corporate].English.Tooltip)"
                                             EnglishImageUrl="@(Constants.MoneyChallenge[Strategy.Corporate].ImageUrl)"
-                                        
+
                                             SpanishTextToCopy="@(Constants.MoneyChallenge[Strategy.Corporate].Spanish!.Message)"
                                             SpanishTooltip="@(Constants.MoneyChallenge[Strategy.Corporate].Spanish!.Tooltip)"
-                                            SpanishImageUrl="@(Constants.MoneyChallenge[Strategy.Corporate].ImageUrl)" />
+                                            SpanishImageUrl="@(Constants.MoneyChallenge[Strategy.Corporate].ImageUrl)"/>
                 <ShareableVideoMultilingual Description="@($"MWR Opportunity")"
                                             Duration="new(0, 5, 0)"
                                             Url="@(UI.EnglishLocale[Model.Content.CorporateBusinessOverview]!.MinimalistUrl())"
-                                            
-                                            EnglishTextToCopy="@Shareable.VideoShareable("MWR Opportunity", UI.EnglishLocale[Model.Content.CorporateBusinessOverview]!.MinimalistUrl(), new (0, 0, 5, 0))"
+
+                                            EnglishTextToCopy="@Shareable.VideoShareable("MWR Opportunity", UI.EnglishLocale[Model.Content.CorporateBusinessOverview]!.MinimalistUrl(), new(0, 0, 5, 0))"
                                             EnglishTooltip="English shareable copied!"
                                             EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
-                                            
-                                            SpanishTextToCopy="@Shareable.VideoShareable("MWR Opportunity", UI.SpanishLocale[Model.Content.CorporateBusinessOverview]!.MinimalistUrl(), new (0, 0, 6, 0))"
+
+                                            SpanishTextToCopy="@Shareable.VideoShareable("MWR Opportunity", UI.SpanishLocale[Model.Content.CorporateBusinessOverview]!.MinimalistUrl(), new(0, 0, 6, 0))"
                                             SpanishTooltip="Español shareable copied!"
-                                            SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
+                                            SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
             </MudStack>
         </MudTabPanel>
         <MudTabPanel Text="EDM">
@@ -56,13 +67,13 @@
                                 Url="@Constants.MoneyChallenge[Strategy.ExtraDigitMovement].PreviewUrl"
                                 Tooltip="@(Constants.MoneyChallenge[Strategy.ExtraDigitMovement].English.Tooltip)"
                                 TextToCopy="@(Constants.MoneyChallenge[Strategy.ExtraDigitMovement].English.Message)"
-                                ImageUrl="@(Constants.MoneyChallenge[Strategy.ExtraDigitMovement].ImageUrl)" />
+                                ImageUrl="@(Constants.MoneyChallenge[Strategy.ExtraDigitMovement].ImageUrl)"/>
                 <ShareableVideo Description="Need More Info?"
                                 Duration="new(0, 25, 0)"
                                 Url="@(UI.EnglishLocale[Model.Content.EDMNeedMoreInfo]!.MinimalistUrl())"
                                 Tooltip="Shareable copied!"
                                 TextToCopy="@($"72-Hour Money Challenge - More Information{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(25min){Environment.NewLine}{UI.EnglishLocale[Model.Content.EDMNeedMoreInfo]!.MinimalistUrl()}")"
-                                ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
+                                ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
             </MudStack>
         </MudTabPanel>
         <MudTabPanel Text="Faith & Finance">
@@ -72,8 +83,14 @@
                                 Url="@(UI.EnglishLocale[Model.Content.FaithAndFinance]!.MinimalistUrl())"
                                 Tooltip="Shareable copied!"
                                 TextToCopy="@($"MWR Faith & Finance{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(2min){Environment.NewLine}{UI.EnglishLocale[Model.Content.FaithAndFinance]!.MinimalistUrl()}")"
-                                ImageUrl="@Constants.GetImageUrl(Image.FaithAndFinance)" />
+                                ImageUrl="@Constants.GetImageUrl(Image.FaithAndFinance)"/>
             </MudStack>
+        </MudTabPanel>
+        <MudTabPanel Tag="@Strategy.RealEstate">
+            <MudText Align="Align.Center">Coming Soon!</MudText>
+        </MudTabPanel>
+        <MudTabPanel Tag="@Strategy.Latino">
+            <MudText Align="Align.Center">Coming Soon!</MudText>
         </MudTabPanel>
     </MudTabs>
 </Collapsable>
@@ -345,6 +362,16 @@
 </Collapsable>
 @code {
     private bool _pageLoaded;
+    private MudTabs? _strategy;
+
+    private static string Pad(string strategy)
+    {
+        const string LongestStrategyName = "Extra Digit Movement";
+
+        var padding = string.Empty.PadRight((2 * LongestStrategyName.Length) - strategy.Length, ' ').Replace(" ", "&nbsp;");
+
+        return $"{strategy}{padding}";
+    }
 
     protected override void OnInitialized()
     {

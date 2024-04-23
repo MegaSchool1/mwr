@@ -60,9 +60,12 @@ public enum Image
 
 public enum Strategy
 {
-    Corporate = 0,
-    ExtraDigitMovement = 1,
-    MegaSchool = 2,
+    MegaSchool = 0,
+    Corporate = 1,
+    ExtraDigitMovement = 2,
+    FaithAndFinance = 3,
+    RealEstate = 4,
+    Latino = 5,
 }
 
 public enum VideoPlatform
