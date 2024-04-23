@@ -1,5 +1,4 @@
-﻿@using MegaSchool1.Dialog
-@using MegaSchool1.Model
+﻿@using MegaSchool1.Model
 @using MegaSchool1.Components
 @inherits Components.ComponentBase
 @inject IDialogService Dialog
@@ -13,11 +12,7 @@
     <MudNavLink Href="/events" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.CalendarMonth">Events</MudNavLink>
     <MudNavLink Href="/revenuesharing" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Autorenew">Revenue Sharing</MudNavLink>
     <MudNavLink Href="/faststartchecklist" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Checklist">Fast Start Checklist</MudNavLink>
-    <MudNavLink Href="/wealthmap" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.School">Wealth GED</MudNavLink>
-    <MudNavGroup Title="Experimental" @bind-Expanded="@_experimentalExpanded" Icon="@Icons.Material.Filled.Science">
-        <MudNavLink Href="/carpurchase" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.DirectionsCar">First Car Purchase</MudNavLink>
-        <MudNavLink Href="/par" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.TableChart">Personal Activity Report</MudNavLink>
-    </MudNavGroup>
+    <MudNavLink Href="/experimental" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Science">Experimental</MudNavLink>
     <MudNavLink Href="https://youtu.be/_qRCOdGK1d4" Target="_blank" Icon="@Icons.Material.Filled.PersonalVideo">Watch App Demo</MudNavLink>
     <MudNavLink Href="https://us06web.zoom.us/j/85317466777" Target="_blank" Icon="@Icons.Material.Filled.LiveHelp">Live Support via Zoom</MudNavLink>
     <MudNavLink OnClick="@(() => _showAppShareable = true)" Icon="@Icons.Material.Filled.MobileScreenShare">Share This App!</MudNavLink>
@@ -51,7 +46,6 @@
 @code {
     private bool _updateAvailable;
     private bool _showAppShareable;
-    private bool _experimentalExpanded;
 
     protected override async Task OnInitializedAsync()
     {

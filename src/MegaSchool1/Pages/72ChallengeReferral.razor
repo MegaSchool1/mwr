@@ -1,5 +1,9 @@
-﻿@page "/72/{TikTokId}"
+﻿@page "/72/{MemberId}/{TikTokId}"
+@using System.Text.RegularExpressions
 @using MegaSchool1.Components
+@using MegaSchool1.Repository.Model
+@inject Repository.Repository Repo
+@inject HttpClient Http
 
 <Centered><MudImage Src="/images/72-hour-money-challenge.png" /></Centered>
 <br/>
@@ -22,9 +26,19 @@
 </Centered>
 <br />
 <br />
-<Centered><MudText Style="color:white;" Align="Align.Center">To take the challenge or learn more, text<br/><br/>'@TikTokId' to 224-310-9357</MudText></Centered>
+<Centered><MudText Style="color:white;" Align="Align.Center">To take the challenge or learn more, text<br /><br />'@TikTokId' to @(Regex.Replace(_qmd?.PhoneNumber ?? "224-310-9357", @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3"))</MudText></Centered>
 
 @code {
+    private QMD? _qmd;
+
     [Parameter]
-    public string? TikTokId { get; set; }
+    public string MemberId { get; set; } = default!;
+
+    [Parameter]
+    public string TikTokId { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _qmd = await Repo.GetQMDInfo(this.MemberId, Http);
+    }
 }

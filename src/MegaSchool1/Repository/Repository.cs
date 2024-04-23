@@ -1,4 +1,5 @@
-﻿using Blazored.LocalStorage;
+﻿using System.Net.Http.Json;
+using Blazored.LocalStorage;
 using MegaSchool1.Model;
 using MegaSchool1.Repository.Model;
 
@@ -49,5 +50,14 @@ public class Repository
         }
 
         return foundUsername;
+    }
+   
+    public async Task<QMD?> GetQMDInfo(string memberId, HttpClient http)
+    {
+        QMD? qmd;
+
+        qmd = await http.GetFromJsonAsync<QMD>($"https://user.mwrfinancial.com/home/GetUsrFrmMwrMakeover?uName={memberId}");
+
+        return qmd;
     }
 }

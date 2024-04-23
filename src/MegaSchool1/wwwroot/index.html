@@ -53,6 +53,13 @@
     </script>
 
     <script>
+        function getQualifiedMarketingDirectorPhoneNumber() {
+            var iframe = document.getElementById("myFrame");
+            console.log("iframe: " + iframe);
+            var elmnt = iframe.contentWindow.document.getElementsByClassName("client_phone")[0];
+            console.log("phone element: " + elmnt);
+        }
+
         async function clipboardMethod() {
             // this works perfectly on Signal Desktop
 

@@ -1,10 +1,10 @@
-﻿@page "/words"
+﻿@page "/"
 @using MegaSchool1.Components
 @using MegaSchool1.Dialog
 @using MegaSchool1.Model
 @inherits Components.ComponentBase
 @inject IDialogService Dialog
-@inject             UISettings UI
+@inject UISettings UI
 @inject Model.Constants Constants
 @inject NavigationManager NavigationManager
 
@@ -13,16 +13,9 @@
 <br/>
 <MudTabs @ref="_strategy" Elevation="2" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
     <MudTabPanel Text="Mega School" Tag="@Strategy.MegaSchool">
-        <Collapsable Title="Listen" ExpandPrompt="Show me how!">
-            <MudText Align="Align.Center">Coming Soon!</MudText>
-        </Collapsable>
-        <br />
-        <br />
-        <Collapsable Title="Ask" ExpandPrompt="Show me how!">
-            <MudText Align="Align.Center">Tap Image to Download</MudText>
-            <DownloadableImage Alt="72-Hour Money Challenge | Share" ImageUri="images/words/72hour-share.jpeg" />
-            <DownloadableImage Alt="72-Hour Money Challenge | Response" ImageUri="images/words/72hour-response.jpeg" />
-            <DownloadableImage Alt="72-Hour Money Challenge | Success Story" ImageUri="images/words/72hour-success-story.jpeg" />
+        <Collapsable Title="Listen & Ask" ExpandPrompt="Show me how!">
+            <br/>
+            <Centered><MudButton OnClick="@(() => _showListenAndAsk = true)" Color="Color.Primary" Variant="Variant.Filled">Watch How To</MudButton></Centered>
         </Collapsable>
         <br />
         <br />
@@ -213,6 +206,26 @@
 <br />
 <br />
 
+<MudDialog @bind-IsVisible="_showListenAndAsk" Options="@(new DialogOptions() { FullScreen = true })">
+    <DialogContent>
+        <MudContainer Style="max-height:100vh; overflow-y: scroll;">
+            <MudStack>
+                <MudStack Row="true">
+                    <MudSpacer/>
+                    <MudButton Color="Color.Primary" OnClick="@(() => _showListenAndAsk = false)">Close</MudButton>
+                    <MudSpacer/>
+                </MudStack>
+                <MudCard>
+                    <MudStack>
+                        <Video TikTok="@(("onethree7eight", "7360745408064228638"))" />
+                        <Video TikTok="@(("guywhoknowstheguy", "7360805265379216682"))" />
+                    </MudStack>
+                </MudCard>
+            </MudStack>
+        </MudContainer>
+    </DialogContent>
+</MudDialog>
+
 <MudDialog @bind-IsVisible="_show72HourMoneyChallengeVideo" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
     <DialogContent>
         <MudStack>
@@ -279,6 +292,7 @@
     private string _72Hr1On1OverviewImageUrl = Constants.GetImageUrl(Image.Overview1On1English);
     private string _72Hr1On1RevenueSharingImageUrl = Constants.GetImageUrl(Image.RevenueShare1On1English);
     private MudTabs? _strategy;
+    private bool _showListenAndAsk;
 
     private Strategy CurrentStrategy => (Strategy)_strategy!.ActivePanel.Tag!;
 
