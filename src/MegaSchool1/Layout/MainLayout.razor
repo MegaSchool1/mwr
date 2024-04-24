@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @using Blazored.LocalStorage
+@using MegaSchool1.Components
 @using MegaSchool1.Dialog
 @using MegaSchool1.Model
 @implements IDisposable
@@ -62,6 +63,7 @@ else
                             if (_appState.AppIsInstallable)
                             {
                                 <MudButton OnClick="OnInstallClick" EndIcon="@Icons.Material.Filled.InstallMobile" Variant="Variant.Filled" Color="Color.Primary">Install</MudButton>
+                                <MudIconButton OnClick="@(() => _showInstallInstructions = true)" Icon="@Icons.Material.Filled.OndemandVideo" aria-label="video" Variant="Variant.Filled" Color="Color.Primary" />
                             }
                             else
                             {
@@ -102,6 +104,30 @@ else
     <a class="dismiss">🗙</a>
 </div>
 
+<MudDialog @bind-IsVisible="_showInstallInstructions" Options="@(new DialogOptions() { })">
+    <TitleContent>
+        <MudText>App Installation Instructions</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudContainer Style="max-height:100vh; overflow-y: scroll;">
+            <MudStack>
+                <MudCard>
+                    <MudStack>
+                        <MudText>Android</MudText>
+                        <Video YouTube="_qRCOdGK1d4"/>
+                    </MudStack>
+                </MudCard>
+                <MudCard>
+                    <MudStack>
+                        <MudText Align="Align.Center">iPhone</MudText>
+                        <MudText Align="Align.Center">Coming Soon!</MudText>
+                    </MudStack>
+                </MudCard>
+            </MudStack>
+        </MudContainer>
+    </DialogContent>
+</MudDialog>
+
 @code {
     private static MainLayout? Instance;
 
@@ -110,6 +136,7 @@ else
     private bool _showAppUpdatePrompt;
     private bool _componentInitialized;
     private DotNetObjectReference<MainLayout>? _thisComponentReference;
+    private bool _showInstallInstructions;
 
     public void Dispose()
     {
