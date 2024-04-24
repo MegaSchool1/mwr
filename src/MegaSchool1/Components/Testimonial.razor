@@ -6,15 +6,15 @@
         <MudStack>
             @if (this.YouTube != null)
             {
-                <Video YouTube="@YouTube" />
+                <EmbeddedVideo YouTube="@YouTube" />
             }
             @if (this.TikTok != null)
             {
-                <Video TikTok="@TikTok" />
+                <EmbeddedVideo TikTok="@TikTok" />
             }
             @if (this.Vimeo != null)
             {
-                <Video Vimeo="@Vimeo" />
+                <EmbeddedVideo Vimeo="@Vimeo" />
             }
             <MudStack Row="true">
                 <MudSpacer />

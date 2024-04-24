@@ -239,8 +239,8 @@
                 </MudStack>
                 <MudCard>
                     <MudStack>
-                        <Video TikTok="@(("onethree7eight", "7360745408064228638"))" />
-                        <Video TikTok="@(("guywhoknowstheguy", "7360805265379216682"))" />
+                        <EmbeddedVideo TikTok="@(("onethree7eight", "7360745408064228638"))" />
+                        <EmbeddedVideo TikTok="@(("guywhoknowstheguy", "7360805265379216682"))" />
                     </MudStack>
                 </MudCard>
             </MudStack>
@@ -252,9 +252,9 @@
     <DialogContent>
         <MudStack>
             <MudText Align="Align.Center">English</MudText>
-            <Video YouTube="@(Constants.MoneyChallenge[CurrentStrategy].English.YouTubeId)" />
+            <EmbeddedVideo YouTube="@(Constants.MoneyChallenge[CurrentStrategy].English.YouTubeId)" />
             <MudText Align="Align.Center">Español</MudText>
-            <Video YouTube="@(Constants.MoneyChallenge[CurrentStrategy].Spanish!.YouTubeId)" />
+            <EmbeddedVideo YouTube="@(Constants.MoneyChallenge[CurrentStrategy].Spanish!.YouTubeId)" />
         </MudStack>
     </DialogContent>
 </MudDialog>
@@ -262,7 +262,7 @@
 <MudDialog @bind-IsVisible="_showFaqVideo" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
     <DialogContent>
         <MudStack>
-            <Video YouTube="@(UI.EnglishLocale[Content.MoneyChallengeFAQ]!.Id)" />
+            <EmbeddedVideo YouTube="@(UI.EnglishLocale[Content.MoneyChallengeFAQ]!.Id)" />
         </MudStack>
     </DialogContent>
 </MudDialog>

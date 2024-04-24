@@ -104,18 +104,22 @@ else
     <a class="dismiss">🗙</a>
 </div>
 
-<MudDialog @bind-IsVisible="_showInstallInstructions" Options="@(new DialogOptions() { })">
+<MudDialog @bind-IsVisible="_showInstallInstructions" Options="@(new DialogOptions() { FullScreen = true })">
     <TitleContent>
-        <MudText>App Installation Instructions</MudText>
+        <Centered><MudButton Color="Color.Primary" OnClick="@(() => _showInstallInstructions = false)">Close</MudButton></Centered>
+        <br/>
+        <MudText Align="Align.Center">App Installation Instructions</MudText>
     </TitleContent>
     <DialogContent>
         <MudContainer Style="max-height:100vh; overflow-y: scroll;">
             <MudStack>
                 <MudCard>
-                    <MudStack>
-                        <MudText>Android</MudText>
-                        <Video YouTube="_qRCOdGK1d4"/>
-                    </MudStack>
+                    <MudText Align="Align.Center">Android</MudText>
+                    <br/>
+                    <video width="100%" controls>
+                        <source src="https://video.wixstatic.com/video/5f35ec_33bda4fc60fd41cf8c3a09924f204746/480p/mp4/file.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </MudCard>
                 <MudCard>
                     <MudStack>
