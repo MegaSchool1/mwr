@@ -1,5 +1,6 @@
 ﻿@using MegaSchool1.Model
 @inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
 
 @code {
     [Parameter]
@@ -9,12 +10,27 @@
     public AppState? AppState { get; set; }
 
     protected bool ComponentInitialized { get; private set; }
+    private bool IsCarPurchasePage => NavigationManager.Uri.Contains("/carpurchase");
 
     protected override void OnInitialized()
     {
         this.ComponentInitialized = true;
         this.StateHasChanged();
     }
+
+    protected bool NavigateToProspectPageIfApplicable()
+    {
+        if (!IsCarPurchasePage && ProspectMode)
+        {
+            NavigationManager.NavigateTo("/carpurchase");
+            
+            return true;
+        }
+
+        return false;
+    }
+
+    protected bool ProspectMode => AppState?.UserName == null;
 
     protected static string FormatTimeSpan(TimeSpan duration)
         => $"({(duration.Hours > 0 ? $"{duration.Hours}hr " : string.Empty)}{(duration.Minutes > 0 ? $"{duration.Minutes}min" : string.Empty)}{(duration.Seconds > 0 ? $" {duration.Seconds}sec" : string.Empty)})";

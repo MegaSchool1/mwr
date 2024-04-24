@@ -43,27 +43,13 @@
 
     private EventViewModel[] _events = [];
 
-    // private static string FormatLink(string link, EventViewModel @event)
-    // {
-    //     string? formattedLink = null;
-
-    //     if (link == Constants.LivestreamVideoPlaceholder && Settings != null)
-    //     {
-
-    //         if (Settings.LivestreamPlatformPreference.TryGetValue(@event.Anchor!, out var livestreamPlatformPreference))
-    //         {
-    //             if (Constants.CorporateLivestreamLink.TryGetValue(livestreamPlatformPreference, out var livestreamLink))
-    //             {
-    //                 formattedLink = livestreamLink;
-    //             }
-    //         }
-    //     }
-
-    //     return formattedLink ?? link;
-    // }
-
     protected override async Task OnInitializedAsync()
     {
+        if (this.NavigateToProspectPageIfApplicable())
+        {
+            return;
+        }
+
         var generatedDailyEvents = new List<EventDto>();
         var eventMapper = new Mappers();
 

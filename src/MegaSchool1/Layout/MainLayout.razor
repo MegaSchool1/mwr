@@ -51,17 +51,27 @@ else
         <main>
             <div class="top-row px-4" style="background-color:@(Colors.Green.Default);">
                 <MudStack Row="true" Style="width:100%;">
-                    @if (_componentInitialized && _appState.AppIsInstallable)
+                    @if (_componentInitialized)
                     {
-                        <MudButton OnClick="OnInstallClick" EndIcon="@Icons.Material.Filled.InstallMobile" Variant="Variant.Filled" Color="Color.Primary">Install</MudButton>
+                        @if (ProspectMode)
+                        {
+                            <MudButton OnClick="OnShowMembershipEnrollmentDialog" EndIcon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Primary">Set Member ID</MudButton>
+                        }
+                        else
+                        {
+                            if (_appState.AppIsInstallable)
+                            {
+                                <MudButton OnClick="OnInstallClick" EndIcon="@Icons.Material.Filled.InstallMobile" Variant="Variant.Filled" Color="Color.Primary">Install</MudButton>
+                            }
+                            else
+                            {
+                                <MudStack Row="true">
+                                    <MudText Style="color:white;">Hello @_appState.UserName! <MudIconButton OnClick="OnShowMembershipEnrollmentDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
+                                </MudStack>
+                            }
+                        }
                     }
-                    else
-                    {
-                        <MudStack Row="true">
-                            <MudText Style="color:white;">Hello @_appState.UserName! <MudIconButton OnClick="OnShowMembershipEnrollmentDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
-                        </MudStack>
-                    }
-                    <MudSpacer />
+                    <MudSpacer/>
                     <MudText Style="color:white;">@GetTitle()</MudText>
                 </MudStack>
             </div>
@@ -108,6 +118,10 @@ else
 
     private bool IsMoneyChallengePage => NavigationManager.Uri.Contains("/72/");
 
+    private bool IsCarPurchasePage => NavigationManager.Uri.Contains("/carpurchase");
+
+    private bool ProspectMode => _appState.UserName == null;
+
     private void OnShowMembershipEnrollmentDialog()
     {
         var parameters = new DialogParameters<EditUsernameDialog> { { x => x.AppState, _appState } };
@@ -122,13 +136,27 @@ else
         await JSRuntime.InvokeVoidAsync("promptToInstall", _thisComponentReference);
     }
 
+    private void NavigateToProspectPageIfApplicable()
+    {
+        if (!IsCarPurchasePage && ProspectMode)
+        {
+            NavigationManager.NavigateTo("/carpurchase");
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         _componentInitialized = true;
 
-        // get username
-        _appState.UserName = await Repo.GetUsernameAsync(LocalStorage, Http) ?? _appState.UserName;
+        NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
 
+        // get username
+        _appState.UserName = await Repo.GetUsernameAsync(LocalStorage, Http);
+        this.StateHasChanged();
+
+        // navigate to prospect page if applicable
+        this.NavigateToProspectPageIfApplicable();
+        
         // start checking for updates
         _ = CheckForUpdatesAsync();
 
@@ -150,6 +178,11 @@ else
         }
 
         Instance = this;
+    }
+
+    private void NavigationManagerOnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+       this.NavigateToProspectPageIfApplicable();
     }
 
     public static void Refresh()

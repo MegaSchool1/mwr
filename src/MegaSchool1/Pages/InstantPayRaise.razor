@@ -33,16 +33,14 @@
     allowfullscreen></iframe>
 
 @code {
-    private static readonly string DefaultUrl = Constants.InstantPayRaiseUrlEnglish(AppState.DefaultUsername);
-
     private bool _iframeLoaded;
-    private string _iframeUrl = DefaultUrl;
+    private string _iframeUrl = default!;
     private string? _englishUrl;
     private string? _spanishUrl;
 
     protected override void OnInitialized()
     {
-        _englishUrl = Constants.InstantPayRaiseUrlEnglish(AppState.UserName);
+        _englishUrl = Constants.InstantPayRaiseUrlEnglish(AppState!.UserName);
         _spanishUrl = Constants.InstantPayRaiseUrlSpanish(AppState.UserName);
 
         _iframeUrl = _englishUrl;
@@ -58,7 +56,7 @@
         if (_iframeUrl != _englishUrl)
         {
             _iframeLoaded = false;
-            _iframeUrl = _englishUrl ?? DefaultUrl;
+            _iframeUrl = _englishUrl!;
         }
     }
 
@@ -67,7 +65,7 @@
         if (_iframeUrl != _spanishUrl)
         {
             _iframeLoaded = false;
-            _iframeUrl = _spanishUrl ?? DefaultUrl;
+            _iframeUrl = _spanishUrl!;
         }
     }
 }
