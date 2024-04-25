@@ -151,6 +151,8 @@ else
 
     private bool IsCarPurchasePage => NavigationManager.Uri.Contains("/carpurchase");
 
+    private bool IsWhitelistedProspectPage => IsMoneyChallengePage || IsCarPurchasePage;
+
     private bool ProspectMode => _appState.UserName == null;
 
     private void OnShowMembershipEnrollmentDialog()
@@ -169,7 +171,7 @@ else
 
     private void NavigateToProspectPageIfApplicable()
     {
-        if (!IsCarPurchasePage && ProspectMode)
+        if (ProspectMode && !IsWhitelistedProspectPage)
         {
             NavigationManager.NavigateTo("/carpurchase");
         }
