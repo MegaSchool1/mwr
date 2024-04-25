@@ -37,11 +37,18 @@
 
 <MudDialog @bind-IsVisible="_showAppShareable" Options="@(new DialogOptions() { NoHeader = true })">
     <DialogContent>
-        <ShareableVideo Description="@Constants.AppShareable.Description"
-                        Url="@Constants.AppShareable.PreviewUrl"
-                        Tooltip="@Constants.AppShareable.English.Tooltip"
-                        TextToCopy="@Constants.AppShareable.English.Message"
-                        ImageUrl="@Constants.AppShareable.ImageUrl" />
+        <MudStack>
+            <ShareableVideo Description="@Constants.AppShareable.Description"
+                            Url="@Constants.AppShareable.PreviewUrl"
+                            Tooltip="@Constants.AppShareable.English.Tooltip"
+                            TextToCopy="@Constants.AppShareable.English.Message"
+                            ImageUrl="@Constants.AppShareable.ImageUrl"/>
+            <ShareableVideo Description="@("Mega School App Install Instructions")"
+                            Url="@Constants.AppInstallTutorialUrl"
+                            Tooltip="Copied!"
+                            TextToCopy="@($"Mega School App Install Instructions{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.AppInstallTutorialUrl}")"
+                            ImageUrl="@Constants.GetImageUrl(Image.AppScreenshot)"/>
+        </MudStack>
     </DialogContent>
 </MudDialog>
 

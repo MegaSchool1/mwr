@@ -157,6 +157,7 @@ public class Constants(UISettings ui)
     public static readonly string VimeoEmbedLinkPrefix = "https://player.vimeo.com/video/";
     public static readonly string MinimalistVideoLinkPrefix = "https://megaschool.me/v";
     public static readonly string MinimalistYouTubeVideoLinkPrefix = $"{MinimalistVideoLinkPrefix}?y=";
+    public const string AppInstallTutorialUrl = "https://video.wixstatic.com/video/5f35ec_33bda4fc60fd41cf8c3a09924f204746/480p/mp4/file.mp4";
 
     public static string BusinessEnrollmentUrl(string username) => $"https://user.mwrfinancial.com/{username}/join";
     public static string MembershipEnrollmentUrl(string username) => $"https://user.mwrfinancial.com/{username}/signup-financialedge";
@@ -249,7 +250,7 @@ public class Constants(UISettings ui)
     public Dictionary<Strategy, Shareable> MoneyChallenge => _moneyChallengeShareable;
 
     public static readonly Shareable AppShareable = new(
-        $"Mega School App",
+        $"Mega School App Download",
         new($"Mega School App{Environment.NewLine}{PointingDownEmoji}{Environment.NewLine}https://megaschool1.github.io/", "Shareable copied!", "https://www.ms1.megaschool.me/72hr-money-challenge"),
         null,
         GetImageUrl(Image.AppScreenshot),
