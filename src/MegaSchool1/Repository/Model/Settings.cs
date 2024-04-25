@@ -15,5 +15,6 @@ public class Settings
     public Dictionary<string, LivestreamPlatform> LivestreamPlatformPreference { get; set; } = new()
     {
         { "72day-blitz", LivestreamPlatform.Facebook },
+        { "72day-blitz-spanish", LivestreamPlatform.Facebook },
     };
 }

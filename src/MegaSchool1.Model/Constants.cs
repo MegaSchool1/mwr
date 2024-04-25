@@ -152,7 +152,7 @@ public class Constants(UISettings ui)
     public static readonly TimeZoneInfo DefaultTimeZone = NewYorkTimeZone;
 
     public static readonly string PointingDownEmoji = $"\ud83d\udc47";
-    public static readonly string LivestreamVideoPlaceholder = "{Corporate.Livestream}";
+    public static readonly string MultiPlatformLivestreamUrlPlaceholder = "{Corporate.Livestream}";
     public static readonly string YouTubeEmbedLinkPrefix = "https://www.youtube.com/embed/";
     public static readonly string VimeoEmbedLinkPrefix = "https://player.vimeo.com/video/";
     public static readonly string MinimalistVideoLinkPrefix = "https://megaschool.me/v";

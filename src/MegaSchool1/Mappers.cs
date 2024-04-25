@@ -2,7 +2,7 @@
 using MegaSchool1.ViewModel;
 using Riok.Mapperly.Abstractions;
 
-namespace MWRCheatSheet;
+namespace MegaSchool1;
 
 [Mapper]
 public partial class Mappers

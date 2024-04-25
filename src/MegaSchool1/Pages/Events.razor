@@ -3,7 +3,7 @@
 @using MegaSchool1.Components
 @using MegaSchool1.Model
 @using MegaSchool1.ViewModel
-@using MWRCheatSheet
+@using Mappers = MegaSchool1.Mappers
 @inherits Components.ComponentBase
 @inject UISettings UI
 @inject NavigationManager NavigationManager
@@ -74,19 +74,26 @@
 
         Settings ??= await Repo.GetSettingsAsync(LocalStorage);
 
-        foreach (var eventViewModel in _events)
-        {
-            if (eventViewModel.Link == Constants.LivestreamVideoPlaceholder && Settings != null)
-            {
-                if (Settings.LivestreamPlatformPreference.TryGetValue(eventViewModel.Anchor!, out var livestreamPlatformPreference))
-                {
-                    eventViewModel.LivestreamPlatform = livestreamPlatformPreference;
+        var defaultLivestreamPlatforms = new Repository.Model.Settings().LivestreamPlatformPreference;
 
-                    if (Constants.CorporateLivestreamLink.TryGetValue(livestreamPlatformPreference, out var livestreamLink))
-                    {
-                        eventViewModel.Link = livestreamLink;
-                        eventViewModel.VanityLink = livestreamLink;
-                    }
+        // set livestream link
+        foreach (var eventViewModel in _events.Where(e => e.Link == Constants.MultiPlatformLivestreamUrlPlaceholder))
+        {
+            // get livestream platform preference
+            var foundLivestreamPlatformPreference = 
+                Settings.LivestreamPlatformPreference.TryGetValue(eventViewModel.Anchor!, out var livestreamPlatformPreference)
+                ||
+                defaultLivestreamPlatforms.TryGetValue(eventViewModel.Anchor!, out livestreamPlatformPreference);
+
+            if (foundLivestreamPlatformPreference)
+            {
+                eventViewModel.LivestreamPlatform = livestreamPlatformPreference;
+
+                // set corporate livestream platform preference
+                if (Constants.CorporateLivestreamLink.TryGetValue(livestreamPlatformPreference, out var livestreamLink))
+                {
+                    eventViewModel.Link = livestreamLink;
+                    eventViewModel.VanityLink = livestreamLink;
                 }
             }
         }
