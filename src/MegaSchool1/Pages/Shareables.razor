@@ -8,7 +8,7 @@
 
 <Collapsable Title="Essentials" ExpandPrompt="Show">
     <Centered>
-        <MudSelect T="Strategy" Label="Strategy" Variant="Variant.Outlined" FullWidth="true" Style="width:100%;" SelectedValuesChanged="@(selectedValues => _strategy.ActivePanelIndex = (int)selectedValues.First())">
+        <MudSelect T="Strategy" Label="Strategy" Variant="Variant.Outlined" FullWidth="true" Style="width:100%;" SelectedValuesChanged="@(selectedValues => _essentials.ActivePanelIndex = (int)selectedValues.First())">
             <MudSelectItem Value="@Strategy.MegaSchool">@((MarkupString)Pad("Mega School"))</MudSelectItem>
             <MudSelectItem Value="@Strategy.Corporate">@((MarkupString)Pad("Corporate"))</MudSelectItem>
             <MudSelectItem Value="@Strategy.ExtraDigitMovement">Extra Digit Movement</MudSelectItem>
@@ -18,7 +18,7 @@
         </MudSelect>
     </Centered>
 
-    <MudTabs @ref="_strategy" TabHeaderClass="d-none" Elevation="0" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <MudTabs @ref="_essentials" TabHeaderClass="d-none" Elevation="0" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
         <MudTabPanel Text="Mega School">
             <MudStack>
                 <ShareableVideoMultilingual Description="@Constants.MoneyChallenge[Strategy.MegaSchool].Description"
@@ -351,6 +351,40 @@
 </Collapsable>
 <br />
 <br />
+<Collapsable Title="Team Links" ExpandPrompt="Show">
+    <Centered>
+        <MudSelect T="Strategy" @bind-Value="@_selectedTeam" Label="Team" Variant="Variant.Outlined" FullWidth="true" Style="width:100%;">
+            <MudSelectItem Value="@Strategy.MegaSchool">@((MarkupString)Pad("Mega School"))</MudSelectItem>
+            <MudSelectItem Value="@Strategy.ExtraDigitMovement">Extra Digit Movement</MudSelectItem>
+            <MudSelectItem Value="@Strategy.FaithAndFinance">@((MarkupString)Pad("Faith & Finance"))</MudSelectItem>
+            <MudSelectItem Value="@Strategy.RealEstate">@((MarkupString)Pad("Real Estate"))</MudSelectItem>
+            <MudSelectItem Value="@Strategy.Latino">@((MarkupString)Pad("Latino"))</MudSelectItem>
+        </MudSelect>
+    </Centered>
+
+    <MudTabs @ref="_teamLinks" ActivePanelIndex="@(Array.IndexOf(Teams, _selectedTeam))" TabHeaderClass="d-none" Elevation="0" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
+        <MudTabPanel Text="Mega School">
+            <MudText Align="Align.Center">Coming Soon!</MudText>
+        </MudTabPanel>
+        <MudTabPanel Text="EDM">
+            <MudText Align="Align.Center">Coming Soon!</MudText>
+        </MudTabPanel>
+        <MudTabPanel Text="Faith & Finance">
+            <MudText Align="Align.Center">Coming Soon!</MudText>
+        </MudTabPanel>
+        <MudTabPanel Tag="@Strategy.RealEstate">
+            <MudText Align="Align.Center">Coming Soon!</MudText>
+        </MudTabPanel>
+        <MudTabPanel Tag="@Strategy.Latino">
+            <ShareableVideo Description="Official Facebook Group"
+                            Url="https://www.facebook.com/groups/frbeempoweringdiversitynationalteams"
+                            Tooltip="Copied!"
+                            TextToCopy="@($"FRBE Empowering Diversity National Teams Facebook Group{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://www.facebook.com/groups/frbeempoweringdiversitynationalteams")" />
+        </MudTabPanel>
+    </MudTabs>
+</Collapsable>
+<br/>
+<br/>
 <Collapsable Title="Images" ExpandPrompt="Show">
     <MudStack>
         <MudText Align="Align.Center">Tap Image to Download</MudText>
@@ -369,8 +403,12 @@
     </MudStack>
 </Collapsable>
 @code {
+    private readonly Strategy[] Teams = [Strategy.MegaSchool, Strategy.ExtraDigitMovement, Strategy.FaithAndFinance, Strategy.RealEstate, Strategy.Latino];
+
     private bool _pageLoaded;
-    private MudTabs? _strategy;
+    private MudTabs? _essentials;
+    private MudTabs? _teamLinks;
+    private Strategy _selectedTeam = Strategy.Latino;
 
     private static string Pad(string strategy)
     {
