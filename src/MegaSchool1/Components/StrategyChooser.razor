@@ -1,0 +1,44 @@
+﻿@using MegaSchool1.Model
+@inherits Components.ComponentBase
+
+<Centered>
+    <MudSelect T="Strategy" @bind-Value="@SelectedStrategy" Label="Team" Variant="Variant.Outlined" FullWidth="true" Style="width:100%;">
+    @foreach (var strategy in Strategies)
+    {
+        <MudSelectItem Value="@strategy">@((MarkupString)Pad(StrategyDisplayName[strategy]))</MudSelectItem>
+    }
+    </MudSelect>
+</Centered>
+
+<MudTabs ActivePanelIndex="@(Array.IndexOf(Strategies, SelectedStrategy))" TabHeaderClass="d-none" Elevation="0" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    @ChildContent
+</MudTabs>
+
+@code {
+    public static readonly Strategy[] AllStrategies = Enum.GetValues<Strategy>();
+
+    private static readonly Dictionary<Strategy, string> StrategyDisplayName = new()
+    {
+        { Strategy.MegaSchool, "Mega School" },
+        { Strategy.Corporate, "Corporate" },
+        { Strategy.ExtraDigitMovement, "Extra Digit Movement" },
+        { Strategy.FaithAndFinance, "Faith & Finance" },
+        { Strategy.RealEstate, "Real Estate" },
+        { Strategy.Latino, "Latino" },
+    };
+
+    [Parameter]
+    public Strategy[] Strategies { get; set; } = AllStrategies;
+
+    [Parameter]
+    public Strategy SelectedStrategy { get; set; } = Strategy.MegaSchool;
+
+    private static string Pad(string strategy)
+    {
+        const string LongestStrategyName = "Extra Digit Movement";
+
+        var padding = string.Empty.PadRight((2 * LongestStrategyName.Length) - strategy.Length, ' ').Replace(" ", "&nbsp;");
+
+        return $"{strategy}{padding}";
+    }
+}

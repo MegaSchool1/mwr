@@ -11,20 +11,10 @@
 <MudText Typo="Typo.h3" GutterBottom="true" Align="Align.Center">How to Share</MudText>
 <br/>
 <br/>
-<Centered>
-    <MudSelect T="Strategy" Label="Strategy" Variant="Variant.Outlined" FullWidth="true" Style="width:100%;" SelectedValuesChanged="@(selectedValues => _strategy.ActivePanelIndex = (int)selectedValues.First())">
-        <MudSelectItem Value="@Strategy.MegaSchool">@((MarkupString)Pad("Mega School"))</MudSelectItem>
-        <MudSelectItem Value="@Strategy.Corporate">@((MarkupString)Pad("Corporate"))</MudSelectItem>
-        <MudSelectItem Value="@Strategy.ExtraDigitMovement">Extra Digit Movement</MudSelectItem>
-        <MudSelectItem Value="@Strategy.FaithAndFinance">@((MarkupString)Pad("Faith & Finance"))</MudSelectItem>
-        <MudSelectItem Value="@Strategy.RealEstate">@((MarkupString)Pad("Real Estate"))</MudSelectItem>
-        <MudSelectItem Value="@Strategy.Latino">@((MarkupString)Pad("Latino"))</MudSelectItem>
-    </MudSelect>
-</Centered>
-<MudTabs TabHeaderClass="d-none" @ref="_strategy" Elevation="2" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
+<StrategyChooser @ref="@_strategyChooser" Strategies="@StrategyChooser.AllStrategies">
     <MudTabPanel Text="Mega School" Tag="@Strategy.MegaSchool">
         <Collapsable Title="Listen & Ask" ExpandPrompt="Show me how!">
-            <br/>
+            <br />
             <Centered><MudButton OnClick="@(() => _showListenAndAsk = true)" Color="Color.Primary" Variant="Variant.Filled">Watch How To</MudButton></Centered>
         </Collapsable>
         <br />
@@ -119,7 +109,7 @@
         <br />
         <br />
         <Collapsable Title="Invite" ExpandPrompt="Show me how!">
-            <MudText Align="Align.Center">Invite them to the next <MudLink OnClick="@(() => NavigationManager.NavigateTo($"/events#{GetNextMembershipQnAAnchor()}"))">Membership Orientation Live Q&A</MudLink>. <br/><br/> (Remember to edify!)</MudText>
+            <MudText Align="Align.Center">Invite them to the next <MudLink OnClick="@(() => NavigationManager.NavigateTo($"/events#{GetNextMembershipQnAAnchor()}"))">Membership Orientation Live Q&A</MudLink>. <br /><br /> (Remember to edify!)</MudText>
         </Collapsable>
     </MudTabPanel>
     <MudTabPanel Text="Corporate" Tag="@Strategy.Corporate">
@@ -224,7 +214,7 @@
     <MudTabPanel Tag="@Strategy.Latino">
         <MudText Align="Align.Center">Coming Soon!</MudText>
     </MudTabPanel>
-</MudTabs>
+</StrategyChooser>
 <br />
 <br />
 
@@ -313,20 +303,11 @@
     private bool _show72HourMoneyChallengeShareable;
     private string _72Hr1On1OverviewImageUrl = Constants.GetImageUrl(Image.Overview1On1English);
     private string _72Hr1On1RevenueSharingImageUrl = Constants.GetImageUrl(Image.RevenueShare1On1English);
-    private MudTabs? _strategy;
     private bool _showListenAndAsk;
+    private StrategyChooser? _strategyChooser;
 
-    private Strategy CurrentStrategy => (Strategy)_strategy!.ActivePanel.Tag!;
+    private Strategy CurrentStrategy => _strategyChooser!.SelectedStrategy;
 
-    private static string Pad(string strategy)
-    {
-        const string LongestStrategyName = "Extra Digit Movement";
-
-        var padding = string.Empty.PadRight((2 * LongestStrategyName.Length) - strategy.Length, ' ').Replace(" ", "&nbsp;");
-
-        return $"{strategy}{padding}";
-    }
-    
     private string GetNextMembershipQnAAnchor()
     {
         var time = new TimeOnly(20, 0);

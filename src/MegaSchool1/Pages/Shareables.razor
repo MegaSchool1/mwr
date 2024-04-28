@@ -8,19 +8,8 @@
 @inject UISettings UI
 
 <Collapsable Title="Essentials" ExpandPrompt="Show">
-    <Centered>
-        <MudSelect T="Strategy" Label="Strategy" Variant="Variant.Outlined" FullWidth="true" Style="width:100%;" SelectedValuesChanged="@(selectedValues => _essentials.ActivePanelIndex = (int)selectedValues.First())">
-            <MudSelectItem Value="@Strategy.MegaSchool">@((MarkupString)Pad("Mega School"))</MudSelectItem>
-            <MudSelectItem Value="@Strategy.Corporate">@((MarkupString)Pad("Corporate"))</MudSelectItem>
-            <MudSelectItem Value="@Strategy.ExtraDigitMovement">Extra Digit Movement</MudSelectItem>
-            <MudSelectItem Value="@Strategy.FaithAndFinance">@((MarkupString)Pad("Faith & Finance"))</MudSelectItem>
-            <MudSelectItem Value="@Strategy.RealEstate">@((MarkupString)Pad("Real Estate"))</MudSelectItem>
-            <MudSelectItem Value="@Strategy.Latino">@((MarkupString)Pad("Latino"))</MudSelectItem>
-        </MudSelect>
-    </Centered>
-
-    <MudTabs @ref="_essentials" TabHeaderClass="d-none" Elevation="0" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
-        <MudTabPanel Text="Mega School">
+    <StrategyChooser>
+        <MudTabPanel Tag="@Strategy.MegaSchool">
             <MudStack>
                 <ShareableVideoMultilingual Description="@Constants.MoneyChallenge[Strategy.MegaSchool].Description"
                                             Duration="@Constants.MoneyChallenge[Strategy.MegaSchool].Duration"
@@ -35,7 +24,7 @@
                                             SpanishImageUrl="@(Constants.MoneyChallenge[Strategy.MegaSchool].ImageUrl)"/>
             </MudStack>
         </MudTabPanel>
-        <MudTabPanel Text="Corporate">
+        <MudTabPanel Tag="@Strategy.Corporate">
             <MudStack>
                 <ShareableVideoMultilingual Description="@Constants.MoneyChallenge[Strategy.Corporate].Description"
                                             Duration="@Constants.MoneyChallenge[Strategy.Corporate].Duration"
@@ -53,7 +42,7 @@
                                 Url="@(UI.EnglishLocale[Model.Content.NextLevelStrategies]!.MinimalistUrl())"
                                 Tooltip="Shareable copied!"
                                 TextToCopy="@(Shareable.VideoShareable("MWR Next Level Strategies", UI.EnglishLocale[Content.NextLevelStrategies]!.MinimalistUrl(), new(0, 4, 0)))"
-                                ImageUrl="@(Constants.GetImageUrl(Image.NextLevelStrategies))" />
+                                ImageUrl="@(Constants.GetImageUrl(Image.NextLevelStrategies))"/>
                 <ShareableVideoMultilingual Description="@($"MWR Opportunity")"
                                             Duration="new(0, 5, 0)"
                                             Url="@(UI.EnglishLocale[Model.Content.CorporateBusinessOverview]!.MinimalistUrl())"
@@ -67,7 +56,7 @@
                                             SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
             </MudStack>
         </MudTabPanel>
-        <MudTabPanel Text="EDM">
+        <MudTabPanel Tag="@Strategy.ExtraDigitMovement">
             <MudStack>
                 <ShareableVideo Description="@Constants.MoneyChallenge[Strategy.ExtraDigitMovement].Description"
                                 Duration="@Constants.MoneyChallenge[Strategy.ExtraDigitMovement].Duration"
@@ -83,7 +72,7 @@
                                 ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
             </MudStack>
         </MudTabPanel>
-        <MudTabPanel Text="Faith & Finance">
+        <MudTabPanel Tag="@Strategy.FaithAndFinance">
             <MudStack>
                 <ShareableVideo Description="Faith & Finance"
                                 Duration="new(0, 2, 0)"
@@ -99,7 +88,7 @@
         <MudTabPanel Tag="@Strategy.Latino">
             <MudText Align="Align.Center">Coming Soon!</MudText>
         </MudTabPanel>
-    </MudTabs>
+    </StrategyChooser>
 </Collapsable>
 <br/>
 <br/>
@@ -366,24 +355,14 @@
 <br />
 <br />
 <Collapsable Title="Team Links" ExpandPrompt="Show">
-    <Centered>
-        <MudSelect T="Strategy" @bind-Value="@_selectedTeam" Label="Team" Variant="Variant.Outlined" FullWidth="true" Style="width:100%;">
-            <MudSelectItem Value="@Strategy.MegaSchool">@((MarkupString)Pad("Mega School"))</MudSelectItem>
-            <MudSelectItem Value="@Strategy.ExtraDigitMovement">Extra Digit Movement</MudSelectItem>
-            <MudSelectItem Value="@Strategy.FaithAndFinance">@((MarkupString)Pad("Faith & Finance"))</MudSelectItem>
-            <MudSelectItem Value="@Strategy.RealEstate">@((MarkupString)Pad("Real Estate"))</MudSelectItem>
-            <MudSelectItem Value="@Strategy.Latino">@((MarkupString)Pad("Latino"))</MudSelectItem>
-        </MudSelect>
-    </Centered>
-
-    <MudTabs @ref="_teamLinks" ActivePanelIndex="@(Array.IndexOf(Teams, _selectedTeam))" TabHeaderClass="d-none" Elevation="0" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
-        <MudTabPanel Text="Mega School">
+    <StrategyChooser SelectedStrategy="Strategy.Latino" Strategies="@StrategyChooser.AllStrategies.Except([Strategy.Corporate]).ToArray()">
+        <MudTabPanel Tag="@Strategy.MegaSchool">
             <MudText Align="Align.Center">Coming Soon!</MudText>
         </MudTabPanel>
-        <MudTabPanel Text="EDM">
+        <MudTabPanel Tag="@Strategy.ExtraDigitMovement">
             <MudText Align="Align.Center">Coming Soon!</MudText>
         </MudTabPanel>
-        <MudTabPanel Text="Faith & Finance">
+        <MudTabPanel Tag="@Strategy.FaithAndFinance">
             <MudText Align="Align.Center">Coming Soon!</MudText>
         </MudTabPanel>
         <MudTabPanel Tag="@Strategy.RealEstate">
@@ -395,7 +374,7 @@
                             Tooltip="Copied!"
                             TextToCopy="@($"FRBE Empowering Diversity National Teams Facebook Group{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://www.facebook.com/groups/frbeempoweringdiversitynationalteams")" />
         </MudTabPanel>
-    </MudTabs>
+    </StrategyChooser>
 </Collapsable>
 <br/>
 <br/>
@@ -417,21 +396,7 @@
     </MudStack>
 </Collapsable>
 @code {
-    private readonly Strategy[] Teams = [Strategy.MegaSchool, Strategy.ExtraDigitMovement, Strategy.FaithAndFinance, Strategy.RealEstate, Strategy.Latino];
-
     private bool _pageLoaded;
-    private MudTabs? _essentials;
-    private MudTabs? _teamLinks;
-    private Strategy _selectedTeam = Strategy.Latino;
-
-    private static string Pad(string strategy)
-    {
-        const string LongestStrategyName = "Extra Digit Movement";
-
-        var padding = string.Empty.PadRight((2 * LongestStrategyName.Length) - strategy.Length, ' ').Replace(" ", "&nbsp;");
-
-        return $"{strategy}{padding}";
-    }
 
     protected override void OnInitialized()
     {
