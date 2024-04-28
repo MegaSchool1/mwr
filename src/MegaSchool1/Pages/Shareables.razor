@@ -2,6 +2,7 @@
 @using MegaSchool1.Components
 @using MegaSchool1.Model
 @using MegaSchool1.Model.UI
+@using Content = MegaSchool1.Model.Content
 @inherits Components.ComponentBase
 @inject Constants Constants
 @inject UISettings UI
@@ -47,6 +48,12 @@
                                             SpanishTextToCopy="@(Constants.MoneyChallenge[Strategy.Corporate].Spanish!.Message)"
                                             SpanishTooltip="@(Constants.MoneyChallenge[Strategy.Corporate].Spanish!.Tooltip)"
                                             SpanishImageUrl="@(Constants.MoneyChallenge[Strategy.Corporate].ImageUrl)"/>
+                <ShareableVideo Description=@($"Next Level Strategies")
+                                Duration="new(0, 4, 0)"
+                                Url="@(UI.EnglishLocale[Model.Content.NextLevelStrategies]!.MinimalistUrl())"
+                                Tooltip="Shareable copied!"
+                                TextToCopy="@(Shareable.VideoShareable("MWR Next Level Strategies", UI.EnglishLocale[Content.NextLevelStrategies]!.MinimalistUrl(), new(0, 4, 0)))"
+                                ImageUrl="@(Constants.GetImageUrl(Image.NextLevelStrategies))" />
                 <ShareableVideoMultilingual Description="@($"MWR Opportunity")"
                                             Duration="new(0, 5, 0)"
                                             Url="@(UI.EnglishLocale[Model.Content.CorporateBusinessOverview]!.MinimalistUrl())"
@@ -143,6 +150,13 @@
 <br />
 <Collapsable Title="Services" ExpandPrompt="Show">
     <MudStack>
+        <ShareableVideo Description=@($"Next Level Strategies")
+                        Duration="new(0, 4, 0)"
+                        Url="@(UI.EnglishLocale[Model.Content.NextLevelStrategies]!.MinimalistUrl())"
+                        Tooltip="Shareable copied!"
+                        TextToCopy="@(Shareable.VideoShareable("MWR Next Level Strategies", UI.EnglishLocale[Content.NextLevelStrategies]!.MinimalistUrl(), new(0, 4, 0)))"
+                        ImageUrl="@(Constants.GetImageUrl(Image.NextLevelStrategies))" />
+        <br />
         <ShareableVideoMultilingual Description="@($"MWR Wealth Membership")"
                                     Url="@(UI.EnglishLocale[Model.Content.Membership]!.MinimalistUrl())"
                                     Duration="new(0, 8, 0)"

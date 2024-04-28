@@ -56,6 +56,7 @@ public enum Image
     RevenueShare1On1Spanish = 9,
     PreciousMetals = 10,
     FaithAndFinance = 11,
+    NextLevelStrategies = 12,
 }
 
 public enum Strategy
@@ -99,6 +100,7 @@ public enum Content
     ProtectMyAssets = 18,
     StructureMyLegacy = 19,
     FaithAndFinance = 20,
+    NextLevelStrategies = 21,
 }
 
 public enum Video
@@ -187,6 +189,7 @@ public class Constants(UISettings ui)
         Image.RevenueShare1On1Spanish => "images/72-HourMoneyChallengeRevenueSharing-1on1-SPANISH.png",
         Image.PreciousMetals => "images/mwr-precious-metals.jpg",
         Image.FaithAndFinance => "images/faithandfinance.jpg",
+        Image.NextLevelStrategies => "images/next-level-strategies-logo.png",
         _ => throw new Exception($"Image not found: {image}"),
     };
 
