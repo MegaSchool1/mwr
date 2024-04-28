@@ -44,11 +44,15 @@
                             Tooltip="@Constants.AppShareable.English.Tooltip"
                             TextToCopy="@Constants.AppShareable.English.Message"
                             ImageUrl="@Constants.AppShareable.ImageUrl"/>
-            <ShareableVideo Description="@("Mega School App Install Instructions")"
+            <ShareableVideo Description="@("App Install Instructions")"
                             Url="@Constants.AppInstallTutorialUrl"
                             Tooltip="Copied!"
                             TextToCopy="@($"Mega School App Install Instructions{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.AppInstallTutorialUrl}")"
                             ImageUrl="@Constants.GetImageUrl(Image.AppScreenshot)"/>
+            <ShareableVideo Description="@($"Latest App Feature")"
+                            Tooltip="Copied!"
+                            TextToCopy="@($"Mega School App Update!{Environment.NewLine}{Environment.NewLine}'Next Level Strategies' video{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://megaschool1.github.io/")"
+                            ImageUrl="https://static.wixstatic.com/media/5f35ec_218122e730d74b37887189a5507407f6~mv2.png" />
         </MudStack>
     </DialogContent>
 </MudDialog>

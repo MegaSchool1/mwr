@@ -253,7 +253,7 @@ public class Constants(UISettings ui)
     public Dictionary<Strategy, Shareable> MoneyChallenge => _moneyChallengeShareable;
 
     public static readonly Shareable AppShareable = new(
-        $"Mega School App Download",
+        $"App Download",
         new($"Mega School App{Environment.NewLine}{PointingDownEmoji}{Environment.NewLine}https://megaschool1.github.io/", "Shareable copied!", "https://www.ms1.megaschool.me/72hr-money-challenge"),
         null,
         GetImageUrl(Image.AppScreenshot),
