@@ -267,33 +267,16 @@
 <br/>
 <Collapsable Title="Qualified Marketing Directors" ExpandPrompt="Show">
     <MudStack>
-        @if (_pageLoaded)
-        {
-            <ShareableVideoMultilingual Description="Join MWR"
-                                        Url="@Constants.JoinMakeWealthRealEnglish(AppState!.UserName)"
+        <ShareableVideoMultilingual Description="Join MWR"
+                                    Url="@Constants.JoinMakeWealthRealEnglish(AppState!.UserName)"
 
-                                        EnglishTextToCopy="@Constants.JoinMakeWealthRealEnglish(AppState!.UserName)"
-                                        EnglishTooltip="English shareable copied!"
-                                        EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
+                                    EnglishTextToCopy="@($"MWR Sign-up{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.JoinMakeWealthRealEnglish(AppState!.UserName)}{GetEnrollmentPromo()}")"
+                                    EnglishTooltip="English shareable copied!"
+                                    EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
 
-                                        SpanishTextToCopy="@Constants.JoinMakeWealthRealSpanish(AppState!.UserName)"
-                                        SpanishTooltip="Español shareable copied!"
-                                        SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
-            <br />
-        }
-        else
-        {
-            <MudStack Row="true">
-                <MudSpacer />
-                <MudText Align="Align.Center">
-                    Join MWR
-                    <br />
-                    <MudProgressCircular Indeterminate="true" />
-                </MudText>
-                <MudSpacer />
-            </MudStack>
-            <br />
-        }
+                                    SpanishTextToCopy="@($"MWR Sign-up{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.JoinMakeWealthRealSpanish(AppState!.UserName)}{GetEnrollmentPromo()}")"
+                                    SpanishTooltip="Español shareable copied!"
+                                    SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
         @if (_pageLoaded)
         {
             <ShareableVideoMultilingual Description="My Website"
@@ -396,7 +379,25 @@
     </MudStack>
 </Collapsable>
 @code {
+    private static readonly DateTimeOffset PayItForwardPromoExpiration = new(2024, 4, 30, 11, 59, 0, Constants.LosAngelesTimeZone.BaseUtcOffset);
+
     private bool _pageLoaded;
+
+    private string? GetEnrollmentPromo()
+    {
+        string? promo;
+
+        if (DateTimeOffset.Now <= PayItForwardPromoExpiration)
+        {
+            promo = $"{Environment.NewLine}{Environment.NewLine}For $100 off, use coupon code:{Environment.NewLine}{Environment.NewLine}{AppState!.UserName}code";
+        }
+        else
+        {
+            promo = null;
+        }
+
+        return promo;
+    }
 
     protected override void OnInitialized()
     {
