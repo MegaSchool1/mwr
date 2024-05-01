@@ -6,6 +6,7 @@
 @inherits Components.ComponentBase
 @inject Constants Constants
 @inject UISettings UI
+@inject NavigationManager NavigationManager
 
 <Collapsable Title="Essentials" ExpandPrompt="Show">
     <StrategyChooser>
@@ -145,7 +146,6 @@
                         Tooltip="Shareable copied!"
                         TextToCopy="@(Shareable.VideoShareable("MWR Next Level Strategies", UI.EnglishLocale[Content.NextLevelStrategies]!.MinimalistUrl(), new(0, 4, 0)))"
                         ImageUrl="@(Constants.GetImageUrl(Image.NextLevelStrategies))" />
-        <br />
         <ShareableVideoMultilingual Description="@($"MWR Wealth Membership")"
                                     Url="@(UI.EnglishLocale[Model.Content.Membership]!.MinimalistUrl())"
                                     Duration="new(0, 8, 0)"
@@ -157,7 +157,6 @@
                                     SpanishTextToCopy="@($"MWR Wealth Membership{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(10min){Environment.NewLine}{UI.SpanishLocale[Model.Content.Membership]!.MinimalistUrl()}")"
                                     SpanishTooltip="Español shareable copied!"
                                     SpanishImageUrl="@Constants.GetImageUrl(Image.MembershipLogo)" />
-        <br />
         @if (_pageLoaded)
         {
             <ShareableVideoMultilingual Description="Instant Pay Raise"
@@ -170,7 +169,6 @@
                                         SpanishTextToCopy="@($"MWR Instant Pay Raise{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.InstantPayRaiseUrlSpanish(AppState!.UserName)}")"
                                         SpanishTooltip="Español shareable copied!"
                                         SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
-            <br />
         }
         else
         {
@@ -183,7 +181,6 @@
                 </MudText>
                 <MudSpacer />
             </MudStack>
-            <br />
         }
         <ShareableVideoMultilingual Description="@($"MWR Credit Restoration")"
                                     Duration="new(0, 6, 0)"
@@ -196,14 +193,17 @@
                                     SpanishTextToCopy="@($"MWR Credit Restoration{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(8min){Environment.NewLine}{UI.SpanishLocale[Model.Content.CreditRestoration]!.MinimalistUrl()}")"
                                     SpanishTooltip="Español shareable copied!"
                                     SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
-        <br />
+        <ShareableVideo Description="MWR Student Loan Debt Relief"
+                        Url="@UI.EnglishLocale[Content.StudentLoanDebtRelief]!.Url"
+                        Tooltip="Copied!"
+                        TextToCopy="@($"MWR Student Loan Debt Relief{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{UI.EnglishLocale[Content.StudentLoanDebtRelief]!.Url}")"
+                        ImageUrl="@Constants.GetImageUrl(Image.StudentLoanDebtReliefTile)"/>
         <ShareableVideo Description=@($"MWR Health Share")
                         Duration="new(0, 5, 0)"
                         Url="@(UI.EnglishLocale[Model.Content.HealthShare]!.MinimalistUrl())"
                         Tooltip="Shareable copied!"
                         TextToCopy="@($"MWR Health Share{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(5min){Environment.NewLine}{UI.EnglishLocale[Model.Content.HealthShare]!.MinimalistUrl()}")"
                         ImageUrl="@Constants.GetImageUrl(Image.HealthShare)" />
-        <br />
         <ShareableVideoMultilingual Description=@($"Keys to Home Ownership")
                                     Duration="new(0, 3, 0)"
                                     Url="@(UI.EnglishLocale[Model.Content.KeysToHomeOwnership]!.MinimalistUrl())"
@@ -215,7 +215,6 @@
                                     SpanishTextToCopy="@($"MWR Keys to Home Ownership{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(3min){Environment.NewLine}{UI.SpanishLocale[Model.Content.KeysToHomeOwnership]!.MinimalistUrl()}")"
                                     SpanishTooltip="Español shareable copied!"
                                     SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
-        <br />
         <ShareableVideoMultilingual Description=@($"Precious Metals")
                                     Duration="new(0, 5, 0)"
                                     Url="@(UI.EnglishLocale[Model.Content.PreciousMetals]!.MinimalistUrl())"
@@ -227,7 +226,6 @@
                                     SpanishTextToCopy="@($"MWR Precious Metals{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(5min){Environment.NewLine}{UI.SpanishLocale[Model.Content.PreciousMetals]!.MinimalistUrl()}")"
                                     SpanishTooltip="Español shareable copied!"
                                     SpanishImageUrl="@Constants.GetImageUrl(Image.PreciousMetals)" />
-        <br />
         <ShareableVideoMultilingual Description=@($"Trust My Assets")
                                     Duration="new(0, 4, 0)"
                                     Url="@(UI.EnglishLocale[Model.Content.TrustMyAssets]!.MinimalistUrl())"
@@ -239,21 +237,18 @@
                                     SpanishTextToCopy="@($"MWR Trust My Assets{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(4min){Environment.NewLine}{UI.SpanishLocale[Model.Content.TrustMyAssets]!.MinimalistUrl()}")"
                                     SpanishTooltip="Español shareable copied!"
                                     SpanishImageUrl="@Constants.GetImageUrl(Image.MWRBanner)" />
-        <br />
         <ShareableVideo Description=@($"MWR for Real Estate & Mortgage Professionals")
                         Duration="new(0, 11, 0)"
                         Url="@(UI.EnglishLocale[Model.Content.RealEstatePros]!.MinimalistUrl())"
                         Tooltip="Shareable copied!"
                         TextToCopy="@($"MWR for Real Estate & Mortgage Professionals{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(11min){Environment.NewLine}{UI.EnglishLocale[Model.Content.RealEstatePros]!.MinimalistUrl()}")"
                         ImageUrl="@Constants.GetImageUrl(Image.MWRBanner)" />
-        <br />
         <ShareableVideo Description=@($"Protect My Assets")
                         Duration="new(0, 28, 0)"
                         Url="@(UI.EnglishLocale[Model.Content.ProtectMyAssets]!.MinimalistUrl())"
                         Tooltip="Shareable copied!"
                         TextToCopy="@($"MWR Protect My Assets{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(28min){Environment.NewLine}{UI.EnglishLocale[Model.Content.ProtectMyAssets]!.MinimalistUrl()}")"
                         ImageUrl="@Constants.GetImageUrl(Image.MWRBanner)" />
-        <br />
         <ShareableVideo Description="Structure My Legacy"
                         Duration="new(1, 27, 0)"
                         Url="@(UI.EnglishLocale[Model.Content.StructureMyLegacy]!.MinimalistUrl())"
@@ -302,6 +297,22 @@
             </MudStack>
             <br />
         }
+        <CardShareableMulti Description="Extra Digit Wealth Worksheet" SubDescription="(Latest)" Url="/docs/WealthWorksheet-Blank-v2.pdf">
+            <Top>
+                <ShareableContent Title="For Prospects" Tooltip="Copied Shareable" TextToCopy="@($"Wealth Worksheet{Environment.NewLine}{Environment.NewLine}Print out before our meeting!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{NavigationManager.BaseUri}docs/WealthWorksheet-Blank-v2.pdf")" />
+            </Top>
+            <Bottom>
+                <ShareableContent Title="For QMDs" Tooltip="Copied Shareable" TextToCopy="@($"Wealth Worksheet{Environment.NewLine}{Environment.NewLine}Print out before our meeting!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{NavigationManager.BaseUri}docs/WealthWorksheet-Answers-v2.pdf")" />
+            </Bottom>
+        </CardShareableMulti>
+        <CardShareableMulti Description="Extra Digit Wealth Worksheet" SubDescription="(Original)" Url="/docs/WealthWorksheet-Blank-v1.pdf">
+            <Top>
+                <ShareableContent Title="For Prospects" Tooltip="Copied Shareable" TextToCopy="@($"Wealth Worksheet{Environment.NewLine}{Environment.NewLine}Print out before our meeting!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{NavigationManager.BaseUri}docs/WealthWorksheet-Blank-v1.pdf")" />
+            </Top>  
+            <Bottom>
+                <ShareableContent Title="For QMDs" Tooltip="Copied Shareable" TextToCopy="@($"Wealth Worksheet{Environment.NewLine}{Environment.NewLine}Print out before our meeting!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{NavigationManager.BaseUri}docs/WealthWorksheet-Answers-v1.pdf")" />
+            </Bottom>
+        </CardShareableMulti>
         <ShareableVideoMultilingual Description="Income Goal Simulator"
                                     Url="https://www.mwrfinancial.com/simulator/"
                                     
@@ -333,6 +344,41 @@
                         Tooltip="Copied!"
                         TextToCopy="@($"Mega School App Install Instructions{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.AppInstallTutorialUrl}")"
                         ImageUrl="@Constants.GetImageUrl(Image.AppScreenshot)"/>
+    </MudStack>
+</Collapsable>
+<br />
+<br />
+<Collapsable Title="Capture Pages" ExpandPrompt="Show">
+    <MudStack>
+        <ShareableVideoMultilingual Description="72-Hour Money Challenge"
+                                    Url="@Constants.GetCapturePage(Content.MoneyChallenge, Language.English, AppState!.UserName!, "Example-Referral-Id")"
+                                    EnglishTextToCopy="@($"MWR 72-Hour Money Challenge [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.MoneyChallenge, Language.English, AppState!.UserName!, "Example-Referral-Id")}")"
+                                    EnglishTooltip="English shareable copied!"
+                                    EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
+                                    
+                                    SpanishTextToCopy="@($"MWR 72-Hour Money Challenge [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.MoneyChallenge, Language.Spanish, AppState!.UserName!, "Example-Referral-Id")}")"
+                                    SpanishTooltip="Español shareable copied!"
+                                    SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
+        <ShareableVideo Description="MWR HealthShare"
+                        Url="@Constants.GetCapturePage(Content.HealthShare, Language.English, AppState!.UserName!, "Example-Referral-Id")"
+                        Tooltip="Copied!"
+                        TextToCopy="@($"MWR HealthShare [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.HealthShare, Language.English, AppState!.UserName!, "Example-Referral-Id")}")"
+                        ImageUrl="@Constants.GetImageUrl(Image.HealthShare)" />
+        <ShareableVideoMultilingual Description="Credit Restoration"
+                                    Url="@Constants.GetCapturePage(Content.CreditRestoration, Language.English, AppState!.UserName!, "Example-Referral-Id")"
+
+                                    EnglishTextToCopy="@($"MWR Credit Restoration [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.CreditRestoration, Language.English, AppState!.UserName!, "Example-Referral-Id")}")"
+                                    EnglishTooltip="English shareable copied!"
+                                    EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
+                                    
+                                    SpanishTextToCopy="@($"MWR Credit Restoration [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.CreditRestoration, Language.Spanish, AppState!.UserName!, "Example-Referral-Id")}")"
+                                    SpanishTooltip="Español shareable copied!"
+                                    SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
+        <ShareableVideo Description="MWR Student Loan Debt Relief"
+                        Url="@Constants.GetCapturePage(Content.StudentLoanDebtRelief, Language.English, AppState!.UserName!, "Example-Referral-Id")"
+                        Tooltip="Copied!"
+                        TextToCopy="@($"MWR Student Loan Debt Relief [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.StudentLoanDebtRelief, Language.English, AppState!.UserName!, "Example-Referral-Id")}")"
+                        ImageUrl="@Constants.GetImageUrl(Image.StudentLoanDebtReliefTile)" />
     </MudStack>
 </Collapsable>
 <br />

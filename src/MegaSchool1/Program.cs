@@ -8,6 +8,7 @@ using MudBlazor.Services;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using MegaSchool1;
+using Microsoft.AspNetCore.Components;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -27,7 +28,7 @@ builder.Services.AddSingleton(sp =>
 
 builder.Services.AddSingleton(sp =>
 {
-    return new Constants(sp.GetRequiredService<UISettings>());
+    return new Constants(sp.GetRequiredService<UISettings>(), sp.GetRequiredService<NavigationManager>());
 });
 
 builder.Services.AddMudServices();

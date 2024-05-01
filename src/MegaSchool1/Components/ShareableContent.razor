@@ -4,6 +4,12 @@
 <MudStack Row="true" Style="width:100%;">
     <MudSpacer/>
     <CopyContent TextToCopy="@TextToCopy" Tooltip="@Tooltip" />
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <MudPaper Class="d-flex align-center" Elevation="0">
+            <MudText Style="">@Title</MudText>
+        </MudPaper>
+    }
     @if(ShowWebShare)
     {
        <WebShareContent TextToCopy="@TextToCopy" Tooltip="@Tooltip" ImageUrl="@ImageUrl" />
@@ -22,4 +28,7 @@
 
     [Parameter]
     public bool ShowWebShare { get; set; } = true;
+
+    [Parameter]
+    public string? Title { get; set; }
 }

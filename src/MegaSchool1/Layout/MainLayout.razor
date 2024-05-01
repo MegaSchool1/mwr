@@ -157,7 +157,7 @@ else
 
     private bool IsCapturePage =>
         NavigationManager.Uri.Contains("/72/")
-        || NavigationManager.Uri.Contains("/healthshare/");
+        || Enum.GetValues<Content>().Any(content => NavigationManager.Uri.Contains($"/{content}/{_appState.UserName}/", StringComparison.CurrentCultureIgnoreCase));
 
     private bool IsCarPurchasePage => NavigationManager.Uri.Contains("/carpurchase");
 

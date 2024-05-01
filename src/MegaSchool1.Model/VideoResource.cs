@@ -20,4 +20,7 @@ public class VideoResource
 
     [JsonPropertyName("userHandle")]
     public string? UserHandle { get; set; }
+
+    [JsonPropertyName("url")]
+    public string? Url { get; set; }
 }

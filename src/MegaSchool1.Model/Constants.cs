@@ -1,4 +1,5 @@
 ﻿using MegaSchool1.Model.UI;
+using Microsoft.AspNetCore.Components;
 
 namespace MegaSchool1.Model;
 
@@ -57,6 +58,7 @@ public enum Image
     PreciousMetals = 10,
     FaithAndFinance = 11,
     NextLevelStrategies = 12,
+    StudentLoanDebtReliefTile = 13,
 }
 
 public enum Strategy
@@ -101,6 +103,7 @@ public enum Content
     StructureMyLegacy = 19,
     FaithAndFinance = 20,
     NextLevelStrategies = 21,
+    StudentLoanDebtRelief = 22,
 }
 
 public enum Video
@@ -146,7 +149,7 @@ public enum LivestreamPlatform
     LinkedIn = 2,
 }
 
-public class Constants(UISettings ui)
+public class Constants(UISettings ui, NavigationManager navigationManager)
 {
     public static readonly TimeZoneInfo NewYorkTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
     public static readonly TimeZoneInfo ChicagoTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Chicago");
@@ -190,7 +193,14 @@ public class Constants(UISettings ui)
         Image.PreciousMetals => "images/mwr-precious-metals.jpg",
         Image.FaithAndFinance => "images/faithandfinance.jpg",
         Image.NextLevelStrategies => "images/next-level-strategies-logo.png",
+        Image.StudentLoanDebtReliefTile => "/images/student-loan-debt-relief-tile.png",
         _ => throw new Exception($"Image not found: {image}"),
+    };
+
+    public string GetCapturePage(Content content, Language language, string memberId, string referralId) => content switch
+    {
+        Content.MoneyChallenge => $"{navigationManager.BaseUri}{(language == Language.Spanish ? "es/" : string.Empty)}72/{memberId}/{referralId}",
+        _ => $"{navigationManager.BaseUri}{(language == Language.Spanish ? "es" : "en")}/{content.ToString().ToLower()}/{memberId}/{referralId}"
     };
 
     public static readonly Dictionary<LivestreamPlatform, string> CorporateLivestreamLink = new()

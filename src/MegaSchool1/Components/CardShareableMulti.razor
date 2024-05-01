@@ -1,0 +1,56 @@
+﻿@using MegaSchool1.Model
+@inherits ComponentBase
+
+<MudCard Outlined="true">
+    <MudCardContent>
+        @if (this.Url != null)
+        {
+            <MudStack Row="true">
+                <MudSpacer/>
+                <MudText Align="Align.Center"><ExternalLink Text="@Description" Href="@Url" /></MudText>
+                <MudSpacer/>
+            </MudStack>
+        }
+        else
+        {
+            <MudText Typo="Typo.body2" Align="Align.Center">@((MarkupString)Description.Replace(Environment.NewLine, "<br/>"))</MudText>
+        }
+        @if (!string.IsNullOrWhiteSpace(SubDescription))
+        {
+            <MudText Typo="Typo.body2" Align="Align.Center">@((MarkupString)SubDescription.Replace(Environment.NewLine, "<br/>"))</MudText>
+        }
+        @if(this.Duration != null)
+        {
+            <MudText Typo="Typo.body2" Align="Align.Center">@FormatTimeSpan(Duration.Value)</MudText>
+        }
+    </MudCardContent>
+    <MudCardActions>
+        <MudStack Row="true" Style="width:100%;">
+            <MudSpacer/>
+            <MudStack>
+                @Top
+                @Bottom
+            </MudStack>
+            <MudSpacer/>
+        </MudStack>
+    </MudCardActions>
+</MudCard>
+@code {
+    [Parameter]
+    public string Description { get; set; } = "Change the '" + nameof(Description) + "' Property!";
+
+    [Parameter]
+    public string? SubDescription { get; set; }
+
+    [Parameter]
+    public RenderFragment? Top { get; set; }
+
+    [Parameter]
+    public RenderFragment? Bottom { get; set; }
+
+    [Parameter]
+    public string? Url { get; set; }
+
+    [Parameter]
+    public TimeSpan? Duration { get; set; }
+}
