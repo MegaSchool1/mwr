@@ -12,13 +12,13 @@
 @inject ILocalStorageService LocalStorage
 @inject IDialogService Dialog
 
-<PageTitle>@((IsMoneyChallengePage ? "72-Hour Money Challenge!" : "Mega School 1"))</PageTitle>
+<PageTitle>@((IsCapturePage ? "MWR" : "Mega School 1"))</PageTitle>
 
-<MudThemeProvider IsDarkMode="true"/>
+<MudThemeProvider Theme="@((IsCapturePage ? _capturePageTheme : new() { Palette = new PaletteDark() }))" />
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-@if (IsMoneyChallengePage)
+@if (IsCapturePage)
 {
     <div class="page mud-layout" style="background-color:rgb(22,19,44);">
 
@@ -137,6 +137,14 @@ else
 
     private readonly AppState _appState = new();
 
+    private readonly MudTheme _capturePageTheme = new()
+    {
+        Palette = new PaletteDark()
+        {
+                Background = "rgb(22,19,44)",
+        }
+    };
+
     private bool _showAppUpdatePrompt;
     private bool _componentInitialized;
     private DotNetObjectReference<MainLayout>? _thisComponentReference;
@@ -147,11 +155,13 @@ else
         _thisComponentReference?.Dispose();
     }
 
-    private bool IsMoneyChallengePage => NavigationManager.Uri.Contains("/72/");
+    private bool IsCapturePage =>
+        NavigationManager.Uri.Contains("/72/")
+        || NavigationManager.Uri.Contains("/healthshare/");
 
     private bool IsCarPurchasePage => NavigationManager.Uri.Contains("/carpurchase");
 
-    private bool IsWhitelistedProspectPage => IsMoneyChallengePage || IsCarPurchasePage;
+    private bool IsWhitelistedProspectPage => IsCapturePage || IsCarPurchasePage;
 
     private bool ProspectMode => _appState.UserName == null;
 

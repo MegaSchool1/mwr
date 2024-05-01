@@ -1,0 +1,17 @@
+﻿@page "/healthshare/{MemberId}/{ReferralId}"
+@inherits CapturePageBase
+@using MegaSchool1.Components
+@using MegaSchool1.Model
+@inject UISettings UI
+
+<PageTitle>MWR HealthShare</PageTitle>
+
+<MudStack Style="height:100%;">
+    <Centered><MudImage Src="@(Constants.GetImageUrl(Image.HealthShare))" Fluid="true"/></Centered>
+    <br/>
+    <Centered><EmbeddedVideo YouTube="@UI.EnglishLocale[Content.HealthShare]!.Id" /></Centered>
+    <br />
+    <br />
+    <Centered><MudText Style="color:white;" Align="Align.Center">For Health Share questions, estimate or sign-up, text<br /><br />'@ReferralId' to @QMDPhoneNumber</MudText></Centered>
+    <MudSpacer/>
+</MudStack>
