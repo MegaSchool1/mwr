@@ -48,7 +48,7 @@
                                 <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
                                 <MudStack Row="true">
                                     <MudText>#1: </MudText>
-                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.MembershipEnrollmentUrl(this.AppState!.UserName) } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
+                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, {x => x.MemberId, AppState!.UserName! } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
                                 </MudStack>
                                 <MudStack Row="true">
                                     <MudText>#2: </MudText>
@@ -88,7 +88,7 @@
                                 <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
                                 <MudStack Row="true">
                                     <MudText>#1: </MudText>
-                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.MembershipEnrollmentUrl(this.AppState!.UserName) } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
+                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, {x => x.MemberId, AppState!.UserName! } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
                                 </MudStack>
                                 <MudStack Row="true">
                                     <MudText>#2: </MudText>
@@ -142,7 +142,7 @@
                                 <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
                                 <MudStack Row="true">
                                     <MudSpacer />
-                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.JoinMakeWealthRealEnglish(this.AppState!.UserName) } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Sign-up Link</MudButton>
+                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, {x => x.MemberId, AppState!.UserName! } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
                                     <MudSpacer />
                                 </MudStack>
                             </FirstChoiceContent>
@@ -175,7 +175,7 @@
                                 <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
                                 <MudStack Row="true">
                                     <MudSpacer />
-                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.JoinMakeWealthRealEnglish(this.AppState!.UserName) } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Sign-up Link</MudButton>
+                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, {x => x.MemberId, AppState!.UserName! } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
                                     <MudSpacer />
                                 </MudStack>
                             </FirstChoiceContent>

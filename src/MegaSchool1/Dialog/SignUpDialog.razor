@@ -6,7 +6,7 @@
         <ShareableVideo Description="Take the 72-Hour Money Challenge!"
                         Url="@Url"
                         Tooltip="Shareable copied!"
-                        TextToCopy="@($"Take the 72-Hour Money Challenge!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{this.Url}")"
+                        TextToCopy="@($"Take the 72-Hour Money Challenge!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{this.Url}{Constants.GetBusinessEnrollmentPromo(MemberId!)}")"
                         ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
     </DialogContent>
 </MudDialog>
@@ -17,4 +17,8 @@
 
     [Parameter]
     public string Url { get; set; }
+
+    [Parameter]
+    public string? MemberId { get; set; }
+
 }

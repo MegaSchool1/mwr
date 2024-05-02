@@ -1,5 +1,6 @@
 ﻿using MegaSchool1.Model.UI;
 using Microsoft.AspNetCore.Components;
+using System.Net.NetworkInformation;
 
 namespace MegaSchool1.Model;
 
@@ -164,6 +165,8 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     public static readonly string MinimalistYouTubeVideoLinkPrefix = $"{MinimalistVideoLinkPrefix}?y=";
     public const string AppInstallTutorialUrl = "https://video.wixstatic.com/video/5f35ec_33bda4fc60fd41cf8c3a09924f204746/480p/mp4/file.mp4";
 
+    private static readonly DateTimeOffset PayItForwardPromoExpiration = new(2024, 5, 7, 11, 59, 59, NewYorkTimeZone.BaseUtcOffset);
+
     public static string BusinessEnrollmentUrl(string username) => $"https://user.mwrfinancial.com/{username}/join";
     public static string MembershipEnrollmentUrl(string username) => $"https://user.mwrfinancial.com/{username}/signup-financialedge";
     public static string InstantPayRaiseUrlEnglish(string username) => $"https://www.mwrfinancial.com/iprr/?member={username}";
@@ -196,6 +199,22 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         Image.StudentLoanDebtReliefTile => "/images/student-loan-debt-relief-tile.png",
         _ => throw new Exception($"Image not found: {image}"),
     };
+
+    public static string? GetBusinessEnrollmentPromo(string memberId)
+    {
+        string? promo;
+
+        if (DateTimeOffset.Now <= PayItForwardPromoExpiration)
+        {
+            promo = $"{Environment.NewLine}{Environment.NewLine}For $100 off, use coupon code:{Environment.NewLine}{Environment.NewLine}{memberId}code";
+        }
+        else
+        {
+            promo = null;
+        }
+
+        return promo;
+    }
 
     public string GetCapturePage(Content content, Language language, string memberId, string referralId) => content switch
     {
