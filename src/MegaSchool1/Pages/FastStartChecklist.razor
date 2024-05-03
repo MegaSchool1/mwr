@@ -69,6 +69,7 @@
             @PayCard
             @FastStartInterview
             @FirstRoundDraftChoice
+            @PersonalActivityReport
             <MudCheckBox T="bool" @bind-Value="_viewModel.MegaSchool.ExecutiveDirector3Roadmap" Size="Size.Medium" Color="Color.Primary">
                 <MudText Typo="Typo.h6">Print 4 Steps to 3* Executive Director:</MudText>Print <ExternalLink Text="4 Steps to 3* Executive Director" Href="https://www.extradigitmovement.com/resource_redirect/downloads/file-uploads/sites/13708/themes/2153043324/downloads/f70b577-4ebc-0f2d-ec88-34ed4557663b_QuickStart_Site_March132024.pdf" />
             </MudCheckBox>
@@ -137,6 +138,7 @@
     <MudTabPanel Tag="@Strategy.ExtraDigitMovement">
         <MudStack>
             @ExtraDigitPlugin
+            @PersonalActivityReport
             <MudCheckBox T="bool" Disabled="true" Size="Size.Medium" Color="Color.Primary">
                 <MudText Typo="Typo.h6">3* Executive Director Guide</MudText>Execute EVERYTHING @@ <ExternalLink Text="3* Executive Director Guide" Href="https://www.extradigitmovement.com/2023memberhome"/>.
             </MudCheckBox>
@@ -389,6 +391,15 @@
         <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.RestoreCredit" Size="Size.Medium" Color="Color.Primary">
             <MudText Typo="Typo.h6">Restore My Credit:</MudText>I have ordered and upload my 3 credit reports via my <ExternalLink Href="https://member.mwrfinancial.com/membership/cashback.php" Text="Membership Portal"/>
         </MudCheckBox>
+        <br/>
+    };
+
+    private RenderFragment PersonalActivityReport => __builder =>
+    {
+        <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.ExtraDigitMovement.PersonalActivityReport" Size="Size.Medium" Color="Color.Primary">
+            <MudText Typo="Typo.h6">Personal Activity Report:</MudText>I printed the Personal Activity Report PDF & listed my 1st 30 prospects to contact immediately.
+        </MudCheckBox>
+        <MudText Align="Align.Center">Print <ExternalLink Text="Personal Activity Report PDF" Href="https://s3.amazonaws.com/kajabi-storefronts-production/file-uploads/sites/13708/themes/2155551073/downloads/6ab4d-a06e-4421-0735-300ff6b327b_PAR_Sheet_2024.pdf" /></MudText>
         <br/>
     };
 }

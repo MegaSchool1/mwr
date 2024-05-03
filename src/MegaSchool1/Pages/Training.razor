@@ -1,11 +1,60 @@
 ﻿@page "/training"
+@inherits Components.ComponentBase
 @using MegaSchool1.Components
+@using MegaSchool1.Model
 
-<MudStack>
-    <MudCard>
-        <MudCardHeader>Basic Personality Types</MudCardHeader>
-        <MudCardContent>
-            <EmbeddedVideo Facebook="@(("wendell.philp", "2331619170366551"))"/>
-        </MudCardContent>
-    </MudCard>
+<MudStack Spacing="3">
+    <Collapsable Title="Prospecting">
+        <MudStack>
+            <MudCard>
+                <MudCardHeader>Basic Personality Types</MudCardHeader>
+                <MudCardContent>
+                    <EmbeddedVideo Facebook="@(("wendell.philp", "2331619170366551"))"/>
+                </MudCardContent>
+            </MudCard>
+        </MudStack>
+    </Collapsable>
+    <Collapsable Title="Presenting the Opportunity">
+        <StrategyChooser>
+            <MudTabPanel Tag="@Strategy.MegaSchool">
+                <Centered>
+                    <MudStack Spacing="3">
+                        <MudStack Row="true">
+                            <MudText>#1: </MudText>
+                            <MudText>Use Microsoft Edge web browser.</MudText>
+                        </MudStack>
+                        <MudStack Row="true">
+                            <MudText>#2: </MudText>
+                            <MudText>Always have music playing in a browser tab (No Silence!).  Use <ExternalLink Text="Lofi HipHop Mix" Href="https://www.youtube.com/watch?v=I140iNpx1xM" /></MudText>
+                        </MudStack>
+                        <MudStack Row="true">
+                            <MudText>#3: </MudText>
+                            <MudText>Have your back office website open in a browser tab.  Be <span style="color:@(Theme.Palette.Secondary);">LOGGED OUT</span>, so you can show the demo step by step.</MudText>
+                        </MudStack>
+                        <MudStack Row="true">
+                            <MudText>#4: </MudText>
+                            <MudText>Show the PowerPoint in a browser tab (full screen!).  <ExternalLink Text="Open Opportunity PowerPoint in browser tab" Href="https://5f35ec78-8acd-4f4f-9b98-5439adb647ec.usrfiles.com/ugd/5f35ec_54475ca86db342f59bb7bd9c9a8d9daa.ppsx" />.</MudText>
+                        </MudStack>
+                        <MudStack Row="true">
+                            <MudText>#5: </MudText>
+                            <MudStack>
+                                <MudText>Demo "Eliminate My Debt" (<ExternalLink Text="Watch Example" Href="https://www.youtube.com/watch?v=8FniIL3b_0g&t=1550s" />).</MudText>
+                                <Centered>
+                                    <MudStack>
+                                        <MudText Typo="Typo.h4">Demo Data</MudText>
+                                        <MudText>Balance:<br/>$226,616.38</MudText>
+                                        <MudText>Rate:<br/>2.5%</MudText>
+                                        <MudText>Minimum Payment:<br />$1,040.92</MudText>
+                                        <MudText>Current Payment:<br />$1,040.92</MudText>
+                                        <MudText>Escrow:<br />$128.43</MudText>
+                                        <MudText>Tax Savings:<br />$600</MudText>
+                                    </MudStack>
+                                </Centered>
+                            </MudStack>
+                        </MudStack>
+                    </MudStack>
+                </Centered>
+            </MudTabPanel>
+        </StrategyChooser>
+    </Collapsable>
 </MudStack>
