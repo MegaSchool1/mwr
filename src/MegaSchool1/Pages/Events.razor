@@ -22,6 +22,7 @@
                 {
                     <div id="@recurringEvent.Anchor">
                         <RecurringEvent Header="@recurringEvent.Header"
+                                        Id="@recurringEvent.Anchor"
                                         Archive="@recurringEvent.Archive"
                                         Url="@recurringEvent.Link"
                                         Password="@recurringEvent.Password"
@@ -29,7 +30,7 @@
                                         Recurrence="@((recurringEvent.Day, recurringEvent.Time, Constants.DefaultTimeZone))"
                                         LivestreamPlatform="@((recurringEvent.Anchor, recurringEvent.LivestreamPlatform))"
                                         LivestreamPlatformSelectionChanged="OnLivestreamPlatformSelectionChanged"
-                                        Text="@($"{recurringEvent.ShareableHeader}{Environment.NewLine}{Environment.NewLine}{(recurringEvent.ShareableHost == null ? string.Empty : $"Hosted By:{Environment.NewLine}{recurringEvent.ShareableHost}{Environment.NewLine}{Environment.NewLine}")}{(recurringEvent.ShareableGuest == null ? string.Empty : $"Featuring:{Environment.NewLine}{recurringEvent.ShareableGuest}{Environment.NewLine}{Environment.NewLine}")}{GetNextEvent(recurringEvent.Day!.Value, recurringEvent.Time, Constants.DefaultTimeZone):dddd, MMMM d}{Environment.NewLine}{Environment.NewLine}{GetRegionalTimes(GetNextEvent(recurringEvent.Day!.Value, recurringEvent.Time, Constants.DefaultTimeZone))}{Environment.NewLine}{Environment.NewLine}Go to:{Environment.NewLine}{recurringEvent.VanityLink}{(recurringEvent.MeetingId == null ? string.Empty : $"{Environment.NewLine}{Environment.NewLine}ID: {recurringEvent.MeetingId}")}{(recurringEvent.Password == null ? string.Empty : $"{Environment.NewLine}{Environment.NewLine}Password: {recurringEvent.Password}")}{Environment.NewLine}{Environment.NewLine}{recurringEvent.HashTags}")" />
+                                        Text="@($"{recurringEvent.ShareableHeader}{Environment.NewLine}{Environment.NewLine}{(recurringEvent.ShareableHost == null ? string.Empty : $"Hosted By:{Environment.NewLine}{recurringEvent.ShareableHost}{Environment.NewLine}{Environment.NewLine}")}{(recurringEvent.ShareableGuest == null ? string.Empty : $"Featuring:{Environment.NewLine}{recurringEvent.ShareableGuest}{Environment.NewLine}{Environment.NewLine}")}{GetNextEvent(recurringEvent.Day!.Value, recurringEvent.Time, Constants.DefaultTimeZone):dddd, MMMM d}{Environment.NewLine}{Environment.NewLine}{Util.GetRegionalTimes(GetNextEvent(recurringEvent.Day!.Value, recurringEvent.Time, Constants.DefaultTimeZone))}{Environment.NewLine}{Environment.NewLine}Go to:{Environment.NewLine}{recurringEvent.VanityLink}{(recurringEvent.MeetingId == null ? string.Empty : $"{Environment.NewLine}{Environment.NewLine}ID: {recurringEvent.MeetingId}")}{(recurringEvent.Password == null ? string.Empty : $"{Environment.NewLine}{Environment.NewLine}Password: {recurringEvent.Password}")}{Environment.NewLine}{Environment.NewLine}{recurringEvent.HashTags}")" />
                     </div>
                 }
             </MudStack>
@@ -37,8 +38,6 @@
     }
 </MudStack>
 @code {
-    private static readonly TimeZoneInfo[] BusinessStandardTimeZonesOrdered = [Constants.DefaultTimeZone, Constants.ChicagoTimeZone, Constants.LosAngelesTimeZone];
-
     private static Repository.Model.Settings? Settings;
 
     private EventViewModel[] _events = [];
@@ -103,15 +102,6 @@
         {
             NavigationManager.NavigateTo($"/events#{DateTime.Now.DayOfWeek}", true);
         }
-    }
-
-    private static string GetRegionalTimes(DateTimeOffset dateTime)
-    {
-        var regionalTimes = BusinessStandardTimeZonesOrdered
-            .Select(timeZone => $"{dateTime.ToOffset(timeZone.BaseUtcOffset).ToString("h:mmt").ToLower()}{timeZone.StandardName.First()}{timeZone.StandardName.Substring(1).ToLower()}")
-            .Aggregate((formatted, next) => $"{formatted}/ {next}");
-
-        return regionalTimes;
     }
 
     private async Task OnLivestreamPlatformSelectionChanged((string EventId, LivestreamPlatform Platform)? livestream)

@@ -93,4 +93,15 @@ public class Util
         => Constants.DailyGuarantee.First(x => x.Value.MonthlyPay >= monthlyIncome).Key;
 
     public static int MinuteEstimate(TimeSpan duration) => duration.Minutes + (duration.Seconds >= 30 ? 1 : 0);
+
+    private static readonly TimeZoneInfo[] BusinessStandardTimeZonesOrdered = [Constants.DefaultTimeZone, Constants.ChicagoTimeZone, Constants.LosAngelesTimeZone];
+
+    public static string GetRegionalTimes(DateTimeOffset dateTime)
+    {
+        var regionalTimes = BusinessStandardTimeZonesOrdered
+            .Select(timeZone => $"{dateTime.ToOffset(timeZone.BaseUtcOffset).ToString("h:mmt").ToLower()}{timeZone.StandardName.First()}{timeZone.StandardName.Substring(1).ToLower()}")
+            .Aggregate((formatted, next) => $"{formatted}/ {next}");
+
+        return regionalTimes;
+    }
 }

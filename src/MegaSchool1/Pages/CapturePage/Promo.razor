@@ -1,0 +1,31 @@
+﻿@page "/{Language}/promo/{MemberId}/{ReferralId}"
+@inherits CapturePageBase
+@using MegaSchool1.Components
+@using MegaSchool1.Model
+@using MegaSchool1.ViewModel
+@inject UISettings UI
+
+<PageTitle>@_recurringEvent.Header</PageTitle>
+
+<RecurringEvent Header="@_recurringEvent.Header"
+                Archive="@_recurringEvent.Archive"
+                Url="@_recurringEvent.Link"
+                Password="@_recurringEvent.Password"
+                ImageUri="@_recurringEvent.Image"
+                Recurrence="@((_recurringEvent.Day, _recurringEvent.Time, Constants.DefaultTimeZone))"
+                LivestreamPlatform="@((_recurringEvent.Anchor, _recurringEvent.LivestreamPlatform))"
+                Text="@($"{_recurringEvent.ShareableHeader}{Environment.NewLine}{Environment.NewLine}{(_recurringEvent.ShareableHost == null ? string.Empty : $"Hosted By:{Environment.NewLine}{_recurringEvent.ShareableHost}{Environment.NewLine}{Environment.NewLine}")}{(_recurringEvent.ShareableGuest == null ? string.Empty : $"Featuring:{Environment.NewLine}{_recurringEvent.ShareableGuest}{Environment.NewLine}{Environment.NewLine}")}{GetNextEvent(_recurringEvent.Day!.Value, _recurringEvent.Time, Constants.DefaultTimeZone):dddd, MMMM d}{Environment.NewLine}{Environment.NewLine}{Util.GetRegionalTimes(GetNextEvent(_recurringEvent.Day!.Value, _recurringEvent.Time, Constants.DefaultTimeZone))}{Environment.NewLine}{Environment.NewLine}Go to:{Environment.NewLine}{_recurringEvent.VanityLink}{(_recurringEvent.MeetingId == null ? string.Empty : $"{Environment.NewLine}{Environment.NewLine}ID: {_recurringEvent.MeetingId}")}{(_recurringEvent.Password == null ? string.Empty : $"{Environment.NewLine}{Environment.NewLine}Password: {_recurringEvent.Password}")}{Environment.NewLine}{Environment.NewLine}{_recurringEvent.HashTags}")" />
+
+@code {
+    private EventViewModel _recurringEvent = new();
+
+    protected override void OnInitialized()
+    {
+        var foundEvent = UI.EnglishLocale.Events.FirstOrDefault(e => e.Anchor == this.ReferralId);
+        if (foundEvent != null)
+        {
+            var mapper = new Mappers();
+            _recurringEvent = mapper.EventDtoToEventViewModel(foundEvent);
+        }
+    }
+}
