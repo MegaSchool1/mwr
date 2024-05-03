@@ -204,17 +204,12 @@
                         Tooltip="Shareable copied!"
                         TextToCopy="@($"MWR Health Share{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(5min){Environment.NewLine}{UI.EnglishLocale[Model.Content.HealthShare]!.MinimalistUrl()}")"
                         ImageUrl="@Constants.GetImageUrl(Image.HealthShare)" />
-        <ShareableVideoMultilingual Description=@($"Keys to Home Ownership")
-                                    Duration="new(0, 3, 0)"
-                                    Url="@(UI.EnglishLocale[Model.Content.KeysToHomeOwnership]!.MinimalistUrl())"
-
-                                    EnglishTextToCopy="@($"MWR Keys to Home Ownership{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(3min){Environment.NewLine}{UI.EnglishLocale[Model.Content.KeysToHomeOwnership]!.MinimalistUrl()}")"
-                                    EnglishTooltip="English shareable copied!"
-                                    EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
-
-                                    SpanishTextToCopy="@($"MWR Keys to Home Ownership{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(3min){Environment.NewLine}{UI.SpanishLocale[Model.Content.KeysToHomeOwnership]!.MinimalistUrl()}")"
-                                    SpanishTooltip="Español shareable copied!"
-                                    SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
+        <ShareableVideo Description="Keys to Home Ownership"
+                        Duration="new(0, 3, 0)"
+                        Url="@(UI.EnglishLocale[Content.KeysToHomeOwnership]!.MinimalistUrl())"
+                        Tooltip="Shareable copied!"
+                        TextToCopy="@($"MWR Keys to Home Ownership{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(3min){Environment.NewLine}{UI.EnglishLocale[Model.Content.KeysToHomeOwnership]!.MinimalistUrl()}")"
+                        ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
         <ShareableVideoMultilingual Description=@($"Precious Metals")
                                     Duration="new(0, 5, 0)"
                                     Url="@(UI.EnglishLocale[Model.Content.PreciousMetals]!.MinimalistUrl())"
