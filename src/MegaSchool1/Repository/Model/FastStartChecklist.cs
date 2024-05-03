@@ -82,4 +82,16 @@ public class FastStartChecklist
 
     [JsonPropertyName("instagram_subscription")]
     public bool SubscribedToInstagram { get; set; }
+
+    [JsonPropertyName("testimonials_subscription")]
+    public bool SubscribedToTestimonials { get; set; }
+
+    [JsonPropertyName("mega_school")]
+    public MegaSchoolFastStartChecklist MegaSchool { get; set; } = new();
+
+    [JsonPropertyName("extra_digit_movement")]
+    public ExtraDigitFastStartChecklist ExtraDigitMovement { get; set; } = new();
+
+    [JsonPropertyName("ark_nation")]
+    public ArkNationFastStartChecklist ArkNation { get; set; } = new();
 }

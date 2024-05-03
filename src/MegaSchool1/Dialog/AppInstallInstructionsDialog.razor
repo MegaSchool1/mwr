@@ -1,0 +1,37 @@
+﻿@using MegaSchool1.Components
+@using MegaSchool1.Model
+
+<MudDialog @bind-IsVisible="_showInstallInstructions" Options="@(new DialogOptions() { FullScreen = true })">
+    <TitleContent>
+        <Centered><MudButton Color="Color.Primary" OnClick="@(() => _showInstallInstructions = false)">Close</MudButton></Centered>
+        <br />
+        <MudText Align="Align.Center">App Installation Instructions</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudContainer Style="max-height:100vh; overflow-y: scroll;">
+            <MudStack>
+                <MudCard>
+                    <MudText Align="Align.Center">Android</MudText>
+                    <br />
+                    <video width="100%" controls>
+                        <source src="@Constants.AppInstallTutorialUrl" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </MudCard>
+                <MudCard>
+                    <MudStack>
+                        <MudText Align="Align.Center">iPhone</MudText>
+                        <MudText Align="Align.Center">Coming Soon!</MudText>
+                    </MudStack>
+                </MudCard>
+            </MudStack>
+        </MudContainer>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private bool _showInstallInstructions;
+
+    [CascadingParameter] 
+    private MudDialogInstance MudDialog { get; set; }
+}

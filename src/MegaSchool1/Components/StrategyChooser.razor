@@ -2,7 +2,7 @@
 @inherits Components.ComponentBase
 
 <Centered>
-    <MudSelect T="Strategy" @bind-Value="@SelectedStrategy" Label="Team" Variant="Variant.Outlined" FullWidth="true" Style="width:100%;">
+    <MudSelect T="Strategy" @bind-Value="@_selectedStrategy" Label="@Label" Variant="Variant.Outlined" FullWidth="true" Style="width:100%;">
     @foreach (var strategy in Strategies)
     {
         <MudSelectItem Value="@strategy">@((MarkupString)Pad(StrategyDisplayName[strategy]))</MudSelectItem>
@@ -10,7 +10,7 @@
     </MudSelect>
 </Centered>
 
-<MudTabs ActivePanelIndex="@(Array.IndexOf(Strategies, SelectedStrategy))" TabHeaderClass="d-none" Elevation="0" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
+<MudTabs @ref="_tabs" ActivePanelIndex="@(_tabs?.Panels.ToList().FindIndex(p => _selectedStrategy.Equals(p.Tag)) ?? 0)" TabHeaderClass="d-none" Elevation="0" Rounded="true" Centered="true" Color="@Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
     @ChildContent
 </MudTabs>
 
@@ -27,11 +27,19 @@
         { Strategy.Latino, "Latino" },
     };
 
+    private MudTabs? _tabs;
+    private Strategy _selectedStrategy;
+
     [Parameter]
     public Strategy[] Strategies { get; set; } = AllStrategies;
 
     [Parameter]
-    public Strategy SelectedStrategy { get; set; } = Strategy.MegaSchool;
+    public Strategy DefaultStrategy { get; set; } = Strategy.MegaSchool;
+
+    [Parameter]
+    public string Label { get; set; } = "Strategy";
+
+    public Strategy GetSelectedStrategy() => _selectedStrategy;
 
     private static string Pad(string strategy)
     {
@@ -40,5 +48,10 @@
         var padding = string.Empty.PadRight((2 * LongestStrategyName.Length) - strategy.Length, ' ').Replace(" ", "&nbsp;");
 
         return $"{strategy}{padding}";
+    }
+
+    protected override void OnInitialized()
+    {
+        _selectedStrategy = DefaultStrategy;
     }
 }

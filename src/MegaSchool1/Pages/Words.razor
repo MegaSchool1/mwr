@@ -306,7 +306,7 @@
     private bool _showListenAndAsk;
     private StrategyChooser? _strategyChooser;
 
-    private Strategy CurrentStrategy => _strategyChooser!.SelectedStrategy;
+    private Strategy CurrentStrategy => _strategyChooser!.GetSelectedStrategy();
 
     private string GetNextMembershipQnAAnchor()
     {

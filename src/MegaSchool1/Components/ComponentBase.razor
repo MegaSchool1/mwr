@@ -9,6 +9,7 @@
     [CascadingParameter]
     public AppState? AppState { get; set; }
 
+    protected MudTheme Theme { get; } = new();
     protected bool ComponentInitialized { get; private set; }
     private bool IsCarPurchasePage => NavigationManager.Uri.Contains("/carpurchase");
 
