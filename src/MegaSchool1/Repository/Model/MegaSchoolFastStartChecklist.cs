@@ -28,4 +28,6 @@ public class MegaSchoolFastStartChecklist
     [JsonPropertyName("app_install")]
     public bool InstallApp { get; set; }
 
+    [JsonPropertyName("signal_subscription")]
+    public bool SubscribedToSignal { get; set; }
 }

@@ -82,12 +82,15 @@
             <br/>
             @NextCorporateConference
             @CorporateSocialMedia
-            <MudCheckBox Disabled="true" Value="_viewModel.MegaSchool.SubscribedToFacebook && _viewModel.MegaSchool.SubscribedToYouTube && _viewModel.MegaSchool.SubscribedToTwitter && _viewModel.MegaSchool.SubscribedToLinkedIn && _viewModel.MegaSchool.SubscribedToInstagram" ReadOnly="true" Size="Size.Medium" Color="Color.Primary">
+            <MudCheckBox Disabled="true" Value="_viewModel.MegaSchool.SubscribedToSignal && _viewModel.MegaSchool.SubscribedToFacebook && _viewModel.MegaSchool.SubscribedToYouTube && _viewModel.MegaSchool.SubscribedToTwitter && _viewModel.MegaSchool.SubscribedToLinkedIn && _viewModel.MegaSchool.SubscribedToInstagram" ReadOnly="true" Size="Size.Medium" Color="Color.Primary">
                 <MudText Typo="Typo.h6">Plugged In:</MudText>I am following Mega School on the Social Media Platforms listed below to stay informed:
             </MudCheckBox>
             <MudStack Row="true">
                 <MudSpacer />
                 <MudContainer Style="width:75%;">
+                    <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.MegaSchool.SubscribedToSignal" Size="Size.Small" Color="Color.Primary">
+                        <ExternalLink Href="https://signal.group/#CjQKIP2QwglEuMbv-8haIh30bk_QnhxWD6aONRIpJLDO_ncuEhDDiaplT9LAtRKCr_UxPqRm" Text="Signal" />
+                    </MudCheckBox>
                     <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.MegaSchool.SubscribedToFacebook" Size="Size.Small" Color="Color.Primary">
                         <ExternalLink Href="https://www.facebook.com/megaschool1" Text="Facebook" />
                     </MudCheckBox>
