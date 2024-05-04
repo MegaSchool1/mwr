@@ -60,6 +60,7 @@ public enum Image
     FaithAndFinance = 11,
     NextLevelStrategies = 12,
     StudentLoanDebtReliefTile = 13,
+    KeysToHomeOwnership = 14,
 }
 
 public enum Strategy
@@ -196,6 +197,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         Image.FaithAndFinance => "images/faithandfinance.jpg",
         Image.NextLevelStrategies => "images/next-level-strategies-logo.png",
         Image.StudentLoanDebtReliefTile => "/images/student-loan-debt-relief-tile.png",
+        Image.KeysToHomeOwnership => "/images/keys-to-home-ownership-banner.jpg",
         _ => throw new Exception($"Image not found: {image}"),
     };
 
