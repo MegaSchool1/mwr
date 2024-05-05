@@ -10,7 +10,7 @@
 @inject Repository.Repository Repo
 @inject ILocalStorageService LocalStorage
 
-<MudDropContainer T="Prospect" @ref="_dropContainer" Items="@_prospects" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="TaskUpdated" Class="d-flex flex-grow-1 overflow-x-scroll">
+<MudDropContainer T="Prospect" @ref="_dropContainer" Items="@_prospects" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="OnProspectStatusChanged" Class="d-flex flex-grow-1 overflow-x-scroll">
 	<ChildContent>
 		@foreach (var item in _sections)
 		{
@@ -36,7 +36,7 @@
 					{
 						<MudPaper Elevation="25" Class="pa-2 rounded-lg">
 							<MudTextField @bind-Value="item.NewTaskName" Placeholder="Prospect" DisableUnderLine="true" Margin="Margin.Dense" Class="mx-2 mt-n2"></MudTextField>
-							<MudButton OnClick="@(() => AddTask(item))" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add Prospect</MudButton>
+							<MudButton OnClick="@(() => AddProspect(item))" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add Prospect</MudButton>
 						</MudPaper>
 					}
 					else
@@ -69,7 +69,14 @@
 	</ChildContent>
 	<ItemRenderer>
         <MudPaper Elevation="25" Class="pa-4 rounded-lg my-3">
-			<MudText>@context.Name<MudIconButton OnClick="@(() => (_prospectEditDialog = (context, _prospectEditDialog.ProspectEdit, default)).ProspectEdit.IsVisible = true)" Icon="@Icons.Material.Filled.Edit" /></MudText>
+            <MudStack>
+                <MudText>@context.Name</MudText>
+                <MudStack Row="true">
+                    <MudIconButton OnClick="@(() => (_prospectEditDialog = (context, _prospectEditDialog.ProspectEdit, default)).ProspectEdit.IsVisible = true)" Icon="@Icons.Material.Filled.Edit"/>
+                    <MudSpacer/>
+					<MudIconButton OnClick="@(e => OnProspectDelete(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+                </MudStack>
+            </MudStack>
         </MudPaper>
 	</ItemRenderer>
 </MudDropContainer>
@@ -104,16 +111,20 @@
 	[Parameter]
 	public Pipeline<TPipeline> Pipeline { get; set; }
 
+    private async Task OnProspectDelete(Prospect deleted)
+    {
+        _prospects.Remove(deleted);
+
+        await SaveAsync();
+
+		_dropContainer.Refresh();
+    }
+
 	private async Task ProspectEditVisibleChanged(bool isVisible)
 	{
 		if (!isVisible && _prospectEditDialog.ValidEdit)
         {
-            var userData = await Repo.GetUserDataAsync() ?? new();
-
-			userData.Prospects.Clear();
-			userData.Prospects.AddRange(_prospects);
-
-            await Repo.SaveUserDataAsync(userData);
+            await SaveAsync();
         }
 
 		_dropContainer.Refresh();
@@ -132,7 +143,7 @@
 				this.Pipeline.DisplayName(step),
 				step,
 				false,
-				step.ToString(),
+				"New Prospect",
 				step.Equals(this.Pipeline.FirstStep))).ToArray();
 
         // load prospects
@@ -166,7 +177,17 @@
 		_dropContainer.Refresh();
 	}
 
-	private void TaskUpdated(MudItemDropInfo<Prospect> dropItem)
+    private async Task SaveAsync()
+    {
+        var userData = await Repo.GetUserDataAsync() ?? new();
+
+        userData.Prospects.Clear();
+        userData.Prospects.AddRange(_prospects);
+
+        await Repo.SaveUserDataAsync(userData);
+    }
+
+	private async Task OnProspectStatusChanged(MudItemDropInfo<Prospect> dropItem)
 	{
 		dropItem.Item.Status = dropItem.DropzoneIdentifier;
 
@@ -178,6 +199,8 @@
         var orderedProspects = _prospects.OrderBy(t => t.Order).ToList();
 		_prospects.Clear();
 		_prospects.AddRange(orderedProspects);
+
+        await SaveAsync();
 
 		this.StateHasChanged();
 		_dropContainer.Refresh();
@@ -224,12 +247,14 @@
 		_addSectionOpen = true;
 	}
 
-	private void AddTask(KanBanSection section)
+	private async Task AddProspect(KanBanSection section)
 	{
-		_prospects.Insert(0, new() { Name = "New Prospect" });
-		section.NewTaskName = string.Empty;
-		section.NewTaskOpen = false;
-		_dropContainer.Refresh();
+		_prospects.Insert(0, new() { Name = section.NewTaskName, Status = section.Id, Order = 0 });
+		await SaveAsync();
+
+        section.NewTaskOpen = false;
+
+        _dropContainer.Refresh();
 	}
 
 	private void DeleteSection(KanBanSection section)
