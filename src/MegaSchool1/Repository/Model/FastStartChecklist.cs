@@ -86,6 +86,9 @@ public class FastStartChecklist
     [JsonPropertyName("testimonials_subscription")]
     public bool SubscribedToTestimonials { get; set; }
 
+    [JsonPropertyName("headshot")]
+    public bool Headshot { get; set; }
+
     [JsonPropertyName("mega_school")]
     public MegaSchoolFastStartChecklist MegaSchool { get; set; } = new();
 

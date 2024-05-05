@@ -203,7 +203,7 @@ else
         NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
 
         // get username
-        _appState.UserName = await Repo.GetUsernameAsync(LocalStorage, Http);
+        _appState.UserName = await Repo.GetUsernameAsync();
         this.StateHasChanged();
 
         // navigate to prospect page if applicable

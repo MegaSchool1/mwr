@@ -23,6 +23,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _qmd = await Repo.GetQMDInfo(this.MemberId, Http);
+        _qmd = await Repo.GetQMDInfo(this.MemberId);
     }
 }

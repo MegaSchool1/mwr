@@ -71,7 +71,7 @@
             .Select(e => eventMapper.EventDtoToEventViewModel(e))
             .ToArray();
 
-        Settings ??= await Repo.GetSettingsAsync(LocalStorage);
+        Settings ??= await Repo.GetSettingsAsync();
 
         var defaultLivestreamPlatforms = new Repository.Model.Settings().LivestreamPlatformPreference;
 
@@ -107,9 +107,9 @@
     private async Task OnLivestreamPlatformSelectionChanged((string EventId, LivestreamPlatform Platform)? livestream)
     {
         // persist livestream platform preference
-        var settings = await Repo.GetSettingsAsync(LocalStorage);
+        var settings = await Repo.GetSettingsAsync();
         settings.LivestreamPlatformPreference[livestream?.EventId!] = livestream!.Value.Platform;
-        await Repo.SaveSettingsAsync(settings, LocalStorage);
+        await Repo.SaveSettingsAsync(settings);
 
         // refresh UI
         foreach (var livestreamEvent in _events.Where(e => e.Anchor == livestream?.EventId))

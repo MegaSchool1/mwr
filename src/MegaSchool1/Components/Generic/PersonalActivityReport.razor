@@ -1,11 +1,16 @@
 ﻿@typeparam TPipeline where TPipeline : struct, Enum
 @using System.ComponentModel.DataAnnotations
+@using Blazored.LocalStorage
 @using MegaSchool1.Model
+@using MegaSchool1.Repository.Model
 @using MegaSchool1.ViewModel
 @using MudBlazor.Utilities
 @inherits Components.ComponentBase
+@inject UISettings UI
+@inject Repository.Repository Repo
+@inject ILocalStorageService LocalStorage
 
-<MudDropContainer T="KanbanTaskItem" @ref="_dropContainer" Items="@_tasks" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="TaskUpdated" Class="d-flex flex-row">
+<MudDropContainer T="Prospect" @ref="_dropContainer" Items="@_prospects" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="TaskUpdated" Class="d-flex flex-grow-1 overflow-x-scroll">
 	<ChildContent>
 		@foreach (var item in _sections)
 		{
@@ -39,7 +44,7 @@
 						<MudButton OnClick="@(() => item.NewTaskOpen = !item.NewTaskOpen)" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" FullWidth="true" Class="rounded-lg py-2">Add Prospect</MudButton>
 					}
 				}
-				<MudDropZone T="KanbanTaskItem" Identifier="@item.Id" AllowReorder="true" Class="mud-height-full" />
+				<MudDropZone T="Prospect" Identifier="@item.Id" AllowReorder="true" Class="mud-height-full" />
 			</MudPaper>
 		}
 		@if(false)
@@ -63,18 +68,63 @@
 		}
 	</ChildContent>
 	<ItemRenderer>
-		<MudPaper Elevation="25" Class="pa-4 rounded-lg my-3">@context.Name (@context.Order)</MudPaper>
+        <MudPaper Elevation="25" Class="pa-4 rounded-lg my-3">
+			<MudText>@context.Name<MudIconButton OnClick="@(() => (_prospectEditDialog = (context, _prospectEditDialog.ProspectEdit, default)).ProspectEdit.IsVisible = true)" Icon="@Icons.Material.Filled.Edit" /></MudText>
+        </MudPaper>
 	</ItemRenderer>
 </MudDropContainer>
 
+<MudDialog @ref="_prospectEditDialog.ProspectEdit" IsVisibleChanged="ProspectEditVisibleChanged">
+    <TitleContent>
+        <MudText>Edit Prospect</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm @bind-IsValid="_prospectEditDialog.ValidEdit">
+            <MudStack>
+                <MudTextField @bind-Value="@_prospectEditDialog.Prospect.Name"
+                              Label="Prospect Name"
+                              Placeholder="Your prospect's name"
+                              Validation="@(new Func<string, string?>(ValidateProspectName))"
+                              Required="true"
+                              RequiredError="Prospect  username is required."
+                              Immediate="true"
+                              DebounceInterval="1.0"/>
+            </MudStack>
+        </MudForm>
+    </DialogContent>
+</MudDialog>
+
 @code {
-	private MudDropContainer<KanbanTaskItem> _dropContainer;
+	private readonly List<Prospect> _prospects = [];
+
+	private MudDropContainer<Prospect> _dropContainer;
 	private bool _addSectionOpen;
+	private (Prospect Prospect, MudDialog ProspectEdit, bool ValidEdit) _prospectEditDialog;
 
 	[Parameter]
 	public Pipeline<TPipeline> Pipeline { get; set; }
 
-	protected override void OnInitialized()
+	private async Task ProspectEditVisibleChanged(bool isVisible)
+	{
+		if (!isVisible && _prospectEditDialog.ValidEdit)
+        {
+            var userData = await Repo.GetUserDataAsync() ?? new();
+
+			userData.Prospects.Clear();
+			userData.Prospects.AddRange(_prospects);
+
+            await Repo.SaveUserDataAsync(userData);
+        }
+
+		_dropContainer.Refresh();
+	}
+
+	private string? ValidateProspectName(string prospectName)
+	{
+		return !string.IsNullOrWhiteSpace(prospectName) ? null : "Prospect name must have a value.";
+	}
+
+	protected override async Task OnInitializedAsync()
 	{
 		_sections = Enum.GetValues<TPipeline>()
 			.Where(step => ((int)(object)step) != 0)
@@ -85,38 +135,49 @@
 				step.ToString(),
 				step.Equals(this.Pipeline.FirstStep))).ToArray();
 
-		_tasks = [
-			new KanbanTaskItem("W2 & No Biz", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Has Vehicle", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Has Cell", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Takes Vacations", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Has Kids 7-17", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Money Motivated", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Positive & Wants Better", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Would Kill the Biz", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Mad if you DIDN'T Share", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Friends", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Co-Workers", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Family Members", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Friends of Sig Other", this.Pipeline.FirstStep.ToString()),
-			new KanbanTaskItem("Referrals", this.Pipeline.FirstStep.ToString()),
-		];
+        // load prospects
+        var userData = await Repo.GetUserDataAsync();
+        if (userData != null)
+        {
+            _prospects.AddRange(userData.Prospects);
+        }
+        else
+        {
+            _prospects.AddRange(
+            [
+                new() { Name = "W2 & No Biz", Order = 0, Status = _sections.First().Id },
+			    new() { Name = "Has Vehicle", Order = 1, Status = _sections.First().Id },
+			    new() { Name = "Has Cell", Order = 2, Status = _sections.First().Id },
+			    new() { Name = "Takes Vacations", Order = 3, Status = _sections.First().Id },
+			    new() { Name = "Has Kids 7-17", Order = 4, Status = _sections.First().Id },
+			    new() { Name = "Money Motivated", Order = 5, Status = _sections.First().Id },
+			    new() { Name = "Positive & Wants Better", Order = 6, Status = _sections.First().Id },
+			    new() { Name = "Would Kill the Biz", Order = 7, Status = _sections.First().Id },
+			    new() { Name = "Mad if you DIDN'T Share", Order = 8, Status = _sections.First().Id },
+			    new() { Name = "Friends", Order = 9, Status = _sections.First().Id },
+			    new() { Name = "Co-Workers", Order = 10, Status = _sections.First().Id },
+			    new() { Name = "Family Members", Order = 11, Status = _sections.First().Id },
+			    new() { Name = "Friends of Sig Other", Order = 12, Status = _sections.First().Id },
+			    new() { Name = "Referrals", Order = 13, Status = _sections.First().Id },
+            ]);
+        }
 
-		for(var i = 0; i < _tasks.Count; i++)
-		{
-			_tasks[i].Order = i;
-		}
+		_dropContainer.Refresh();
+		_dropContainer.Refresh();
 	}
 
-	private void TaskUpdated(MudItemDropInfo<KanbanTaskItem> dropItem)
+	private void TaskUpdated(MudItemDropInfo<Prospect> dropItem)
 	{
 		dropItem.Item.Status = dropItem.DropzoneIdentifier;
 
 		var zoneOffset = dropItem.DropzoneIdentifier == this.Pipeline.FirstStep.ToString()
-			? 0 : _tasks.Count(t => (int)(object)Enum.Parse<TPipeline>(t.Status) < (int)(object)Enum.Parse<TPipeline>(dropItem.DropzoneIdentifier));
+			? 0 : _prospects.Count(t => (int)(object)Enum.Parse<TPipeline>(t.Status) < (int)(object)Enum.Parse<TPipeline>(dropItem.DropzoneIdentifier));
 
-		_tasks.UpdateOrder(dropItem, item => item.Order, zoneOffset);
-		_tasks = _tasks.OrderBy(t => t.Order).ToList();
+		_prospects.UpdateOrder(dropItem, item => item.Order, zoneOffset);
+
+        var orderedProspects = _prospects.OrderBy(t => t.Order).ToList();
+		_prospects.Clear();
+		_prospects.AddRange(orderedProspects);
 
 		this.StateHasChanged();
 		_dropContainer.Refresh();
@@ -142,8 +203,6 @@
 		}
 	}
 
-	private List<KanbanTaskItem> _tasks = [];
-
 	KanBanNewForm newSectionModel = new KanBanNewForm();
 
 	public class KanBanNewForm
@@ -167,7 +226,7 @@
 
 	private void AddTask(KanBanSection section)
 	{
-		_tasks.Insert(0, new KanbanTaskItem(section.NewTaskName, section.Id));
+		_prospects.Insert(0, new() { Name = "New Prospect" });
 		section.NewTaskName = string.Empty;
 		section.NewTaskOpen = false;
 		_dropContainer.Refresh();
@@ -177,7 +236,7 @@
 	{
 		if (_sections.Count() == 1)
 		{
-			_tasks.Clear();
+			_prospects.Clear();
 			_sections = [];
 		}
 		else
@@ -190,7 +249,7 @@
 
 			_sections = _sections.Except([section]).ToArray();
 
-			var tasks = _tasks.Where(x => x.Status == section.Id);
+			var tasks = _prospects.Where(x => x.Status == section.Id);
 			foreach (var item in tasks)
 			{
 				item.Status = _sections[newIndex].Id;

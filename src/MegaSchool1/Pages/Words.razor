@@ -1,116 +1,122 @@
-﻿@page "/"
+﻿@page "/foobar"
 @using MegaSchool1.Components
 @using MegaSchool1.Dialog
 @using MegaSchool1.Model
 @inherits Components.ComponentBase
 @inject IDialogService Dialog
 @inject UISettings UI
-@inject Model.Constants Constants
-@inject NavigationManager NavigationManager
+@inject Constants Constants
 
 <MudText Typo="Typo.h3" GutterBottom="true" Align="Align.Center">How to Share</MudText>
 <br/>
 <br/>
 <StrategyChooser @ref="@_strategyChooser" Strategies="@StrategyChooser.AllStrategies">
-    <MudTabPanel Text="Mega School" Tag="@Strategy.MegaSchool">
-        <Collapsable Title="Listen & Ask" ExpandPrompt="Show me how!">
-            <br />
-            <Centered><MudButton OnClick="@(() => _showListenAndAsk = true)" Color="Color.Primary" Variant="Variant.Filled">Watch How To</MudButton></Centered>
-        </Collapsable>
-        <br />
-        <br />
-        <Collapsable Title="Share" ExpandPrompt="Show me how!">
-            <BinaryChoice Description="I'm Sharing" FirstChoiceLabel="In Person" SecondChoiceLabel="On the Phone">
-                <FirstChoiceContent>
-                    <MudStack>
-                        <MudStack Row="true">
-                            <MudText>#1 </MudText>
-                            <MudText>"Do you have a couple minutes?"</MudText>
-                        </MudStack>
-                        <MudStack Row="true">
-                            <MudText>#2: </MudText>
-                            <MudButton OnClick="@(() => _show72HourMoneyChallengeVideo = true)" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Show 72-Hour Money Challenge Video</MudButton>
-                        </MudStack>
-                        <MudStack Row="true">
-                            <MudText>#3: </MudText>
+<MudTabPanel Text="Mega School" Tag="@Strategy.MegaSchool">
+    <MudStack Spacing="3">
+            <Collapsable Title="Listen & Ask" ExpandPrompt="Show me how!">
+                <br />
+                <Centered><MudButton OnClick="@(() => _showListenAndAsk = true)" Color="Color.Primary" Variant="Variant.Filled">Watch How To</MudButton></Centered>
+            </Collapsable>
+            <Collapsable Title="Share" ExpandPrompt="Show me how!">
+                <BinaryChoice Description="I'm Sharing" FirstChoiceLabel="In Person" SecondChoiceLabel="On the Phone">
+                    <FirstChoiceContent>
+                        <MudStack>
                             <MudStack Row="true">
-                                <MudText>(Optional) </MudText>
-                                <MudButton OnClick="@(() => _showFaqVideo = true)" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Show FAQ Video</MudButton>
+                                <MudText>#1 </MudText>
+                                <MudText>"Do you have a couple minutes?"</MudText>
                             </MudStack>
+                            <MudStack Row="true">
+                                <MudText>#2: </MudText>
+                                <MudButton OnClick="@(() => _show72HourMoneyChallengeVideo = true)" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Show 72-Hour Money Challenge Video</MudButton>
+                            </MudStack>
+                            <MudStack Row="true">
+                                <MudText>#3: </MudText>
+                                <MudStack Row="true">
+                                    <MudText>(Optional) </MudText>
+                                    <MudButton OnClick="@(() => _showFaqVideo = true)" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Show FAQ Video</MudButton>
+                                </MudStack>
+                            </MudStack>
+                            <MudStack Row="true">
+                                <MudText>#4:</MudText>
+                                <MudText>"So, are you ready to take the challenge?"</MudText>
+                            </MudStack>
+                            <MudText Align="Align.Center">@Constants.PointingDownEmoji</MudText>
+                            <BinaryChoice Description="Prospect Response" FirstChoiceLabel="@("\"Yes\"")" SecondChoiceLabel="@("\"I have a question\"")">
+                                <FirstChoiceContent>
+                                    <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
+                                    <MudStack Row="true">
+                                        <MudText>#1: </MudText>
+                                        <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, { x => x.MemberId, AppState!.UserName! } }, new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
+                                    </MudStack>
+                                    <MudStack Row="true">
+                                        <MudText>#2: </MudText>
+                                        <MudText>Confirm membership sign up via email confirmation to YOU</MudText>
+                                    </MudStack>
+                                </FirstChoiceContent>
+                                <SecondChoiceContent>
+                                    <MudStack Row="true">
+                                        <MudText>#1: </MudText>
+                                        <MudText Align="Align.Center"> Go to the "Connect" section below <br /> @(Constants.PointingDownEmoji)</MudText>
+                                    </MudStack>
+                                </SecondChoiceContent>
+                            </BinaryChoice>
                         </MudStack>
-                        <MudStack Row="true">
-                            <MudText>#4:</MudText>
-                            <MudText>"So, are you ready to take the challenge?"</MudText>
+                    </FirstChoiceContent>
+                    <SecondChoiceContent>
+                        <MudStack>
+                            <MudStack Row="true">
+                                <MudText>#1: </MudText>
+                                <MudText>"Let me show you this 2min video, it explains it perfectly.</MudText>
+                            </MudStack>
+                            <MudStack Row="true">
+                                <MudText>#2: </MudText>
+                                <MudButton OnClick="@(() => _show72HourMoneyChallengeShareable = true)" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Video</MudButton>
+                            </MudStack>
+                            <MudStack Row="true">
+                                <MudText>#3: </MudText>
+                                <MudText>"Did you watch the video?"</MudText>
+                            </MudStack>
+                            <MudStack Row="true">
+                                <MudText>#4: </MudText>
+                                <MudText>"So are you ready to take the challenge?"</MudText>
+                            </MudStack>
+                            <MudText Align="Align.Center">@Constants.PointingDownEmoji</MudText>
+                            <BinaryChoice Description="Prospect Response" FirstChoiceLabel="@("\"Yes\"")" SecondChoiceLabel="@("\"I have a question\"")">
+                                <FirstChoiceContent>
+                                    <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
+                                    <MudStack Row="true">
+                                        <MudText>#1: </MudText>
+                                        <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, { x => x.MemberId, AppState!.UserName! } }, new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
+                                    </MudStack>
+                                    <MudStack Row="true">
+                                        <MudText>#2: </MudText>
+                                        <MudText>Confirm membership sign up via email confirmation to YOU</MudText>
+                                    </MudStack>
+                                </FirstChoiceContent>
+                                <SecondChoiceContent>
+                                    <MudStack Row="true">
+                                        <MudText>#1: </MudText>
+                                        <MudText Align="Align.Center"> Go to the "Connect" section below <br /> @(Constants.PointingDownEmoji)</MudText>
+                                    </MudStack>
+                                </SecondChoiceContent>
+                            </BinaryChoice>
                         </MudStack>
-                        <MudText Align="Align.Center">@Constants.PointingDownEmoji</MudText>
-                        <BinaryChoice Description="Prospect Response" FirstChoiceLabel="@("\"Yes\"")" SecondChoiceLabel="@("\"I have a question\"")">
-                            <FirstChoiceContent>
-                                <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
-                                <MudStack Row="true">
-                                    <MudText>#1: </MudText>
-                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, {x => x.MemberId, AppState!.UserName! } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
-                                </MudStack>
-                                <MudStack Row="true">
-                                    <MudText>#2: </MudText>
-                                    <MudText>Confirm membership sign up via email confirmation to YOU</MudText>
-                                </MudStack>
-                            </FirstChoiceContent>
-                            <SecondChoiceContent>
-                                <MudStack Row="true">
-                                    <MudText>#1: </MudText>
-                                    <MudText>"Great question!  I just know it works for me, but you should come to the next live Q&A session to get answers from [MY SPONSOR], he/she is the "Michael Jordan"/"Oprah Winfrey" of the program.  He/She knows 100% of the information."</MudText>
-                                </MudStack>
-                            </SecondChoiceContent>
-                        </BinaryChoice>
+                    </SecondChoiceContent>
+                </BinaryChoice>
+            </Collapsable>
+            <Collapsable Title="Connect" ExpandPrompt="Show me how!">
+                <MudStack>
+                    <MudStack Row="true">
+                        <MudText>#1: </MudText>
+                        <MudText>"Great question! I just know it works for me, but let me connect you with [MY SPONSOR], he/she is the "Michael Jordan"/"Oprah Winfrey" of the program. He/She knows 100% of the information. I'll set up a warm introduction, I promise.'"</MudText>
                     </MudStack>
-                </FirstChoiceContent>
-                <SecondChoiceContent>
-                    <MudStack>
-                        <MudStack Row="true">
-                            <MudText>#1: </MudText>
-                            <MudText>"Let me show you this 2min video, it explains it perfectly.</MudText>
-                        </MudStack>
-                        <MudStack Row="true">
-                            <MudText>#2: </MudText>
-                            <MudButton OnClick="@(() => _show72HourMoneyChallengeShareable = true)" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Video</MudButton>
-                        </MudStack>
-                        <MudStack Row="true">
-                            <MudText>#3: </MudText>
-                            <MudText>"Did you watch the video?"</MudText>
-                        </MudStack>
-                        <MudStack Row="true">
-                            <MudText>#4: </MudText>
-                            <MudText>"So are you ready to take the challenge?"</MudText>
-                        </MudStack>
-                        <MudText Align="Align.Center">@Constants.PointingDownEmoji</MudText>
-                        <BinaryChoice Description="Prospect Response" FirstChoiceLabel="@("\"Yes\"")" SecondChoiceLabel="@("\"I have a question\"")">
-                            <FirstChoiceContent>
-                                <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
-                                <MudStack Row="true">
-                                    <MudText>#1: </MudText>
-                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, {x => x.MemberId, AppState!.UserName! } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
-                                </MudStack>
-                                <MudStack Row="true">
-                                    <MudText>#2: </MudText>
-                                    <MudText>Confirm membership sign up via email confirmation to YOU</MudText>
-                                </MudStack>
-                            </FirstChoiceContent>
-                            <SecondChoiceContent>
-                                <MudStack Row="true">
-                                    <MudText>#1: </MudText>
-                                    <MudText>"Great question!  I just know it works for me, but you should come to the next live Q&A session to get answers from [MY SPONSOR], he/she is the "Michael Jordan"/"Oprah Winfrey" of the program.  He/She knows 100% of the information."</MudText>
-                                </MudStack>
-                            </SecondChoiceContent>
-                        </BinaryChoice>
+                    <MudStack Row="true">
+                        <MudText>#2: </MudText>
+                        <MudText>Start a 3-way text thread with you, your prospect, and your upline</MudText>
                     </MudStack>
-                </SecondChoiceContent>
-            </BinaryChoice>
-        </Collapsable>
-        <br />
-        <br />
-        <Collapsable Title="Invite" ExpandPrompt="Show me how!">
-            <MudText Align="Align.Center">Invite them to the next <MudLink OnClick="@(() => NavigationManager.NavigateTo($"/events#{GetNextMembershipQnAAnchor()}"))">Membership Orientation Live Q&A</MudLink>. <br /><br /> (Remember to edify!)</MudText>
-        </Collapsable>
+                </MudStack>
+            </Collapsable>
+        </MudStack>
     </MudTabPanel>
     <MudTabPanel Text="Corporate" Tag="@Strategy.Corporate">
         <Collapsable Title="Ask" ExpandPrompt="Show me how!">

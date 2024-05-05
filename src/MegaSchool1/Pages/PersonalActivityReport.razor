@@ -1,35 +1,13 @@
-﻿@page "/par"
+﻿@page "/"
+@using MegaSchool1.Components
 @using MegaSchool1.Model
 @inherits Components.ComponentBase
 
-<MudSelect T="Strategy" Label="Strategy" @bind-Value="_selectedStrategy" ToStringFunc="@StrategyDisplay" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
-	<MudSelectItem Value="@(Strategy.ExtraDigitMovement)" />
-	<MudSelectItem Value="@(Strategy.MegaSchool)" />
-</MudSelect>
-
-@switch(_selectedStrategy)
-{
-	case Strategy.MegaSchool:
-	{
-		<MegaSchool1.Components.Generic.PersonalActivityReport TPipeline="MegaSchoolPipeline" Pipeline="@(new MegaSchool1.ViewModel.MegaSchoolPipeline())" />
-		break;
-	}
-
-	case Strategy.ExtraDigitMovement:
-	{
+<StrategyChooser>
+    <MudTabPanel Tag="Strategy.MegaSchool">
+        <MegaSchool1.Components.Generic.PersonalActivityReport TPipeline="MegaSchoolPipeline" Pipeline="@(new MegaSchool1.ViewModel.MegaSchoolPipeline())" />
+    </MudTabPanel>
+    <MudTabPanel Tag="Strategy.ExtraDigitMovement">
         <MegaSchool1.Components.Generic.PersonalActivityReport TPipeline="ExtraDigitMovementPipeline" Pipeline="@(new MegaSchool1.ViewModel.ExtraDigitMovementPipeline())" />
-		break;
-	}
-}
-@code {
-
-	private Strategy _selectedStrategy = Strategy.MegaSchool;
-
-	private static string StrategyDisplay(Strategy strategy) => strategy switch
-	{
-		Strategy.Corporate => "Corporate",
-		Strategy.ExtraDigitMovement => "Extra Digit Movement",
-		Strategy.MegaSchool => "Mega School",
-		_ => $"Update '{nameof(StrategyDisplay)}' Method"
-	};
-}
+    </MudTabPanel>
+</StrategyChooser>

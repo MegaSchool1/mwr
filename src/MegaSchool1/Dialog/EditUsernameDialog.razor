@@ -62,11 +62,11 @@
 
     private async Task OnUsernameSaveClick()
     {
-        var settings = await Repo.GetSettingsAsync(LocalStorage);
+        var settings = await Repo.GetSettingsAsync();
 
         settings.Username = _username!;
 
-        await Repo.SaveSettingsAsync(settings, LocalStorage);
+        await Repo.SaveSettingsAsync(settings);
 
         this.AppState!.UserName = _username!;
         this.StateHasChanged();

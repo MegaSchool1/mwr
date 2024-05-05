@@ -66,6 +66,7 @@
             </Centered>
             <MudDivider />
             @ExtraDigitPlugin
+            @Headshot
             @PayCard
             @FastStartInterview
             @FirstRoundDraftChoice
@@ -141,6 +142,7 @@
     <MudTabPanel Tag="@Strategy.ExtraDigitMovement">
         <MudStack>
             @ExtraDigitPlugin
+            @Headshot
             @PersonalActivityReport
             <MudCheckBox T="bool" Disabled="true" Size="Size.Medium" Color="Color.Primary">
                 <MudText Typo="Typo.h6">3* Executive Director Guide</MudText>Execute EVERYTHING @@ <ExternalLink Text="3* Executive Director Guide" Href="https://www.extradigitmovement.com/2023memberhome"/>.
@@ -221,7 +223,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _viewModel = (await Repo.GetSettingsAsync(LocalStorage)).FastStartChecklist;
+        _viewModel = (await Repo.GetSettingsAsync()).FastStartChecklist;
 
         _pageLoaded = true;
         base.StateHasChanged();
@@ -229,11 +231,11 @@
 
     private async Task OnSaveClick()
     {
-        var settings = await Repo.GetSettingsAsync(LocalStorage);
+        var settings = await Repo.GetSettingsAsync();
 
         settings.FastStartChecklist = _viewModel;
 
-        await Repo.SaveSettingsAsync(settings, LocalStorage);
+        await Repo.SaveSettingsAsync(settings);
 
         _showTooltip = true;
         base.StateHasChanged();
@@ -300,7 +302,7 @@
     private RenderFragment NextCorporateConference => __builder =>
     {
         <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.CorporateEventRegistration" Size="Size.Medium" Color="Color.Primary">
-            <MudText Typo="Typo.h6">Corporate Event:</MudText>I am registered for the <ExternalLink Href="https://www.eventbrite.com/e/mwr-2024-ignite-event-tickets-697654081137?aff=ebdsoporgprofile" Text="MWR IGNITE Conference"/> in Atlanta, Georgia on May 31 - June 1, 2024.
+            <MudText Typo="Typo.h6">Corporate Event:</MudText>I am registered for the <ExternalLink Href="http://makewealthrealevents.com" Text="MWR IGNITE Conference"/> in Atlanta, Georgia on May 31 - June 1, 2024.
         </MudCheckBox>
         <br/>
     };
@@ -403,6 +405,14 @@
             <MudText Typo="Typo.h6">Personal Activity Report:</MudText>I printed the Personal Activity Report PDF & listed my 1st 30 prospects to contact immediately.
         </MudCheckBox>
         <MudText Align="Align.Center">Print <ExternalLink Text="Personal Activity Report PDF" Href="https://s3.amazonaws.com/kajabi-storefronts-production/file-uploads/sites/13708/themes/2155551073/downloads/6ab4d-a06e-4421-0735-300ff6b327b_PAR_Sheet_2024.pdf" /></MudText>
+        <br/>
+    };
+
+    private RenderFragment Headshot => __builder =>
+    {
+        <MudCheckBox T="bool" @bind-Value="_viewModel.Headshot" Size="Size.Medium" Color="Color.Primary">
+            <MudText Typo="Typo.h6">Celebrate:</MudText>Text a headshot to your upline leader, so they can create and share your banner.
+        </MudCheckBox>
         <br/>
     };
 }

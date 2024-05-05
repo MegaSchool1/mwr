@@ -136,12 +136,10 @@ public enum MegaSchoolPipeline
 {
     None = 0,
     Enqueue = 1,
-    Share = 2,
-    MembershipInvitation = 3,
-    MembershipDecision = 4,
-    Connection = 5,
-    BusinessOpportunityInvitation = 6,
-    BusinessOpportunityDecision = 7,
+    ListenAndAsk = 2,
+    Share = 3,
+    Connect = 4,
+    Decision = 5,
 }
 
 public enum LivestreamPlatform
@@ -149,6 +147,11 @@ public enum LivestreamPlatform
     Facebook = 0,
     YouTube = 1,
     LinkedIn = 2,
+}
+
+public enum ProspectVersion
+{
+    v1_0_0_0 = 0,
 }
 
 public class Constants(UISettings ui, NavigationManager navigationManager)
