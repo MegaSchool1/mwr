@@ -6,5 +6,5 @@ namespace MegaSchool1.Repository.Model;
 public class UserData
 {
     [JsonPropertyName("prospects")]
-    public List<Prospect> Prospects { get; set; } = [];
+    public Dictionary<Strategy, List<Prospect>> Prospects { get; set; } = [];
 }

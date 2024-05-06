@@ -7,4 +7,5 @@ public abstract class Pipeline<TSteps> : IPipeline<TSteps>
 {
     public TSteps FirstStep { get; } = Enum.GetValues<TSteps>().First(step => (int)(object)step != 0);
     public abstract string DisplayName(TSteps step);
+    public abstract Strategy Strategy { get; }
 }

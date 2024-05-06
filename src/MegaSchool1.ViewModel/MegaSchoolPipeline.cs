@@ -1,8 +1,12 @@
-﻿namespace MegaSchool1.ViewModel;
+﻿using MegaSchool1.Model;
+
+namespace MegaSchool1.ViewModel;
 
 public class MegaSchoolPipeline : Pipeline<Model.MegaSchoolPipeline>
 {
-    public override string DisplayName(Model.MegaSchoolPipeline step) => step switch
+	public override Strategy Strategy => Strategy.MegaSchool;
+
+	public override string DisplayName(Model.MegaSchoolPipeline step) => step switch
     {
         Model.MegaSchoolPipeline.Enqueue => "Enqueue",
         Model.MegaSchoolPipeline.ListenAndAsk => "Listen & Ask",

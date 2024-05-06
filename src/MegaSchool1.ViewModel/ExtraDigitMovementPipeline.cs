@@ -1,8 +1,12 @@
-﻿namespace MegaSchool1.ViewModel;
+﻿using MegaSchool1.Model;
+
+namespace MegaSchool1.ViewModel;
 
 public class ExtraDigitMovementPipeline : Pipeline<Model.ExtraDigitMovementPipeline>
 {
-    public override string DisplayName(Model.ExtraDigitMovementPipeline step) => step switch
+	public override Strategy Strategy => Strategy.ExtraDigitMovement;
+
+	public override string DisplayName(Model.ExtraDigitMovementPipeline step) => step switch
     {
         Model.ExtraDigitMovementPipeline.Enqueue => "Enqueue",
         Model.ExtraDigitMovementPipeline.Question => "Question + 14min",

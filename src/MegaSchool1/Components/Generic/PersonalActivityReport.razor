@@ -148,9 +148,9 @@
 
         // load prospects
         var userData = await Repo.GetUserDataAsync();
-        if (userData != null)
+        if (userData?.Prospects.ContainsKey(this.Pipeline.Strategy) is true)
         {
-            _prospects.AddRange(userData.Prospects);
+            _prospects.AddRange(userData.Prospects[this.Pipeline.Strategy]);
         }
         else
         {
@@ -181,8 +181,13 @@
     {
         var userData = await Repo.GetUserDataAsync() ?? new();
 
-        userData.Prospects.Clear();
-        userData.Prospects.AddRange(_prospects);
+        if (!userData.Prospects.ContainsKey(this.Pipeline.Strategy))
+        {
+			userData.Prospects.Add(this.Pipeline.Strategy, []);
+        }
+
+        userData.Prospects[this.Pipeline.Strategy].Clear();
+        userData.Prospects[this.Pipeline.Strategy].AddRange(_prospects);
 
         await Repo.SaveUserDataAsync(userData);
     }
