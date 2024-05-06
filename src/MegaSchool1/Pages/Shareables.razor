@@ -194,9 +194,10 @@
                                     SpanishTooltip="Español shareable copied!"
                                     SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
         <ShareableVideo Description="MWR Student Loan Debt Relief"
+                        Duration="new(0, 2, 0)"
                         Url="@UI.EnglishLocale[Content.StudentLoanDebtRelief]!.Url"
                         Tooltip="Copied!"
-                        TextToCopy="@($"MWR Student Loan Debt Relief{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{UI.EnglishLocale[Content.StudentLoanDebtRelief]!.Url}")"
+                        TextToCopy="@($"MWR Student Loan Debt Relief{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(2min){Environment.NewLine}{UI.EnglishLocale[Content.StudentLoanDebtRelief]!.Url}")"
                         ImageUrl="@Constants.GetImageUrl(Image.StudentLoanDebtReliefTile)"/>
         <ShareableVideo Description=@($"MWR Health Share")
                         Duration="new(0, 5, 0)"
