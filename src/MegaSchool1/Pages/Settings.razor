@@ -1,53 +1,69 @@
-﻿@using MegaSchool1.Model
+﻿@page "/settings"
+@using FluentValidation
+@using MegaSchool1.Dialog
+@using MegaSchool1.Model
+@using MegaSchool1.Repository.Model
 @inherits Components.ComponentBase
-@page "/settings"
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject Repository.Repository Repo
+@inject IDialogService Dialog
 
-<MudStack>
+<MudStack Spacing="6">
     <MudStack Row="true">
-        <MudSpacer/>
-        <MudText>Version: @(this.GetType().Assembly.GetName().Version)</MudText>
+        <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)">
+            @foreach (var teamMember in _settings.TeamMembers)
+            {
+                <MudSelectItem Value="@teamMember">
+                    <MudStack Row="true">
+                        <MudText>@teamMember.Name</MudText>
+                        <MudSpacer/>
+                    </MudStack>                  
+                </MudSelectItem>
+            }
+        </MudSelect>
+        @if (_selectedTeamMember != null)
+        {
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" 
+                           Color="Color.Primary"
+                           OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("Edit Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.TeamMember, _selectedTeamMember }, { x => x.OnSave, OnTeamMemberEdited } }))" />
+            <MudIconButton OnClick="@(e => OnDeleteTeamMember(_selectedTeamMember))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+        }
+        <MudIconButton Icon="@Icons.Material.Filled.PersonAdd" 
+                       Color="Color.Primary"
+                       OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
     </MudStack>
-    <MudTextField @bind-Value="_settings.Username" Label="My MWR Username" Placeholder="Your MWR username" HelperText=@($"Tip: If your website is '{Constants.MarketingDirectorUrlEnglish("ACME")}' then your username is 'ACME'")/>
-    <br/>
-    <br/>
-    <MudTooltip Text="Saved!" IsVisible="_showTooltip" ShowOnClick="true" ShowOnFocus="false" ShowOnHover="false">
-        <MudButton OnClick="OnSaveClick" EndIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Primary">Save</MudButton>
-    </MudTooltip>
-    <br/>
-    <br/>
+    <MudNavLink Href="https://cash.app/$MegaSchool1/12.00" Target="_blank" Icon="@Icons.Material.Filled.Payment">Pay Annual Subscription</MudNavLink>
 </MudStack>
 
 @code {
-    private const string SettingsKey = "settings";
-
-    private bool _showTooltip = false;
-
     private Repository.Model.Settings _settings = new();
-
-    public int IntValue { get; set; }
-    public double DoubleValue { get; set; }
-    public decimal DecimalValue { get; set; }
-    public int MonthlyBillAmount { get; set; }
+    private TeamMember? _selectedTeamMember;
 
     protected override async Task OnInitializedAsync()
     {
-        if (await localStorage.ContainKeyAsync(SettingsKey))
-        {
-            _settings = await localStorage.GetItemAsync<MegaSchool1.Repository.Model.Settings>(SettingsKey) ?? _settings;
-        }
+        _settings = await Repo.GetSettingsAsync();
+
+        _selectedTeamMember = _settings.TeamMembers.FirstOrDefault();
     }
 
-    private async Task OnSaveClick()
+    private async Task OnDeleteTeamMember(TeamMember teamMember)
     {
-        await localStorage.SetItemAsync(SettingsKey, _settings);
+        _settings.TeamMembers.Remove(teamMember);
 
-        _showTooltip = true;
-        base.StateHasChanged();
+        await Repo.SaveSettingsAsync(_settings);
+    }
 
-        await Task.Delay(3 * 1000);
+    private async Task OnTeamMemberAdded(TeamMember teamMember)
+    {
+        _settings.TeamMembers.Add(teamMember);
+        this.StateHasChanged();
 
-        _showTooltip = false;
-        base.StateHasChanged();
+        await Repo.SaveSettingsAsync(_settings);
+    }
+
+    private async Task OnTeamMemberEdited(TeamMember teamMember)
+    {
+        this.StateHasChanged();
+
+        await Repo.SaveSettingsAsync(_settings);
     }
 }

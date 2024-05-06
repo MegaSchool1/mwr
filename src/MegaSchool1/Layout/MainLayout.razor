@@ -64,7 +64,7 @@ else
                     {
                         @if (ProspectMode)
                         {
-                            <MudButton OnClick="OnShowMembershipEnrollmentDialog" EndIcon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Primary">Set Member ID</MudButton>
+                            <MudButton OnClick="ShowUsernameEditDialog" EndIcon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Primary">Set Member ID</MudButton>
                         }
                         else
                         {
@@ -76,7 +76,7 @@ else
                             else
                             {
                                 <MudStack Row="true">
-                                    <MudText Style="color:white;">Hello @_appState.UserName! <MudIconButton OnClick="OnShowMembershipEnrollmentDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
+                                    <MudText Style="color:white;">Hello @_appState.UserName! <MudIconButton OnClick="ShowUsernameEditDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
                                 </MudStack>
                             }
                         }
@@ -174,7 +174,7 @@ else
 
     private bool ProspectMode => _appState.UserName == null;
 
-    private void OnShowMembershipEnrollmentDialog()
+    private void ShowUsernameEditDialog()
     {
         var parameters = new DialogParameters<EditUsernameDialog> { { x => x.AppState, _appState } };
         var options = new DialogOptions() { NoHeader = true };

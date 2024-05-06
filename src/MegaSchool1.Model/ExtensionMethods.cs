@@ -1,6 +1,6 @@
 ﻿namespace MegaSchool1.Model;
 
-public static class ExtentionMethods
+public static class ExtensionMethods
 {
     public static VideoResource? Content(this VideoResource[] videos, Content content)
         => videos.FirstOrDefault(v => v.ContentId == content);

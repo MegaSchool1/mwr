@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Serialization;
-using MegaSchool1.Model;
 
-namespace MegaSchool1.Repository.Model;
+namespace MegaSchool1.Model.API;
 
 public class QMD
 {

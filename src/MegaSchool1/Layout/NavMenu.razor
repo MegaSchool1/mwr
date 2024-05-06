@@ -16,10 +16,7 @@
     <MudNavLink Href="/experimental" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Science">Experimental</MudNavLink>
     <MudNavLink Href="@ValidateUrl("https://us06web.zoom.us/j/85317466777")" Target="@ValidateTarget("_blank")" Icon="@Icons.Material.Filled.LiveHelp">Live Support via Zoom</MudNavLink>
     <MudNavLink OnClick="@(() => _showAppShareable = !ProspectMode)" Icon="@Icons.Material.Filled.MobileScreenShare">Share This App!</MudNavLink>
-    @if (!ProspectMode)
-    {
-        <MudNavLink Href="https://cash.app/$MegaSchool1/12.00" Target="_blank" Icon="@Icons.Material.Filled.Payment">Pay Annual Subscription</MudNavLink>
-    }
+    <MudNavLink Href="/settings" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Settings">Settings</MudNavLink>
     <MudDivider Class="my-2" />
     <MudStack Row="true">
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Href="https://github.com/MegaSchool1/megaschool1.github.io" Target="_blank" />

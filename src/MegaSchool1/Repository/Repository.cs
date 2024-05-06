@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using Blazored.LocalStorage;
 using MegaSchool1.Model;
+using MegaSchool1.Model.API;
 using MegaSchool1.Repository.Model;
 
 namespace MegaSchool1.Repository;

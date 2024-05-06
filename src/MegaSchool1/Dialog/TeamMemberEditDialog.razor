@@ -1,0 +1,99 @@
+﻿@using Blazored.LocalStorage
+@using FluentValidation
+@using MegaSchool1.Model
+@using MegaSchool1.Repository.Model
+@inject HttpClient Http
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @bind-IsValid="@_dataValid">
+            <MudStack Spacing="3">
+                <MudTextField T="string"
+                              Label="Sanity"
+                             />
+
+                <MudTextField @bind-Value="@TeamMember.Name"
+                              Label="Teammate Name"
+                              Placeholder="Teammate Name"
+                              Validation="@_teamMemberNameValidator"
+                              Required="true"
+                              RequiredError="Teammate name is required."
+                              Immediate="true"/>
+                <MudTextField @bind-Value="@TeamMember.MemberId"
+                              Label="@Label"
+                              Placeholder="QMD Member ID"
+                              HelperText="@HelperText"
+                              Validation="@(new Func<string, Task<string?>>(ValidateUsernameAsync))"
+                              Required="true"
+                              RequiredError="Member ID is required."
+                              Immediate="true"
+                              DebounceInterval="1.0"/>
+                <MudButton OnClick="OnClick" Disabled="@(!_dataValid)" EndIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Primary">Save</MudButton>
+            </MudStack>
+        </MudForm>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private readonly string HelperText = $"Tip: If your website is '{Constants.MarketingDirectorUrlEnglish("ScoobyDoo")}' then your username is 'ScoobyDoo'";
+    private readonly FluentValueValidator<string> _teamMemberNameValidator = new (x => x
+        .NotEmpty()
+        .Length(1, 100));
+
+    private bool _dataValid;
+
+    [CascadingParameter] 
+    private MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public string Label { get; set; } = "QMD Member ID";
+
+    [Parameter]
+    public TeamMember TeamMember { get; set; } = new();
+
+    [Parameter]
+    public Func<TeamMember, Task>? OnSave { get; set; }
+
+    private async Task OnClick()
+    {
+        if (_dataValid)
+        {
+            await (this.OnSave?.Invoke(this.TeamMember) ?? Task.CompletedTask);
+        }
+
+        this.MudDialog.Close();
+    }
+
+    private async Task<string?> ValidateUsernameAsync(string username)
+    {
+        _dataValid = false;
+        this.StateHasChanged();
+
+        var usernameValid = await Util.IsUsernameValidAsync(username, Http);
+
+        return usernameValid ? null : $"'{username}' is not a Qualified Marketing Director. ({HelperText})";
+    }
+
+    /// <summary>
+    /// A glue class to make it easy to define validation rules for single values using FluentValidation
+    /// You can reuse this class for all your fields, like for the credit card rules above.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class FluentValueValidator<T> : AbstractValidator<T>
+    {
+        public FluentValueValidator(Action<IRuleBuilderInitial<T, T>> rule)
+        {
+            rule(RuleFor(x => x));
+        }
+
+        private IEnumerable<string> ValidateValue(T arg)
+        {
+            var result = Validate(arg);
+            if (result.IsValid)
+                return new string[0];
+            return result.Errors.Select(e => e.ErrorMessage);
+        }
+
+        public Func<T, IEnumerable<string>> Validation => ValidateValue;
+    }
+}

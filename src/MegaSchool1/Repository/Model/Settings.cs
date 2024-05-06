@@ -8,6 +8,9 @@ public class Settings
     [JsonPropertyName("username")]
     public string Username { get; set; } = default!;
 
+    [JsonPropertyName("team_members")]
+    public List<TeamMember> TeamMembers { get; set; } = [];
+
     [JsonPropertyName("fast_start_checklist")]
     public FastStartChecklist FastStartChecklist { get; set; } = new();
 
