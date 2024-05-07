@@ -10,63 +10,66 @@
 @inject Repository.Repository Repo
 @inject ILocalStorageService LocalStorage
 
+<TeamMemberPicker Description="QMD" SelectedTeamMemberChanged="SelectedTeamMemberChanged"/>
+<br/>
+<br/>
 <MudDropContainer T="Prospect" @ref="_dropContainer" Items="@_prospects" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="OnProspectStatusChanged" Class="d-flex flex-grow-1 overflow-x-scroll">
-	<ChildContent>
-		@foreach (var item in _sections)
-		{
-			<MudPaper Elevation="0" Width="224px" MinHeight="400px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
-				<MudToolBar DisableGutters="true">
-					<MudStack Row="true">
-						<MudSpacer/>
-						<MudText Typo="Typo.subtitle1" Align="Align.Center"><b>@((MarkupString)item.DisplayName.Replace(Environment.NewLine, "<br/>"))</b></MudText>
-						<MudSpacer />
-					</MudStack>
-					@if(false)
-					{
-						<MudSpacer />
-						<MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
-							<MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@( () => DeleteSection(item))">Delete Section</MudButton>
-							<MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Edit">Rename Section</MudButton>
-						</MudMenu>
-					}
-				</MudToolBar>
-				@if (item.AllowNewTasks)
-				{
-					@if (item.NewTaskOpen)
-					{
-						<MudPaper Elevation="25" Class="pa-2 rounded-lg">
-							<MudTextField @bind-Value="item.NewTaskName" Placeholder="Prospect" DisableUnderLine="true" Margin="Margin.Dense" Class="mx-2 mt-n2"></MudTextField>
-							<MudButton OnClick="@(() => AddProspect(item))" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add Prospect</MudButton>
-						</MudPaper>
-					}
-					else
-					{
-						<MudButton OnClick="@(() => item.NewTaskOpen = !item.NewTaskOpen)" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" FullWidth="true" Class="rounded-lg py-2">Add Prospect</MudButton>
-					}
-				}
-				<MudDropZone T="Prospect" Identifier="@item.Id" AllowReorder="true" Class="mud-height-full" />
-			</MudPaper>
-		}
-		@if(false)
-		{
-			<MudPaper Class="pa-4" Elevation="0" Width="224px">
-				@if (_addSectionOpen)
-				{
-					<MudPaper Elevation="0" Width="224px" Class="pa-4 d-flex flex-column mud-background-gray rounded-lg">
-						<EditForm Model="@newSectionModel" OnValidSubmit="OnValidSectionSubmit">
-							<DataAnnotationsValidator />
-							<MudTextField @bind-Value="newSectionModel.Name" For="@(() => newSectionModel.Name)" Placeholder="New Section" DisableUnderLine="true"></MudTextField>
-							<MudButton ButtonType="ButtonType.Submit" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add Section</MudButton>
-						</EditForm>
-					</MudPaper>
-				}
-				else
-				{
-					<MudButton OnClick="OpenAddNewSection" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Class="rounded-lg py-2" FullWidth="true">Add Section</MudButton>
-				}
-			</MudPaper>
-		}
-	</ChildContent>
+    <ChildContent>
+        @foreach (var item in _sections)
+        {
+            <MudPaper Elevation="0" Width="224px" MinHeight="400px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
+                <MudToolBar DisableGutters="true">
+                    <MudStack Row="true">
+                        <MudSpacer/>
+                        <MudText Typo="Typo.subtitle1" Align="Align.Center"><b>@((MarkupString)item.DisplayName.Replace(Environment.NewLine, "<br/>"))</b></MudText>
+                        <MudSpacer/>
+                    </MudStack>
+                    @if (false)
+                    {
+                        <MudSpacer/>
+                        <MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
+                            <MudButton Size="Size.Small" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteSection(item))">Delete Section</MudButton>
+                            <MudButton Size="Size.Small" Color="Color.Default" StartIcon="@Icons.Material.Rounded.Edit">Rename Section</MudButton>
+                        </MudMenu>
+                    }
+                </MudToolBar>
+                @if (item.AllowNewTasks)
+                {
+                    @if (item.NewTaskOpen)
+                    {
+                        <MudPaper Elevation="25" Class="pa-2 rounded-lg">
+                            <MudTextField @bind-Value="item.NewTaskName" Placeholder="Prospect" DisableUnderLine="true" Margin="Margin.Dense" Class="mx-2 mt-n2"></MudTextField>
+                            <MudButton OnClick="@(() => AddProspect(item))" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add Prospect</MudButton>
+                        </MudPaper>
+                    }
+                    else
+                    {
+                        <MudButton OnClick="@(() => item.NewTaskOpen = !item.NewTaskOpen)" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" FullWidth="true" Class="rounded-lg py-2">Add Prospect</MudButton>
+                    }
+                }
+                <MudDropZone T="Prospect" Identifier="@item.Id" AllowReorder="true" Class="mud-height-full"/>
+            </MudPaper>
+        }
+        @if (false)
+        {
+            <MudPaper Class="pa-4" Elevation="0" Width="224px">
+                @if (_addSectionOpen)
+                {
+                    <MudPaper Elevation="0" Width="224px" Class="pa-4 d-flex flex-column mud-background-gray rounded-lg">
+                        <EditForm Model="@newSectionModel" OnValidSubmit="OnValidSectionSubmit">
+                            <DataAnnotationsValidator/>
+                            <MudTextField @bind-Value="newSectionModel.Name" For="@(() => newSectionModel.Name)" Placeholder="New Section" DisableUnderLine="true"></MudTextField>
+                            <MudButton ButtonType="ButtonType.Submit" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add Section</MudButton>
+                        </EditForm>
+                    </MudPaper>
+                }
+                else
+                {
+                    <MudButton OnClick="OpenAddNewSection" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Class="rounded-lg py-2" FullWidth="true">Add Section</MudButton>
+                }
+            </MudPaper>
+        }
+    </ChildContent>
 	<ItemRenderer>
         <MudPaper Elevation="25" Class="pa-4 rounded-lg my-3">
             <MudStack>
@@ -107,9 +110,29 @@
 	private MudDropContainer<Prospect> _dropContainer;
 	private bool _addSectionOpen;
 	private (Prospect Prospect, MudDialog ProspectEdit, bool ValidEdit) _prospectEditDialog;
+    private Settings _settings = new();
+    private TeamMember? _selectedTeamMember;
 
 	[Parameter]
 	public Pipeline<TPipeline> Pipeline { get; set; }
+
+    [Parameter]
+    public Func<Task>? OnSave { get; set; }
+
+    private async Task SelectedTeamMemberChanged(TeamMember teamMember)
+    {
+        _selectedTeamMember = teamMember;
+
+        // load prospects
+        var selectedUserData = await Repo.GetUserDataAsync();
+
+        if (_selectedTeamMember.MemberId != AppState?.UserName)
+        {
+            selectedUserData = selectedUserData?.TeamData.FirstOrDefault(t => t.Member.MemberId == _selectedTeamMember.MemberId)?.Data;
+        }
+        
+        this.LoadProspects(selectedUserData);
+    }
 
     private async Task OnProspectDelete(Prospect deleted)
     {
@@ -148,6 +171,15 @@
 
         // load prospects
         var userData = await Repo.GetUserDataAsync();
+        this.LoadProspects(userData);
+
+		_dropContainer.Refresh();
+	}
+
+    private void LoadProspects(UserData? userData)
+    {
+        _prospects.Clear();
+
         if (userData?.Prospects.ContainsKey(this.Pipeline.Strategy) is true)
         {
             _prospects.AddRange(userData.Prospects[this.Pipeline.Strategy]);
@@ -157,37 +189,57 @@
             _prospects.AddRange(
             [
                 new() { Name = "W2 & No Biz", Order = 0, Status = _sections.First().Id },
-			    new() { Name = "Has Vehicle", Order = 1, Status = _sections.First().Id },
-			    new() { Name = "Has Cell", Order = 2, Status = _sections.First().Id },
-			    new() { Name = "Takes Vacations", Order = 3, Status = _sections.First().Id },
-			    new() { Name = "Has Kids 7-17", Order = 4, Status = _sections.First().Id },
-			    new() { Name = "Money Motivated", Order = 5, Status = _sections.First().Id },
-			    new() { Name = "Positive & Wants Better", Order = 6, Status = _sections.First().Id },
-			    new() { Name = "Would Kill the Biz", Order = 7, Status = _sections.First().Id },
-			    new() { Name = "Mad if you DIDN'T Share", Order = 8, Status = _sections.First().Id },
-			    new() { Name = "Friends", Order = 9, Status = _sections.First().Id },
-			    new() { Name = "Co-Workers", Order = 10, Status = _sections.First().Id },
-			    new() { Name = "Family Members", Order = 11, Status = _sections.First().Id },
-			    new() { Name = "Friends of Sig Other", Order = 12, Status = _sections.First().Id },
-			    new() { Name = "Referrals", Order = 13, Status = _sections.First().Id },
+                new() { Name = "Has Vehicle", Order = 1, Status = _sections.First().Id },
+                new() { Name = "Has Cell", Order = 2, Status = _sections.First().Id },
+                new() { Name = "Takes Vacations", Order = 3, Status = _sections.First().Id },
+                new() { Name = "Has Kids 7-17", Order = 4, Status = _sections.First().Id },
+                new() { Name = "Money Motivated", Order = 5, Status = _sections.First().Id },
+                new() { Name = "Positive & Wants Better", Order = 6, Status = _sections.First().Id },
+                new() { Name = "Would Kill the Biz", Order = 7, Status = _sections.First().Id },
+                new() { Name = "Mad if you DIDN'T Share", Order = 8, Status = _sections.First().Id },
+                new() { Name = "Friends", Order = 9, Status = _sections.First().Id },
+                new() { Name = "Co-Workers", Order = 10, Status = _sections.First().Id },
+                new() { Name = "Family Members", Order = 11, Status = _sections.First().Id },
+                new() { Name = "Friends of Sig Other", Order = 12, Status = _sections.First().Id },
+                new() { Name = "Referrals", Order = 13, Status = _sections.First().Id },
             ]);
         }
 
-		_dropContainer.Refresh();
-		_dropContainer.Refresh();
-	}
+        _dropContainer.Refresh();
+    }
 
     private async Task SaveAsync()
     {
         var userData = await Repo.GetUserDataAsync() ?? new();
 
-        if (!userData.Prospects.ContainsKey(this.Pipeline.Strategy))
+        if (_selectedTeamMember?.MemberId == AppState?.UserName)
         {
-			userData.Prospects.Add(this.Pipeline.Strategy, []);
-        }
+            if (!userData.Prospects.ContainsKey(this.Pipeline.Strategy))
+            {
+                userData.Prospects.Add(this.Pipeline.Strategy, []);
+            }
 
-        userData.Prospects[this.Pipeline.Strategy].Clear();
-        userData.Prospects[this.Pipeline.Strategy].AddRange(_prospects);
+            userData.Prospects[this.Pipeline.Strategy].Clear();
+            userData.Prospects[this.Pipeline.Strategy].AddRange(_prospects);
+        }
+        else
+        {
+            var teamMemberData = userData.TeamData.FirstOrDefault(t => t.Member.MemberId == _selectedTeamMember?.MemberId);
+            if (teamMemberData == null)
+            {
+                teamMemberData = new() { Member = _selectedTeamMember };
+                userData.TeamData.Add(teamMemberData);
+            }
+
+            if (!teamMemberData.Data.Prospects.ContainsKey(this.Pipeline.Strategy))
+            {
+                teamMemberData.Data.Prospects.Add(this.Pipeline.Strategy, []);
+            }
+
+            teamMemberData.Data.Prospects[this.Pipeline.Strategy].Clear();
+            teamMemberData.Data.Prospects[this.Pipeline.Strategy].AddRange(_prospects);
+
+        }
 
         await Repo.SaveUserDataAsync(userData);
     }

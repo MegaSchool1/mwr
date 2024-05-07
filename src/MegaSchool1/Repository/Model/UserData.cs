@@ -7,4 +7,7 @@ public class UserData
 {
     [JsonPropertyName("prospects")]
     public Dictionary<Strategy, List<Prospect>> Prospects { get; set; } = [];
+
+    [JsonPropertyName("team_data")]
+    public List<TeamMemberData> TeamData { get; set; } = [];
 }

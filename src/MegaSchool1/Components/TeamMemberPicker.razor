@@ -1,0 +1,59 @@
+﻿@inherits Components.ComponentBase
+@using MegaSchool1.Repository.Model
+@inject Repository.Repository Repo
+
+<Centered>
+    <BinaryChoice Description="@Description" FirstChoiceLabel="Me" SecondChoiceLabel="My Team" SelectedChoiceChanged="OnSelectedChoiceChanged">
+        <SecondChoiceContent>
+            <MudSelect T="TeamMember" Label="Team Members" @bind-Value="SelectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)" Variant="Variant.Outlined" Style="width:300px;">
+                @foreach (var teamMember in _settings.TeamMembers)
+                {
+                    <MudSelectItem Value="@teamMember">
+                        <MudStack Row="true">
+                            <MudText>@teamMember.Name</MudText>
+                            <MudSpacer />
+                        </MudStack>
+                    </MudSelectItem>
+                }
+            </MudSelect>
+        </SecondChoiceContent>
+    </BinaryChoice>
+</Centered>
+
+@code {
+    private Settings _settings = new();
+    private TeamMember? _user;
+
+    [Parameter]
+    public string Description { get; set; } = "My Description";
+
+    private TeamMember? _selectedTeamMember;
+    [Parameter]
+    public TeamMember? SelectedTeamMember
+    {
+        get => _selectedTeamMember;
+        set
+        {
+            _selectedTeamMember = value;
+            _ = SelectedTeamMemberChanged.InvokeAsync(_selectedTeamMember);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<TeamMember> SelectedTeamMemberChanged { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _settings = await Repo.GetSettingsAsync();
+
+        _user = new TeamMember() { Name = "Me", MemberId = AppState?.UserName! };
+
+        this.SelectedTeamMember = _user;
+    }
+
+    private void OnSelectedChoiceChanged(BinaryChoice.Choice choice)
+    {
+        this.SelectedTeamMember = choice == BinaryChoice.Choice.First 
+            ? _user : (_settings.TeamMembers.FirstOrDefault() ?? _user);
+    }
+}

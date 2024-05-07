@@ -3,7 +3,7 @@
 <MudText Align="Align.Center">@Description</MudText>
 <MudStack Row="true">
     <MudSpacer />
-    <MudRadioGroup @bind-Value="_selectedChoice">
+    <MudRadioGroup @bind-Value="SelectedChoice">
         <MudRadio Value="Choice.First" Color="Color.Primary" Size="Size.Small">@FirstChoiceLabel</MudRadio>
         <MudRadio Value="Choice.Second" Color="Color.Secondary" Size="Size.Medium">@SecondChoiceLabel</MudRadio>
     </MudRadioGroup>
@@ -12,18 +12,16 @@
 <br />
 <MudDivider />
 <br />
-@if(_selectedChoice == Choice.First)
+@if(SelectedChoice == Choice.First)
 {
     @FirstChoiceContent
 }
-@if (_selectedChoice == Choice.Second)
+@if (SelectedChoice == Choice.Second)
 {
     @SecondChoiceContent
 }
 
 @code {
-    private Choice _selectedChoice = Choice.First;
-
     [Parameter]
     public string Description { get; set; } = "My Binary Choice";
 
@@ -39,7 +37,22 @@
     [Parameter]
     public RenderFragment? SecondChoiceContent { get; set; }
 
-    private enum Choice
+    private Choice _selectedChoice = Choice.First;
+    [Parameter]
+    public Choice SelectedChoice
+    {
+        get => _selectedChoice;
+        set
+        {
+            _selectedChoice = value;
+            _ = SelectedChoiceChanged.InvokeAsync(_selectedChoice);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<Choice> SelectedChoiceChanged { get; set; }
+
+    public enum Choice
     {
         First = 0,
         Second = 1,
