@@ -2,7 +2,7 @@
 
 namespace MegaSchool1.Repository.Model;
 
-public class TeamMember
+public record TeamMember
 {
     [JsonPropertyName("name")]
     public string Name { get; set; } = default!;

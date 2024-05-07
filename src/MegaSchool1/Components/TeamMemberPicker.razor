@@ -2,23 +2,26 @@
 @using MegaSchool1.Repository.Model
 @inject Repository.Repository Repo
 
-<Centered>
-    <BinaryChoice Description="@Description" FirstChoiceLabel="Me" SecondChoiceLabel="My Team" SelectedChoiceChanged="OnSelectedChoiceChanged">
-        <SecondChoiceContent>
-            <MudSelect T="TeamMember" Label="Team Members" @bind-Value="SelectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)" Variant="Variant.Outlined" Style="width:300px;">
-                @foreach (var teamMember in _settings.TeamMembers)
-                {
-                    <MudSelectItem Value="@teamMember">
-                        <MudStack Row="true">
-                            <MudText>@teamMember.Name</MudText>
-                            <MudSpacer />
-                        </MudStack>
-                    </MudSelectItem>
-                }
-            </MudSelect>
-        </SecondChoiceContent>
-    </BinaryChoice>
-</Centered>
+@if (_settings.TeamMembers.Any())
+{
+    <Centered>
+        <BinaryChoice Description="@Description" FirstChoiceLabel="Me" SecondChoiceLabel="My Team" SelectedChoiceChanged="OnSelectedChoiceChanged">
+            <SecondChoiceContent>
+                <MudSelect T="TeamMember" Label="Team Members" @bind-Value="SelectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)" Variant="Variant.Outlined" Style="width:300px;">
+                    @foreach (var teamMember in _settings.TeamMembers)
+                    {
+                        <MudSelectItem Value="@teamMember">
+                            <MudStack Row="true">
+                                <MudText>@teamMember.Name</MudText>
+                                <MudSpacer />
+                            </MudStack>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </SecondChoiceContent>
+        </BinaryChoice>
+    </Centered>
+}
 
 @code {
     private Settings _settings = new();
@@ -34,8 +37,12 @@
         get => _selectedTeamMember;
         set
         {
-            _selectedTeamMember = value;
-            _ = SelectedTeamMemberChanged.InvokeAsync(_selectedTeamMember);
+            if (_selectedTeamMember != value)
+            {
+                _selectedTeamMember = value;
+
+                _ = SelectedTeamMemberChanged.InvokeAsync(_selectedTeamMember);
+            }
         }
     }
 
