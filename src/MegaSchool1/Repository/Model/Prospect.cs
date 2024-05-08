@@ -14,6 +14,9 @@ public class Prospect
     [JsonPropertyName("status")]
     public string? Status { get; set; }
 
+    [JsonPropertyName("notes")]
+    public string? Notes { get; set; }
+
     [JsonPropertyName("order")]
     public int Order { get; set; }
 }

@@ -94,11 +94,18 @@
                 <MudTextField @bind-Value="@_prospectEditDialog.Prospect.Name"
                               Label="Prospect Name"
                               Placeholder="Your prospect's name"
+                              Variant="Variant.Outlined"
                               Validation="@(new Func<string, string?>(ValidateProspectName))"
                               Required="true"
                               RequiredError="Prospect username is required."
                               Immediate="true"
                               DebounceInterval="1.0"/>
+                <MudTextField @bind-Value="@_prospectEditDialog.Prospect.Notes"
+                              Label="Notes"
+                              Placeholder="Notes"
+                              Variant="Variant.Outlined"
+                              Lines="4"
+                              Immediate="true"/>
             </MudStack>
         </MudForm>
     </DialogContent>
