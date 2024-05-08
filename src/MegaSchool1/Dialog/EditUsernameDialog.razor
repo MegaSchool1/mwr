@@ -1,6 +1,5 @@
 ﻿@using Blazored.LocalStorage
 @using MegaSchool1.Model
-@inject ILocalStorageService LocalStorage
 @inject Repository.Repository Repo
 @inject HttpClient Http
 
@@ -44,7 +43,7 @@
         get => _appState;
         set
         {
-            _username = value?.UserName;
+            _username = value?.User?.MemberId;
 
             _appState = value;
         }
@@ -68,7 +67,7 @@
 
         await Repo.SaveSettingsAsync(settings);
 
-        this.AppState!.UserName = _username!;
+        this.AppState!.User = new() { Name = "Me", MemberId = _username! };
         this.StateHasChanged();
 
         MainLayout.Refresh();

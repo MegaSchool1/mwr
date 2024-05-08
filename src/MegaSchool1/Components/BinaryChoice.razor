@@ -44,8 +44,11 @@
         get => _selectedChoice;
         set
         {
-            _selectedChoice = value;
-            _ = SelectedChoiceChanged.InvokeAsync(_selectedChoice);
+            if (_selectedChoice != value)
+            {
+                _selectedChoice = value;
+                _ = SelectedChoiceChanged.InvokeAsync(_selectedChoice);
+            }
         }
     }
 

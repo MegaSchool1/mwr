@@ -5,7 +5,7 @@
 <MudCard>
     <MudCardHeader>
         <CardHeaderContent>
-            <MudText @onclick="@(() => _ = this.CopyTextToClipboardAsync($"{NavigationManager.BaseUri}en/promo/{AppState?.UserName}/{Id}"))" Typo="Typo.h6">@((MarkupString)Header.Replace(Environment.NewLine, "<br/>"))</MudText>
+            <MudText @onclick="@(() => _ = this.CopyTextToClipboardAsync($"{NavigationManager.BaseUri}en/promo/{AppState?.User?.MemberId}/{Id}"))" Typo="Typo.h6">@((MarkupString)Header.Replace(Environment.NewLine, "<br/>"))</MudText>
         </CardHeaderContent>
     </MudCardHeader>
     <Centered><MudImage Src="@ImageUri" Fluid="true" /></Centered>

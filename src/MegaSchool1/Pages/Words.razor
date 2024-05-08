@@ -2,6 +2,7 @@
 @using MegaSchool1.Components
 @using MegaSchool1.Dialog
 @using MegaSchool1.Model
+@using MegaSchool1.Repository.Model
 @inherits Components.ComponentBase
 @inject IDialogService Dialog
 @inject UISettings UI
@@ -46,7 +47,7 @@
                                     <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
                                     <MudStack Row="true">
                                         <MudText>#1: </MudText>
-                                        <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, { x => x.MemberId, AppState!.UserName! } }, new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
+                                        <MudButton OnClick="@(() => _signUpDialog = (true, (string memberId) => Constants.JoinMakeWealthReal(memberId, Language.English)))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
                                     </MudStack>
                                     <MudStack Row="true">
                                         <MudText>#2: </MudText>
@@ -86,7 +87,7 @@
                                     <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
                                     <MudStack Row="true">
                                         <MudText>#1: </MudText>
-                                        <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, { x => x.MemberId, AppState!.UserName! } }, new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
+                                        <MudButton OnClick="@(() => _signUpDialog = (true, (string memberId) => Constants.JoinMakeWealthReal(memberId, Language.English)))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
                                     </MudStack>
                                     <MudStack Row="true">
                                         <MudText>#2: </MudText>
@@ -148,7 +149,7 @@
                                 <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
                                 <MudStack Row="true">
                                     <MudSpacer />
-                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, {x => x.MemberId, AppState!.UserName! } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
+                                    <MudButton OnClick="@(() => _signUpDialog = (true, (string memberId) => Constants.JoinMakeWealthReal(memberId, Language.English)))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
                                     <MudSpacer />
                                 </MudStack>
                             </FirstChoiceContent>
@@ -181,7 +182,7 @@
                                 <MudText Align="Align.Center">"Great, here's how you take the challenge!"<br />@Constants.PointingDownEmoji</MudText>
                                 <MudStack Row="true">
                                     <MudSpacer />
-                                    <MudButton OnClick="@(() => Dialog.Show<SignUpDialog>("72-Hour Money Challenge", new DialogParameters<SignUpDialog>() { { x => x.Url, Constants.BusinessEnrollmentUrl(AppState!.UserName!) }, {x => x.MemberId, AppState!.UserName! } } , new() { NoHeader = true }))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
+                                    <MudButton OnClick="@(() => _signUpDialog = (true, (string memberId) => Constants.JoinMakeWealthReal(memberId, Language.English)))" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Share Membership Sign-up Link</MudButton>
                                     <MudSpacer />
                                 </MudStack>
                             </FirstChoiceContent>
@@ -302,6 +303,18 @@
     </DialogContent>
 </MudDialog>
 
+<MudDialog @bind-IsVisible="_signUpDialog.Show">
+    <DialogContent>
+        <TeamMemberPicker Description="Sign Up Under:" @bind-SelectedTeamMember="_selectedTeamMember" User="AppState.User">
+            <ShareableVideo Description="Take the 72-Hour Money Challenge!"
+                            Url="@_signUpDialog.Url(_selectedTeamMember?.MemberId)"
+                            Tooltip="Shareable copied!"
+                            TextToCopy="@($"Take the 72-Hour Money Challenge!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{_signUpDialog.Url(_selectedTeamMember?.MemberId)}")"
+                            ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
+        </TeamMemberPicker>
+    </DialogContent>
+</MudDialog>
+
 @code {
     private bool _show72HourMoneyChallengeVideo;
     private bool _showFaqVideo;
@@ -311,16 +324,13 @@
     private string _72Hr1On1RevenueSharingImageUrl = Constants.GetImageUrl(Image.RevenueShare1On1English);
     private bool _showListenAndAsk;
     private StrategyChooser? _strategyChooser;
+    private TeamMember? _selectedTeamMember;
+    private (bool Show, Func<string, string> Url) _signUpDialog;
 
     private Strategy CurrentStrategy => _strategyChooser!.GetSelectedStrategy();
 
-    private string GetNextMembershipQnAAnchor()
+    protected override void OnInitialized()
     {
-        var time = new TimeOnly(20, 0);
-
-        var nextMondayEvent = GetNextEvent(DayOfWeek.Monday, time, Constants.DefaultTimeZone);
-        var nextThursdayEvent = GetNextEvent(DayOfWeek.Thursday, time, Constants.DefaultTimeZone);
-
-        return (nextMondayEvent < nextThursdayEvent ? "mondays-megaschool-overview" : "thursdays-megaschool-overview");
+        _selectedTeamMember = AppState?.User;
     }
 }

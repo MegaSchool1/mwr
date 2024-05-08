@@ -126,7 +126,7 @@
         // load prospects
         var selectedUserData = await Repo.GetUserDataAsync();
 
-        if (_selectedTeamMember.MemberId != AppState?.UserName)
+        if (_selectedTeamMember != AppState?.User)
         {
             selectedUserData = selectedUserData?.TeamData.FirstOrDefault(t => t.Member.MemberId == _selectedTeamMember.MemberId)?.Data;
         }
@@ -212,7 +212,7 @@
     {
         var userData = await Repo.GetUserDataAsync() ?? new();
 
-        if (_selectedTeamMember?.MemberId == AppState?.UserName)
+        if (_selectedTeamMember?.MemberId == AppState?.User?.MemberId)
         {
             if (!userData.Prospects.ContainsKey(this.Pipeline.Strategy))
             {

@@ -1,8 +1,10 @@
-﻿namespace MegaSchool1;
+﻿using MegaSchool1.Repository.Model;
+
+namespace MegaSchool1;
 
 public class AppState
 {
-    public string? UserName { get; set; }
+    public TeamMember? User { get; set; }
 
     public bool AppIsInstallable { get; set; }
 }
