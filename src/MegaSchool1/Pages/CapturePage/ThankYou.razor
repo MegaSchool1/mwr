@@ -1,0 +1,13 @@
+﻿@page "/thankyou/{MemberId}/{ReferralId}"
+@inherits CapturePageBase
+@using MegaSchool1.Components
+
+<PageTitle>Thank You!</PageTitle>
+
+<MudStack Spacing="3">
+    <MudText Typo="Typo.h2" Align="Align.Center">Thank You!</MudText>
+    <Centered><EmbeddedVideo YouTube="LtNcG_jxW7E" /></Centered>
+    <br />
+    <MudText Align="Align.Center">Thanks again!  For more info, let's connect.</MudText>
+    <MudText Align="Align.Center">Text '@ReferralId' to @QMDPhoneNumber</MudText>
+</MudStack>
