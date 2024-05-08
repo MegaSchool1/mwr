@@ -9,4 +9,7 @@ public record TeamMember
 
     [JsonPropertyName("member_id")]
     public string MemberId { get; set; } = default!;
+
+    [JsonPropertyName("notes")]
+    public string? Notes { get; set; }
 }

@@ -11,6 +11,7 @@
                 <MudTextField @bind-Value="@TeamMember.Name"
                               Label="Teammate Name"
                               Placeholder="Teammate Name"
+                              Variant="Variant.Outlined"
                               Validation="@_teamMemberNameValidator"
                               Required="true"
                               RequiredError="Teammate name is required."
@@ -19,11 +20,18 @@
                               Label="@Label"
                               Placeholder="QMD Member ID"
                               HelperText="@HelperText"
+                              Variant="Variant.Outlined"
                               Validation="@(new Func<string, Task<string?>>(ValidateUsernameAsync))"
                               Required="true"
                               RequiredError="Member ID is required."
                               Immediate="true"
                               DebounceInterval="1.0"/>
+                <MudTextField @bind-Value="@TeamMember.Notes"
+                              Placeholder="Notes"
+                              Label="Notes"
+                              Variant="Variant.Outlined"
+                              Lines="4"
+                              Immediate="true"/>
                 <MudButton OnClick="OnSaveClick" Disabled="@(!_dataValid)" EndIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Primary">Save</MudButton>
             </MudStack>
         </MudForm>
