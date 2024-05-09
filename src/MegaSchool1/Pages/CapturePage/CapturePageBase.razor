@@ -9,6 +9,8 @@
     protected const string English = "en";
     protected const string Spanish = "es";
 
+    private const string DefaultPhoneNumber = "2243109357";
+
     private QMD? _qmd;
 
     [Parameter]
@@ -20,7 +22,9 @@
     [Parameter]
     public string Language { get; set; } = English;
 
-    protected string QMDPhoneNumber => Regex.Replace(_qmd?.PhoneNumber ?? "224-310-9357", @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3");
+    protected string QMDPhoneNumber => Regex.Replace(NormalizePhoneNumber(_qmd?.PhoneNumber ?? DefaultPhoneNumber), @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3");
+
+    private static string NormalizePhoneNumber(string phoneNumber) => phoneNumber.Length == 11 ? phoneNumber.Substring(1) : phoneNumber;
 
     protected override async Task OnInitializedAsync()
     {

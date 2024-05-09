@@ -1,12 +1,14 @@
-﻿@page "/thankyou/{MemberId}/{ReferralId}"
+﻿@page "/{Language}/thankyou/{MemberId}/{ReferralId}"
 @inherits CapturePageBase
 @using MegaSchool1.Components
+@using MegaSchool1.Model
+@inject UISettings UI
 
-<PageTitle>Thank You!</PageTitle>
+<PageTitle>@(Language == English ? "Thank You!" : "¡Gracias!")</PageTitle>
 
 <MudStack Spacing="3">
-    <MudText Typo="Typo.h2" Align="Align.Center">Thank You!</MudText>
-    <Centered><EmbeddedVideo YouTube="LtNcG_jxW7E" /></Centered>
+    <MudText Typo="Typo.h2" Align="Align.Center">@(Language == English ? "Thank You!" : "¡Gracias!")</MudText>
+    <Centered><EmbeddedVideo YouTube="@(Language == English ? UI.EnglishLocale[Content.MoneyChallenge]!.Id : UI.SpanishLocale[Content.MoneyChallenge]!.Id)" /></Centered>
     <br />
     <MudText Align="Align.Center">Thanks again!  For more info, let's connect.</MudText>
     <MudText Align="Align.Center">Text '@ReferralId' to @QMDPhoneNumber</MudText>
