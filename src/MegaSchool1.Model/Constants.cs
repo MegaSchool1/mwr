@@ -169,7 +169,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     public static readonly string MinimalistYouTubeVideoLinkPrefix = $"{MinimalistVideoLinkPrefix}?y=";
     public const string AppInstallTutorialUrl = "https://video.wixstatic.com/video/5f35ec_33bda4fc60fd41cf8c3a09924f204746/480p/mp4/file.mp4";
 
-    private static readonly DateTimeOffset PayItForwardPromoExpiration = new(2024, 5, 7, 11, 59, 59, NewYorkTimeZone.BaseUtcOffset);
+    private static readonly DateTimeOffset PayItForwardPromoExpiration = new(2024, 5, 15, 11, 59, 59, LosAngelesTimeZone.BaseUtcOffset);
 
     public static string BusinessEnrollmentUrl(string username) => $"https://user.mwrfinancial.com/{username}/join";
     public static string MembershipEnrollmentUrl(string username) => $"https://user.mwrfinancial.com/{username}/signup-financialedge";
