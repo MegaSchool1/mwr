@@ -4,10 +4,10 @@
 @using MegaSchool1.Model
 @inject UISettings UI
 
-<PageTitle>@(Language == English ? "Thank You!" : "¡Gracias!")</PageTitle>
+<PageTitle>¡Gracias!</PageTitle>
 
 <MudStack Spacing="3">
-    <MudText Typo="Typo.h2" Align="Align.Center">@(Language == English ? "Thank You!" : "¡Gracias!")</MudText>
+    <MudText Typo="Typo.h2" Align="Align.Center">¡Gracias!</MudText>
     <Centered><EmbeddedVideo YouTube="@(Language == English ? UI.EnglishLocale[Content.MoneyChallenge]!.Id : UI.SpanishLocale[Content.MoneyChallenge]!.Id)" /></Centered>
     <br />
     <MudText Align="Align.Center">Thanks again!  For more info, let's connect.</MudText>
