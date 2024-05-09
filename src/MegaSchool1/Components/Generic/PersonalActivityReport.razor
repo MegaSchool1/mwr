@@ -10,7 +10,7 @@
 @inject Repository.Repository Repo
 @inject ILocalStorageService LocalStorage
 
-<TeamMemberPicker Description="QMD" SelectedTeamMemberChanged="SelectedTeamMemberChanged"/>
+<TeamMemberPicker Description="Report For:" SelectedTeamMemberChanged="SelectedTeamMemberChanged"/>
 <br/>
 <br/>
 <MudDropContainer T="Prospect" @ref="_dropContainer" Items="@_prospects" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="OnProspectStatusChanged" Class="d-flex flex-grow-1 overflow-x-scroll">

@@ -1,0 +1,41 @@
+﻿@page "/{Language}/{ContentId}/{MemberId}/{ReferralId}"
+@inherits CapturePageBase
+@using MegaSchool1.Components
+@using MegaSchool1.Model
+@inject UISettings UI
+
+<PageTitle>MWR 72-Hour Money Challenge!</PageTitle>
+
+<MudStack Style="height:100%;">
+    <Centered><MudImage Src="@GetImageUrl(ContentValue)" Fluid="true" Width="350" /></Centered>
+    <br/>
+    <Centered>
+        @if (this.Video?.Platform is VideoPlatform.YouTube)
+        {
+            <EmbeddedVideo YouTube="@Video?.Id" />
+        }
+        @if (this.Video?.Platform is VideoPlatform.Vimeo)
+        {
+            <EmbeddedVideo Vimeo="@((Video?.Id, Video?.Hash))" />
+        }
+    </Centered>
+    <br />
+    <br />
+    <Centered><MudText Style="color:white;" Align="Align.Center">For questions or sign-up information, text<br /><br />'@ReferralId' to @QMDPhoneNumber</MudText></Centered>
+    <MudSpacer/>
+</MudStack>
+
+@code {
+    [Parameter]
+    public string ContentId { get; set; } = Content.MoneyChallenge.ToString();
+
+    private Content ContentValue => Enum.Parse<Content>(this.ContentId);
+
+    private VideoResource? Video => this.Language == Spanish ? UI.SpanishLocale[ContentValue] : UI.EnglishLocale[ContentValue];
+
+    private static string GetImageUrl(Content content) => content switch
+    {
+        Content.HealthShare or Content.PreciousMetals or Content.FaithAndFinance or Content.NextLevelStrategies or Content.KeysToHomeOwnership => Constants.GetImageUrl(Enum.Parse<Image>(content.ToString())),
+        _ => "/images/72-hour-money-challenge.png",
+    };
+}
