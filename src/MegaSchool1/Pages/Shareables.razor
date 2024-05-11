@@ -395,6 +395,20 @@
                                         
                                         SpanishTextToCopy="@($"¡Gracias! \ud83d\ude42{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{NavigationManager.BaseUri}es/thankyou/{_selectedTeamMember?.MemberId}/CONNECT")"
                                         SpanishTooltip="Español shareable copied!" />
+            <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
+                <ShareableVideo Description="TikTok Influencer - 72-Hour Money Challenge"
+                                Url="@Constants.GetCapturePage(Content.MichelleEliseFinancialLiteracy, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")"
+                                Tooltip="Copied!"
+                                TextToCopy="@($"TikTok 72-Hour Money Challenge!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.MichelleEliseFinancialLiteracy, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")}")"
+                                ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
+            </TeamMemberPicker>
+            <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
+                <ShareableVideo Description="TikTok Influencer - Instant Pay Raise"
+                                Url="@Constants.GetCapturePage(Content.MichelleEliseInstantPayRaise, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")"
+                                Tooltip="Copied!"
+                                TextToCopy="@($"TikTok Instant Pay Raise!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.MichelleEliseInstantPayRaise, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")}")"
+                                ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
+            </TeamMemberPicker>
         </TeamMemberPicker>
     </MudStack>
 </Collapsable>

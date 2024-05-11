@@ -106,6 +106,8 @@ public enum Content
     FaithAndFinance = 20,
     NextLevelStrategies = 21,
     StudentLoanDebtRelief = 22,
+    MichelleEliseFinancialLiteracy = 23,
+    MichelleEliseInstantPayRaise = 24,
 }
 
 public enum Video
@@ -220,11 +222,8 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         return promo;
     }
 
-    public string GetCapturePage(Content content, Language language, string memberId, string referralId) => content switch
-    {
-        Content.MoneyChallenge => $"{navigationManager.BaseUri}{(language == Language.Spanish ? "es/" : string.Empty)}72/{memberId}/{referralId}",
-        _ => $"{navigationManager.BaseUri}{(language == Language.Spanish ? "es" : "en")}/{content.ToString().ToLower()}/{memberId}/{referralId}"
-    };
+    public string GetCapturePage(Content content, Language language, string memberId, string referralId)
+        => $"{navigationManager.BaseUri}{(language == Language.Spanish ? "es" : "en")}/{content}/{memberId}/{referralId}";
 
     public static readonly Dictionary<LivestreamPlatform, string> CorporateLivestreamLink = new()
     {

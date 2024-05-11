@@ -18,10 +18,14 @@
         {
             <EmbeddedVideo Vimeo="@((Video?.Id, Video?.Hash))" />
         }
+        @if (this.Video?.Platform is VideoPlatform.TikTok)
+        {
+            <EmbeddedVideo TikTok="@((Video?.UserHandle, Video?.Id))" />
+        }
     </Centered>
     <br />
     <br />
-    <Centered><MudText Style="color:white;" Align="Align.Center">For questions or sign-up information, text<br /><br />'@ReferralId' to @QMDPhoneNumber</MudText></Centered>
+    <Centered><MudText Style="color:white;" Align="Align.Center">To get started or ask questions, text<br /><br />'@ReferralId' to @QMDPhoneNumber</MudText></Centered>
     <MudSpacer/>
 </MudStack>
 
