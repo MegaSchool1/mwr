@@ -4,7 +4,11 @@ public record Content(string Message, string Tooltip, string YouTubeId);
 
 public record Shareable(string Description, Content English, Content? Spanish, string ImageUrl, TimeSpan? Duration, string PreviewUrl)
 {
-    public static string VideoShareable(string heading, string videoUrl, TimeSpan videoLength)
-        => $"{heading}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}({Util.MinuteEstimate(videoLength)}min){Environment.NewLine}{videoUrl}";
+    public static string VideoShareable(string heading, string videoUrl, TimeSpan? videoLength)
+    {
+        var durationEstimate = videoLength == null ? 0 : Util.MinuteEstimate(videoLength.Value);
+
+        return $"{heading}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{(durationEstimate == 0 ? string.Empty : $"({durationEstimate}min){Environment.NewLine}")}{videoUrl}";
+    }
 }
 

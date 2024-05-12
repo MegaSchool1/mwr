@@ -108,6 +108,8 @@ public enum Content
     StudentLoanDebtRelief = 22,
     MichelleEliseFinancialLiteracy = 23,
     MichelleEliseInstantPayRaise = 24,
+    TeenCarPurchase = 25,
+    MembershipBasedBusiness = 26,
 }
 
 public enum Video

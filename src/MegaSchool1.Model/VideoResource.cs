@@ -23,4 +23,16 @@ public class VideoResource
 
     [JsonPropertyName("url")]
     public string? Url { get; set; }
+
+    [JsonPropertyName("appTitle")]
+    public string AppTitle { get; set; } = default!;
+
+    [JsonPropertyName("shareableTitle")]
+    public string ShareableTitle { get; set; } = default!;
+    
+    [JsonPropertyName("duration")]
+    public TimeSpan? Duration { get;  set; }
+
+    [JsonPropertyName("imageId")]
+    public Image? Image { get; set; }
 }

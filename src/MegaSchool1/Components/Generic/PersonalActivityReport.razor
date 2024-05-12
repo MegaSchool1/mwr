@@ -1,11 +1,13 @@
 ﻿@typeparam TPipeline where TPipeline : struct, Enum
+@inherits Components.ComponentBase
 @using System.ComponentModel.DataAnnotations
 @using Blazored.LocalStorage
 @using MegaSchool1.Model
+@using MegaSchool1.Model.UI
 @using MegaSchool1.Repository.Model
 @using MegaSchool1.ViewModel
 @using MudBlazor.Utilities
-@inherits Components.ComponentBase
+@using Content = MegaSchool1.Model.Content
 @inject UISettings UI
 @inject Repository.Repository Repo
 @inject ILocalStorageService LocalStorage
@@ -104,27 +106,60 @@
                               Label="Notes"
                               Placeholder="Notes"
                               Variant="Variant.Outlined"
-                              Lines="4"
+                              Lines="8"
                               Immediate="true"/>
+                <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                    @foreach (var content in Enum.GetValues<Content>().Except([Content.None]))
+                    {
+                        <MudSelectItem Value="@content" />
+                    }
+                </MudSelect>
+                @if (UI.SpanishLocale[_selectedShareable] != null)
+                {
+                    <ShareableVideoMultilingual Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
+                                                Duration="@(UI.EnglishLocale[_selectedShareable]?.Duration)"
+                                                Url="@(UI.EnglishLocale[_selectedShareable]?.ShareableUrl())"
+                                                
+                                                EnglishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]?.ShareableTitle, UI.EnglishLocale[_selectedShareable]!.MinimalistUrl(), UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
+                                                EnglishTooltip="Copied!"
+                                                EnglishImageUrl="@(Constants.GetImageUrl(UI.EnglishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))"
+                                                
+                                                SpanishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.SpanishLocale[_selectedShareable]?.ShareableTitle, UI.SpanishLocale[_selectedShareable]!.MinimalistUrl(), UI.SpanishLocale[_selectedShareable]?.Duration ?? default)}")"
+                                                SpanishTooltip="Copied"
+                                                SpanishImageUrl="@(Constants.GetImageUrl(UI.SpanishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))" />
+                }
+                else
+                {
+                    <ShareableVideo Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
+                                    Duration="@(UI.EnglishLocale[_selectedShareable]?.Duration)"
+                                    Url="@(UI.EnglishLocale[_selectedShareable]?.ShareableUrl())"
+                                    TextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]?.ShareableTitle, UI.EnglishLocale[_selectedShareable]?.ShareableUrl(), UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
+                                    Tooltip="Copied!"
+                                    ImageUrl="@(Constants.GetImageUrl(UI.EnglishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))" />
+                }
             </MudStack>
         </MudForm>
     </DialogContent>
 </MudDialog>
 
 @code {
-	private readonly List<Prospect> _prospects = [];
+    private readonly List<Prospect> _prospects = [];
 
-	private MudDropContainer<Prospect> _dropContainer;
-	private bool _addSectionOpen;
-	private (Prospect Prospect, MudDialog ProspectEdit, bool ValidEdit) _prospectEditDialog;
+    private MudDropContainer<Prospect> _dropContainer;
+    private bool _addSectionOpen;
+    private (Prospect Prospect, MudDialog ProspectEdit, bool ValidEdit) _prospectEditDialog;
     private Settings _settings = new();
     private TeamMember? _selectedTeamMember;
+    private Content _selectedShareable = Content.MoneyChallenge;
 
-	[Parameter]
-	public Pipeline<TPipeline> Pipeline { get; set; }
+    [Parameter]
+    public Pipeline<TPipeline> Pipeline { get; set; }
 
     [Parameter]
     public Func<Task>? OnSave { get; set; }
+
+    private string ShareableContentPrefix() =>
+        _selectedTeamMember?.MemberId == null || _selectedTeamMember?.MemberId == AppState?.User?.MemberId ? string.Empty : $"For {_prospectEditDialog.Prospect.Name}: {Environment.NewLine}{Environment.NewLine}";
 
     private async Task SelectedTeamMemberChanged(TeamMember teamMember)
     {
