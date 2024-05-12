@@ -25,17 +25,7 @@
                                                 SpanishTextToCopy="@(Constants.MoneyChallenge[Strategy.MegaSchool].Spanish!.Message)"
                                                 SpanishTooltip="@(Constants.MoneyChallenge[Strategy.MegaSchool].Spanish!.Tooltip)"
                                                 SpanishImageUrl="@(Constants.MoneyChallenge[Strategy.MegaSchool].ImageUrl)"/>
-                    <ShareableVideoMultilingual Description="@UI.EnglishLocale[Content.MembershipBasedBusiness]?.AppTitle"
-                                                Duration="@UI.EnglishLocale[Content.MembershipBasedBusiness]?.Duration"
-                                                Url="@UI.EnglishLocale[Content.MembershipBasedBusiness]?.MinimalistUrl()"
-
-                                                EnglishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.EnglishLocale[Content.MembershipBasedBusiness]?.ShareableTitle, UI.EnglishLocale[Content.MembershipBasedBusiness]!.MinimalistUrl(), UI.EnglishLocale[Content.MembershipBasedBusiness]?.Duration ?? default)}")"
-                                                EnglishTooltip="Copied!"
-                                                EnglishImageUrl="@(Constants.GetImageUrl(UI.EnglishLocale[Content.MembershipBasedBusiness]?.Image ?? Image.MoneyChallengeLogo))"
-
-                                                SpanishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.SpanishLocale[Content.MembershipBasedBusiness]?.ShareableTitle, UI.SpanishLocale[Content.MembershipBasedBusiness]!.MinimalistUrl(), UI.SpanishLocale[Content.MembershipBasedBusiness]?.Duration ?? default)}")"
-                                                SpanishTooltip="Copied"
-                                                SpanishImageUrl="@(Constants.GetImageUrl(UI.SpanishLocale[Content.MembershipBasedBusiness]?.Image ?? Image.MoneyChallengeLogo))" />
+                    @ContentViewMultilingual(Content.MembershipBasedBusiness)
                 </MudStack>
             </MudTabPanel>
             <MudTabPanel Tag="@Strategy.Corporate">
@@ -400,18 +390,10 @@
                                             SpanishTextToCopy="@($"¡Gracias! \ud83d\ude42{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{NavigationManager.BaseUri}es/thankyou/{_selectedTeamMember?.MemberId}/CONNECT")"
                                             SpanishTooltip="Español shareable copied!" />
                 <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
-                    <ShareableVideo Description="TikTok Influencer - 72-Hour Money Challenge"
-                                    Url="@Constants.GetCapturePage(Content.MichelleEliseFinancialLiteracy, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")"
-                                    Tooltip="Copied!"
-                                    TextToCopy="@($"TikTok 72-Hour Money Challenge!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.MichelleEliseFinancialLiteracy, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")}")"
-                                    ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
+                    @CapturePage(Content.MichelleEliseInstantPayRaise)
                 </TeamMemberPicker>
                 <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
-                    <ShareableVideo Description="TikTok Influencer - Instant Pay Raise"
-                                    Url="@Constants.GetCapturePage(Content.MichelleEliseInstantPayRaise, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")"
-                                    Tooltip="Copied!"
-                                    TextToCopy="@($"TikTok Instant Pay Raise!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.MichelleEliseInstantPayRaise, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")}")"
-                                    ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
+                    @CapturePage(Content.MichelleEliseFinancialLiteracy)
                 </TeamMemberPicker>
             </TeamMemberPicker>
         </MudStack>
@@ -471,4 +453,46 @@
 
     private string ShareableContentPrefix() =>
         _selectedTeamMember?.MemberId == null || _selectedTeamMember?.MemberId == AppState?.User?.MemberId ? string.Empty : $"For {_selectedTeamMember?.Name}: {Environment.NewLine}{Environment.NewLine}";
+
+    private RenderFragment ContentViewMultilingual(Content content) => __builder =>
+    {
+        var english = UI.EnglishLocale[content];
+        var spanish = UI.SpanishLocale[content];
+
+        <ShareableVideoMultilingual Description="@english.AppTitle"
+                                    Duration="@english.Duration"
+                                    Url="@english.MinimalistUrl()"
+
+                                    EnglishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(english)}")"
+                                    EnglishTooltip="Copied!"
+                                    EnglishImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"
+
+                                    SpanishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(spanish)}")"
+                                    SpanishTooltip="Copied"
+                                    SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)"/>
+    };
+
+    private RenderFragment ContentView(Content content) => __builder =>
+    {
+        var english = UI.EnglishLocale[content];
+
+        <ShareableVideo Description="@english.AppTitle"
+                        Duration="@english.Duration"
+                        Url="@english.MinimalistUrl()"
+                        TextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(english)}")"
+                        Tooltip="Copied!"
+                        ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"/>
+    };
+    
+    private RenderFragment CapturePage(Content content) => __builder =>
+    {
+        var english = UI.EnglishLocale[content];
+
+        <ShareableVideo Description="@english.AppTitle"
+                        Duration="@english.Duration"
+                        Url="@Constants.GetCapturePage(content, Language.English, _selectedTeamMember?.MemberId, "Example-Key-Word")"
+                        TextToCopy="@($"{ShareableContentPrefix()}{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(english.ContentId, Language.English, _selectedTeamMember?.MemberId!, "Example-Key-Word")}")"
+                        Tooltip="Copied!"
+                        ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"/>
+    };
 }
