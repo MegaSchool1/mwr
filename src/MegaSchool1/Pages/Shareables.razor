@@ -344,41 +344,20 @@
     <Collapsable Title="Capture Pages" ExpandPrompt="Show">
         <MudStack>
             <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
-                <ShareableVideoMultilingual Description="72-Hour Money Challenge"
-                                            Url="@Constants.GetCapturePage(Content.MoneyChallenge, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")"
-                                            EnglishTextToCopy="@($"MWR 72-Hour Money Challenge [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.MoneyChallenge, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")}")"
-                                            EnglishTooltip="English shareable copied!"
-                                            EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
-
-                                            SpanishTextToCopy="@($"MWR 72-Hour Money Challenge [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.MoneyChallenge, Language.Spanish, _selectedTeamMember?.MemberId!, "Example-Referral-Id")}")"
-                                            SpanishTooltip="Español shareable copied!"
-                                            SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
-            </TeamMemberPicker>
-            <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
-                <ShareableVideo Description="MWR HealthShare"
-                                Url="@Constants.GetCapturePage(Content.HealthShare, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")"
-                                Tooltip="Copied!"
-                                TextToCopy="@($"MWR HealthShare [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.HealthShare, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")}")"
-                                ImageUrl="@Constants.GetImageUrl(Image.HealthShare)"/>
-            </TeamMemberPicker>
-            <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
-                <ShareableVideoMultilingual Description="Credit Restoration"
-                                            Url="@Constants.GetCapturePage(Content.CreditRestoration, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")"
-
-                                            EnglishTextToCopy="@($"MWR Credit Restoration [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.CreditRestoration, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")}")"
-                                            EnglishTooltip="English shareable copied!"
-                                            EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
-
-                                            SpanishTextToCopy="@($"MWR Credit Restoration [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.CreditRestoration, Language.Spanish, _selectedTeamMember?.MemberId!, "Example-Referral-Id")}")"
-                                            SpanishTooltip="Español shareable copied!"
-                                            SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
-            </TeamMemberPicker>
-            <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
-                <ShareableVideo Description="MWR Student Loan Debt Relief"
-                                Url="@Constants.GetCapturePage(Content.StudentLoanDebtRelief, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")"
-                                Tooltip="Copied!"
-                                TextToCopy="@($"MWR Student Loan Debt Relief [Capture Page]{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(Content.StudentLoanDebtRelief, Language.English, _selectedTeamMember?.MemberId!, "Example-Referral-Id")}")"
-                                ImageUrl="@Constants.GetImageUrl(Image.StudentLoanDebtReliefTile)"/>
+                <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                    @foreach (var content in Enum.GetValues<Content>().Except([Content.None]))
+                    {
+                        <MudSelectItem Value="@content" />
+                    }
+                </MudSelect>
+                @if (UI.SpanishLocale[_selectedShareable] != null)
+                {
+                    @CapturePageMultilingual(_selectedShareable)
+                }
+                else
+                {
+                    @CapturePage(_selectedShareable)
+                }
             </TeamMemberPicker>
             <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
                 <ShareableVideoMultilingual Description="Thank You (Uber, DoorDash, etc)"
@@ -389,12 +368,6 @@
                                             
                                             SpanishTextToCopy="@($"¡Gracias! \ud83d\ude42{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{NavigationManager.BaseUri}es/thankyou/{_selectedTeamMember?.MemberId}/CONNECT")"
                                             SpanishTooltip="Español shareable copied!" />
-                <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
-                    @CapturePage(Content.MichelleEliseInstantPayRaise)
-                </TeamMemberPicker>
-                <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
-                    @CapturePage(Content.MichelleEliseFinancialLiteracy)
-                </TeamMemberPicker>
             </TeamMemberPicker>
         </MudStack>
     </Collapsable>
@@ -441,6 +414,7 @@
 @code {
     private bool _pageLoaded;
     private TeamMember? _selectedTeamMember;
+    private Content _selectedShareable = Content.MoneyChallenge;
 
     protected override void OnInitialized()
     {
@@ -484,6 +458,24 @@
                         ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"/>
     };
     
+    private RenderFragment CapturePageMultilingual(Content content) => __builder =>
+    {
+        var english = UI.EnglishLocale[content];
+        var spanish = UI.SpanishLocale[content];
+
+        <ShareableVideoMultilingual Description="@english.AppTitle"
+                                    Duration="@english.Duration"
+                                    Url="@Constants.GetCapturePage(content, Language.English, _selectedTeamMember?.MemberId, "Example-Key-Word")"
+
+                                    EnglishTextToCopy="@($"{ShareableContentPrefix()}{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(english.ContentId, Language.English, _selectedTeamMember?.MemberId!, "Example-Key-Word")}")"
+                                    EnglishTooltip="Copied!"
+                                    EnglishImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"
+
+                                    SpanishTextToCopy="@($"{ShareableContentPrefix()}{spanish.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(spanish.ContentId, Language.Spanish, _selectedTeamMember?.MemberId!, "Example-Key-Word")}")"
+                                    SpanishTooltip="Copied"
+                                    SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)"/>
+    };
+
     private RenderFragment CapturePage(Content content) => __builder =>
     {
         var english = UI.EnglishLocale[content];
