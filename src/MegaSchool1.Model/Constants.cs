@@ -61,6 +61,8 @@ public enum Image
     NextLevelStrategies = 12,
     StudentLoanDebtReliefTile = 13,
     KeysToHomeOwnership = 14,
+    WealthWorksheet = 15,
+    MoneyChallengeTransparent = 16,
 }
 
 public enum Strategy
@@ -110,6 +112,7 @@ public enum Content
     MichelleEliseInstantPayRaise = 24,
     TeenCarPurchase = 25,
     MembershipBasedBusiness = 26,
+    WealthWorksheetV1 = 27,
 }
 
 public enum Video
@@ -205,6 +208,8 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         Image.NextLevelStrategies => "images/next-level-strategies-logo.png",
         Image.StudentLoanDebtReliefTile => "/images/student-loan-debt-relief-tile.png",
         Image.KeysToHomeOwnership => "/images/keys-to-home-ownership-banner.jpg",
+        Image.WealthWorksheet => "/images/WealthWorksheet-Blank-v1.png",
+        Image.MoneyChallengeTransparent => "/images/72-hour-money-challenge.png",
         _ => throw new Exception($"Image not found: {image}"),
     };
 

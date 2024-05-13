@@ -6,9 +6,8 @@
 
 <PageTitle>MWR 72-Hour Money Challenge!</PageTitle>
 
-<MudStack Style="height:100%;">
-    <Centered><MudImage Src="@GetImageUrl(ContentValue)" Fluid="true" Width="350" /></Centered>
-    <br/>
+<MudStack Spacing="3" Style="height:100%;">
+    <Centered><MudImage Src="@GetImageUrl()" Fluid="true" Width="300" /></Centered>
     <Centered>
         @if (this.Video?.Platform is VideoPlatform.YouTube)
         {
@@ -23,7 +22,10 @@
             <EmbeddedVideo TikTok="@((Video?.UserHandle, Video?.Id))" />
         }
     </Centered>
-    <br />
+    @if (!string.IsNullOrWhiteSpace(this.Video?.DownloadUrl))
+    {
+        <Centered><ExternalLink Text="Download" Href="@this.Video?.DownloadUrl"/></Centered>
+    }
     <br />
     <Centered><MudText Style="color:white;" Align="Align.Center">To get started or ask questions, text<br /><br />'@ReferralId' to @QMDPhoneNumber</MudText></Centered>
     <MudSpacer/>
@@ -37,9 +39,5 @@
 
     private VideoResource? Video => this.Language == Spanish ? UI.SpanishLocale[ContentValue] : UI.EnglishLocale[ContentValue];
 
-    private static string GetImageUrl(Content content) => content switch
-    {
-        Content.HealthShare or Content.PreciousMetals or Content.FaithAndFinance or Content.NextLevelStrategies or Content.KeysToHomeOwnership => Constants.GetImageUrl(Enum.Parse<Image>(content.ToString())),
-        _ => "/images/72-hour-money-challenge.png",
-    };
+    private string GetImageUrl() => Constants.GetImageUrl(Video?.Image ?? Image.MoneyChallengeTransparent);
 }
