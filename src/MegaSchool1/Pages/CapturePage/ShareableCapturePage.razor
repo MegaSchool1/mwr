@@ -39,5 +39,5 @@
 
     private VideoResource? Video => this.Language == Spanish ? UI.SpanishLocale[ContentValue] : UI.EnglishLocale[ContentValue];
 
-    private string GetImageUrl() => Constants.GetImageUrl(Video?.Image ?? Image.MoneyChallengeTransparent);
+    private string GetImageUrl() => Constants.GetImageUrl(Video?.CapturePageImage ?? Video?.Image ?? Image.MoneyChallengeTransparent);
 }

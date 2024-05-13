@@ -36,6 +36,9 @@ public class VideoResource
     [JsonPropertyName("imageId")]
     public Image? Image { get; set; }
 
+    [JsonPropertyName("capturePageImageId")]
+    public Image? CapturePageImage { get; set; }
+
     [JsonPropertyName("downloadUrl")]
     public string? DownloadUrl { get; set; }
 
