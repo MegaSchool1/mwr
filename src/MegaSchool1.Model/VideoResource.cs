@@ -38,4 +38,10 @@ public class VideoResource
 
     [JsonPropertyName("downloadUrl")]
     public string? DownloadUrl { get; set; }
+
+    [JsonPropertyName("promo")]
+    public string? Promo { get; set; }
+   
+    [JsonPropertyName("promoExpiration")]
+    public DateTimeOffset? PromoExpiration { get; set; }
 }

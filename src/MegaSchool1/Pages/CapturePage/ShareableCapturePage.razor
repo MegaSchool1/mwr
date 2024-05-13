@@ -24,10 +24,10 @@
     </Centered>
     @if (!string.IsNullOrWhiteSpace(this.Video?.DownloadUrl))
     {
-        <Centered><ExternalLink Text="Download" Href="@this.Video?.DownloadUrl"/></Centered>
+        <Centered><ExternalLink Text="Download" Href="@this.Video?.DownloadUrl" /></Centered>
     }
     <br />
-    <Centered><MudText Style="color:white;" Align="Align.Center">To get started or ask questions, text<br /><br />'@ReferralId' to @QMDPhoneNumber</MudText></Centered>
+    <Centered><MudText Style="color:white;" Align="Align.Center">@((DateTimeOffset.Now <= Video?.PromoExpiration && Video?.Promo != null ? Video?.Promo : "To get started or ask questions, text"))<br /><br />'@ReferralId' to @QMDPhoneNumber</MudText></Centered>
     <MudSpacer/>
 </MudStack>
 
