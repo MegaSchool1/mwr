@@ -47,4 +47,7 @@ public class VideoResource
    
     [JsonPropertyName("promoExpiration")]
     public DateTimeOffset? PromoExpiration { get; set; }
+
+    [JsonPropertyName("event")]
+    public EventDto? Event { get; set; }
 }

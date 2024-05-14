@@ -26,6 +26,14 @@
     {
         <Centered><ExternalLink Text="Download" Href="@this.Video?.DownloadUrl" /></Centered>
     }
+    @if (DateTimeOffset.Now <= Video?.Event?.StartDate)
+    {
+        @if (!string.IsNullOrWhiteSpace(this.Video?.Event?.Header))
+        {
+            <MudText Align="Align.Center" Color="Color.Secondary">@Video?.Event?.Header</MudText>
+        }
+        <MudText Align="Align.Center"><ExternalLink Text="@Video?.Event?.ShareableHeader" Href="@Video?.Event?.Link" /> <br /> @($"{Video?.Event?.StartDate:dddd, MMMM d} @ {Video?.Event?.StartDate?.ToOffset(TimeZoneInfo.Local.BaseUtcOffset): h:mm tt} {TimeZoneInfo.Local.StandardName}")</MudText>
+    }
     <br />
     <Centered><MudText Style="color:white;" Align="Align.Center">@((DateTimeOffset.Now <= Video?.PromoExpiration && Video?.Promo != null ? Video?.Promo : "To get started or ask questions, text"))<br /><br />'@ReferralId' to @QMDPhoneNumber</MudText></Centered>
     <MudSpacer/>

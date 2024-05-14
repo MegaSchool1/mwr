@@ -96,22 +96,32 @@
     </Collapsable>
     <Collapsable Title="Miscellaneous" ExpandPrompt="Show">
         <MudStack Spacing="6">
-            <MudSelect T="Content" Label="Explainers" @bind-Value="_selectedMiscellaneous" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                @foreach (var content in new [] { Content.TeenCarPurchase, Content.MoneyChallengeFAQ, Content.ReduceMyTaxesExplainer, Content.EliminateMyDebtExplainer, Content.InvestmentsExplainer, Content.TrustsExplainer, Content.RevenueShareExplainer })
-                {
-                    <MudSelectItem Value="@content" />
-                }
-            </MudSelect>
-            @ContentView(_selectedMiscellaneous)
-            <MudDivider/>
-            <MudSelect T="Content" Label="Services" @bind-Value="_selectedService" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                @foreach (var content in new[] { Content.NextLevelStrategies, Content.Membership, Content.CreditRestoration, Content.StudentLoanDebtRelief, Content.HealthShare, Content.KeysToHomeOwnership, Content.PreciousMetals, Content.TrustMyAssets, Content.RealEstatePros, Content.ProtectMyAssets, Content.StructureMyLegacy })
-                {
-                    <MudSelectItem Value="@content" />
-                }
-            </MudSelect>
-            @ContentView(_selectedService)
-            <MudDivider/>
+            <MudCard Outlined="true">
+                <MudCardContent>
+                    <MudStack Spacing="3">
+                        <MudSelect T="Content" Label="Explainers" @bind-Value="_selectedMiscellaneous" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                            @foreach (var content in new[] { Content.TeenCarPurchase, Content.MoneyChallengeFAQ, Content.ReduceMyTaxesExplainer, Content.EliminateMyDebtExplainer, Content.InvestmentsExplainer, Content.TrustsExplainer, Content.RevenueShareExplainer })
+                            {
+                                <MudSelectItem Value="@content" />
+                            }
+                        </MudSelect>
+                        @ContentView(_selectedMiscellaneous)
+                    </MudStack>
+                </MudCardContent>
+            </MudCard>
+            <MudCard Outlined="true">
+                <MudCardContent>
+                    <MudStack Spacing="3">
+                        <MudSelect T="Content" Label="Services" @bind-Value="_selectedService" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                            @foreach (var content in new[] { Content.NextLevelStrategies, Content.Membership, Content.CreditRestoration, Content.StudentLoanDebtRelief, Content.HealthShare, Content.KeysToHomeOwnership, Content.PreciousMetals, Content.TrustMyAssets, Content.RealEstatePros, Content.ProtectMyAssets, Content.StructureMyLegacy })
+                            {
+                                <MudSelectItem Value="@content" />
+                            }
+                        </MudSelect>
+                        @ContentView(_selectedService)
+                    </MudStack>
+                </MudCardContent>
+            </MudCard>
             <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMemberCapturePage">
                 <MudSelect T="Content" Label="Capture Page" @bind-Value="_selectedCapturePage" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
                     @foreach (var content in Enum.GetValues<Content>().Except([Content.None]))

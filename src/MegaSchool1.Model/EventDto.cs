@@ -22,6 +22,9 @@ public record EventDto
     [JsonPropertyName("time")]
     public TimeOnly Time { get; set; }
 
+    [JsonPropertyName("startDate")]
+    public DateTimeOffset? StartDate { get; set; }
+
     [JsonPropertyName("endDate")]
     public DateTimeOffset? EndDate { get; set; }
 

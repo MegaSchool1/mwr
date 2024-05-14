@@ -79,7 +79,7 @@
                 <MudStack Row="true">
                     <MudIconButton OnClick="@(() => (_prospectEditDialog = (context, _prospectEditDialog.ProspectEdit, default)).ProspectEdit.IsVisible = true)" Icon="@Icons.Material.Filled.Edit"/>
                     <MudSpacer/>
-					<MudIconButton OnClick="@(e => OnProspectDelete(context))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+					<MudIconButton OnClick="@(e => _deleteProspectDialog = (@context, true))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
                 </MudStack>
             </MudStack>
         </MudPaper>
@@ -142,12 +142,23 @@
     </DialogContent>
 </MudDialog>
 
+<MudDialog @bind-IsVisible="_deleteProspectDialog.Show">
+    <DialogContent>
+        <MudText>Are you sure you want to delete "@_deleteProspectDialog.Prospect.Name"?</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => _deleteProspectDialog.Show = false)">Cancel</MudButton>
+        <MudButton Color="Color.Secondary" Variant="Variant.Filled" OnClick="@(async () => { await OnProspectDelete(_deleteProspectDialog.Prospect); _deleteProspectDialog.Show = false; })">Delete</MudButton>
+    </DialogActions>
+</MudDialog>
+
 @code {
     private readonly List<Prospect> _prospects = [];
 
     private MudDropContainer<Prospect> _dropContainer;
     private bool _addSectionOpen;
     private (Prospect Prospect, MudDialog ProspectEdit, bool ValidEdit) _prospectEditDialog;
+    private (Prospect Prospect, bool Show) _deleteProspectDialog;
     private Settings _settings = new();
     private TeamMember? _selectedTeamMember;
     private Content _selectedShareable = Content.MoneyChallenge;
