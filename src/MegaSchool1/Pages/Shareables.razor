@@ -112,14 +112,14 @@
             </MudSelect>
             @ContentView(_selectedService)
             <MudDivider/>
-            <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMember">
+            <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMemberCapturePage">
                 <MudSelect T="Content" Label="Capture Page" @bind-Value="_selectedCapturePage" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
                     @foreach (var content in Enum.GetValues<Content>().Except([Content.None]))
                     {
                         <MudSelectItem Value="@content" />
                     }
                 </MudSelect>
-                @CapturePage(_selectedCapturePage, _selectedTeamMember)
+                @CapturePage(_selectedCapturePage, _selectedTeamMemberCapturePage)
             </TeamMemberPicker>
         </MudStack>
     </Collapsable>
@@ -254,6 +254,7 @@
 @code {
     private bool _pageLoaded;
     private TeamMember? _selectedTeamMember;
+    private TeamMember? _selectedTeamMemberCapturePage;
     private Content _selectedCapturePage = Content.MoneyChallenge;
     private Content _selectedMiscellaneous = Content.TeenCarPurchase;
     private Content _selectedService = Content.NextLevelStrategies;
@@ -262,7 +263,7 @@
     {
         _pageLoaded = true;
 
-        _selectedTeamMember = AppState?.User;
+        _selectedTeamMember = _selectedTeamMemberCapturePage = AppState?.User;
         
         this.StateHasChanged();
     }
@@ -320,8 +321,8 @@
         {
             <ShareableVideo Description="@english.AppTitle"
                             Duration="@english.Duration"
-                            Url="@Constants.GetCapturePage(content, Language.English, _selectedTeamMember?.MemberId, "Example-Key-Word")"
-                            TextToCopy="@($"{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(english.ContentId, Language.English, _selectedTeamMember?.MemberId!, "Example-Key-Word")}")"
+                            Url="@Constants.GetCapturePage(content, Language.English, teamMember?.MemberId, "Example-Key-Word")"
+                            TextToCopy="@($"{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(english.ContentId, Language.English, teamMember?.MemberId!, "Example-Key-Word")}")"
                             Tooltip="Copied!"
                             ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)" />
         }
