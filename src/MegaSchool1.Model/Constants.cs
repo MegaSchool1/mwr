@@ -1,6 +1,5 @@
 ﻿using MegaSchool1.Model.UI;
 using Microsoft.AspNetCore.Components;
-using System.Net.NetworkInformation;
 
 namespace MegaSchool1.Model;
 
@@ -110,9 +109,10 @@ public enum Content
     StudentLoanDebtRelief = 22,
     MichelleEliseFinancialLiteracy = 23,
     MichelleEliseInstantPayRaise = 24,
-    TeenCarPurchase = 25,
-    MembershipBasedBusiness = 26,
-    WealthWorksheetV1 = 27,
+    MichelleEliseHealthShare = 25,
+    TeenCarPurchase = 26,
+    MembershipBasedBusiness = 27,
+    WealthWorksheetV1 = 28,
 }
 
 public enum Video
