@@ -50,4 +50,7 @@ public class VideoResource
 
     [JsonPropertyName("event")]
     public EventDto? Event { get; set; }
+
+    [JsonPropertyName("showBusinessSignUp")]
+    public bool ShowBusinessSignUp { get; set; }
 }

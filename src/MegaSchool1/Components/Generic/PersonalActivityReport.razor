@@ -40,7 +40,7 @@
                     @if (item.NewTaskOpen)
                     {
                         <MudPaper Elevation="25" Class="pa-2 rounded-lg">
-                            <MudTextField @bind-Value="item.NewTaskName" Placeholder="Prospect" DisableUnderLine="true" Margin="Margin.Dense" Class="mx-2 mt-n2"></MudTextField>
+                            <MudTextField AutoFocus="true" @bind-Value="item.NewTaskName" Placeholder="Prospect" DisableUnderLine="true" Margin="Margin.Dense" Class="mx-2 mt-n2"></MudTextField>
                             <MudButton OnClick="@(() => AddProspect(item))" Size="Size.Small" Color="Color.Primary" FullWidth="true">Add Prospect</MudButton>
                         </MudPaper>
                     }
@@ -219,7 +219,7 @@
 				this.Pipeline.DisplayName(step),
 				step,
 				false,
-				"New Prospect",
+				string.Empty,
 				step.Equals(this.Pipeline.FirstStep))).ToArray();
 
         // load prospects
@@ -363,6 +363,7 @@
 		await SaveAsync();
 
         section.NewTaskOpen = false;
+        section.NewTaskName = string.Empty;
 
         _dropContainer.Refresh();
 	}
