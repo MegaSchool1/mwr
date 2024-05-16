@@ -94,7 +94,7 @@ else
                         <MudFab Style="position:fixed; bottom:0; right:0; padding-right:5;"
                                 Color="Color.Primary"
                                 EndIcon="@Icons.Material.Filled.Refresh"
-                                OnClick="@(e => NavigationManager.NavigateTo(NavigationManager.BaseUri, true))"
+                                OnClick="@(e => NavigationManager.NavigateTo(Util.MakeUrlBypassBrowserCache(NavigationManager.BaseUri), true))"
                                 Label="Load Update" />
                     }
                     <MudScrollToTop>
