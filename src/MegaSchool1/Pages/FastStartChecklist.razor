@@ -72,7 +72,7 @@
             @FirstRoundDraftChoice
             @PersonalActivityReport
             <MudCheckBox T="bool" @bind-Value="_viewModel.MegaSchool.ExecutiveDirector3Roadmap" Size="Size.Medium" Color="Color.Primary">
-                <MudText Typo="Typo.h6">Print 4 Steps to 3* Executive Director:</MudText>Print <ExternalLink Text="4 Steps to 3* Executive Director" Href="https://www.extradigitmovement.com/resource_redirect/downloads/file-uploads/sites/13708/themes/2153043324/downloads/f70b577-4ebc-0f2d-ec88-34ed4557663b_QuickStart_Site_March132024.pdf" />
+                <MudText Typo="Typo.h6">Print 4 Steps to 4 Figures Per Month:</MudText>Print <ExternalLink Text="4 Steps to 4 Figures Per Month" Href="https://www.extradigitmovement.com/resource_redirect/downloads/file-uploads/sites/13708/themes/2153043324/downloads/32a7256-8db4-2abf-7a2-3e1be235bd76_EDMQuickStartMay2024.pdf" />
             </MudCheckBox>
             <br/>
             @VirtualBusinessLaunch
@@ -109,7 +109,7 @@
                     </MudCheckBox>
                 </MudContainer>
             </MudStack>
-            <MudCheckBox Disabled="true" Value="_viewModel.ExtraDigitMovement.SubscribedToFacebookPage && _viewModel.ExtraDigitMovement.SubscribedToFacebookGroup && _viewModel.ExtraDigitMovement.SubscribedToYouTube" ReadOnly="true" Size="Size.Medium" Color="Color.Primary">
+            <MudCheckBox Disabled="true" Value="_viewModel.ExtraDigitMovement.SubscribedToFacebookPage && _viewModel.ExtraDigitMovement.SubscribedToFacebookGroup && _viewModel.ExtraDigitMovement.SubscribedToYouTube && _viewModel.ExtraDigitMovement.SubscribeToTelegram" ReadOnly="true" Size="Size.Medium" Color="Color.Primary">
                 <MudText Typo="Typo.h6">Plugged In:</MudText>I am following Extra Digit Movement on the Social Media Platforms listed below to stay informed:
             </MudCheckBox>
             <MudStack Row="true">
@@ -123,6 +123,9 @@
                     </MudCheckBox>
                     <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.ExtraDigitMovement.SubscribedToYouTube" Size="Size.Small" Color="Color.Primary">
                         <ExternalLink Href="@("https://www.youtube.com/@ExtraDigitMovement")" Text="YouTube" />
+                    </MudCheckBox>
+                    <MudCheckBox Disabled="!_pageLoaded" Value="_viewModel.ExtraDigitMovement.SubscribeToTelegram" T="bool" ValueChanged="@(async value => { _viewModel.ExtraDigitMovement.SubscribeToTelegram = value; await SaveAsync(); })" Size="Size.Small" Color="Color.Primary">
+                        <ExternalLink Href="@("https://t.me/+eHM4NJxWCYEzNTAx")" Text="Telegram" />
                     </MudCheckBox>
                 </MudContainer>
             </MudStack>
@@ -229,6 +232,15 @@
         base.StateHasChanged();
     }
 
+    private async Task SaveAsync()
+    {
+        var settings = await Repo.GetSettingsAsync();
+
+        settings.FastStartChecklist = _viewModel;
+
+        await Repo.SaveSettingsAsync(settings);
+    }
+
     private async Task OnSaveClick()
     {
         var settings = await Repo.GetSettingsAsync();
@@ -274,7 +286,7 @@
 
     private RenderFragment ExtraDigitPlugin => __builder =>
     {
-        <MudCheckBox T="bool" Disabled="true" Size="Size.Medium" Color="Color.Primary">
+        <MudCheckBox T="bool" Size="Size.Medium" Color="Color.Primary">
             <MudText Typo="Typo.h6">Get Connected:</MudText>Email your <span style="color:@(Theme.Palette.Secondary);">NAME</span> and <span style="color:@(Theme.Palette.Secondary);">STATE</span> to <MudLink Href="@("mailto:connect@extradigitmovement.com")">@("connect@extradigitmovement.com")</MudLink>.
         </MudCheckBox>
         <br/>

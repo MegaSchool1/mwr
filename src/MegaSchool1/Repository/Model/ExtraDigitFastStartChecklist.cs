@@ -13,6 +13,9 @@ public class ExtraDigitFastStartChecklist
     [JsonPropertyName("youtube_subscription")]
     public bool SubscribedToYouTube { get; set; }
 
+    [JsonPropertyName("telegram_subscription")]
+    public bool SubscribeToTelegram { get; set; }
+
     [JsonPropertyName("personal_activity_report")]
     public bool PersonalActivityReport { get; set; }
 }
