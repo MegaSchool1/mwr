@@ -31,6 +31,7 @@
                        Color="Color.Primary"
                        OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
     </MudStack>
+    <MudDivider/>
     <MudNavLink Href="https://cash.app/$MegaSchool1/12.00" Target="_blank" Icon="@Icons.Material.Filled.Payment">Pay Annual Subscription</MudNavLink>
 </MudStack>
 
