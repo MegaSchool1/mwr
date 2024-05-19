@@ -1,0 +1,138 @@
+﻿@page "/trustfundmybaby"
+@using MegaSchool1.Components
+@using MegaSchool1.Model
+
+<MudStack Spacing="3">
+    <MudText Align="Align.Center" Typo="Typo.h4">Trust Fund My Baby</MudText>
+    <MudText Align="Align.Center" Typo="Typo.h6">6 Year Program</MudText>
+    <MudText Align="Align.Center">Parents need $250 up front TOTAL and receive a GUARANTEED reimbursement of the $250 within 30 days</MudText>
+    <MudTimeline>
+        @for (var i = 0; i < _steps.Count; i++)
+        {
+            var step = _steps[i];
+            var currentQuarter = DateTime.Now.Month / 4;
+            (int YearOffset, int Quarter) quarter = Math.DivRem(i + currentQuarter, 4);
+            var production = _production[i];
+            var totalPersonalEnrollments = i + 1;
+            var monthlyIncome = totalPersonalEnrollments < 3 ? 0 : Util.GetMonthlyIncome(production.TeamMembershipEnrollments);
+
+            <MudTimelineItem Color="@GetColor(step)" Size="Size.Small">
+                <ItemOpposite>
+                    <MudText Color="@GetColor(step)" Typo="Typo.h5">@($"{DateTime.Now.Year + quarter.YearOffset}Q{quarter.Quarter + 1}")</MudText>
+                </ItemOpposite>
+                <ItemContent>
+                    <MudText Color="@GetColor(step)" Typo="Typo.h6" GutterBottom="true">@((MarkupString)step.Title)</MudText>
+                    <MudStack>
+                        <MudStack Row="true">
+                            <MudText>@((MarkupString)"&#x2022;")</MudText>
+                            <MudText>$@(monthlyIncome.ToString("N0"))/mo passive</MudText>
+                        </MudStack>
+                        <MudStack Row="true">
+                            <MudText>@((MarkupString)"&#x2022;")</MudText>
+                            <MudText>All team members get 1 new member</MudText>
+                        </MudStack>
+                    </MudStack>
+                </ItemContent>
+            </MudTimelineItem>
+        }
+    </MudTimeline>
+</MudStack>
+
+<MudDialog @bind-IsVisible="_dialogInfo.ShowDialog" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
+    <DialogContent>
+        <MudText Color="@GetColor(_dialogInfo.Step)" Typo="Typo.h6" GutterBottom="true">@((MarkupString)_dialogInfo.Step.Title)</MudText>
+        <MudStack>
+            @foreach (var detail in _dialogInfo.Step.Details)
+            {
+                <MudStack Row="true">
+                    <MudText>@((int.TryParse(detail.Substring(0, 1), out var numTabs) ? (MarkupString)Tabs(numTabs) : (MarkupString)"&#x2022;"))</MudText>
+                    <MudText>@FormatDescription(int.TryParse(detail.Substring(0, 1), out _) ? detail.Substring(1): detail)</MudText>
+                </MudStack>
+            }
+        </MudStack>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private readonly MudTheme _theme = new();
+
+    private readonly List<(string Title, string[] Details)> _steps = 
+    [
+        ("Freshman Orientation<br/>72-Hour Money Challenge", ["Dad purchases MWR Business Account for $250", "1$100 1-time business activation fee", "1$150/mo membership fee", "Mom likewise purchases an MWR Business Account for $250 on behalf of teen", "Teen owes Mom", "1$100 1-time business activation fee", "1$150/mo membership fee"]),
+        ("Step 2", ["0Month 1", "1Income - $700", "2$50 Membership Enrollment Bonus (Mom is Dad's referral)", "2$650+/mo cash back from 'Instant Pay Raise' and 'Lower My Bills'", "1Expenses - $700", "2$250 for Dad's MWR Account (Step 1)", "2$250 for Mom's MWR Account (Step 1)", "2$200 for monthly deposit into teen's bank (Step 3)", "0Month 2 & Beyond", "2Income - $650+/mo", "3$650+/mo cash back from 'Instant Pay Raise' and 'Lower My Bills'", "2Expenses - $500/mo", "3$150/mo - Dad's MWR Membership Fee", "3$150/mo - Mom's MWR Membership Fee", "3$200/mo - Monthly deposit into teen's bank (Step 3)", "2Net - $150/mo", "0", "0If the parents can't get $650/mo cash back from 'Instant Pay Raise' and 'Lower My Bills', then this car purchase strategy will NOT work for their family."]),
+        ("Step 3", ["Teen opens Diversified Cashflow Account (DCA)", "This DCA is funded $200/mo by parents (see Step 2) as a college fund investment"]),
+        ("Step 4", ["Parents fund their teen's DCA w/ $3,000 (transferred from existing college fund elsewhere)"]),
+        ("Step 5", ["Teen borrows $3,000 from their DCA"]),
+        ("Step 6", ["Teen buys their car CASH from the loan they gave themself in Step 5"]),
+        ("Step 7", ["Teen plans car loan repayment via \"Eliminate My Debt\""]),
+        ("Step 8", ["Teen updates their car loan repayment plan w/ higher monthly payments from their DCA's uninterrupted, compound interest"]),
+        ("Step 9", ["Teen sells 12 MWR Memberships via the 72-Hour Money Challenge and receives $600/mo in residual commissions", "$200/mo (of the $600/mo) pays the car loan payment", "$200/mo (of the $600/mo) pays the car insurance", "$200/mo (of the $600/mo) pays for gas"]),
+        ("Step 10", ["Teen builds credit by paying their monthly car loan payments with a secured credit card", "Teen pays $200/mo to repay the loan in 15 months"]),
+        ("Step 11", ["Teen pays off $3,000 car loan in 15 months ($200/mo from Step 9)"]),
+        ("Step 12", ["Teen reimburses Mom for the MWR Business Account purchased on their behalf in Step 1", "Teen reimburses Mom $200/mo until she's fully reimbursed", "Remember, Mom's MWR Membership was free after Step 9 (3 & Free)"]),
+        ("Step 13", ["Parents stop depositing $200/mo into teen's DCA", "Parents now have a total of $350/mo of extra income ($150/mo is from Step 2)", "Teen starts depositing $200/mo into their DCA (freed up from completing car loan payment)" ]),
+        ("Step 14", ["Teen earns uninterrupted compound interest in their DCA", "Teen borrows against their DCA and uses the money to invest in assets" ]),
+        ("Step 15", ["Teen borrows $3,000 from their DCA"]),
+        ("Step 16", ["Teen borrows $3,000 from their DCA"]),
+        ("Step 17", ["Teen borrows $3,000 from their DCA"]),
+        ("Step 18", ["Teen borrows $3,000 from their DCA"]),
+        ("Step 19", ["Teen borrows $3,000 from their DCA"]),
+        ("Step 20", ["Teen borrows $3,000 from their DCA"]),
+        ("Step 21", ["Teen borrows $3,000 from their DCA"]),
+        ("Step 22", ["Teen borrows $3,000 from their DCA"]),
+        ("Step 23", ["Teen borrows $3,000 from their DCA"]),
+        ("Step 24", ["Teen borrows $3,000 from their DCA"]),
+    ];
+
+    private ProductionDuplicationLevel[] _production = [];
+
+    private (bool ShowDialog, (string Title, string[] Details) Step) _dialogInfo = new(false, default);
+
+    protected override void OnInitialized()
+    {
+        _production = new ProductionDuplicationLevel[_steps.Count];
+        for (var i = 0; i < _production.Length; i++)
+        {
+            if (i == 0)
+            {
+                _production[i] = new(1, null);
+            }
+            else
+            {
+                _production[i] = new(1, _production[i - 1]);
+            }
+        }
+    }
+
+    private string Tabs(int numTabs) => numTabs == 0 ? string.Empty : Enumerable.Range(1, numTabs).Select(_ => "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;").Aggregate((accumulated, next) => $"{accumulated}{next}") + "&#x2022;";
+
+    private Color GetColor((string Title, string[] Details) step) => (_steps.IndexOf(step) % 4) switch
+    {
+        0 => Color.Info,
+        1 => Color.Success,
+        2 => Color.Primary,
+        3 => Color.Warning,
+    };
+
+    private (Color Color, string Pallette) GetColor(int step) => (step % 4) switch
+    {
+        0 => (Color.Info, _theme.Palette.Info.Value),
+        1 => (Color.Success, _theme.Palette.Success.Value),
+        2 => (Color.Primary, _theme.Palette.Primary.Value),
+        3 => (Color.Warning, _theme.Palette.Warning.Value),
+    };
+
+    private MarkupString FormatDescription(string description)
+    {
+        var formatted = description;
+
+        for(var i = 0; i<_steps.Count; i++)
+        {
+            var targetPhrase = $"Step {i+1}";
+
+            formatted = formatted.Replace(targetPhrase, $@"<span style=""color:{GetColor(i).Pallette};"">{targetPhrase}</span>");
+        }
+
+        return (MarkupString)formatted;
+    }
+}

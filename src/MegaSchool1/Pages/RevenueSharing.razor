@@ -169,19 +169,6 @@
         Custom = 2,
     }
 
-    private record ProductionDuplicationLevel(int PersonalMemberEnrollments, ProductionDuplicationLevel? PreviousProgress)
-    {
-        public int TeamMembershipEnrollments { get; init; }
-            = 
-            PersonalMemberEnrollments
-            +
-            // Downline membership enrollments (the entire team got 1 enrollment)
-            (PreviousProgress?.TeamMembershipEnrollments ?? 0)
-            +
-            // Previous team membersip enrollments
-            (PreviousProgress?.TeamMembershipEnrollments ?? 0);
-    }
-
     private class CashFlowEquivalent(Rank rank)
     {
         public int InvestmentPrinciple { get; } = InvestmentCashFlowEquivalent(Constants.DailyGuarantee[rank].MonthlyPay);

@@ -12,7 +12,7 @@
 @inject Repository.Repository Repo
 @inject IDialogService Dialog
 
-<PageTitle>@((IsCapturePage ? "MWR" : "Mega School 1"))</PageTitle>
+<PageTitle>@((IsCapturePage ? "MWR" : $"{GetTitle()} | Mega School 1"))</PageTitle>
 
 <HeadContent>
     <!-- Open Graph / Facebook -->
@@ -171,7 +171,10 @@ else
 
     private bool IsCarPurchasePage => NavigationManager.Uri.Contains("/carpurchase");
 
-    private bool IsWhitelistedProspectPage => IsCapturePage || IsCarPurchasePage;
+    private bool IsWhitelistedProspectPage =>
+        IsCapturePage 
+        || IsCarPurchasePage
+        || NavigationManager.Uri.Contains("/trustfundmybaby");
 
     private bool ProspectMode => _appState.User == null;
 
@@ -296,6 +299,7 @@ else
             "par" => "Personal Activity Report",
             "experimental" => "Experimental",
             "training" => "Millionaire Trainings",
+            "trustfundmybaby" => "Trust Fund My Baby",
             _ => string.Empty
         };
     }
