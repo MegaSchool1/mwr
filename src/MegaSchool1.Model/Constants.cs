@@ -211,7 +211,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         Image.KeysToHomeOwnership => "/images/keys-to-home-ownership-banner.jpg",
         Image.WealthWorksheet => "/images/WealthWorksheet-Blank-v1.png",
         Image.MoneyChallengeTransparent => "/images/72-hour-money-challenge.png",
-        Image.MWRLogoTransparent => "/images/mwr-logo-transparent.png",
+        Image.MWRLogoTransparent => "/images/mwr-logo-transparent-221x221.png",
         _ => throw new Exception($"Image not found: {image}"),
     };
 
