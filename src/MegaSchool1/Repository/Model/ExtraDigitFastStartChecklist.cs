@@ -18,4 +18,7 @@ public class ExtraDigitFastStartChecklist
 
     [JsonPropertyName("personal_activity_report")]
     public bool PersonalActivityReport { get; set; }
+
+    [JsonPropertyName("email_extra_digit")]
+    public bool EmailExtraDigit { get; set; }
 }
