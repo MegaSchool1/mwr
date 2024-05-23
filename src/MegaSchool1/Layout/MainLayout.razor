@@ -76,7 +76,7 @@ else
                             else
                             {
                                 <MudStack Row="true">
-                                    <MudText Style="color:white;">Hello @_appState.User?.MemberId! <MudIconButton OnClick="ShowUsernameEditDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
+                                    <MudText Style="color:white;">Hello @_appState.User?.Name! <MudIconButton OnClick="ShowUsernameEditDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
                                 </MudStack>
                             }
                         }
@@ -210,7 +210,11 @@ else
         var memberId = await Repo.GetUsernameAsync();
         if (memberId != null)
         {
-            _appState.User = new TeamMember() { Name = "Me", MemberId = memberId };
+            var qmdInfo = await Repo.GetQMDInfo(memberId);
+            var websiteDisplayName = qmdInfo?.BusnmShow is true ?
+                qmdInfo?.BusinessName : $"{qmdInfo?.FirstName} {qmdInfo?.LastName}";
+
+            _appState.User = new TeamMember() { Name = websiteDisplayName ?? memberId, MemberId = memberId };
         }
         this.StateHasChanged();
 
