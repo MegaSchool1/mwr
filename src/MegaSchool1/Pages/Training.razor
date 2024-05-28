@@ -4,6 +4,25 @@
 @using MegaSchool1.Model
 
 <MudStack Spacing="3">
+    <Collapsable Title="Membership">
+        <MudStack Spacing="3">
+            <MudCard Outlined="true">
+                <MudCardHeader>72-Hour Money Challenge Deep Dive</MudCardHeader>
+                <MudCardContent>
+                    <EmbeddedVideo YouTube="WLGXDgmIbxc"  />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudStack Style="width:100%;">
+                        <Centered>
+                            <ShareableContent Tooltip="Copied!"
+                                              ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
+                                              TextToCopy="@($"72-Hour Money Challenge Deep Dive{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.MinimalistYouTubeLink("WLGXDgmIbxc")}")" />
+                        </Centered>
+                    </MudStack>
+                </MudCardActions>
+            </MudCard>
+        </MudStack>
+    </Collapsable>
     <Collapsable Title="The Pipeline">
         <MudStack Spacing="3">
             <MudCard Outlined="true">
