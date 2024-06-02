@@ -68,10 +68,7 @@
         await Repo.SaveSettingsAsync(settings);
 
         var qmdInfo = await Repo.GetQMDInfo(_username!);
-        var websiteDisplayName = qmdInfo?.BusnmShow is true ?
-            qmdInfo?.BusinessName : $"{qmdInfo?.FirstName} {qmdInfo?.LastName}";
-
-        this.AppState!.User = new() { Name = websiteDisplayName ?? _username!, MemberId = _username! };
+        this.AppState!.User = Util.GetUserInfo(_username!, qmdInfo!);
         this.StateHasChanged();
 
         MainLayout.Refresh();

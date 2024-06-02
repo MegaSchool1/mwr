@@ -10,8 +10,26 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
 {
 	private const string SettingsKey = "settings";
 	private const string UserDataKey = "user_data";
+    private const string BackupKey = "backup";
 
-	public async Task SaveUserDataAsync(UserData userData)
+    public async Task<GlobalData?> GetGlobalDataBackupAsync()
+    {
+        GlobalData? data = null;
+
+        if (await localStorage.ContainKeyAsync(BackupKey))
+        {
+            data = await localStorage.GetItemAsync<GlobalData>(BackupKey);
+        }
+
+        return data;
+    }
+
+    public async Task SaveGlobalDataBackupAsync(GlobalData data)
+    {
+        await localStorage.SetItemAsync(BackupKey, data);
+    }
+
+    public async Task SaveUserDataAsync(UserData userData)
 	{
 		await localStorage.SetItemAsync(UserDataKey, userData);
 	}
@@ -40,7 +58,13 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
 	    return foundSettings ?? new();
     }
 
-	public async Task SaveSettingsAsync(Settings settings)
+    public async Task SaveGlobalDataAsync(GlobalData globalData)
+    {
+        await localStorage.SetItemAsync(SettingsKey, globalData);
+
+    }
+
+    public async Task SaveSettingsAsync(Settings settings)
     {
         await localStorage.SetItemAsync(SettingsKey, settings);
 

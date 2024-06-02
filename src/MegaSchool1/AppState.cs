@@ -1,4 +1,4 @@
-﻿using MegaSchool1.Repository.Model;
+﻿using MegaSchool1.Model.Repository;
 
 namespace MegaSchool1;
 

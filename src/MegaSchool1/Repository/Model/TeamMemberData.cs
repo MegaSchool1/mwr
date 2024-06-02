@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using MegaSchool1.Model;
+using MegaSchool1.Model.Repository;
 
 namespace MegaSchool1.Repository.Model;
 

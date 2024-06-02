@@ -72,6 +72,32 @@
     </script>
 
     <script>
+        window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+            const arrayBuffer = await contentStreamReference.arrayBuffer();
+            const blob = new Blob([arrayBuffer]);
+            const url = URL.createObjectURL(blob);
+            const anchorElement = document.createElement('a');
+            anchorElement.href = url;
+            anchorElement.download = fileName ?? '';
+            anchorElement.click();
+            anchorElement.remove();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+
+    <script>
+        async function downloadFileFromStream(fileName, contentStreamReference) {
+            const arrayBuffer = await contentStreamReference.arrayBuffer();
+            const blob = new Blob([arrayBuffer]);
+            const url = URL.createObjectURL(blob);
+            const anchorElement = document.createElement('a');
+            anchorElement.href = url;
+            anchorElement.download = fileName ?? '';
+            anchorElement.click();
+            anchorElement.remove();
+            URL.revokeObjectURL(url);
+        }
+
         function getQualifiedMarketingDirectorPhoneNumber() {
             var iframe = document.getElementById("myFrame");
             console.log("iframe: " + iframe);
@@ -91,9 +117,9 @@
                     [blob.type]: blob,
                     'text/plain': new Blob(["my text value"], { type: 'text/plain' })
                 },
-                {
-                    presentationStyle : "inline"
-                }),
+                    {
+                        presentationStyle: "inline"
+                    }),
             ]);
         }
 
@@ -107,10 +133,10 @@
             const fileExtension =
                 urlParameterIndex == -1
                     ? imageUrl.split('.').pop()
-                    : imageUrl.substring(0, urlParameterIndex).split('.').pop();    
+                    : imageUrl.substring(0, urlParameterIndex).split('.').pop();
 
             if (navigator.canShare) {
-                const image = await fetch(imageUrl);            
+                const image = await fetch(imageUrl);
                 const blob = await image.blob();
 
                 const data = {

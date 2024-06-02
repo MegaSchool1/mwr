@@ -1,11 +1,16 @@
 ﻿@page "/settings"
+@using MegaSchool1.Components
+@using MegaSchool1.Model
+@using System.Text.Json
 @using FluentValidation
 @using MegaSchool1.Dialog
-@using MegaSchool1.Model
+@using MegaSchool1.Model.Repository
 @using MegaSchool1.Repository.Model
+@using System.Text
 @inherits Components.ComponentBase
 @inject Repository.Repository Repo
 @inject IDialogService Dialog
+@inject IJSRuntime JS
 
 <MudStack Spacing="6">
     <MudStack Row="true">
@@ -15,29 +20,104 @@
                 <MudSelectItem Value="@teamMember">
                     <MudStack Row="true">
                         <MudText>@teamMember.Name</MudText>
-                        <MudSpacer/>
-                    </MudStack>                  
+                        <MudSpacer />
+                    </MudStack>
                 </MudSelectItem>
             }
         </MudSelect>
         @if (_selectedTeamMember != null)
         {
-            <MudIconButton Icon="@Icons.Material.Filled.Edit" 
+            <MudIconButton Icon="@Icons.Material.Filled.Edit"
                            Color="Color.Primary"
                            OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("Edit Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.TeamMember, _selectedTeamMember }, { x => x.OnSave, OnTeamMemberEdited } }))" />
             <MudIconButton OnClick="@(e => OnDeleteTeamMember(_selectedTeamMember))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
         }
-        <MudIconButton Icon="@Icons.Material.Filled.PersonAdd" 
+        <MudIconButton Icon="@Icons.Material.Filled.PersonAdd"
                        Color="Color.Primary"
                        OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
     </MudStack>
-    <MudDivider/>
+    <MudDivider />
+    <MudStack Row="true">
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnExportData">Export Data</MudButton>
+        <MudSpacer />
+    </MudStack>
+    <Centered>
+        <MudFileUpload T="IBrowserFile" Accept=".json" FilesChanged="OnImportData" MaximumFileCount="100">
+            <ButtonTemplate>
+                <MudButton HtmlTag="label"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.CloudUpload"
+                           for="@context.Id">
+                    Import Data
+                </MudButton>
+            </ButtonTemplate>
+        </MudFileUpload>
+    </Centered>
+    <MudStack Row="true">
+        <MudSpacer/>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnRestoreData">Restore Data</MudButton>
+        <MudSpacer/>
+    </MudStack>
+    <MudDivider />
     <MudNavLink Href="https://cash.app/$MegaSchool1/12.00" Target="_blank" Icon="@Icons.Material.Filled.Payment">Pay Annual Subscription</MudNavLink>
 </MudStack>
 
 @code {
     private Repository.Model.Settings _settings = new();
     private TeamMember? _selectedTeamMember;
+    private readonly IList<IBrowserFile> files = new List<IBrowserFile>();
+
+    private async Task OnImportData(IBrowserFile file)
+    {
+        // save backup
+        var settings = await Repo.GetSettingsAsync();
+        var userData = await Repo.GetUserDataAsync();
+        var globalData = new GlobalData() { Settings = settings, UserData = userData };
+        await Repo.SaveGlobalDataBackupAsync(globalData);
+
+        // load new file
+        using var stream = file.OpenReadStream();
+        using var reader = new StreamReader(stream);
+        var data = await reader.ReadToEndAsync();
+        var deserializedData = JsonSerializer.Deserialize<GlobalData>(data);
+
+        await Repo.SaveSettingsAsync(deserializedData.Settings);
+        await Repo.SaveUserDataAsync(deserializedData.UserData);
+
+        var qmdInfo = await Repo.GetQMDInfo(deserializedData.Settings.Username);
+        this.AppState!.User = Util.GetUserInfo(deserializedData.Settings.Username, qmdInfo!);
+
+        this.StateHasChanged();
+    }
+
+    private async Task OnExportData()
+    {
+        var settings = await Repo.GetSettingsAsync();
+        var userData = await Repo.GetUserDataAsync();
+        var globalData = new GlobalData() { Settings = settings, UserData = userData };
+
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(globalData)));
+        var fileName = "MegaSchoolData.json";
+
+        using var streamRef = new DotNetStreamReference(stream: stream);
+
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+
+    private async Task OnRestoreData()
+    {
+        var globalData = await Repo.GetGlobalDataBackupAsync();
+
+        await Repo.SaveSettingsAsync(globalData.Settings);
+        await Repo.SaveUserDataAsync(globalData.UserData);
+
+        var qmdInfo = await Repo.GetQMDInfo(globalData.Settings.Username);
+        this.AppState!.User = Util.GetUserInfo(globalData.Settings.Username, qmdInfo!);
+
+        this.StateHasChanged();
+    }
 
     protected override async Task OnInitializedAsync()
     {

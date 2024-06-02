@@ -1,10 +1,19 @@
-﻿using System.Net.Http.Json;
+﻿using MegaSchool1.Model.API;
+using MegaSchool1.Model.Repository;
+using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 
 namespace MegaSchool1.Model;
 
 public class Util
 {
+    public static TeamMember GetUserInfo(string memberId, QMD qmd)
+    {
+        var websiteDisplayName = qmd.BusnmShow ? qmd.BusinessName : $"{qmd.FirstName} {qmd.LastName}";
+
+        return new() { Name = websiteDisplayName ?? memberId, MemberId = memberId };
+    }
+
     public static async Task<bool> IsUsernameValidAsync(string username, HttpClient http)
     {
         // check if username belongs to an active Qualified Marketing Director (QMD)

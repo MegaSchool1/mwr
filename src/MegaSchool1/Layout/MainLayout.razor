@@ -210,11 +210,8 @@ else
         var memberId = await Repo.GetUsernameAsync();
         if (memberId != null)
         {
-            var qmdInfo = await Repo.GetQMDInfo(memberId);
-            var websiteDisplayName = qmdInfo?.BusnmShow is true ?
-                qmdInfo?.BusinessName : $"{qmdInfo?.FirstName} {qmdInfo?.LastName}";
-
-            _appState.User = new TeamMember() { Name = websiteDisplayName ?? memberId, MemberId = memberId };
+            var qmdInfo = await Repo.GetQMDInfo(memberId!);
+            _appState.User = Util.GetUserInfo(memberId!, qmdInfo!);
         }
         this.StateHasChanged();
 
