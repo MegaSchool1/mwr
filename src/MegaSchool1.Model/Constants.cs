@@ -63,6 +63,7 @@ public enum Image
     WealthWorksheet = 15,
     MoneyChallengeTransparent = 16,
     MWRLogoTransparent = 17,
+    GivBux = 18,
 }
 
 public enum Strategy
@@ -81,6 +82,7 @@ public enum VideoPlatform
     YouTube = 1,
     Vimeo = 2,
     TikTok = 3,
+    Html5 = 4,
 }
 
 public enum Content
@@ -114,6 +116,7 @@ public enum Content
     TeenCarPurchase = 26,
     MembershipBasedBusiness = 27,
     WealthWorksheetV1 = 28,
+    GivBux = 29,
 }
 
 public enum Video
@@ -212,6 +215,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         Image.WealthWorksheet => "/images/WealthWorksheet-Blank-v1.png",
         Image.MoneyChallengeTransparent => "/images/72-hour-money-challenge.png",
         Image.MWRLogoTransparent => "/images/mwr-logo-transparent-221x221.png",
+        Image.GivBux => "/images/givbux.jpeg",
         _ => throw new Exception($"Image not found: {image}"),
     };
 

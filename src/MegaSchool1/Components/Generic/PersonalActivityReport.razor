@@ -110,7 +110,7 @@
                               Lines="8"
                               Immediate="true"/>
                 <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in Enum.GetValues<Content>().Except([Content.None]))
+                    @foreach (var content in Enum.GetValues<Content>().Except([Content.None, Content.GivBux]).Prepend(Content.GivBux))
                     {
                         <MudSelectItem Value="@content" />
                     }
@@ -162,7 +162,7 @@
     private (Prospect Prospect, bool Show) _deleteProspectDialog;
     private Settings _settings = new();
     private TeamMember? _selectedTeamMember;
-    private Content _selectedShareable = Content.MoneyChallenge;
+    private Content _selectedShareable = Content.GivBux;
 
     [Parameter]
     public Pipeline<TPipeline> Pipeline { get; set; }

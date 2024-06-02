@@ -4,7 +4,7 @@
 @using MegaSchool1.Model
 @inject UISettings UI
 
-<PageTitle>MWR 72-Hour Money Challenge!</PageTitle>
+<PageTitle>@Video?.ShareableTitle</PageTitle>
 
 <MudStack Spacing="3" Style="height:100%;">
     <Centered><MudImage Src="@GetImageUrl()" Fluid="true" Width="300" /></Centered>
@@ -20,6 +20,13 @@
         @if (this.Video?.Platform is VideoPlatform.TikTok)
         {
             <EmbeddedVideo TikTok="@((Video?.UserHandle, Video?.Id))" />
+        }
+        @if (this.Video?.Platform is VideoPlatform.Html5)
+        {
+            <video width="100%" controls>
+                <source src="@Video?.Url" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         }
     </Centered>
     @if (!string.IsNullOrWhiteSpace(this.Video?.DownloadUrl))
