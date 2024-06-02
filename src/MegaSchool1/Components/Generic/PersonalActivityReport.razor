@@ -110,7 +110,7 @@
                               Lines="8"
                               Immediate="true"/>
                 <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in Enum.GetValues<Content>().Except([Content.None, Content.GivBux]).Prepend(Content.GivBux))
+                    @foreach (var content in Enum.GetValues<Content>().Except([Content.None, Content.GivBux, Content.GivBuxMerchant]).Prepend(Content.GivBuxMerchant).Prepend(Content.GivBux))
                     {
                         <MudSelectItem Value="@content" />
                     }

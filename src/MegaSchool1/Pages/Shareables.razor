@@ -16,6 +16,7 @@
             <MudTabPanel Tag="@Strategy.MegaSchool">
                 <MudStack>
                     @ContentView(Content.GivBux)
+                    @ContentView(Content.GivBuxMerchant)
                     <ShareableVideoMultilingual Description="@Constants.MoneyChallenge[Strategy.MegaSchool].Description"
                                                 Duration="@Constants.MoneyChallenge[Strategy.MegaSchool].Duration"
                                                 Url="@Constants.MoneyChallenge[Strategy.MegaSchool].PreviewUrl"
@@ -115,7 +116,7 @@
                 <MudCardContent>
                     <MudStack Spacing="3">
                         <MudSelect T="Content" Label="Services" @bind-Value="_selectedService" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                            @foreach (var content in new[] { Content.GivBux, Content.NextLevelStrategies, Content.Membership, Content.CreditRestoration, Content.StudentLoanDebtRelief, Content.HealthShare, Content.KeysToHomeOwnership, Content.PreciousMetals, Content.TrustMyAssets, Content.RealEstatePros, Content.ProtectMyAssets, Content.StructureMyLegacy })
+                            @foreach (var content in new[] { Content.GivBux, Content.GivBuxMerchant, Content.NextLevelStrategies, Content.Membership, Content.CreditRestoration, Content.StudentLoanDebtRelief, Content.HealthShare, Content.KeysToHomeOwnership, Content.PreciousMetals, Content.TrustMyAssets, Content.RealEstatePros, Content.ProtectMyAssets, Content.StructureMyLegacy })
                             {
                                 <MudSelectItem Value="@content" />
                             }
@@ -126,7 +127,7 @@
             </MudCard>
             <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMemberCapturePage">
                 <MudSelect T="Content" Label="Capture Page" @bind-Value="_selectedCapturePage" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in Enum.GetValues<Content>().Except([Content.None, Content.GivBux]).Prepend(Content.GivBux))
+                    @foreach (var content in Enum.GetValues<Content>().Except([Content.None, Content.GivBux, Content.GivBuxMerchant]).Prepend(Content.GivBuxMerchant).Prepend(Content.GivBux))
                     {
                         <MudSelectItem Value="@content" />
                     }
@@ -269,7 +270,7 @@
     private TeamMember? _selectedTeamMemberCapturePage;
     private Content _selectedCapturePage = Content.GivBux;
     private Content _selectedMiscellaneous = Content.TeenCarPurchase;
-    private Content _selectedService = Content.NextLevelStrategies;
+    private Content _selectedService = Content.GivBux;
 
     protected override void OnInitialized()
     {
