@@ -39,6 +39,9 @@ public class VideoResource
     [JsonPropertyName("capturePageImageId")]
     public Image? CapturePageImage { get; set; }
 
+    [JsonPropertyName("downloadText")]
+    public string? DownloadText { get; set; }
+
     [JsonPropertyName("downloadUrl")]
     public string? DownloadUrl { get; set; }
 
@@ -53,4 +56,7 @@ public class VideoResource
 
     [JsonPropertyName("showBusinessSignUp")]
     public bool ShowBusinessSignUp { get; set; }
+
+    [JsonPropertyName("hideShortCodePrompt")]
+    public bool HideShortCodePrompt { get; set; }
 }
