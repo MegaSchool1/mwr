@@ -118,6 +118,7 @@ public enum Content
     WealthWorksheetV1 = 28,
     GivBux = 29,
     GivBuxMerchant = 30,
+    EDMGivBux = 31,
 }
 
 public enum Video
