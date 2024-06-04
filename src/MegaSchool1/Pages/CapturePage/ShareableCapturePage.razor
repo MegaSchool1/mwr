@@ -29,6 +29,23 @@
             </video>
         }
     </Centered>
+    @if (!string.IsNullOrWhiteSpace(this.Video?.AuxiliaryText))
+    {
+        <br/>
+        <Centered><MudText Align="Align.Center">@((MarkupString)Video?.AuxiliaryText.Replace("{ReferralCode}", ReferralId))</MudText></Centered>
+    }
+    @if (Video?.Images.Any() is true)
+    {
+        <br/>
+        <Centered>
+            <MudStack Row="true">
+                @foreach (var image in Video?.Images)
+                {
+                    <a href="@image.Href" target="_blank"><MudImage Src="@image.Url" Fluid="true" /></a>
+                }
+            </MudStack>
+        </Centered>
+    }
     @if (!string.IsNullOrWhiteSpace(this.Video?.DownloadUrl))
     {
         <Centered><ExternalLink Text="@(Video?.DownloadText ?? "Download")" Href="@this.Video?.DownloadUrl" /></Centered>

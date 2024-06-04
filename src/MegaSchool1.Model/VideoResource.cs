@@ -59,4 +59,10 @@ public class VideoResource
 
     [JsonPropertyName("hideShortCodePrompt")]
     public bool HideShortCodePrompt { get; set; }
+
+    [JsonPropertyName("images")]
+    public ImageInfo[] Images { get; set; } = [];
+
+    [JsonPropertyName("auxText")]
+    public string? AuxiliaryText { get; set; }
 }

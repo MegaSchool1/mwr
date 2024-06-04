@@ -9,6 +9,7 @@
 @inject Constants Constants
 @inject UISettings UI
 @inject NavigationManager NavigationManager
+@inject Repository.Repository Repo
 
 <MudStack Spacing="3">
     <Collapsable Title="Essentials" ExpandPrompt="Show">
@@ -271,13 +272,16 @@
     private Content _selectedCapturePage = Content.GivBux;
     private Content _selectedMiscellaneous = Content.TeenCarPurchase;
     private Content _selectedService = Content.GivBux;
+    private Repository.Model.Settings? _settings;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         _pageLoaded = true;
 
         _selectedTeamMember = _selectedTeamMemberCapturePage = AppState?.User;
-        
+
+        _settings = await Repo.GetSettingsAsync();
+
         this.StateHasChanged();
     }
 
@@ -315,18 +319,17 @@
     {
         var english = UI.EnglishLocale[content];
         var spanish = UI.SpanishLocale[content];
+        var referralCode = (content == Content.GivBux || content == Content.GivBuxMerchant) && !string.IsNullOrWhiteSpace(_settings?.GivBuxCode) ? _settings?.GivBuxCode : "Example-Referral-Code";
 
         if (spanish != null)
         {
             <ShareableVideoMultilingual Description="@english.AppTitle"
                                         Duration="@english.Duration"
-                                        Url="@Constants.GetCapturePage(content, Language.English, teamMember?.MemberId, "Example-Key-Word")"
-                                        
-                                        EnglishTextToCopy="@($"{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(english.ContentId, Language.English, teamMember?.MemberId!, "Example-Key-Word")}")"
+                                        Url="@Constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode)"
+                                        EnglishTextToCopy="@($"{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(english.ContentId, Language.English, teamMember?.MemberId!, referralCode)}")"
                                         EnglishTooltip="Copied!"
                                         EnglishImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"
-
-                                        SpanishTextToCopy="@($"{spanish.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(spanish.ContentId, Language.Spanish, teamMember?.MemberId!, "Example-Key-Word")}")"
+                                        SpanishTextToCopy="@($"{spanish.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(spanish.ContentId, Language.Spanish, teamMember?.MemberId!, referralCode)}")"
                                         SpanishTooltip="Copied"
                                         SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)"/>
         }
@@ -334,8 +337,8 @@
         {
             <ShareableVideo Description="@english.AppTitle"
                             Duration="@english.Duration"
-                            Url="@Constants.GetCapturePage(content, Language.English, teamMember?.MemberId, "Example-Key-Word")"
-                            TextToCopy="@($"{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(english.ContentId, Language.English, teamMember?.MemberId!, "Example-Key-Word")}")"
+                            Url="@Constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode)"
+                            TextToCopy="@($"{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(english.ContentId, Language.English, teamMember?.MemberId!, referralCode)}")"
                             Tooltip="Copied!"
                             ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)" />
         }

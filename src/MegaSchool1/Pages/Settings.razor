@@ -36,6 +36,7 @@
                        Color="Color.Primary"
                        OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
     </MudStack>
+    <MudTextField @bind-Value="_settings.GivBuxCode" Label="GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@SaveAndValidateTrueAsync()" DisableUnderLine="true" />
     <MudDivider />
     <MudStack Row="true">
         <MudSpacer />
@@ -68,6 +69,18 @@
     private Repository.Model.Settings _settings = new();
     private TeamMember? _selectedTeamMember;
     private readonly IList<IBrowserFile> files = new List<IBrowserFile>();
+
+    private async Task<bool> SaveAndValidateTrueAsync()
+    {
+        await SaveAsync();
+
+        return true;
+    }
+
+    private async Task SaveAsync()
+    {
+        await Repo.SaveSettingsAsync(_settings);
+    }
 
     private async Task OnImportData(IBrowserFile file)
     {
