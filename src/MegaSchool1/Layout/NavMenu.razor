@@ -4,6 +4,9 @@
 @inject IDialogService Dialog
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
+@inject Constants Constants
+@inject UISettings UI
+@inject Repository.Repository Repo
 
 <MudNavMenu>
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SpatialAudioOff">Words</MudNavLink>
@@ -37,20 +40,7 @@
 <MudDialog @bind-IsVisible="_showAppShareable" Options="@(new DialogOptions() { NoHeader = true })">
     <DialogContent>
         <MudStack>
-            <ShareableVideo Description="@Constants.AppShareable.Description"
-                            Url="@Constants.AppShareable.PreviewUrl"
-                            Tooltip="@Constants.AppShareable.English.Tooltip"
-                            TextToCopy="@Constants.AppShareable.English.Message"
-                            ImageUrl="@Constants.AppShareable.ImageUrl"/>
-            <ShareableVideo Description="@("App Install Instructions")"
-                            Url="@Constants.AppInstallTutorialUrl"
-                            Tooltip="Copied!"
-                            TextToCopy="@($"Mega School App Install Instructions{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.AppInstallTutorialUrl}")"
-                            ImageUrl="@Constants.GetImageUrl(Image.AppScreenshot)"/>
-            <ShareableVideo Description="@($"Latest App Feature")"
-                            Tooltip="Copied!"
-                            TextToCopy="@($"Mega School App Update!{Environment.NewLine}{Environment.NewLine}'Next Level Strategies' video{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://megaschool1.github.io/")"
-                            ImageUrl="https://static.wixstatic.com/media/5f35ec_218122e730d74b37887189a5507407f6~mv2.png" />
+            @Pages.Shareables.CapturePage(Content.MegaSchoolAppInstall, AppState.User, UI, _settings, Constants)
         </MudStack>
     </DialogContent>
 </MudDialog>
@@ -58,6 +48,7 @@
 @code {
     private bool _updateAvailable;
     private bool _showAppShareable;
+    private Repository.Model.Settings? _settings;
 
     private string ValidateUrl(string url) => ProspectMode ? "#" : url;
 
@@ -66,6 +57,7 @@
     protected override async Task OnInitializedAsync()
     {
         _updateAvailable = await Util.UpdateAvailableAsync(Http);
+        _settings = await Repo.GetSettingsAsync();
     }
 
     private async Task OnVersionClick(MouseEventArgs e)

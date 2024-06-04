@@ -296,34 +296,36 @@
                             Url="@english.MinimalistUrl()"
                             TextToCopy="@($"{Shareable.VideoShareable(english)}")"
                             Tooltip="Copied!"
-                            ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"/>
+            ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"/>
         }
     };
-    
-    private RenderFragment CapturePage(Content content, TeamMember? teamMember) => __builder =>
+
+    private RenderFragment CapturePage(Content content, TeamMember? teamMember) => CapturePage(content, teamMember, UI, _settings, Constants);
+
+    public static RenderFragment CapturePage(Content content, TeamMember? teamMember, UISettings ui, Repository.Model.Settings? settings, Constants constants) => __builder =>
     {
-        var english = UI.EnglishLocale[content];
-        var spanish = UI.SpanishLocale[content];
-        var referralCode = (content == Content.GivBux || content == Content.GivBuxMerchant || content == Content.EDMGivBux) && !string.IsNullOrWhiteSpace(_settings?.GivBuxCode) ? _settings?.GivBuxCode : "Example-Referral-Code";
+        var english = ui.EnglishLocale[content];
+        var spanish = ui.SpanishLocale[content];
+        var referralCode = (content == Content.GivBux || content == Content.GivBuxMerchant || content == Content.EDMGivBux) && !string.IsNullOrWhiteSpace(settings?.GivBuxCode) ? settings?.GivBuxCode : "Example-Referral-Code";
 
         if (spanish != null)
         {
             <ShareableVideoMultilingual Description="@english.AppTitle"
                                         Duration="@english.Duration"
-                                        Url="@Constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode)"
-                                        EnglishTextToCopy="@($"{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(english.ContentId, Language.English, teamMember?.MemberId!, referralCode)}")"
+                                        Url="@constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode)"
+                                        EnglishTextToCopy="@($"{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{constants.GetCapturePage(english.ContentId, Language.English, teamMember?.MemberId!, referralCode)}")"
                                         EnglishTooltip="Copied!"
                                         EnglishImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"
-                                        SpanishTextToCopy="@($"{spanish.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(spanish.ContentId, Language.Spanish, teamMember?.MemberId!, referralCode)}")"
+                                        SpanishTextToCopy="@($"{spanish.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{constants.GetCapturePage(spanish.ContentId, Language.Spanish, teamMember?.MemberId!, referralCode)}")"
                                         SpanishTooltip="Copied"
-                                        SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)"/>
+                                        SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)" />
         }
         else
         {
             <ShareableVideo Description="@english.AppTitle"
                             Duration="@english.Duration"
-                            Url="@Constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode)"
-                            TextToCopy="@($"{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.GetCapturePage(english.ContentId, Language.English, teamMember?.MemberId!, referralCode)}")"
+                            Url="@constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode)"
+                            TextToCopy="@($"{english.ShareableTitle}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{constants.GetCapturePage(english.ContentId, Language.English, teamMember?.MemberId!, referralCode)}")"
                             Tooltip="Copied!"
                             ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)" />
         }

@@ -64,6 +64,7 @@ public enum Image
     MoneyChallengeTransparent = 16,
     MWRLogoTransparent = 17,
     GivBux = 18,
+    AppLogo = 19,
 }
 
 public enum Strategy
@@ -119,6 +120,7 @@ public enum Content
     GivBux = 29,
     GivBuxMerchant = 30,
     EDMGivBux = 31,
+    MegaSchoolAppInstall = 32,
 }
 
 public enum Video
@@ -218,6 +220,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         Image.MoneyChallengeTransparent => "/images/72-hour-money-challenge.png",
         Image.MWRLogoTransparent => "/images/mwr-logo-transparent-221x221.png",
         Image.GivBux => "/images/givbux.jpeg",
+        Image.AppLogo => "/images/app-logo.png",
         _ => throw new Exception($"Image not found: {image}"),
     };
 
