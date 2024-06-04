@@ -7,36 +7,41 @@
 @using MegaSchool1.Model.Repository
 @using MegaSchool1.Repository.Model
 @using System.Text
+@using System.Text.RegularExpressions
 @inherits Components.ComponentBase
 @inject Repository.Repository Repo
 @inject IDialogService Dialog
 @inject IJSRuntime JS
 
 <MudStack Spacing="6">
-    <MudStack Row="true">
-        <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)">
-            @foreach (var teamMember in _settings.TeamMembers)
-            {
-                <MudSelectItem Value="@teamMember">
-                    <MudStack Row="true">
-                        <MudText>@teamMember.Name</MudText>
-                        <MudSpacer />
-                    </MudStack>
-                </MudSelectItem>
-            }
-        </MudSelect>
-        @if (_selectedTeamMember != null)
-        {
-            <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                           Color="Color.Primary"
-                           OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("Edit Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.TeamMember, _selectedTeamMember }, { x => x.OnSave, OnTeamMemberEdited } }))" />
-            <MudIconButton OnClick="@(e => OnDeleteTeamMember(_selectedTeamMember))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
-        }
-        <MudIconButton Icon="@Icons.Material.Filled.PersonAdd"
-                       Color="Color.Primary"
-                       OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
-    </MudStack>
-    <MudTextField @bind-Value="_settings.GivBuxCode" Label="GivBux Code" Variant="Variant.Outlined" Mask="@(new RegexMask(@"^([a-z]|\d)+$"))" Immediate="true" Placeholder="GivBux Code" Validation="@SaveAndValidateTrueAsync()" DisableUnderLine="true" />
+    <MudForm @bind-IsValid="_dataValid">
+        <MudStack Spacing="3">
+            <MudStack Row="true">
+                <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)">
+                    @foreach (var teamMember in _settings.TeamMembers)
+                    {
+                        <MudSelectItem Value="@teamMember">
+                            <MudStack Row="true">
+                                <MudText>@teamMember.Name</MudText>
+                                <MudSpacer />
+                            </MudStack>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                @if (_selectedTeamMember != null)
+                {
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                   Color="Color.Primary"
+                                   OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("Edit Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.TeamMember, _selectedTeamMember }, { x => x.OnSave, OnTeamMemberEdited } }))" />
+                    <MudIconButton OnClick="@(e => OnDeleteTeamMember(_selectedTeamMember))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+                }
+                <MudIconButton Icon="@Icons.Material.Filled.PersonAdd"
+                               Color="Color.Primary"
+                               OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
+            </MudStack>
+            <MudTextField @bind-Value="_settings.GivBuxCode" Label="GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
+        </MudStack>
+    </MudForm>
     <MudDivider />
     <MudStack Row="true">
         <MudSpacer />
@@ -66,15 +71,26 @@
 </MudStack>
 
 @code {
+    private readonly Regex ValidGivBuxCode = new (@"^([a-z]|\d)+$");
+
     private Repository.Model.Settings _settings = new();
     private TeamMember? _selectedTeamMember;
-    private readonly IList<IBrowserFile> files = new List<IBrowserFile>();
+    private bool _dataValid;
 
-    private async Task<bool> SaveAndValidateTrueAsync()
+    private async Task<string?> ValidateGivBuxCodeAsync(string givBuxCode)
     {
-        await SaveAsync();
+        if (!string.IsNullOrWhiteSpace(_settings.GivBuxCode))
+        {
+            var valid = ValidGivBuxCode.IsMatch(_settings.GivBuxCode);
+            if(valid)
+            {
+                await SaveAsync();
+      
+                return null;
+            }
+        }
 
-        return true;
+        return "GivBux code must be all lower case and NO spaces!";
     }
 
     private async Task SaveAsync()
