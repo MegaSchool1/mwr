@@ -121,6 +121,7 @@ public enum Content
     GivBuxMerchant = 30,
     EDMGivBux = 31,
     MegaSchoolAppInstall = 32,
+    GivBuxOpportunity = 33,
 }
 
 public enum Video
