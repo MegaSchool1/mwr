@@ -55,7 +55,14 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
 		    foundSettings = await localStorage.GetItemAsync<Settings>(SettingsKey);
 	    }
 
-	    return foundSettings ?? new();
+        foundSettings ??= new();
+
+        foreach(var teamMember in foundSettings.TeamMembers)
+        {
+            teamMember.QMD = await GetQMDInfo(teamMember.MemberId);
+        }
+
+        return foundSettings;
     }
 
     public async Task SaveGlobalDataAsync(GlobalData globalData)

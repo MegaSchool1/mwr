@@ -1,11 +1,15 @@
-﻿using System.Text.Json.Serialization;
+﻿using MegaSchool1.Model.API;
+using System.Text.Json.Serialization;
 
 namespace MegaSchool1.Model.Repository;
 
 public record TeamMember
 {
-    [JsonPropertyName("name")]
-    public string Name { get; set; } = default!;
+    public DisplayName Name => (DisplayName)QMD ?? MemberId;
+
+    public QMD? QMD { get; set; }
+
+    public string CustomName { get; set; } = default!;
 
     [JsonPropertyName("member_id")]
     public string MemberId { get; set; } = default!;

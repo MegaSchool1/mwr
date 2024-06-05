@@ -17,7 +17,7 @@
     <MudForm @bind-IsValid="_dataValid">
         <MudStack Spacing="3">
             <MudStack Row="true">
-                <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)">
+                <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name.ToString())">
                     @foreach (var teamMember in _settings.TeamMembers)
                     {
                         <MudSelectItem Value="@teamMember">

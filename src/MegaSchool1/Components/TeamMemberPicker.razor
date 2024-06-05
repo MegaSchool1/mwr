@@ -15,7 +15,7 @@ else
                 <Centered>
                     <BinaryChoice @ref="_choice" Description="@Description" FirstChoiceLabel="Me" SecondChoiceLabel="My Teammate" SelectedChoiceChanged="OnSelectedChoiceChanged">
                         <SecondChoiceContent>
-                            <MudSelect T="TeamMember" Label="Team Members" @bind-Value="SelectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)" Variant="Variant.Outlined" Style="width:300px;">
+                            <MudSelect T="TeamMember" Label="Team Members" @bind-Value="SelectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name.ToString())" Variant="Variant.Outlined" Style="width:300px;">
                                 @foreach (var teamMember in _settings.TeamMembers)
                                 {
                                     <MudSelectItem Value="@teamMember">

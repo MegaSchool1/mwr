@@ -208,13 +208,13 @@ else
 
         // get user info
         var settings = await Repo.GetSettingsAsync();
+        var qmdInfo = await Repo.GetQMDInfo(settings.Username);
         if (settings.User != null)
         {
-            _appState.User = settings.User;
+            _appState.User = settings.User with { QMD = qmdInfo };
         }
         else
         {
-            var qmdInfo = await Repo.GetQMDInfo(settings.Username);
             _appState.User = Util.GetUserInfo(settings.Username, qmdInfo, settings.GivBuxCode);
         }
 

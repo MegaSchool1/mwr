@@ -1,11 +1,18 @@
 ﻿using MegaSchool1.Model.API;
 using MegaSchool1.Model.Repository;
+using OneOf;
 using System.Net.Http.Json;
 using System.Runtime;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace MegaSchool1.Model;
+
+[GenerateOneOf]
+public partial class DisplayName : OneOfBase<string, QMD>
+{
+    public override string ToString() => (this.AsT1.BusnmShow ? this.AsT1.BusinessName : $"{this.AsT1.FirstName} {this.AsT1.LastName}") ?? this.AsT0;
+}
 
 public class Util
 {
@@ -27,9 +34,7 @@ public class Util
 
     public static TeamMember GetUserInfo(string memberId, QMD qmd, string? givBuxCode)
     {
-        var websiteDisplayName = qmd.BusnmShow ? qmd.BusinessName : $"{qmd.FirstName} {qmd.LastName}";
-
-        return new() { Name = websiteDisplayName ?? memberId, MemberId = memberId, GivBuxCode = givBuxCode };
+        return new() { QMD = qmd, MemberId = memberId, GivBuxCode = givBuxCode };
     }
 
     public static async Task<bool> IsUsernameValidAsync(string username, HttpClient http)
