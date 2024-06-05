@@ -1,12 +1,30 @@
 ﻿using MegaSchool1.Model.API;
 using MegaSchool1.Model.Repository;
 using System.Net.Http.Json;
+using System.Runtime;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 namespace MegaSchool1.Model;
 
 public class Util
 {
+    private static readonly Regex ValidGivBuxCode = new(@"^([a-z]|\d)+$");
+
+    public static string? ValidateGivBuxCode(string givBuxCode)
+    {
+        if (!string.IsNullOrWhiteSpace(givBuxCode))
+        {
+            var valid = ValidGivBuxCode.IsMatch(givBuxCode);
+            if (valid)
+            {
+                return null;
+            }
+        }
+
+        return "GivBux code must be all lower case and NO spaces!";
+    }
+
     public static TeamMember GetUserInfo(string memberId, QMD qmd)
     {
         var websiteDisplayName = qmd.BusnmShow ? qmd.BusinessName : $"{qmd.FirstName} {qmd.LastName}";

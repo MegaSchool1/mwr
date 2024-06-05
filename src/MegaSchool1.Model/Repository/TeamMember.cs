@@ -12,4 +12,7 @@ public record TeamMember
 
     [JsonPropertyName("notes")]
     public string? Notes { get; set; }
+   
+    [JsonPropertyName("givbux_code")]
+    public string? GivBuxCode { get; set; }
 }

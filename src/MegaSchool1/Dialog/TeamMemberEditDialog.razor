@@ -27,6 +27,12 @@
                               RequiredError="Member ID is required."
                               Immediate="true"
                               DebounceInterval="1.0"/>
+                <MudTextField @bind-Value="@TeamMember.GivBuxCode"
+                              Label="Teammate GivBux Code"
+                              Placeholder="Teammate GivBux Code"
+                              Variant="Variant.Outlined"
+                              Validation="@(new Func<string, string?>(Util.ValidateGivBuxCode))"
+                              Immediate="true" />
                 <MudTextField @bind-Value="@TeamMember.Notes"
                               Placeholder="Notes"
                               Label="Notes"
@@ -41,7 +47,7 @@
 
 @code {
     private readonly string HelperText = $"Tip: If your website is '{Constants.MarketingDirectorUrlEnglish("ScoobyDoo")}' then your username is 'ScoobyDoo'";
-    private readonly FluentValueValidator<string> _teamMemberNameValidator = new (x => x
+    private readonly FluentValueValidator<string> _teamMemberNameValidator = new(x => x
         .NotEmpty()
         .Length(1, 100));
 

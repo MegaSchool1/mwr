@@ -63,7 +63,7 @@
     {
         var settings = await Repo.GetSettingsAsync();
 
-        settings.Username = _username!;
+        settings.User = settings.User with { MemberId = _username! };
 
         await Repo.SaveSettingsAsync(settings);
 

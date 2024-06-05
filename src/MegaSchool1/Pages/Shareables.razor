@@ -306,7 +306,7 @@
     {
         var english = ui.EnglishLocale[content];
         var spanish = ui.SpanishLocale[content];
-        var referralCode = (content == Content.GivBux || content == Content.GivBuxMerchant || content == Content.EDMGivBux) && !string.IsNullOrWhiteSpace(settings?.GivBuxCode) ? settings?.GivBuxCode : "Example-Referral-Code";
+        var referralCode = (content == Content.GivBux || content == Content.GivBuxMerchant || content == Content.EDMGivBux) && !string.IsNullOrWhiteSpace(teamMember?.GivBuxCode) ? teamMember?.GivBuxCode : "Example-Referral-Code";
 
         if (spanish != null)
         {

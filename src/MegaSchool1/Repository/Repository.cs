@@ -76,7 +76,7 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
 
         if (await localStorage.ContainKeyAsync(SettingsKey))
         {
-            foundUsername = (await localStorage.GetItemAsync<Settings>(SettingsKey))?.Username;
+            foundUsername = (await localStorage.GetItemAsync<Settings>(SettingsKey))?.User?.MemberId;
 
             // validate username
             if (string.IsNullOrWhiteSpace(foundUsername))

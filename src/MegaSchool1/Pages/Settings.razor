@@ -39,7 +39,7 @@
                                Color="Color.Primary"
                                OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
             </MudStack>
-            <MudTextField @bind-Value="_settings.GivBuxCode" Label="GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
+            <MudTextField @bind-Value="AppState.User.GivBuxCode" Label="GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
         </MudStack>
     </MudForm>
     <MudDivider />
@@ -79,18 +79,14 @@
 
     private async Task<string?> ValidateGivBuxCodeAsync(string givBuxCode)
     {
-        if (!string.IsNullOrWhiteSpace(_settings.GivBuxCode))
+        var validationError = Util.ValidateGivBuxCode(givBuxCode);
+
+        if(validationError == null)
         {
-            var valid = ValidGivBuxCode.IsMatch(_settings.GivBuxCode);
-            if(valid)
-            {
-                await SaveAsync();
-      
-                return null;
-            }
+            await SaveAsync();
         }
 
-        return "GivBux code must be all lower case and NO spaces!";
+        return validationError;
     }
 
     private async Task SaveAsync()
@@ -115,8 +111,8 @@
         await Repo.SaveSettingsAsync(deserializedData.Settings);
         await Repo.SaveUserDataAsync(deserializedData.UserData);
 
-        var qmdInfo = await Repo.GetQMDInfo(deserializedData.Settings.Username);
-        this.AppState!.User = Util.GetUserInfo(deserializedData.Settings.Username, qmdInfo!);
+        var qmdInfo = await Repo.GetQMDInfo(deserializedData.Settings.User.MemberId);
+        this.AppState!.User = Util.GetUserInfo(deserializedData.Settings.User.MemberId, qmdInfo!);
 
         this.StateHasChanged();
     }
@@ -142,8 +138,8 @@
         await Repo.SaveSettingsAsync(globalData.Settings);
         await Repo.SaveUserDataAsync(globalData.UserData);
 
-        var qmdInfo = await Repo.GetQMDInfo(globalData.Settings.Username);
-        this.AppState!.User = Util.GetUserInfo(globalData.Settings.Username, qmdInfo!);
+        var qmdInfo = await Repo.GetQMDInfo(globalData.Settings.User.MemberId);
+        this.AppState!.User = Util.GetUserInfo(globalData.Settings.User.MemberId, qmdInfo!);
 
         this.StateHasChanged();
     }
