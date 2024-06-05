@@ -6,9 +6,9 @@ namespace MegaSchool1.Repository.Model;
 
 public class Settings
 {
-    //[Obsolete($"Use {nameof(User)}")]
-    //[JsonPropertyName("username")]
-    //public string Username { get; set; } = default!;
+    [Obsolete($"Use '{nameof(User)}' property")]
+    [JsonPropertyName("username")]
+    public string Username { get; set; } = default!;
 
     [JsonPropertyName("user")]
     public TeamMember? User { get; set; }
@@ -19,8 +19,8 @@ public class Settings
     [JsonPropertyName("fast_start_checklist")]
     public FastStartChecklist FastStartChecklist { get; set; } = new();
 
+    [Obsolete($"Use '{nameof(User)}' property")]
     [JsonPropertyName("givbuxCode")]
-    //[Obsolete($"Use {nameof(User)}")]
     public string? GivBuxCode { get; set; }
 
     [JsonPropertyName("livestream_platform_preference")]

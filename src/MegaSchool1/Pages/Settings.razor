@@ -91,6 +91,8 @@
 
     private async Task SaveAsync()
     {
+        _settings.User = AppState.User;
+
         await Repo.SaveSettingsAsync(_settings);
     }
 
@@ -112,7 +114,7 @@
         await Repo.SaveUserDataAsync(deserializedData.UserData);
 
         var qmdInfo = await Repo.GetQMDInfo(deserializedData.Settings.User.MemberId);
-        this.AppState!.User = Util.GetUserInfo(deserializedData.Settings.User.MemberId, qmdInfo!);
+        this.AppState!.User = Util.GetUserInfo(deserializedData.Settings.User.MemberId, qmdInfo!, deserializedData.Settings.User.GivBuxCode);
 
         this.StateHasChanged();
     }
@@ -139,7 +141,7 @@
         await Repo.SaveUserDataAsync(globalData.UserData);
 
         var qmdInfo = await Repo.GetQMDInfo(globalData.Settings.User.MemberId);
-        this.AppState!.User = Util.GetUserInfo(globalData.Settings.User.MemberId, qmdInfo!);
+        this.AppState!.User = Util.GetUserInfo(globalData.Settings.User.MemberId, qmdInfo!, globalData.Settings.User.GivBuxCode);
 
         this.StateHasChanged();
     }

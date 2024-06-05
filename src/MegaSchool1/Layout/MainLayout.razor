@@ -206,13 +206,18 @@ else
 
         NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
 
-        // get username
-        var memberId = await Repo.GetUsernameAsync();
-        if (memberId != null)
+        // get user info
+        var settings = await Repo.GetSettingsAsync();
+        if (settings.User != null)
         {
-            var qmdInfo = await Repo.GetQMDInfo(memberId!);
-            _appState.User = Util.GetUserInfo(memberId!, qmdInfo!);
+            _appState.User = settings.User;
         }
+        else
+        {
+            var qmdInfo = await Repo.GetQMDInfo(settings.Username);
+            _appState.User = Util.GetUserInfo(settings.Username, qmdInfo, settings.GivBuxCode);
+        }
+
         this.StateHasChanged();
 
         // navigate to prospect page if applicable

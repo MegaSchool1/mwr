@@ -68,7 +68,7 @@
         await Repo.SaveSettingsAsync(settings);
 
         var qmdInfo = await Repo.GetQMDInfo(_username!);
-        this.AppState!.User = Util.GetUserInfo(_username!, qmdInfo!);
+        this.AppState!.User = Util.GetUserInfo(_username!, qmdInfo!, settings.User.GivBuxCode);
         this.StateHasChanged();
 
         MainLayout.Refresh();

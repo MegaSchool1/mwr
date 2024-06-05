@@ -25,7 +25,7 @@ public class Util
         return "GivBux code must be all lower case and NO spaces!";
     }
 
-    public static TeamMember GetUserInfo(string memberId, QMD qmd)
+    public static TeamMember GetUserInfo(string memberId, QMD qmd, string? givBuxCode)
     {
         var websiteDisplayName = qmd.BusnmShow ? qmd.BusinessName : $"{qmd.FirstName} {qmd.LastName}";
 
