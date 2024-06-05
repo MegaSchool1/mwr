@@ -29,7 +29,7 @@ public class Util
     {
         var websiteDisplayName = qmd.BusnmShow ? qmd.BusinessName : $"{qmd.FirstName} {qmd.LastName}";
 
-        return new() { Name = websiteDisplayName ?? memberId, MemberId = memberId };
+        return new() { Name = websiteDisplayName ?? memberId, MemberId = memberId, GivBuxCode = givBuxCode };
     }
 
     public static async Task<bool> IsUsernameValidAsync(string username, HttpClient http)
