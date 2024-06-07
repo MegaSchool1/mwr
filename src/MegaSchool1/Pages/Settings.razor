@@ -8,6 +8,7 @@
 @using MegaSchool1.Repository.Model
 @using System.Text
 @using System.Text.RegularExpressions
+@using MegaSchool1.ViewModel
 @inherits Components.ComponentBase
 @inject Repository.Repository Repo
 @inject IDialogService Dialog
@@ -17,7 +18,7 @@
     <MudForm @bind-IsValid="_dataValid">
         <MudStack Spacing="3">
             <MudStack Row="true">
-                <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name.ToString())">
+                <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)">
                     @foreach (var teamMember in _settings.TeamMembers)
                     {
                         <MudSelectItem Value="@teamMember">
@@ -113,8 +114,8 @@
         await Repo.SaveSettingsAsync(deserializedData.Settings);
         await Repo.SaveUserDataAsync(deserializedData.UserData);
 
-        var qmdInfo = await Repo.GetQMDInfo(deserializedData.Settings.User.MemberId);
-        this.AppState!.User = Util.GetUserInfo(deserializedData.Settings.User.MemberId, qmdInfo!, deserializedData.Settings.User.GivBuxCode);
+        var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(deserializedData.Settings.User.MemberId);
+        this.AppState!.User = Util.Sanitize(deserializedData.Settings.User, marketingDirector, deserializedData.Settings.User.GivBuxCode);
 
         this.StateHasChanged();
     }
@@ -140,8 +141,8 @@
         await Repo.SaveSettingsAsync(globalData.Settings);
         await Repo.SaveUserDataAsync(globalData.UserData);
 
-        var qmdInfo = await Repo.GetQMDInfo(globalData.Settings.User.MemberId);
-        this.AppState!.User = Util.GetUserInfo(globalData.Settings.User.MemberId, qmdInfo!, globalData.Settings.User.GivBuxCode);
+        var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(globalData.Settings.User.MemberId);
+        this.AppState!.User = Util.Sanitize(globalData.Settings.User, marketingDirector, globalData.Settings.User.GivBuxCode);
 
         this.StateHasChanged();
     }

@@ -4,6 +4,8 @@
 @using MegaSchool1.Dialog
 @using MegaSchool1.Model
 @using MegaSchool1.Repository.Model
+@using MegaSchool1.ViewModel
+@using OneOf.Types
 @implements IDisposable
 @inject NavigationManager MyNavigationManager
 @inject IJSRuntime JSRuntime
@@ -76,7 +78,7 @@ else
                             else
                             {
                                 <MudStack Row="true">
-                                    <MudText Style="color:white;">Hello @_appState.User?.Name! <MudIconButton OnClick="ShowUsernameEditDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
+                                    <MudText Style="color:white;">Hello @(_appState.User.Name) <MudIconButton OnClick="ShowUsernameEditDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
                                 </MudStack>
                             }
                         }
@@ -208,14 +210,18 @@ else
 
         // get user info
         var settings = await Repo.GetSettingsAsync();
-        var qmdInfo = await Repo.GetQMDInfo(settings.Username);
+
         if (settings.User != null)
         {
-            _appState.User = settings.User with { QMD = qmdInfo };
+            var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(settings.User.MemberId);
+       
+            _appState.User = Util.Sanitize(settings.User, marketingDirector, settings.User.GivBuxCode);
         }
         else
         {
-            _appState.User = Util.GetUserInfo(settings.Username, qmdInfo, settings.GivBuxCode);
+            var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(settings.Username);
+
+            _appState.User = Util.Sanitize(new Model.Repository.TeamMember() with { MemberId = settings.Username }, marketingDirector, settings.GivBuxCode);
         }
 
         this.StateHasChanged();

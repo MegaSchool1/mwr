@@ -1,6 +1,7 @@
 ﻿using MegaSchool1.Model.API;
 using MegaSchool1.Model.Repository;
 using OneOf;
+using OneOf.Types;
 using System.Net.Http.Json;
 using System.Runtime;
 using System.Text.Json.Serialization;
@@ -8,13 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace MegaSchool1.Model;
 
-[GenerateOneOf]
-public partial class DisplayName : OneOfBase<string, QMD>
-{
-    public override string ToString() => (this.AsT1.BusnmShow ? this.AsT1.BusinessName : $"{this.AsT1.FirstName} {this.AsT1.LastName}") ?? this.AsT0;
-}
-
-public class Util
+public static class Util
 {
     private static readonly Regex ValidGivBuxCode = new(@"^([a-z]|\d)+$");
 
@@ -32,9 +27,54 @@ public class Util
         return "GivBux code must be all lower case and NO spaces!";
     }
 
-    public static TeamMember GetUserInfo(string memberId, QMD qmd, string? givBuxCode)
+    public static TeamMember Sanitize(TeamMember teamMember, OneOf<QMD, None> marketingDirector, string? givBuxCode)
     {
-        return new() { QMD = qmd, MemberId = memberId, GivBuxCode = givBuxCode };
+        var sanitized = teamMember;
+
+        // name
+        if(string.IsNullOrWhiteSpace(teamMember.Name))
+        {
+            sanitized = sanitized with 
+            {
+                Name = marketingDirector.IsT1 ? teamMember.MemberId : (marketingDirector.AsT0.BusnmShow ? marketingDirector.AsT0.BusinessName : $"{marketingDirector.AsT0.FirstName} {marketingDirector.AsT0.FirstName}")
+            };
+        }
+
+        // GivBux code
+        if (string.IsNullOrWhiteSpace(teamMember.GivBuxCode))
+        {
+            sanitized = sanitized with { GivBuxCode = givBuxCode };
+        }
+     
+        return sanitized;
+    }
+
+    //public record MemberIdUnchanged() { public string Message => $"Member ID must be different than current value"; };
+    public record MemberDoesNotExist(string MemberId) { public string Message => $"'{MemberId}' does not exist.  Tip: If your website is '{Constants.MarketingDirectorUrlEnglish("ScoobyDoo")}' then your username is 'ScoobyDoo'"; };
+    public record MemberIdNotSet() { public string Message => $"'Member ID must have a value"; };
+
+    public static OneOf<MemberDoesNotExist, MemberIdNotSet, None> ValidateMemberIdChange(string oldMemberId, (string? MemberId, OneOf<QMD, None> Info) newMember)
+    {
+        // member ID is set
+        if(string.IsNullOrWhiteSpace(newMember.MemberId))
+        {
+            return new MemberIdNotSet();
+        }
+
+        //// member ID is different
+        //if(string.Equals(oldMemberId, newMember.MemberId, StringComparison.InvariantCultureIgnoreCase))
+        //{
+        //    return new MemberIdUnchanged();
+        //}
+
+        // member exists
+        if(newMember.Info.IsT1)
+        {
+            return new MemberDoesNotExist(newMember.MemberId);
+        }
+
+        // valid member ID change
+        return default(None);
     }
 
     public static async Task<bool> IsUsernameValidAsync(string username, HttpClient http)

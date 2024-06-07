@@ -4,12 +4,13 @@
 @using MegaSchool1.Model
 @using MegaSchool1.Repository.Model;
 @inject HttpClient Http
+@inject Repository.Repository Repo
 
 <MudDialog>
     <DialogContent>
         <MudForm @bind-IsValid="@_dataValid">
             <MudStack Spacing="3">
-                <MudTextField @bind-Value="@TeamMember.CustomName"
+                <MudTextField @bind-Value="@TeamMember.Name"
                               Label="Teammate Name"
                               Placeholder="Teammate Name"
                               Variant="Variant.Outlined"
@@ -80,31 +81,10 @@
         _dataValid = false;
         this.StateHasChanged();
 
+        var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(username);
+        
         var usernameValid = await Util.IsUsernameValidAsync(username, Http);
 
         return usernameValid ? null : $"'{username}' is not a Qualified Marketing Director. ({HelperText})";
-    }
-
-    /// <summary>
-    /// A glue class to make it easy to define validation rules for single values using FluentValidation
-    /// You can reuse this class for all your fields, like for the credit card rules above.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class FluentValueValidator<T> : AbstractValidator<T>
-    {
-        public FluentValueValidator(Action<IRuleBuilderInitial<T, T>> rule)
-        {
-            rule(RuleFor(x => x));
-        }
-
-        private IEnumerable<string> ValidateValue(T arg)
-        {
-            var result = Validate(arg);
-            if (result.IsValid)
-                return new string[0];
-            return result.Errors.Select(e => e.ErrorMessage);
-        }
-
-        public Func<T, IEnumerable<string>> Validation => ValidateValue;
     }
 }

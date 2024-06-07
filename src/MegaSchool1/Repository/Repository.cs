@@ -3,6 +3,8 @@ using Blazored.LocalStorage;
 using MegaSchool1.Model;
 using MegaSchool1.Model.API;
 using MegaSchool1.Repository.Model;
+using OneOf;
+using OneOf.Types;
 
 namespace MegaSchool1.Repository;
 
@@ -55,14 +57,7 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
 		    foundSettings = await localStorage.GetItemAsync<Settings>(SettingsKey);
 	    }
 
-        foundSettings ??= new();
-
-        foreach(var teamMember in foundSettings.TeamMembers)
-        {
-            teamMember.QMD = await GetQMDInfo(teamMember.MemberId);
-        }
-
-        return foundSettings;
+        return foundSettings ?? new();
     }
 
     public async Task SaveGlobalDataAsync(GlobalData globalData)
@@ -102,12 +97,16 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
         return foundUsername;
     }
    
-    public async Task<QMD?> GetQMDInfo(string memberId)
+    public async Task<OneOf<QMD, None>> GetMarketingDirectorInfoAsync(string memberId)
     {
-        QMD? qmd;
+        try
+        {
+            var qmd = await http.GetFromJsonAsync<QMD>($"https://user.mwrfinancial.com/home/GetUsrFrmMwrMakeover?uName={memberId}");
 
-        qmd = await http.GetFromJsonAsync<QMD>($"https://user.mwrfinancial.com/home/GetUsrFrmMwrMakeover?uName={memberId}");
+            return qmd?.Email != null ? (OneOf<QMD, None>)qmd : default(None);
+        }
+        catch (Exception) { }
 
-        return qmd;
+        return default(None);
     }
 }

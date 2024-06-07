@@ -27,7 +27,7 @@
 </MudDialog>
 
 @code {
-    private readonly string HelperText = $"Tip: If your website is '{Constants.MarketingDirectorUrlEnglish("ACME")}' then your username is 'ACME'";
+    private readonly string HelperText = $"Tip: If your website is '{Constants.MarketingDirectorUrlEnglish("ScoobyDoo")}' then your username is 'ScoobyDoo'";
 
     private bool _showTooltip;
     private bool _dataValid;
@@ -54,21 +54,28 @@
         _dataValid = false;
         this.StateHasChanged();
 
-        var usernameValid = await Util.IsUsernameValidAsync(username, Http);
+        var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(username);
+        var memberIdValidationError = Util.ValidateMemberIdChange(this.AppState?.User?.MemberId, (username, marketingDirector));
 
-        return usernameValid ? null : $"'{username}' is not a Qualified Marketing Director. ({HelperText})";
+        var validationError = memberIdValidationError.Match(
+            memberDoesNotExist => memberDoesNotExist.Message,
+            memberIdNotSet => memberIdNotSet.Message,
+            _ => null
+        );
+
+        return validationError;
     }
 
     private async Task OnUsernameSaveClick()
     {
         var settings = await Repo.GetSettingsAsync();
 
+
         settings.User = settings.User with { MemberId = _username! };
 
         await Repo.SaveSettingsAsync(settings);
 
-        var qmdInfo = await Repo.GetQMDInfo(_username!);
-        this.AppState!.User = Util.GetUserInfo(_username!, qmdInfo!, settings.User.GivBuxCode);
+        this.AppState!.User = settings.User;
         this.StateHasChanged();
 
         MainLayout.Refresh();

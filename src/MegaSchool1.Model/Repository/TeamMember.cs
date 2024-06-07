@@ -5,11 +5,8 @@ namespace MegaSchool1.Model.Repository;
 
 public record TeamMember
 {
-    public DisplayName Name => (DisplayName)QMD ?? MemberId;
-
-    public QMD? QMD { get; set; }
-
-    public string CustomName { get; set; } = default!;
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
 
     [JsonPropertyName("member_id")]
     public string MemberId { get; set; } = default!;
