@@ -1,5 +1,6 @@
 ﻿using MegaSchool1.Model.UI;
 using Microsoft.AspNetCore.Components;
+using System.Web;
 
 namespace MegaSchool1.Model;
 
@@ -242,7 +243,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     }
 
     public string GetCapturePage(Content content, Language language, string memberId, string referralId)
-        => $"{navigationManager.BaseUri}{(language == Language.Spanish ? "es" : "en")}/{content}/{memberId}/{referralId}";
+        => $"{navigationManager.BaseUri}{(language == Language.Spanish ? "es" : "en")}/{content}/{memberId}/{HttpUtility.UrlEncode(referralId)}";
 
     public static readonly Dictionary<LivestreamPlatform, string> CorporateLivestreamLink = new()
     {

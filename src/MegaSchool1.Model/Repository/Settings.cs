@@ -4,7 +4,7 @@ using MegaSchool1.Model.Repository;
 
 namespace MegaSchool1.Repository.Model;
 
-public class Settings
+public record Settings
 {
     [Obsolete($"Use '{nameof(User)}' property")]
     [JsonPropertyName("username")]

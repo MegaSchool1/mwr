@@ -3,6 +3,7 @@
 @using MegaSchool1.Components
 @using MegaSchool1.Dialog
 @using MegaSchool1.Model
+@using MegaSchool1.Model.Repository
 @using MegaSchool1.Repository.Model
 @using MegaSchool1.ViewModel
 @using OneOf.Types
@@ -209,21 +210,9 @@ else
         NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
 
         // get user info
-        var settings = await Repo.GetSettingsAsync();
-
-        if (settings.User != null)
-        {
-            var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(settings.User.MemberId);
-       
-            _appState.User = Util.Sanitize(settings.User, marketingDirector, settings.User.GivBuxCode);
-        }
-        else
-        {
-            var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(settings.Username);
-
-            _appState.User = Util.Sanitize(new Model.Repository.TeamMember() with { MemberId = settings.Username }, marketingDirector, settings.GivBuxCode);
-        }
-
+        var settings = await Util.SanitizeAsync(await Repo.GetSettingsAsync(), Repo.GetMarketingDirectorInfoAsync);
+        _appState.User = settings.User;
+        
         this.StateHasChanged();
 
         // navigate to prospect page if applicable

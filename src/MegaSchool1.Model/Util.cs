@@ -1,30 +1,58 @@
 ﻿using MegaSchool1.Model.API;
 using MegaSchool1.Model.Repository;
+using MegaSchool1.Repository.Model;
 using OneOf;
 using OneOf.Types;
 using System.Net.Http.Json;
-using System.Runtime;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
+using System.Web;
 
 namespace MegaSchool1.Model;
 
 public static class Util
 {
-    private static readonly Regex ValidGivBuxCode = new(@"^([a-z]|\d)+$");
-
     public static string? ValidateGivBuxCode(string givBuxCode)
     {
         if (!string.IsNullOrWhiteSpace(givBuxCode))
         {
-            var valid = ValidGivBuxCode.IsMatch(givBuxCode);
-            if (valid)
+            if (givBuxCode == givBuxCode.ToLower())
             {
                 return null;
             }
         }
 
         return "GivBux code must be all lower case and NO spaces!";
+    }
+
+    public static async Task<Settings> SanitizeAsync(Settings settings, Func<string, Task<OneOf<QMD,None>>> marketingDirector)
+    {
+        var sanitized = settings with { };
+
+        if (settings.User != null)
+        {
+            var marketingDirectorResult = await marketingDirector(settings.User.MemberId);
+
+            sanitized.User = Sanitize(settings.User, marketingDirectorResult, settings.User.GivBuxCode);
+        }
+        else if (!string.IsNullOrWhiteSpace(settings.Username))
+        {
+            var marketingDirectorResult = await marketingDirector(settings.Username);
+
+            sanitized.User = Sanitize(new TeamMember() with { MemberId = settings.Username }, marketingDirectorResult, settings.GivBuxCode);
+        }
+
+        // sanitize team members' info
+        var sanitizedTeamMembers = new List<TeamMember>();
+        foreach (var teamMember in settings.TeamMembers)
+        {
+            var marketingDirectorResult = await marketingDirector(teamMember.MemberId);
+
+            sanitizedTeamMembers.Add(Sanitize(teamMember, marketingDirectorResult, teamMember.GivBuxCode));
+        }
+
+        sanitized.TeamMembers = sanitizedTeamMembers;
+
+        return sanitized;
     }
 
     public static TeamMember Sanitize(TeamMember teamMember, OneOf<QMD, None> marketingDirector, string? givBuxCode)
@@ -41,15 +69,12 @@ public static class Util
         }
 
         // GivBux code
-        if (string.IsNullOrWhiteSpace(teamMember.GivBuxCode))
-        {
-            sanitized = sanitized with { GivBuxCode = givBuxCode };
-        }
+        var sanitizedGivBuxCode = HttpUtility.UrlEncode(!string.IsNullOrWhiteSpace(teamMember.GivBuxCode) ? teamMember.GivBuxCode : givBuxCode);
+        sanitized = sanitized with { GivBuxCode = sanitizedGivBuxCode };
      
         return sanitized;
     }
 
-    //public record MemberIdUnchanged() { public string Message => $"Member ID must be different than current value"; };
     public record MemberDoesNotExist(string MemberId) { public string Message => $"'{MemberId}' does not exist.  Tip: If your website is '{Constants.MarketingDirectorUrlEnglish("ScoobyDoo")}' then your username is 'ScoobyDoo'"; };
     public record MemberIdNotSet() { public string Message => $"'Member ID must have a value"; };
 
@@ -60,12 +85,6 @@ public static class Util
         {
             return new MemberIdNotSet();
         }
-
-        //// member ID is different
-        //if(string.Equals(oldMemberId, newMember.MemberId, StringComparison.InvariantCultureIgnoreCase))
-        //{
-        //    return new MemberIdUnchanged();
-        //}
 
         // member exists
         if(newMember.Info.IsT1)

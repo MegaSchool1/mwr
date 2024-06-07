@@ -1,6 +1,7 @@
+using MegaSchool1.Model.Repository;
 using System.Text.Json.Serialization;
 
-namespace MegaSchool1.Repository.Model;
+namespace MegaSchool1.Model.Repository;
 
 public class FastStartChecklist
 {

@@ -2,6 +2,7 @@
 @inherits CapturePageBase
 @using MegaSchool1.Components
 @using MegaSchool1.Model
+@using System.Web
 @inject UISettings UI
 
 <PageTitle>@Video?.ShareableTitle</PageTitle>
@@ -32,7 +33,7 @@
     @if (!string.IsNullOrWhiteSpace(this.Video?.AuxiliaryText))
     {
         <br/>
-        <Centered><MudText Align="Align.Center">@((MarkupString)Video?.AuxiliaryText.Replace("{ReferralCode}", ReferralId))</MudText></Centered>
+        <Centered><MudText Align="Align.Center">@((MarkupString)HttpUtility.UrlDecode(Video?.AuxiliaryText.Replace("{ReferralCode}", ReferralId)))</MudText></Centered>
     }
     @if (Video?.Images.Any() is true)
     {
