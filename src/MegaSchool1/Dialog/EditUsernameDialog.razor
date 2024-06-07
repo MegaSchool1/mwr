@@ -70,8 +70,8 @@
     {
         var settings = await Repo.GetSettingsAsync();
 
-
-        settings.User = settings.User with { MemberId = _username! };
+        var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(_username!);
+        settings.User = Util.Sanitize(settings.User ?? new(), marketingDirector, settings.User?.GivBuxCode);
 
         await Repo.SaveSettingsAsync(settings);
 
