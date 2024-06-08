@@ -40,7 +40,7 @@
 <MudDialog @bind-IsVisible="_showAppShareable" Options="@(new DialogOptions() { NoHeader = true })">
     <DialogContent>
         <MudStack>
-            @Pages.Shareables.CapturePage(Content.MegaSchoolAppInstall, AppState.User, UI, _settings, Constants)
+            @Pages.Shareables.CapturePage(Content.MegaSchoolAppInstall, AppState.User, UI, Constants)
         </MudStack>
     </DialogContent>
 </MudDialog>
@@ -48,7 +48,6 @@
 @code {
     private bool _updateAvailable;
     private bool _showAppShareable;
-    private Repository.Model.Settings? _settings;
 
     private string ValidateUrl(string url) => ProspectMode ? "#" : url;
 
@@ -59,7 +58,6 @@
     protected override async Task OnInitializedAsync()
     {
         _updateAvailable = await Util.UpdateAvailableAsync(Http);
-        _settings = await Repo.GetSettingsAsync();
     }
 
     private async Task OnVersionClick(MouseEventArgs e)
