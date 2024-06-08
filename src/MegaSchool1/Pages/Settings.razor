@@ -17,56 +17,64 @@
 <MudStack Spacing="6">
     <MudForm @bind-IsValid="_dataValid">
         <MudStack Spacing="3">
-            <MudStack Row="true">
-                <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)">
-                    @foreach (var teamMember in _settings.TeamMembers)
-                    {
-                        <MudSelectItem Value="@teamMember">
-                            <MudStack Row="true">
-                                <MudText>@teamMember.Name</MudText>
-                                <MudSpacer />
-                            </MudStack>
-                        </MudSelectItem>
-                    }
-                </MudSelect>
-                @if (_selectedTeamMember != null)
-                {
-                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                                   Color="Color.Primary"
-                                   OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("Edit Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.TeamMember, _selectedTeamMember }, { x => x.OnSave, OnTeamMemberEdited } }))" />
-                    <MudIconButton OnClick="@(e => OnDeleteTeamMember(_selectedTeamMember))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
-                }
-                <MudIconButton Icon="@Icons.Material.Filled.PersonAdd"
-                               Color="Color.Primary"
-                               OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
-            </MudStack>
-            <MudTextField @bind-Value="AppState.User.GivBuxCode" Label="GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
+            <MudCard Outlined="true">
+                <MudCardContent>
+                    <MudStack Row="true">
+                        <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)">
+                            @foreach (var teamMember in _settings.TeamMembers)
+                            {
+                                <MudSelectItem Value="@teamMember">
+                                    <MudStack Row="true">
+                                        <MudText>@teamMember.Name</MudText>
+                                        <MudSpacer />
+                                    </MudStack>
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                        @if (_selectedTeamMember != null)
+                        {
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                           Color="Color.Primary"
+                                           OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("Edit Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.TeamMember, _selectedTeamMember }, { x => x.OnSave, OnTeamMemberEdited } }))" />
+                            <MudIconButton OnClick="@(e => OnDeleteTeamMember(_selectedTeamMember))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+                        }
+                        <MudIconButton Icon="@Icons.Material.Filled.PersonAdd"
+                                       Color="Color.Primary"
+                                       OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
+                    </MudStack>
+                </MudCardContent>
+            </MudCard>
+            <MudTextField @bind-Value="AppState.User.GivBuxCode" Label="My GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
         </MudStack>
     </MudForm>
     <MudDivider />
-    <MudStack Row="true">
-        <MudSpacer />
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnExportData">Export Data</MudButton>
-        <MudSpacer />
-    </MudStack>
-    <Centered>
-        <MudFileUpload T="IBrowserFile" Accept=".json" FilesChanged="OnImportData" MaximumFileCount="100">
-            <ButtonTemplate>
-                <MudButton HtmlTag="label"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary"
-                           StartIcon="@Icons.Material.Filled.CloudUpload"
-                           for="@context.Id">
-                    Import Data
-                </MudButton>
-            </ButtonTemplate>
-        </MudFileUpload>
-    </Centered>
-    <MudStack Row="true">
-        <MudSpacer/>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnRestoreData">Restore Data</MudButton>
-        <MudSpacer/>
-    </MudStack>
+    <Collapsable Title="Data">
+        <MudStack Spacing="3">
+            <MudStack Row="true">
+                <MudSpacer />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnExportData">Export Data</MudButton>
+                <MudSpacer />
+            </MudStack>
+            <Centered>
+                <MudFileUpload T="IBrowserFile" Accept=".json" FilesChanged="OnImportData" MaximumFileCount="100">
+                    <ButtonTemplate>
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.CloudUpload"
+                                   for="@context.Id">
+                            Import Data
+                        </MudButton>
+                    </ButtonTemplate>
+                </MudFileUpload>
+            </Centered>
+            <MudStack Row="true">
+                <MudSpacer />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnRestoreData">Restore Data</MudButton>
+                <MudSpacer />
+            </MudStack>
+        </MudStack>
+    </Collapsable>
     <MudDivider />
     <MudNavLink Href="https://cash.app/$MegaSchool1/12.00" Target="_blank" Icon="@Icons.Material.Filled.Payment">Pay Annual Subscription</MudNavLink>
 </MudStack>
