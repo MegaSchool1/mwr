@@ -115,7 +115,7 @@
             </MudCard>
             <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMemberCapturePage">
                 <MudSelect T="Content" Label="Capture Page" @bind-Value="_selectedCapturePage" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in Enum.GetValues<Content>().Except(Constants.GivBuxContent).Prepend(Content.GivBuxOpportunity).Prepend(Content.EDMGivBux).Prepend(Content.GivBuxCharity).Prepend(Content.GivBuxMerchant).Prepend(Content.GivBux))
+                    @foreach (var content in Enum.GetValues<Content>().Except(Constants.GivBuxContent.Union([Content.None])).Prepend(Content.GivBuxOpportunity).Prepend(Content.EDMGivBux).Prepend(Content.GivBuxCharity).Prepend(Content.GivBuxMerchant).Prepend(Content.GivBux))
                     {
                         <MudSelectItem Value="@content" />
                     }
@@ -124,29 +124,29 @@
             </TeamMemberPicker>
         </MudStack>
     </Collapsable>
-    <Collapsable Title="Qualified Marketing Directors" ExpandPrompt="Show">
+    <Collapsable Title="Marketing Directors" ExpandPrompt="Show">
         <MudStack>
-            <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMember">
+            <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMemberMarketingDirector">
                 <ShareableVideoMultilingual Description="Join MWR"
-                                            Url="@Constants.JoinMakeWealthReal(_selectedTeamMember?.MemberId!, Language.English)"
+                                            Url="@Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.English)"
 
-                                            EnglishTextToCopy="@($"MWR Sign-up{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.JoinMakeWealthReal(_selectedTeamMember?.MemberId!, Language.English)}{Constants.GetBusinessEnrollmentPromo(_selectedTeamMember?.MemberId!)}")"
+                                            EnglishTextToCopy="@($"MWR Sign-up{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.English)}{Constants.GetBusinessEnrollmentPromo(_selectedTeamMemberMarketingDirector?.MemberId!)}")"
                                             EnglishTooltip="English shareable copied!"
                                             EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
 
-                                            SpanishTextToCopy="@($"MWR Sign-up{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.JoinMakeWealthReal(_selectedTeamMember?.MemberId!, Language.Spanish)}{Constants.GetBusinessEnrollmentPromo(_selectedTeamMember?.MemberId!)}")"
+                                            SpanishTextToCopy="@($"MWR Sign-up{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.Spanish)}{Constants.GetBusinessEnrollmentPromo(_selectedTeamMemberMarketingDirector?.MemberId!)}")"
                                             SpanishTooltip="Español shareable copied!"
                                             SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
             </TeamMemberPicker>
             @if (_pageLoaded)
             {
-                <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMember">
+                <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMemberMarketingDirector">
                     <ShareableVideoMultilingual Description="My Website"
-                                                EnglishTextToCopy="@Constants.MarketingDirectorUrlEnglish(_selectedTeamMember?.MemberId)"
+                                                EnglishTextToCopy="@Constants.MarketingDirectorUrlEnglish(_selectedTeamMemberMarketingDirector?.MemberId)"
                                                 EnglishTooltip="English shareable copied!"
                                                 EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
 
-                                                SpanishTextToCopy="@Constants.MarketingDirectorUrlSpanish(_selectedTeamMember?.MemberId)"
+                                                SpanishTextToCopy="@Constants.MarketingDirectorUrlSpanish(_selectedTeamMemberMarketingDirector?.MemberId)"
                                                 SpanishTooltip="Español shareable copied!"
                                                 SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
                 </TeamMemberPicker>
@@ -254,7 +254,7 @@
 </MudStack>
 @code {
     private bool _pageLoaded;
-    private TeamMember? _selectedTeamMember;
+    private TeamMember? _selectedTeamMemberMarketingDirector;
     private TeamMember? _selectedTeamMemberCapturePage;
     private Content _selectedCapturePage = Content.GivBux;
     private Content _selectedMiscellaneous = Content.TeenCarPurchase;
@@ -262,7 +262,8 @@
 
     protected override void OnInitialized()
     {
-        _selectedTeamMember = _selectedTeamMemberCapturePage = AppState?.User;
+        _selectedTeamMemberMarketingDirector = AppState?.User;
+        _selectedTeamMemberCapturePage = AppState?.User;
 
         _pageLoaded = true;
 
@@ -309,9 +310,12 @@
 
         if (spanish != null)
         {
+            var url = constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode);
+
             <ShareableVideoMultilingual Description="@english.AppTitle"
                                         Duration="@english.Duration"
-                                        Url="@constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode)"
+                                        Url="@url"
+                                        QRCode="@url"
                                         
                                         EnglishTextToCopy="@Shareable.VideoShareable(english.ShareableTitle, constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode), english.Duration)"
                                         EnglishTooltip="Copied!"
@@ -323,10 +327,13 @@
         }
         else
         {
+            var url = constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode);
+
             <ShareableVideo Description="@english.AppTitle"
                             Duration="@english.Duration"
-                            Url="@constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode)"
+                            Url="@url"
                             TextToCopy="@Shareable.VideoShareable(english.ShareableTitle, constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode), english.Duration)"
+                            QRCode="@url"
                             Tooltip="Copied!"
                             ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)" />
         }

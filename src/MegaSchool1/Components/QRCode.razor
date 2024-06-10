@@ -1,0 +1,33 @@
+﻿@using QRCoder
+@inherits Components.ComponentBase
+
+@if (!string.IsNullOrWhiteSpace(Content))
+{
+    <MudIconButton OnClick="@(() => ShowQRCode())" Icon="@Icons.Material.Filled.QrCode" Color="Color.Primary" />
+}
+
+<MudDialog @bind-IsVisible="_qrCodeDialog.Show">
+    <DialogContent>
+        <MudImage Src="@($"data:image/png;base64,{_qrCodeDialog.Base64Image}")" Fluid="true" />
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private (bool Show, string Base64Image) _qrCodeDialog;
+
+    [Parameter]
+    public string? Content { get; set; }
+
+    private void ShowQRCode()
+    {
+        if (!string.IsNullOrWhiteSpace(Content))
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(Content, QRCodeGenerator.ECCLevel.Q);
+            Base64QRCode qrCode = new Base64QRCode(qrCodeData);
+            string qrCodeImageAsBase64 = qrCode.GetGraphic(20);
+
+            _qrCodeDialog = (true, qrCodeImageAsBase64);
+        }
+    }
+}

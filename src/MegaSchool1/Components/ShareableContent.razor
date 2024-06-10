@@ -1,4 +1,5 @@
 ﻿@using MegaSchool1.Model
+@using QRCoder
 @inherits Components.ComponentBase
 
 <MudStack Row="true" Style="width:100%;">
@@ -12,10 +13,12 @@
     }
     @if(ShowWebShare)
     {
-       <WebShareContent TextToCopy="@TextToCopy" Tooltip="@Tooltip" ImageUrl="@ImageUrl" />
+        <WebShareContent TextToCopy="@TextToCopy" Tooltip="@Tooltip" ImageUrl="@ImageUrl" />
     }
+    <QRCode Content="@QRCode" />
     <MudSpacer/>
 </MudStack>
+
 @code {
     [Parameter]
     public string TextToCopy { get; set; }
@@ -31,4 +34,7 @@
 
     [Parameter]
     public string? Title { get; set; }
+
+    [Parameter]
+    public string? QRCode { get; set; }
 }

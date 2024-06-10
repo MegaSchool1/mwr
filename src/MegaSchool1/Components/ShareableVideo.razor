@@ -33,6 +33,7 @@
     <MudCardActions>
         <ShareableContent TextToCopy="@TextToCopy"
                           Tooltip="@Tooltip"
+                          QRCode="@QRCode"
                           ImageUrl="@ImageUrl" />
     </MudCardActions>
 </MudCard>
@@ -51,6 +52,9 @@
 
     [Parameter]
     public string? Url { get; set; }
+
+    [Parameter]
+    public string? QRCode { get; set; }
 
     [Parameter]
     public TimeSpan? Duration { get; set; }
