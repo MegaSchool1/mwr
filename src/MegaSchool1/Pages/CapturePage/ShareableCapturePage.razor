@@ -42,7 +42,7 @@
             <MudStack Row="true">
                 @foreach (var image in Video?.Images)
                 {
-                    <a href="@image.Href" target="_blank"><MudImage Src="@image.Url" Fluid="true" /></a>
+                    <a href="@image.Href" target="_blank"><div style="max-width:300px;"><MudImage Src="@image.Url" Fluid="true" /></div></a>
                 }
             </MudStack>
         </Centered>
