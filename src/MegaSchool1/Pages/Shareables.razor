@@ -262,12 +262,12 @@
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
+
         _selectedTeamMemberMarketingDirector = AppState?.User;
         _selectedTeamMemberCapturePage = AppState?.User;
 
         _pageLoaded = true;
-
-        this.StateHasChanged();
     }
 
     private RenderFragment ContentView(Content content) => __builder =>
