@@ -19,6 +19,11 @@
         <MudStack Spacing="3">
             <MudCard Outlined="true">
                 <MudCardContent>
+                    <MudTextField @bind-Value="AppState.User.GivBuxCode" Label="My GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
+                </MudCardContent>
+            </MudCard>
+            <MudCard Outlined="true">
+                <MudCardContent>
                     <MudStack Row="true">
                         <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)">
                             @foreach (var teamMember in _settings.TeamMembers)
@@ -44,7 +49,6 @@
                     </MudStack>
                 </MudCardContent>
             </MudCard>
-            <MudTextField @bind-Value="AppState.User.GivBuxCode" Label="My GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
         </MudStack>
     </MudForm>
     <MudDivider />
@@ -76,7 +80,13 @@
         </MudStack>
     </Collapsable>
     <MudDivider />
-    <MudNavLink Href="https://cash.app/$MegaSchool1/12.00" Target="_blank" Icon="@Icons.Material.Filled.Payment">Pay Annual Subscription</MudNavLink>
+    <MudText Align="Align.Center">Pay Annual Subscription<br/>($1/mo or $12/year)</MudText>
+   <Centered>
+        <MudStack>
+            <MudImage Src="/images/givbux-logo.png" Fluid="true" />
+            <MudText Align="Align.Center">Send to <span style="color:@(Theme.Palette.Secondary);">megaschool</span></MudText>
+        </MudStack>
+   </Centered>
 </MudStack>
 
 @code {
