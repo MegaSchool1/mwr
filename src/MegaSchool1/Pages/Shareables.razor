@@ -18,6 +18,7 @@
                 <MudStack>
                     @ContentView(Content.GivBux)
                     @ContentView(Content.GivBuxMerchant)
+                    @ContentView(Content.GivBuxCharity)
                     @ContentView(Content.EDMGivBux)
                     @ContentView(Content.GivBuxOpportunity)
                 </MudStack>
@@ -114,7 +115,7 @@
             </MudCard>
             <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_selectedTeamMemberCapturePage">
                 <MudSelect T="Content" Label="Capture Page" @bind-Value="_selectedCapturePage" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in Enum.GetValues<Content>().Except([Content.None, Content.EDMGivBux, Content.GivBux, Content.GivBuxMerchant, Content.GivBuxOpportunity]).Prepend(Content.GivBuxOpportunity).Prepend(Content.EDMGivBux).Prepend(Content.GivBuxMerchant).Prepend(Content.GivBux))
+                    @foreach (var content in Enum.GetValues<Content>().Except(Constants.GivBuxContent).Prepend(Content.GivBuxOpportunity).Prepend(Content.EDMGivBux).Prepend(Content.GivBuxCharity).Prepend(Content.GivBuxMerchant).Prepend(Content.GivBux))
                     {
                         <MudSelectItem Value="@content" />
                     }
@@ -304,7 +305,7 @@
     {
         var english = ui.EnglishLocale[content];
         var spanish = ui.SpanishLocale[content];
-        var referralCode = (content == Content.GivBux || content == Content.GivBuxMerchant || content == Content.EDMGivBux || content == Content.GivBuxOpportunity) && !string.IsNullOrWhiteSpace(teamMember?.GivBuxCode) ? teamMember?.GivBuxCode : "Example-Referral-Code";
+        var referralCode = Constants.GivBuxContent.Contains(content) && !string.IsNullOrWhiteSpace(teamMember?.GivBuxCode) ? teamMember?.GivBuxCode : "Example-Referral-Code";
 
         if (spanish != null)
         {

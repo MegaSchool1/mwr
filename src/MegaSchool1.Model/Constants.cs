@@ -123,6 +123,7 @@ public enum Content
     EDMGivBux = 31,
     MegaSchoolAppInstall = 32,
     GivBuxOpportunity = 33,
+    GivBuxCharity = 34,
 }
 
 public enum Video
@@ -173,6 +174,8 @@ public enum ProspectVersion
 
 public class Constants(UISettings ui, NavigationManager navigationManager)
 {
+    public static readonly Content[] GivBuxContent = [Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity, Content.EDMGivBux, Content.GivBuxOpportunity];
+
     public static readonly TimeZoneInfo NewYorkTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
     public static readonly TimeZoneInfo ChicagoTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Chicago");
     public static readonly TimeZoneInfo LosAngelesTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
