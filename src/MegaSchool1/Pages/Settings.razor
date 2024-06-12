@@ -19,7 +19,7 @@
         <MudStack Spacing="3">
             <MudCard Outlined="true">
                 <MudCardContent>
-                    <MudTextField @bind-Value="_settings.User.GivBuxCode" Label="My GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
+                    <MudTextField Value="_viewModel.GivBuxCode" Label="My GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
                 </MudCardContent>
             </MudCard>
             <MudCard Outlined="true">
@@ -95,6 +95,7 @@
     private Repository.Model.Settings _settings = new();
     private TeamMember? _selectedTeamMember;
     private bool _dataValid;
+    private SettingsViewModel _viewModel = new();
 
     private async Task<string?> ValidateGivBuxCodeAsync(string givBuxCode)
     {
@@ -102,17 +103,14 @@
 
         if(validationError == null)
         {
-            await SaveAsync();
+            _settings.User = _settings.User with { GivBuxCode = givBuxCode };
 
-            AppState.User = _settings.User;
+            await Repo.SaveSettingsAsync(_settings);
+
+            AppState.User = AppState.User with { GivBuxCode = givBuxCode };
         }
 
         return validationError;
-    }
-
-    private async Task SaveAsync()
-    {
-        await Repo.SaveSettingsAsync(_settings);
     }
 
     private async Task OnImportData(IBrowserFile file)
@@ -170,6 +168,7 @@
         _settings = await Repo.GetSettingsAsync();
 
         _selectedTeamMember = _settings.TeamMembers.FirstOrDefault();
+        _viewModel.GivBuxCode = _settings.User?.GivBuxCode;
     }
 
     private async Task OnDeleteTeamMember(TeamMember teamMember)
