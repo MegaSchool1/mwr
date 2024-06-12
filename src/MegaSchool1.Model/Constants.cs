@@ -175,6 +175,7 @@ public enum ProspectVersion
 public class Constants(UISettings ui, NavigationManager navigationManager)
 {
     public static readonly Content[] GivBuxContent = [Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity, Content.EDMGivBux, Content.GivBuxOpportunity];
+    public static readonly Content[] OrderedContent = GivBuxContent.Union(Enum.GetValues<Content>().Except(GivBuxContent).Except([Content.None])).ToArray();
 
     public static readonly TimeZoneInfo NewYorkTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
     public static readonly TimeZoneInfo ChicagoTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Chicago");

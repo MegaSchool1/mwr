@@ -19,7 +19,7 @@
         <MudStack Spacing="3">
             <MudCard Outlined="true">
                 <MudCardContent>
-                    <MudTextField @bind-Value="AppState.User.GivBuxCode" Label="My GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
+                    <MudTextField @bind-Value="_settings.User.GivBuxCode" Label="My GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
                 </MudCardContent>
             </MudCard>
             <MudCard Outlined="true">
@@ -103,6 +103,8 @@
         if(validationError == null)
         {
             await SaveAsync();
+
+            AppState.User = _settings.User;
         }
 
         return validationError;
@@ -110,8 +112,6 @@
 
     private async Task SaveAsync()
     {
-        _settings.User = AppState.User;
-
         await Repo.SaveSettingsAsync(_settings);
     }
 
@@ -145,7 +145,7 @@
         var globalData = new GlobalData() { Settings = settings, UserData = userData };
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(globalData)));
-        var fileName = "MegaSchoolData.json";
+        var fileName = $"MegaSchoolData-{DateTime.Now:yyyyMMdd}.json";
 
         using var streamRef = new DotNetStreamReference(stream: stream);
 

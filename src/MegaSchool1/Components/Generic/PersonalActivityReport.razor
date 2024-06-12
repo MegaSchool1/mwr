@@ -110,7 +110,7 @@
                               Lines="8"
                               Immediate="true"/>
                 <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in Enum.GetValues<Content>().Except([Content.None, Content.GivBux, Content.GivBuxMerchant]).Prepend(Content.GivBuxMerchant).Prepend(Content.GivBux))
+                    @foreach (var content in Constants.OrderedContent)
                     {
                         <MudSelectItem Value="@content" />
                     }
@@ -237,26 +237,6 @@
         if (userData?.Prospects.ContainsKey(this.Pipeline.Strategy) is true)
         {
             _prospects.AddRange(userData.Prospects[this.Pipeline.Strategy]);
-        }
-        else
-        {
-            _prospects.AddRange(
-            [
-                new() { Name = "W2 & No Biz", Order = 0, Status = _sections.First().Id },
-                new() { Name = "Has Vehicle", Order = 1, Status = _sections.First().Id },
-                new() { Name = "Has Cell", Order = 2, Status = _sections.First().Id },
-                new() { Name = "Takes Vacations", Order = 3, Status = _sections.First().Id },
-                new() { Name = "Has Kids 7-17", Order = 4, Status = _sections.First().Id },
-                new() { Name = "Money Motivated", Order = 5, Status = _sections.First().Id },
-                new() { Name = "Positive & Wants Better", Order = 6, Status = _sections.First().Id },
-                new() { Name = "Would Kill the Biz", Order = 7, Status = _sections.First().Id },
-                new() { Name = "Mad if you DIDN'T Share", Order = 8, Status = _sections.First().Id },
-                new() { Name = "Friends", Order = 9, Status = _sections.First().Id },
-                new() { Name = "Co-Workers", Order = 10, Status = _sections.First().Id },
-                new() { Name = "Family Members", Order = 11, Status = _sections.First().Id },
-                new() { Name = "Friends of Sig Other", Order = 12, Status = _sections.First().Id },
-                new() { Name = "Referrals", Order = 13, Status = _sections.First().Id },
-            ]);
         }
 
         _dropContainer.Refresh();

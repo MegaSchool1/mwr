@@ -17,6 +17,12 @@ public class FastStartChecklist
     [JsonPropertyName("fast_start_interview")]
     public bool FastStartInterview { get; set; }
 
+    [JsonPropertyName("fast_start_interview_print")]
+    public bool FastStartInterviewPrint { get; set; }
+
+    [JsonPropertyName("fast_start_interview_fillout")]
+    public bool FastStartInterviewFillOut { get; set; }
+
     [JsonPropertyName("virtual_business_launch")]
     public bool VirtualBusinessLaunch { get; set; }
 
@@ -89,6 +95,12 @@ public class FastStartChecklist
 
     [JsonPropertyName("headshot")]
     public bool Headshot { get; set; }
+
+    [JsonPropertyName("installed_givbux")]
+    public bool InstallGivBuxApp { get; set; }
+
+    [JsonPropertyName("set_givbux_code")]
+    public bool SetGivBuxCode { get; set; }
 
     [JsonPropertyName("mega_school")]
     public MegaSchoolFastStartChecklist MegaSchool { get; set; } = new();

@@ -27,6 +27,21 @@
                             </MudContainer>
                         </MudStack>
                     </Centered>
+                    <MudDivider/>
+                        <MudCheckBox Disabled="true" Value="_viewModel.InstallGivBuxApp && _viewModel.SetGivBuxCode" ReadOnly="true" Size="Size.Medium" Color="Color.Primary">
+                            <MudText Typo="Typo.h6">Set Up GivBux:</MudText>I have done the following:
+                        </MudCheckBox>
+                        <MudStack Row="true">
+                            <MudSpacer />
+                            <MudContainer Style="width:75%;">
+                                <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.InstallGivBuxApp" Validation="@SaveAndValidateTrueAsync()" Size="Size.Small" Color="Color.Primary">
+                                    <MudText>Install GivBux App</MudText>
+                                </MudCheckBox>
+                                <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.SetGivBuxCode" Validation="@SaveAndValidateTrueAsync()" Size="Size.Small" Color="Color.Primary">
+                                    <MudText>Set My GivBux "Vanity Name" / Handle / Code</MudText>
+                                </MudCheckBox>
+                            </MudContainer>
+                        </MudStack>                    
                     <MudDivider />
                     @ExtraDigitPlugin
                     @Headshot
@@ -38,6 +53,19 @@
                     <MudCheckBox T="bool" @bind-Value="_viewModel.MegaSchool.ExecutiveDirector3Roadmap" Size="Size.Medium" Color="Color.Primary">
                         <MudText Typo="Typo.h6">Print 4 Steps to 4 Figures Per Month:</MudText>Print <ExternalLink Text="4 Steps to 4 Figures Per Month" Href="https://www.extradigitmovement.com/resource_redirect/downloads/file-uploads/sites/13708/themes/2153043324/downloads/32a7256-8db4-2abf-7a2-3e1be235bd76_EDMQuickStartMay2024.pdf" />
                     </MudCheckBox>
+                    <MudCheckBox Disabled="true" Value="_viewModel.FastStartInterviewPrint && _viewModel.FastStartInterviewFillOut" Size="Size.Medium" Color="Color.Primary">
+                        <MudText Typo="Typo.h6">Fast Start Interview:</MudText>
+                    </MudCheckBox>
+                    <Centered>
+                        <MudStack Style="width:75%;">
+                            <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.FastStartInterviewPrint" Validation="@SaveAndValidateTrueAsync()" Size="Size.Small" Color="Color.Primary">
+                                <MudText>Download <ExternalLink Text="Fast Start Interview PDF" Href="https://user.mwrfinancial.com/content/V22/MWRFirstStartInterview-English.pdf" /></MudText>
+                            </MudCheckBox>
+                            <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.FastStartInterviewFillOut" Validation="@SaveAndValidateTrueAsync()" Size="Size.Small" Color="Color.Primary">
+                                <MudText>Fill out Fast Start Interview PDF</MudText>
+                            </MudCheckBox>
+                        </MudStack>
+                    </Centered>
                     <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.TeamTrainings" Size="Size.Medium" Color="Color.Primary">
                         <MudText Typo="Typo.h6">Team Trainings:</MudText>Subscribe to <ExternalLink Text="MWR Teams Calendar" Href="https://calendar.google.com/calendar/u/0?cid=OGc2bnEwYnFvZWRyM2ZzMjhyZDlzZHAwMmNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ" />
                     </MudCheckBox>
@@ -260,7 +288,6 @@
         <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.FastStartInterview" Validation="@SaveAndValidateTrueAsync()" Size="Size.Medium" Color="Color.Primary">
             <MudText Typo="Typo.h6">Fast Start Interview:</MudText>I completed this with my Upline and/or Success line Leader
         </MudCheckBox>
-        <MudText Align="Align.Center">Print <ExternalLink Text="Fast Start Interview PDF" Href="https://user.mwrfinancial.com/content/V22/MWRFirstStartInterview-English.pdf" /></MudText>
     };
 
     private RenderFragment FirstRoundDraftChoice => __builder =>
