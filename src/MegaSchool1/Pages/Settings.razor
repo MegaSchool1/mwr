@@ -117,58 +117,86 @@
     {
         // save backup
         var settings = await Repo.GetSettingsAsync();
-        var userData = await Repo.GetUserDataAsync();
-        var globalData = new GlobalData() { Settings = settings, UserData = userData };
-        await Repo.SaveGlobalDataBackupAsync(globalData);
+        settings.Switch(
+           async found =>
+           {
+               var userData = await Repo.GetUserDataAsync();
+               var globalData = new GlobalData() { Settings = found, UserData = userData.IsT0 ? userData.AsT0 : null };
+               await Repo.SaveGlobalDataBackupAsync(globalData);
 
-        // load new file
-        using var stream = file.OpenReadStream();
-        using var reader = new StreamReader(stream);
-        var data = await reader.ReadToEndAsync();
-        var deserializedData = JsonSerializer.Deserialize<GlobalData>(data);
+               // load new file
+               using var stream = file.OpenReadStream();
+               using var reader = new StreamReader(stream);
+               var data = await reader.ReadToEndAsync();
+               var deserializedData = JsonSerializer.Deserialize<GlobalData>(data);
 
-        await Repo.SaveSettingsAsync(deserializedData.Settings);
-        await Repo.SaveUserDataAsync(deserializedData.UserData);
+               await Repo.SaveSettingsAsync(deserializedData.Settings);
+               await Repo.SaveUserDataAsync(deserializedData.UserData);
 
-        var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(deserializedData.Settings.User.MemberId);
-        this.AppState!.User = Util.Sanitize(deserializedData.Settings.User, marketingDirector, deserializedData.Settings.User.GivBuxCode);
+               var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(deserializedData.Settings.User.MemberId);
+               this.AppState!.User = Util.Sanitize(deserializedData.Settings.User, marketingDirector, deserializedData.Settings.User.GivBuxCode);
 
-        this.StateHasChanged();
+               this.StateHasChanged();
+           },
+           notFound => { Console.Error.WriteLine("No settings found in local storage!"); },
+           error => { Console.Error.WriteLine($"Failed to load settings{Environment.NewLine}{error.Value}"); }
+       );
     }
 
     private async Task OnExportData()
     {
         var settings = await Repo.GetSettingsAsync();
-        var userData = await Repo.GetUserDataAsync();
-        var globalData = new GlobalData() { Settings = settings, UserData = userData };
+        settings.Switch(
+            async found =>
+            {
+                var userData = await Repo.GetUserDataAsync();
+                var globalData = new GlobalData() { Settings = found, UserData = userData.IsT0 ? userData.AsT0 : null };
 
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(globalData)));
-        var fileName = $"MegaSchoolData-{DateTime.Now:yyyyMMdd}.json";
+                using var stream = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(globalData)));
+                var fileName = $"MegaSchoolData-{DateTime.Now:yyyyMMdd}.json";
 
-        using var streamRef = new DotNetStreamReference(stream: stream);
+                using var streamRef = new DotNetStreamReference(stream: stream);
 
-        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+                await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+            },
+            notFound => { Console.Error.WriteLine("No settings found in local storage!"); },
+            error => { Console.Error.WriteLine($"Failed to load settings{Environment.NewLine}{error.Value}"); }
+        );
     }
 
     private async Task OnRestoreData()
     {
         var globalData = await Repo.GetGlobalDataBackupAsync();
+        globalData.Switch(
+            async found =>
+            {
+                await Repo.SaveSettingsAsync(found.Settings);
+                await Repo.SaveUserDataAsync(found.UserData);
 
-        await Repo.SaveSettingsAsync(globalData.Settings);
-        await Repo.SaveUserDataAsync(globalData.UserData);
+                var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(found.Settings.User.MemberId);
+                this.AppState!.User = Util.Sanitize(found.Settings.User, marketingDirector, found.Settings.User.GivBuxCode);
 
-        var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(globalData.Settings.User.MemberId);
-        this.AppState!.User = Util.Sanitize(globalData.Settings.User, marketingDirector, globalData.Settings.User.GivBuxCode);
-
-        this.StateHasChanged();
+                this.StateHasChanged();
+            },
+            notFound => { Console.Error.WriteLine("Failed to restore exported data!"); },
+            error => { Console.Error.WriteLine($"Failed to restore exported data!{Environment.NewLine}{error.Value}"); }
+        );
     }
 
     protected override async Task OnInitializedAsync()
     {
-        _settings = await Repo.GetSettingsAsync();
+        var settings = await Repo.GetSettingsAsync();
+        settings.Switch(
+            found =>
+            {
+                _settings = found;
 
-        _selectedTeamMember = _settings.TeamMembers.FirstOrDefault();
-        _viewModel.GivBuxCode = _settings.User?.GivBuxCode;
+                _selectedTeamMember = found.TeamMembers.FirstOrDefault();
+                _viewModel.GivBuxCode = found.User?.GivBuxCode;
+            },
+            notFound => { Console.Error.WriteLine("No settings found in local storage!"); },
+            error => { Console.Error.WriteLine($"Failed to load settings{Environment.NewLine}{error.Value}"); }
+        );
     }
 
     private async Task OnDeleteTeamMember(TeamMember teamMember)

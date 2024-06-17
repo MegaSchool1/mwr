@@ -3,7 +3,7 @@
 <MudText Align="Align.Center" Typo="Typo.h4">How a Teen Should Buy Their First Car<br/>($3,000 Car)</MudText>
 <br/>
 <br/>
-<MudText Align="Align.Center" Typo="Typo.h6">Parents need $500 up front TOTAL and receive a GUARANTEED reimbursement of the $500 within 30 days</MudText>
+<MudText Align="Align.Center" Typo="Typo.h6">Parents need $700 up front TOTAL and receive a GUARANTEED reimbursement of the $700 within 30 days</MudText>
 <br/>
 <br/>
 <MudTimeline>
@@ -28,7 +28,7 @@
             @foreach (var detail in _dialogInfo.Step.Details)
             {
                 <MudStack Row="true">
-                    <MudText>@((int.TryParse(detail.Substring(0, 1), out var numTabs) ? (MarkupString)Tabs2(numTabs) : (MarkupString)"&#x2022;"))</MudText>
+                    <MudText>@((int.TryParse(detail.Substring(0, 1), out var numTabs) ? (MarkupString)Tabs(numTabs) : (MarkupString)"&#x2022;"))</MudText>
                     <MudText>@FormatDescription(int.TryParse(detail.Substring(0, 1), out _) ? detail.Substring(1): detail)</MudText>
                 </MudStack>
             }
@@ -41,27 +41,26 @@
 
     private readonly List<(string Title, string[] Details)> _steps = 
     [
-        ("Hire Team of Financial Experts", ["Dad purchases MWR Business Account for $250", "1$100 1-time business activation fee", "1$150/mo membership fee", "Mom likewise purchases an MWR Business Account for $250 on behalf of teen", "Teen owes Mom", "1$100 1-time business activation fee", "1$150/mo membership fee"]),
-        ("Family Gets $150+/mo Cash Back", ["0Month 1", "1Income - $700", "2$50 Membership Enrollment Bonus (Mom is Dad's referral)", "2$650+/mo cash back from 'Instant Pay Raise' and 'Lower My Bills'", "1Expenses - $700", "2$250 for Dad's MWR Account (Step 1)", "2$250 for Mom's MWR Account (Step 1)", "2$200 for monthly deposit into teen's bank (Step 3)", "0Month 2 & Beyond", "2Income - $650+/mo", "3$650+/mo cash back from 'Instant Pay Raise' and 'Lower My Bills'", "2Expenses - $500/mo", "3$150/mo - Dad's MWR Membership Fee", "3$150/mo - Mom's MWR Membership Fee", "3$200/mo - Monthly deposit into teen's bank (Step 3)", "2Net - $150/mo", "0", "0If the parents can't get $650/mo cash back from 'Instant Pay Raise' and 'Lower My Bills', then this car purchase strategy will NOT work for their family."]),
-        ("Teen Creates Their Own Bank", ["Teen opens Diversified Cashflow Account (DCA)", "This DCA is funded $200/mo by parents (see Step 2) as a college fund investment"]),
+        ("Hire Team of Financial Experts", ["Dad purchases MWR Business Account for $350", "1$200 1-time business activation fee", "1$150/mo membership fee", "Mom likewise purchases an MWR Business Account for $350 on behalf of teen", "Teen owes Mom", "1$200 1-time business activation fee", "1$150/mo membership fee"]),
+        ("Get GivBux", ["Dad sets up his GivBux account", "Mom sets up her GivBux account using Dad's code", "Teen sets up his/her GivBux account using Dad's code"]),
+        ("Family Gets $350+/mo Cash Back", ["0Month 1", "1Income - $900", "2$50 Membership Enrollment Bonus (Mom is Dad's referral)", "2$850+/mo cash back from 'Instant Pay Raise' and 'Lower My Bills'", "1Expenses - $900", "2$350 for Dad's MWR Account ([Step 1])", "2$350 for Mom's MWR Account ([Step 1])", "2$200 for monthly deposit into teen's bank ([Step 4])", "0Month 2 & Beyond", "2Income - $850+/mo", "3$850+/mo cash back from 'Instant Pay Raise' and 'Lower My Bills'", "2Expenses - $500/mo", "3$150/mo - Dad's MWR Membership Fee", "3$150/mo - Mom's MWR Membership Fee", "3$200/mo - Monthly deposit into teen's bank ([Step 4])", "2Net - $350/mo"]),
+        ("Teen Creates Their Own Bank", ["Teen opens Diversified Cashflow Account (DCA)", "This DCA is funded $200/mo by parents (see [Step 3]) as a college fund investment"]),
         ("Parents Fund Teen's Bank", ["Parents fund their teen's DCA w/ $3,000 (transferred from existing college fund elsewhere)"]),
         ("Teen Issues Car Loan to THEMSELF", ["Teen borrows $3,000 from their DCA"]),
-        ("Teen Buys Car CASH!", ["Teen buys their car CASH from the loan they gave themself in Step 5"]),
+        ("Teen Buys Car CASH!", ["Teen buys their car CASH from the loan they gave themself in [Step 6]"]),
         ("Teen Plans Car Loan Repayment", ["Teen plans car loan repayment via \"Eliminate My Debt\""]),
         ("Teen Budgets Their Bank Interest", ["Teen updates their car loan repayment plan w/ higher monthly payments from their DCA's uninterrupted, compound interest"]),
         ("Teen Earns $600/mo PASSIVELY", ["Teen sells 12 MWR Memberships via the 72-Hour Money Challenge and receives $600/mo in residual commissions", "$200/mo (of the $600/mo) pays the car loan payment", "$200/mo (of the $600/mo) pays the car insurance", "$200/mo (of the $600/mo) pays for gas"]),
         ("Teen Builds Their Credit", ["Teen builds credit by paying their monthly car loan payments with a secured credit card", "Teen pays $200/mo to repay the loan in 15 months"]),
-        ("Teen Pays Off Car", ["Teen pays off $3,000 car loan in 15 months ($200/mo from Step 9)"]),
-        ("Teen Reimburses Parents", ["Teen reimburses Mom for the MWR Business Account purchased on their behalf in Step 1", "Teen reimburses Mom $200/mo until she's fully reimbursed", "Remember, Mom's MWR Membership was free after Step 9 (3 & Free)"]),
-        ("Teen Regularly Deposits into Their Bank", ["Parents stop depositing $200/mo into teen's DCA", "Parents now have a total of $350/mo of extra income ($150/mo is from Step 2)", "Teen starts depositing $200/mo into their DCA (freed up from completing car loan payment)" ]),
+        ("Teen Pays Off Car", ["Teen pays off $3,000 car loan in 15 months ($200/mo from [Step 10])"]),
+        ("Teen Reimburses Parents", ["Teen reimburses Mom for the MWR Business Account purchased on their behalf in [Step 1]", "Teen reimburses Mom $200/mo until she's fully reimbursed", "Remember, Mom's MWR Membership was free after [Step 10] (3 & Free)"]),
+        ("Teen Regularly Deposits into Their Bank", ["Parents stop depositing $200/mo into teen's DCA", "Parents now have a total of $550/mo of extra income", "Teen starts depositing $200/mo into their DCA (freed up from completing car loan payment)" ]),
         ("Teen 'Double Dips' w/ Investments", ["Teen earns uninterrupted compound interest in their DCA", "Teen borrows against their DCA and uses the money to invest in assets" ]),
     ];
 
     private (bool ShowDialog, (string Title, string[] Details) Step) _dialogInfo = new(false, default);
 
-    private static MarkupString Tabs(int numTabs) => (MarkupString)Enumerable.Range(1, numTabs).Select(_ => "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;").Aggregate((accumulated, next) => $"{accumulated}{next}");
-
-    private string Tabs2(int numTabs) => numTabs == 0 ? string.Empty : Enumerable.Range(1, numTabs).Select(_ => "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;").Aggregate((accumulated, next) => $"{accumulated}{next}") + "&#x2022;";
+    private string Tabs(int numTabs) => numTabs == 0 ? string.Empty : Enumerable.Range(1, numTabs).Select(_ => "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;").Aggregate((accumulated, next) => $"{accumulated}{next}") + "&#x2022;";
 
     private Color GetColor((string Title, string[] Details) step) => (_steps.IndexOf(step) % 4) switch
     {
@@ -83,11 +82,14 @@
     {
         var formatted = description;
 
-        for(var i = 0; i<_steps.Count; i++)
-        {
-            var targetPhrase = $"Step {i+1}";
+        for(var i = 0; i < _steps.Count; i++)
+    {
+            var targetPhrase = $"[Step {i+1}]";
 
-            formatted = formatted.Replace(targetPhrase, $@"<span style=""color:{GetColor(i).Pallette};"">{targetPhrase}</span>");
+            if(formatted.Contains(targetPhrase))
+            {
+                formatted = formatted.Replace(targetPhrase, $@"<span style=""color:{GetColor(i).Pallette};"">{targetPhrase.Replace("[", string.Empty).Replace("]", string.Empty)}</span>");
+            }
         }
 
         return (MarkupString)formatted;

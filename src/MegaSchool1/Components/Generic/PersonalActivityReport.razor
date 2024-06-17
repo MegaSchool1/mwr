@@ -178,14 +178,22 @@
         _selectedTeamMember = teamMember;
 
         // load prospects
-        var selectedUserData = await Repo.GetUserDataAsync();
+        var userData = await Repo.GetUserDataAsync();
+        userData.Switch(
+            found =>
+            {
+                var userDataToLoad = found;
 
-        if (_selectedTeamMember != AppState?.User)
-        {
-            selectedUserData = selectedUserData?.TeamData.FirstOrDefault(t => t.Member.MemberId == _selectedTeamMember.MemberId)?.Data;
-        }
-        
-        this.LoadProspects(selectedUserData);
+                if (_selectedTeamMember != AppState?.User)
+                {
+                    userDataToLoad = found.TeamData.FirstOrDefault(t => t.Member.MemberId == _selectedTeamMember.MemberId)?.Data;
+                }
+
+                this.LoadProspects(userDataToLoad);
+            },
+            notFound => { Console.Error.WriteLine("No user data found in local storage!"); },
+            error => { Console.Error.WriteLine($"Failed to load personal activity report for {teamMember.Name}{Environment.NewLine}{error.Value}"); }
+        );
     }
 
     private async Task OnProspectDelete(Prospect deleted)
@@ -225,9 +233,16 @@
 
         // load prospects
         var userData = await Repo.GetUserDataAsync();
-        this.LoadProspects(userData);
+        userData.Switch(
+            found =>
+            {
+                this.LoadProspects(found);
 
-		_dropContainer.Refresh();
+                _dropContainer.Refresh();
+            },
+            notFound => { Console.Error.WriteLine("No user data found in local storage!"); },
+            error => { Console.Error.WriteLine($"Failed to load user data{Environment.NewLine}{error.Value}"); }
+        );
 	}
 
     private void LoadProspects(UserData? userData)
@@ -244,38 +259,43 @@
 
     private async Task SaveAsync()
     {
-        var userData = await Repo.GetUserDataAsync() ?? new();
-
-        if (_selectedTeamMember?.MemberId == AppState?.User?.MemberId)
-        {
-            if (!userData.Prospects.ContainsKey(this.Pipeline.Strategy))
+        var userData = await Repo.GetUserDataAsync();
+        userData.Switch(
+            async found =>
             {
-                userData.Prospects.Add(this.Pipeline.Strategy, []);
-            }
+                if (_selectedTeamMember?.MemberId == AppState?.User?.MemberId)
+                {
+                    if (!found.Prospects.ContainsKey(this.Pipeline.Strategy))
+                    {
+                        found.Prospects.Add(this.Pipeline.Strategy, []);
+                    }
 
-            userData.Prospects[this.Pipeline.Strategy].Clear();
-            userData.Prospects[this.Pipeline.Strategy].AddRange(_prospects);
-        }
-        else
-        {
-            var teamMemberData = userData.TeamData.FirstOrDefault(t => t.Member.MemberId == _selectedTeamMember?.MemberId);
-            if (teamMemberData == null)
-            {
-                teamMemberData = new() { Member = _selectedTeamMember };
-                userData.TeamData.Add(teamMemberData);
-            }
+                    found.Prospects[this.Pipeline.Strategy].Clear();
+                    found.Prospects[this.Pipeline.Strategy].AddRange(_prospects);
+                }
+                else
+                {
+                    var teamMemberData = found.TeamData.FirstOrDefault(t => t.Member.MemberId == _selectedTeamMember?.MemberId);
+                    if (teamMemberData == null)
+                    {
+                        teamMemberData = new() { Member = _selectedTeamMember };
+                        found.TeamData.Add(teamMemberData);
+                    }
 
-            if (!teamMemberData.Data.Prospects.ContainsKey(this.Pipeline.Strategy))
-            {
-                teamMemberData.Data.Prospects.Add(this.Pipeline.Strategy, []);
-            }
+                    if (!teamMemberData.Data.Prospects.ContainsKey(this.Pipeline.Strategy))
+                    {
+                        teamMemberData.Data.Prospects.Add(this.Pipeline.Strategy, []);
+                    }
 
-            teamMemberData.Data.Prospects[this.Pipeline.Strategy].Clear();
-            teamMemberData.Data.Prospects[this.Pipeline.Strategy].AddRange(_prospects);
+                    teamMemberData.Data.Prospects[this.Pipeline.Strategy].Clear();
+                    teamMemberData.Data.Prospects[this.Pipeline.Strategy].AddRange(_prospects);
+                }
 
-        }
-
-        await Repo.SaveUserDataAsync(userData);
+                await Repo.SaveUserDataAsync(found);
+            },
+            notFound => { Console.Error.WriteLine("No user data found in local storage!"); },
+            error => { Console.Error.WriteLine($"Failed to load user data{Environment.NewLine}{error.Value}"); }
+        );
     }
 
 	private async Task OnProspectStatusChanged(MudItemDropInfo<Prospect> dropItem)

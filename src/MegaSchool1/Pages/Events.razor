@@ -71,58 +71,73 @@
             .Select(e => eventMapper.EventDtoToEventViewModel(e))
             .ToArray();
 
-        Settings ??= await Repo.GetSettingsAsync();
-
-        var defaultLivestreamPlatforms = new Repository.Model.Settings().LivestreamPlatformPreference;
-
-        // set livestream link
-        foreach (var eventViewModel in _events.Where(e => e.Link == Constants.MultiPlatformLivestreamUrlPlaceholder))
-        {
-            // get livestream platform preference
-            var foundLivestreamPlatformPreference = 
-                Settings.LivestreamPlatformPreference.TryGetValue(eventViewModel.Anchor!, out var livestreamPlatformPreference)
-                ||
-                defaultLivestreamPlatforms.TryGetValue(eventViewModel.Anchor!, out livestreamPlatformPreference);
-
-            if (foundLivestreamPlatformPreference)
+        var settings = await Repo.GetSettingsAsync();
+        settings.Switch(
+            found =>
             {
-                eventViewModel.LivestreamPlatform = livestreamPlatformPreference;
+                Settings = found;
 
-                // set corporate livestream platform preference
-                if (Constants.CorporateLivestreamLink.TryGetValue(livestreamPlatformPreference, out var livestreamLink))
+                var defaultLivestreamPlatforms = new Repository.Model.Settings().LivestreamPlatformPreference;
+
+                // set livestream link
+                foreach (var eventViewModel in _events.Where(e => e.Link == Constants.MultiPlatformLivestreamUrlPlaceholder))
                 {
-                    eventViewModel.Link = livestreamLink;
-                    eventViewModel.VanityLink = livestreamLink;
-                }
-            }
-        }
+                    // get livestream platform preference
+                    var foundLivestreamPlatformPreference =
+                    Settings.LivestreamPlatformPreference.TryGetValue(eventViewModel.Anchor!, out var livestreamPlatformPreference)
+                    ||
+                    defaultLivestreamPlatforms.TryGetValue(eventViewModel.Anchor!, out livestreamPlatformPreference);
 
-        // auto-navigate to the current day if a specific anchor was not already specified
-        if (!NavigationManager.Uri.Contains("#"))
-        {
-            NavigationManager.NavigateTo($"/events#{DateTime.Now.DayOfWeek}", true);
-        }
+                    if (foundLivestreamPlatformPreference)
+                    {
+                        eventViewModel.LivestreamPlatform = livestreamPlatformPreference;
+
+                        // set corporate livestream platform preference
+                        if (Constants.CorporateLivestreamLink.TryGetValue(livestreamPlatformPreference, out var livestreamLink))
+                        {
+                            eventViewModel.Link = livestreamLink;
+                            eventViewModel.VanityLink = livestreamLink;
+                        }
+                    }
+                }
+
+                // auto-navigate to the current day if a specific anchor was not already specified
+                if (!NavigationManager.Uri.Contains("#"))
+                {
+                    NavigationManager.NavigateTo($"/events#{DateTime.Now.DayOfWeek}", true);
+                }
+            },
+            notFound => { },
+            error => { Console.Error.WriteLine($"Failed to initialize events page{Environment.NewLine}{error.Value}"); }
+        );
     }
 
     private async Task OnLivestreamPlatformSelectionChanged((string EventId, LivestreamPlatform Platform)? livestream)
     {
         // persist livestream platform preference
         var settings = await Repo.GetSettingsAsync();
-        settings.LivestreamPlatformPreference[livestream?.EventId!] = livestream!.Value.Platform;
-        await Repo.SaveSettingsAsync(settings);
-
-        // refresh UI
-        foreach (var livestreamEvent in _events.Where(e => e.Anchor == livestream?.EventId))
-        {
-            livestreamEvent.LivestreamPlatform = livestream!.Value.Platform;
-   
-            if (Constants.CorporateLivestreamLink.TryGetValue(livestreamEvent.LivestreamPlatform, out var livestreamLink))
+        settings.Switch(
+            async found =>
             {
-                livestreamEvent.Link = livestreamLink;
-                livestreamEvent.VanityLink = livestreamLink;
-            }
-        }
+                 found.LivestreamPlatformPreference[livestream?.EventId!] = livestream!.Value.Platform;
+                 await Repo.SaveSettingsAsync(found);
 
-        this.StateHasChanged();
+                 // refresh UI
+                 foreach (var livestreamEvent in _events.Where(e => e.Anchor == livestream?.EventId))
+                 {
+                     livestreamEvent.LivestreamPlatform = livestream!.Value.Platform;
+
+                     if (Constants.CorporateLivestreamLink.TryGetValue(livestreamEvent.LivestreamPlatform, out var livestreamLink))
+                     {
+                         livestreamEvent.Link = livestreamLink;
+                         livestreamEvent.VanityLink = livestreamLink;
+                     }
+                 }
+
+                 this.StateHasChanged();
+            },
+            notFound => { Console.Error.WriteLine("No settings found in local storage!"); },
+            error => { Console.Error.WriteLine($"Failed to load settings{Environment.NewLine}{error.Value}"); }
+        );
     }
 }

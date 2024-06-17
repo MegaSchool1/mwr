@@ -69,24 +69,30 @@
     private async Task OnUsernameSaveClick()
     {
         var settings = await Repo.GetSettingsAsync();
+        settings.Switch(
+            async found =>
+            {
+                var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(_username!);
+                found.User = Util.Sanitize((found.User ?? new()) with { MemberId = _username! }, marketingDirector, found.User?.GivBuxCode);
 
-        var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(_username!);
-        settings.User = Util.Sanitize((settings.User ?? new()) with { MemberId = _username! }, marketingDirector, settings.User?.GivBuxCode);
+                await Repo.SaveSettingsAsync(found);
 
-        await Repo.SaveSettingsAsync(settings);
+                this.AppState!.User = found.User;
+                this.StateHasChanged();
 
-        this.AppState!.User = settings.User;
-        this.StateHasChanged();
+                MainLayout.Refresh();
+                this.MudDialog.Close();
 
-        MainLayout.Refresh();
-        this.MudDialog.Close();
+                _showTooltip = true;
+                this.StateHasChanged();
 
-        _showTooltip = true;
-        this.StateHasChanged();
+                await Task.Delay(3 * 1000);
 
-        await Task.Delay(3 * 1000);
-
-        _showTooltip = false;
-        this.StateHasChanged();
+                _showTooltip = false;
+                this.StateHasChanged();
+            },
+            notFound => { },
+            error => { Console.Error.WriteLine($"Failed to save user name.{Environment.NewLine}{error.Value}"); }
+        );
     }
 }

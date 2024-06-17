@@ -254,19 +254,33 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _viewModel = (await Repo.GetSettingsAsync()).FastStartChecklist;
+        var settings = await Repo.GetSettingsAsync();
+        settings.Switch(
+            found =>
+            {
+                _viewModel = found.FastStartChecklist;
 
-        _pageLoaded = true;
-        base.StateHasChanged();
+                _pageLoaded = true;
+                base.StateHasChanged();
+            },
+            notFound => { Console.Error.WriteLine("No settings found in local storage!"); },
+            error => { Console.Error.WriteLine($"Failed to load settings{Environment.NewLine}{error.Value}"); }
+        );
     }
 
     private async Task SaveAsync()
     {
         var settings = await Repo.GetSettingsAsync();
+        settings.Switch(
+            async found =>
+            {
+                found.FastStartChecklist = _viewModel;
 
-        settings.FastStartChecklist = _viewModel;
-
-        await Repo.SaveSettingsAsync(settings);
+                await Repo.SaveSettingsAsync(found);
+            },
+            notFound => { Console.Error.WriteLine("No settings found in local storage!"); },
+            error => { Console.Error.WriteLine($"Failed to load settings{Environment.NewLine}{error.Value}"); }
+        );
     }
 
     private async Task<bool> SaveAndValidateTrueAsync()

@@ -13,11 +13,20 @@ public static class Util
 {
     public static string? ValidateGivBuxCode(string givBuxCode)
     {
-        if (!string.IsNullOrWhiteSpace(givBuxCode))
+        // allow null or empty
+        if (string.IsNullOrEmpty(givBuxCode))
         {
-            if (givBuxCode == givBuxCode.ToLower())
+            return null;
+        }
+        else
+        {
+            // allow all lower case w/ no white space
+            if (!string.IsNullOrWhiteSpace(givBuxCode))
             {
-                return null;
+                if (givBuxCode == givBuxCode.ToLower())
+                {
+                    return null;
+                }
             }
         }
 

@@ -6,6 +6,7 @@
 @using MegaSchool1.Model.Repository
 @using MegaSchool1.Repository.Model
 @using MegaSchool1.ViewModel
+@using OneOf
 @using OneOf.Types
 @implements IDisposable
 @inject NavigationManager MyNavigationManager
@@ -147,7 +148,7 @@ else
     private static MainLayout? Instance;
 
     private readonly AppState _appState = new();
-
+    private readonly List<string> _pageHistory = [];
     private readonly MudTheme _capturePageTheme = new()
     {
         Palette = new PaletteDark()
@@ -207,17 +208,29 @@ else
     {
         _componentInitialized = true;
 
+        _pageHistory.Add(MyNavigationManager.BaseUri);
+
         NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
 
         // get user info
-        var settings = await Util.SanitizeAsync(await Repo.GetSettingsAsync(), Repo.GetMarketingDirectorInfoAsync);
-        _appState.User = settings.User;
-        
-        this.StateHasChanged();
+        var settings = await Repo.GetSettingsAsync();
+        await settings.Match<Task<OneOf<Settings, None, Error<string>>>>(
+            async found => 
+            {
+                var settings = await Util.SanitizeAsync(found, Repo.GetMarketingDirectorInfoAsync);
+                _appState.User = settings.User;
+
+                this.StateHasChanged();
+
+                return settings;
+            },
+            async notFound => notFound,
+            async error => error
+        );
 
         // navigate to prospect page if applicable
         this.NavigateToProspectPageIfApplicable();
-        
+
         // start checking for updates
         _ = CheckForUpdatesAsync();
 
@@ -241,9 +254,19 @@ else
         Instance = this;
     }
 
-    private void NavigationManagerOnLocationChanged(object? sender, LocationChangedEventArgs e)
+    private async void NavigationManagerOnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-       this.NavigateToProspectPageIfApplicable();
+        this.NavigateToProspectPageIfApplicable();
+
+        if(IsCapturePage)
+        {
+            await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", e.Location);
+            MyNavigationManager.NavigateTo(_pageHistory.Last());
+        }
+        else
+        {
+            _pageHistory.Add(e.Location);
+        }
     }
 
     public static void Refresh()

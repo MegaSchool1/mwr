@@ -86,6 +86,10 @@
     </script>
 
     <script>
+        function openLinkInNewWindow(url) {
+            window.open(url, "_blank");
+        }
+
         async function downloadFileFromStream(fileName, contentStreamReference) {
             const arrayBuffer = await contentStreamReference.arrayBuffer();
             const blob = new Blob([arrayBuffer]);

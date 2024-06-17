@@ -72,7 +72,12 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _settings = await Repo.GetSettingsAsync();
+        var settings = await Repo.GetSettingsAsync();
+        settings.Switch(
+            found => _settings = found,
+            notFound => { Console.Error.WriteLine($"{nameof(TeamMemberPicker)} - Settings not found"); },
+            error => { Console.Error.WriteLine($"Failed to initialize main layout.{Environment.NewLine}{error.Value}"); }
+        );
 
         this.User ??= AppState?.User;
 

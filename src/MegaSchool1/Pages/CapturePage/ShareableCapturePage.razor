@@ -33,7 +33,7 @@
     @if (!string.IsNullOrWhiteSpace(this.Video?.AuxiliaryText))
     {
         <br/>
-        <Centered><MudText Align="Align.Center">@((MarkupString)HttpUtility.UrlDecode(Video?.AuxiliaryText.Replace("{ReferralCode}", ReferralId)))</MudText></Centered>
+        <Centered><MudText Align="Align.Center">@((MarkupString)HttpUtility.UrlDecode(Video?.AuxiliaryText.Replace("{ReferralCode}", $@"<span style=""color:{Theme.Palette.Secondary};"">{ReferralId}</span>")))</MudText></Centered>
     }
     @if (Video?.Images.Any() is true)
     {

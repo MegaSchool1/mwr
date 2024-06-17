@@ -5,6 +5,7 @@ using MegaSchool1.Model.API;
 using MegaSchool1.Repository.Model;
 using OneOf;
 using OneOf.Types;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MegaSchool1.Repository;
 
@@ -14,50 +15,96 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
 	private const string UserDataKey = "user_data";
     private const string BackupKey = "backup";
 
-    public async Task<GlobalData?> GetGlobalDataBackupAsync()
+    public async Task<OneOf<GlobalData, None, Error<string>>> GetGlobalDataBackupAsync()
     {
-        GlobalData? data = null;
-
-        if (await localStorage.ContainKeyAsync(BackupKey))
+        try
         {
-            data = await localStorage.GetItemAsync<GlobalData>(BackupKey);
+            GlobalData? data = null;
+
+            if (await localStorage.ContainKeyAsync(BackupKey))
+            {
+                data = await localStorage.GetItemAsync<GlobalData>(BackupKey);
+            }
+
+            if (data == null)
+            {
+                return default(None);
+            }
+            else
+            {
+                return data;
+            }
         }
-
-        return data;
+        catch (Exception ex)
+        {
+            return new Error<string>(ex.Message);
+        }
     }
 
-    public async Task SaveGlobalDataBackupAsync(GlobalData data)
+    public async Task<OneOf<Success, Error<string>>> SaveGlobalDataBackupAsync(GlobalData data)
     {
-        await localStorage.SetItemAsync(BackupKey, data);
+        try
+        {
+            await localStorage.SetItemAsync(BackupKey, data);
+            return new Success();
+        }
+        catch (Exception ex)
+        {
+            return new Error<string>(ex.Message);
+        }
     }
 
-    public async Task SaveUserDataAsync(UserData userData)
+    public async Task<OneOf<Success, Error<string>>> SaveUserDataAsync(UserData userData)
 	{
-		await localStorage.SetItemAsync(UserDataKey, userData);
+        try
+        {
+            await localStorage.SetItemAsync(UserDataKey, userData);
+            return new Success();
+        }
+        catch (Exception ex)
+        {
+            return new Error<string>(ex.Message);
+        }
+    }
+
+    public async Task<OneOf<UserData, None, Error<string>>> GetUserDataAsync()
+	{
+        try
+        {
+            if (await localStorage.ContainKeyAsync(UserDataKey))
+            {
+                var userData = await localStorage.GetItemAsync<UserData>(UserDataKey);
+                return userData != null ? userData : new None();
+            }
+            else
+            {
+                return new None();
+            }
+        }
+        catch (Exception ex)
+        {
+            return new Error<string>(ex.Message);
+        }
 	}
 
-	public async Task<UserData?> GetUserDataAsync()
-	{
-		UserData? userData = null;
-
-		if (await localStorage.ContainKeyAsync(UserDataKey))
-		{
-			userData = await localStorage.GetItemAsync<UserData>(UserDataKey);
-		}
-
-		return userData;
-	}
-
-	public async Task<Settings> GetSettingsAsync()
+	public async Task<OneOf<Settings, None, Error<string>>> GetSettingsAsync()
     {
-        Settings? foundSettings = null;
-
-	    if (await localStorage.ContainKeyAsync(SettingsKey))
-	    {
-		    foundSettings = await localStorage.GetItemAsync<Settings>(SettingsKey);
-	    }
-
-        return foundSettings ?? new();
+        try
+        {
+            if (await localStorage.ContainKeyAsync(SettingsKey))
+            {
+                var foundSettings = await localStorage.GetItemAsync<Settings>(SettingsKey);
+                return foundSettings != null ? foundSettings : new None();
+            }
+            else
+            {
+                return new None();
+            }
+        }
+        catch (Exception e)
+        {
+            return new Error<string>(e.Message);
+        }
     }
 
     public async Task SaveGlobalDataAsync(GlobalData globalData)
@@ -105,7 +152,10 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
 
             return qmd?.Email != null ? (OneOf<QMD, None>)qmd : default(None);
         }
-        catch (Exception) { }
+        catch (Exception e)
+        {
+            ;
+        }
 
         return default(None);
     }
