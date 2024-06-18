@@ -11,8 +11,8 @@ namespace MegaSchool1.Repository;
 
 public class Repository(ILocalStorageService localStorage, HttpClient http)
 {
-	private const string SettingsKey = "settings";
-	private const string UserDataKey = "user_data";
+    private const string SettingsKey = "settings";
+    private const string UserDataKey = "user_data";
     private const string BackupKey = "backup";
 
     public async Task<OneOf<GlobalData, None, Error<string>>> GetGlobalDataBackupAsync()
@@ -55,7 +55,7 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
     }
 
     public async Task<OneOf<Success, Error<string>>> SaveUserDataAsync(UserData userData)
-	{
+    {
         try
         {
             await localStorage.SetItemAsync(UserDataKey, userData);
@@ -68,7 +68,7 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
     }
 
     public async Task<OneOf<UserData, None, Error<string>>> GetUserDataAsync()
-	{
+    {
         try
         {
             if (await localStorage.ContainKeyAsync(UserDataKey))
@@ -85,9 +85,9 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
         {
             return new Error<string>(ex.Message);
         }
-	}
+    }
 
-	public async Task<OneOf<Settings, None, Error<string>>> GetSettingsAsync()
+    public async Task<OneOf<Settings, None, Error<string>>> GetSettingsAsync()
     {
         try
         {
@@ -107,10 +107,17 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
         }
     }
 
-    public async Task SaveGlobalDataAsync(GlobalData globalData)
+    public async Task<OneOf<Success, Error<string>>> SaveGlobalDataAsync(GlobalData globalData)
     {
-        await localStorage.SetItemAsync(SettingsKey, globalData);
-
+        try
+        {
+            await localStorage.SetItemAsync(SettingsKey, globalData);
+            return new Success();
+        }
+        catch (Exception e)
+        {
+            return new Error<string>(e.Message);
+        }
     }
 
     public async Task SaveSettingsAsync(Settings settings)

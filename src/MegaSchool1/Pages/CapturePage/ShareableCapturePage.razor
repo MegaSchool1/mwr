@@ -61,7 +61,7 @@
     }
     @if (Video?.ShowBusinessSignUp is true)
     {
-        <MudText Align="Align.Center"><ExternalLink Text="Sign Up NOW!" Href="@Constants.BusinessEnrollmentUrl(this.MemberId)" /></MudText>
+        <MudText Align="Align.Center"><ExternalLink Text="Sign Up NOW!" Href="@Constants.JoinMakeWealthReal(this.MemberId, Model.Language.English)" /></MudText>
     }
     @if(Video?.HideShortCodePrompt is not true)
     {

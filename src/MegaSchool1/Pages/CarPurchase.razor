@@ -1,4 +1,5 @@
 ﻿@page "/carpurchase"
+@using MegaSchool1.Components
 
 <MudText Align="Align.Center" Typo="Typo.h4">How a Teen Should Buy Their First Car<br/>($3,000 Car)</MudText>
 <br/>
@@ -30,7 +31,7 @@
                 <MudStack Row="true">
                     <MudText>@((int.TryParse(detail.Substring(0, 1), out var numTabs) ? (MarkupString)Tabs(numTabs) : (MarkupString)"&#x2022;"))</MudText>
                     <MudText>@FormatDescription(int.TryParse(detail.Substring(0, 1), out _) ? detail.Substring(1): detail)</MudText>
-                </MudStack>
+                </MudStack>                
             }
         </MudStack>
     </DialogContent>
@@ -41,8 +42,8 @@
 
     private readonly List<(string Title, string[] Details)> _steps = 
     [
-        ("Hire Team of Financial Experts", ["Dad purchases MWR Business Account for $350", "1$200 1-time business activation fee", "1$150/mo membership fee", "Mom likewise purchases an MWR Business Account for $350 on behalf of teen", "Teen owes Mom", "1$200 1-time business activation fee", "1$150/mo membership fee"]),
-        ("Get GivBux", ["Dad sets up his GivBux account", "Mom sets up her GivBux account using Dad's code", "Teen sets up his/her GivBux account using Dad's code"]),
+        ("Hire Team of Financial Experts", [$"Dad opens <a href='/en/EDMGivBux/MS1/megaschool' target='_blank'><span style='color:{new MudTheme().Palette.Primary};'><u>MWR Business Account</u></span></a> for $350", "1$200 1-time business activation fee", "1$150/mo membership fee", $"Mom likewise purchases an <a href='/en/EDMGivBux/MS1/megaschool' target='_blank'><span style='color:{new MudTheme().Palette.Primary};'><u>MWR Business Account</u></span></a> for $350 on behalf of teen", "Teen owes Mom", "1$200 1-time business activation fee", "1$150/mo membership fee"]),
+        ("Get GivBux", [$@"Dad sets up his <a href='/en/GivBux/MS1/megaschool' target='_blank'><span style='color:{new MudTheme().Palette.Primary};'><u>GivBux account</u></span></a>", $"Mom sets up her <a href='/en/GivBux/MS1/megaschool' target='_blank'><span style='color:{new MudTheme().Palette.Primary};'><u>GivBux account</u></span></a> using Dad's code", $"Teen sets up his/her <a href='/en/GivBux/MS1/megaschool' target='_blank'><span style='color:{new MudTheme().Palette.Primary};'><u>GivBux account</u></span></a> using Dad's code"]),
         ("Family Gets $350+/mo Cash Back", ["0Month 1", "1Income - $900", "2$50 Membership Enrollment Bonus (Mom is Dad's referral)", "2$850+/mo cash back from 'Instant Pay Raise' and 'Lower My Bills'", "1Expenses - $900", "2$350 for Dad's MWR Account ([Step 1])", "2$350 for Mom's MWR Account ([Step 1])", "2$200 for monthly deposit into teen's bank ([Step 4])", "0Month 2 & Beyond", "2Income - $850+/mo", "3$850+/mo cash back from 'Instant Pay Raise' and 'Lower My Bills'", "2Expenses - $500/mo", "3$150/mo - Dad's MWR Membership Fee", "3$150/mo - Mom's MWR Membership Fee", "3$200/mo - Monthly deposit into teen's bank ([Step 4])", "2Net - $350/mo"]),
         ("Teen Creates Their Own Bank", ["Teen opens Diversified Cashflow Account (DCA)", "This DCA is funded $200/mo by parents (see [Step 3]) as a college fund investment"]),
         ("Parents Fund Teen's Bank", ["Parents fund their teen's DCA w/ $3,000 (transferred from existing college fund elsewhere)"]),
