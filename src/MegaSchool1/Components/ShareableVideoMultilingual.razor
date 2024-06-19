@@ -24,7 +24,10 @@
         <MudStack Row="true" Style="width:100%;">
             <MudSpacer />
             <MudStack>
-                <QRCode Content="@QRCode" />
+                @if (QRCode != null)
+                {
+                    <QRCode Content="@QRCode?.Content" FileName="@QRCode?.FileName" />
+                }
                 <Centered>
                     <MudStack>
                         <MudStack Row="true">
@@ -95,7 +98,7 @@
     public string? Url { get; set; }
 
     [Parameter]
-    public string? QRCode { get; set; }
+    public (string Content, string FileName)? QRCode { get; set; }
 
     [Parameter]
     public TimeSpan? Duration { get; set; }

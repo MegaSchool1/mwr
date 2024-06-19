@@ -67,7 +67,7 @@
 
     protected async Task ShareMessageAsync(string message, string imageUrl)
     {
-        const string DefaultWebShareTitle = "MWR";
+        const string DefaultWebShareTitle = "Mega School";
 
         await JSRuntime.InvokeVoidAsync("webshare", DefaultWebShareTitle, message, imageUrl);
     }

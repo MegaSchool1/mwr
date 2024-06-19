@@ -54,7 +54,7 @@
     public string? Url { get; set; }
 
     [Parameter]
-    public string? QRCode { get; set; }
+    public (string Content, string FileName)? QRCode { get; set; }
 
     [Parameter]
     public TimeSpan? Duration { get; set; }

@@ -8,7 +8,13 @@
 
 <MudDialog @bind-IsVisible="_qrCodeDialog.Show">
     <DialogContent>
-        <MudImage Src="@($"data:image/png;base64,{_qrCodeDialog.Base64Image}")" Fluid="true" />
+        @{
+            var imageSource = $"data:image/png;base64,{_qrCodeDialog.Base64Image}";
+        }
+
+        <a href="@imageSource" download="@FileName">
+            <MudImage Src="@imageSource" Fluid="true" />
+        </a>
     </DialogContent>
 </MudDialog>
 
@@ -18,14 +24,17 @@
     [Parameter]
     public string? Content { get; set; }
 
+    [Parameter]
+    public string FileName { get; set; } = "data.png";
+
     private void ShowQRCode()
     {
         if (!string.IsNullOrWhiteSpace(Content))
         {
-            QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(Content, QRCodeGenerator.ECCLevel.Q);
-            Base64QRCode qrCode = new Base64QRCode(qrCodeData);
-            string qrCodeImageAsBase64 = qrCode.GetGraphic(20);
+            using var qrGenerator = new QRCodeGenerator();
+            using var qrCodeData = qrGenerator.CreateQrCode(Content, QRCodeGenerator.ECCLevel.Q);
+            using var qrCode = new Base64QRCode(qrCodeData);
+            var qrCodeImageAsBase64 = qrCode.GetGraphic(20);
 
             _qrCodeDialog = (true, qrCodeImageAsBase64);
         }

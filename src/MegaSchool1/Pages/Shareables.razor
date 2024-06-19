@@ -120,7 +120,7 @@
                         <MudSelectItem Value="@content" />
                     }
                 </MudSelect>
-                @CapturePage(_selectedCapturePage, _selectedTeamMemberCapturePage)
+                <CapturePage Content="_selectedCapturePage" TeamMember="_selectedTeamMemberCapturePage"/>
             </TeamMemberPicker>
         </MudStack>
     </Collapsable>
@@ -297,45 +297,6 @@
                             TextToCopy="@($"{Shareable.VideoShareable(english)}")"
                             Tooltip="Copied!"
             ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"/>
-        }
-    };
-
-    private RenderFragment CapturePage(Content content, TeamMember? teamMember) => CapturePage(content, teamMember, UI, Constants);
-
-    public static RenderFragment CapturePage(Content content, TeamMember? teamMember, UISettings ui, Constants constants) => __builder =>
-    {
-        var english = ui.EnglishLocale[content];
-        var spanish = ui.SpanishLocale[content];
-        var referralCode = Constants.GivBuxContent.Contains(content) && !string.IsNullOrWhiteSpace(teamMember?.GivBuxCode) ? teamMember?.GivBuxCode : "Example-Referral-Code";
-
-        if (spanish != null)
-        {
-            var url = constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode);
-
-            <ShareableVideoMultilingual Description="@english.AppTitle"
-                                        Duration="@english.Duration"
-                                        Url="@url"
-                                        QRCode="@url"
-                                        
-                                        EnglishTextToCopy="@Shareable.VideoShareable(english.ShareableTitle, constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode), english.Duration)"
-                                        EnglishTooltip="Copied!"
-                                        EnglishImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"
-                                        
-                                        SpanishTextToCopy="@Shareable.VideoShareable(spanish.ShareableTitle, constants.GetCapturePage(content, Language.Spanish, teamMember?.MemberId, referralCode), spanish.Duration)"
-                                        SpanishTooltip="Copied"
-                                        SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)" />
-        }
-        else
-        {
-            var url = constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode);
-
-            <ShareableVideo Description="@english.AppTitle"
-                            Duration="@english.Duration"
-                            Url="@url"
-                            TextToCopy="@Shareable.VideoShareable(english.ShareableTitle, constants.GetCapturePage(content, Language.English, teamMember?.MemberId, referralCode), english.Duration)"
-                            QRCode="@url"
-                            Tooltip="Copied!"
-                            ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)" />
         }
     };
 }

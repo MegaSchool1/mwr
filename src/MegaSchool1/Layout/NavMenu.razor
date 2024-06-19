@@ -40,7 +40,7 @@
 <MudDialog @bind-IsVisible="_showAppShareable" Options="@(new DialogOptions() { NoHeader = true })">
     <DialogContent>
         <MudStack>
-            @Pages.Shareables.CapturePage(Content.MegaSchoolAppInstall, AppState.User, UI, Constants)
+            <CapturePage Content="Content.MegaSchoolAppInstall" TeamMember="AppState?.User" ShowReferralCode="false" />
         </MudStack>
     </DialogContent>
 </MudDialog>

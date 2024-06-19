@@ -15,7 +15,10 @@
     {
         <WebShareContent TextToCopy="@TextToCopy" Tooltip="@Tooltip" ImageUrl="@ImageUrl" />
     }
-    <QRCode Content="@QRCode" />
+    @if(QRCode != null)
+    {
+        <QRCode Content="@QRCode?.Content" FileName="@QRCode?.FileName" />
+    }
     <MudSpacer/>
 </MudStack>
 
@@ -36,5 +39,5 @@
     public string? Title { get; set; }
 
     [Parameter]
-    public string? QRCode { get; set; }
+    public (string Content, string FileName)? QRCode { get; set; }
 }
