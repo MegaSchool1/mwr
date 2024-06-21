@@ -10,7 +10,7 @@ public record Shareable(string Description, Content English, Content? Spanish, s
     {
         var durationEstimate = videoLength == null ? 0 : Util.MinuteEstimate(videoLength.Value);
 
-        return $"{heading}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{(durationEstimate == 0 ? string.Empty : $"({durationEstimate}min){Environment.NewLine}")}{videoUrl}";
+        return $"{heading}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{(durationEstimate == 0 ? string.Empty : $"({(videoLength?.Hours > 0 ? $"{videoLength?.Hours}hr " : string.Empty)}{durationEstimate}min){Environment.NewLine}")}{videoUrl}";
     }
 }
 
