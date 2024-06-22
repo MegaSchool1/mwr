@@ -75,8 +75,8 @@ else
         var settings = await Repo.GetSettingsAsync();
         settings.Switch(
             found => _settings = found,
-            notFound => { Console.Error.WriteLine($"{nameof(TeamMemberPicker)} - Settings not found"); },
-            error => { Console.Error.WriteLine($"Failed to initialize main layout.{Environment.NewLine}{error.Value}"); }
+            notFound => { Console.WriteLine($"{this.GetType().FullName} - Settings not found"); },
+            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to initialize main layout.{Environment.NewLine}{error.Value}"); }
         );
 
         this.User ??= AppState?.User;

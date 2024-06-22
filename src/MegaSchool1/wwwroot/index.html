@@ -24,6 +24,30 @@
 
     <!-- Meta Tags Generated with https://metatags.io -->
 
+    <style>
+        .container {
+            height: 100vh;
+            position: relative;
+        }
+
+        .vertical-center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+    </style>
+
     <base href="/" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
@@ -161,7 +185,7 @@
                         await navigator.share(data);
                     }
                     catch (e) {
-                        console.error(`webshare error: ${e}`);
+                        Console(`webshare error: ${e}`);
                     }
                 }
             }

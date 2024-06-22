@@ -1,0 +1,21 @@
+﻿@inherits Components.ComponentBase
+
+@if(Show)
+{
+    <div class="container" style="height:50vh;">
+        <div class="center">
+            <MudOverlay Visible="true" DarkBackground="true" Absolute="true">
+                <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+            </MudOverlay>
+        </div>
+    </div>
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter]
+    public bool Show { get; set; }
+}

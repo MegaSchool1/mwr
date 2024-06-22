@@ -138,31 +138,17 @@
                                             SpanishTooltip="Español shareable copied!"
                                             SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
             </TeamMemberPicker>
-            @if (_pageLoaded)
-            {
-                <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMemberMarketingDirector">
-                    <ShareableVideoMultilingual Description="My Website"
-                                                EnglishTextToCopy="@Constants.MarketingDirectorUrlEnglish(_selectedTeamMemberMarketingDirector?.MemberId)"
-                                                EnglishTooltip="English shareable copied!"
-                                                EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
-
-                                                SpanishTextToCopy="@Constants.MarketingDirectorUrlSpanish(_selectedTeamMemberMarketingDirector?.MemberId)"
-                                                SpanishTooltip="Español shareable copied!"
-                                                SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
-                </TeamMemberPicker>
-            }
-            else
-            {
-                <MudStack Row="true">
-                    <MudSpacer/>
-                    <MudText Align="Align.Center">
-                        My Website
-                        <br/>
-                        <MudProgressCircular Indeterminate="true"/>
-                    </MudText>
-                    <MudSpacer/>
-                </MudStack>
-            }
+            <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMemberMarketingDirector">
+                <ShareableVideoMultilingual Description="My Website"                                              
+                                                
+                                            EnglishTextToCopy="@Constants.MarketingDirectorUrlEnglish(_selectedTeamMemberMarketingDirector?.MemberId)"
+                                            EnglishTooltip="English shareable copied!"
+                                            EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
+                                                
+                                            SpanishTextToCopy="@Constants.MarketingDirectorUrlSpanish(_selectedTeamMemberMarketingDirector?.MemberId)"
+                                            SpanishTooltip="Español shareable copied!"
+                                            SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
+            </TeamMemberPicker>
             <CardShareableMulti Description="Extra Digit Wealth Worksheet" SubDescription="(Latest)" Url="/docs/WealthWorksheet-Blank-v2.pdf">
                 <Top>
                     <ShareableContent Title="For Prospects" Tooltip="Copied Shareable" TextToCopy="@($"Wealth Worksheet{Environment.NewLine}{Environment.NewLine}Print out before our meeting!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{NavigationManager.BaseUri}docs/WealthWorksheet-Blank-v2.pdf")"/>
@@ -253,7 +239,6 @@
     </Collapsable>
 </MudStack>
 @code {
-    private bool _pageLoaded;
     private TeamMember? _selectedTeamMemberMarketingDirector;
     private TeamMember? _selectedTeamMemberCapturePage;
     private Content _selectedCapturePage = Content.GivBux;
@@ -266,8 +251,6 @@
 
         _selectedTeamMemberMarketingDirector = AppState?.User;
         _selectedTeamMemberCapturePage = AppState?.User;
-
-        _pageLoaded = true;
     }
 
     private RenderFragment ContentView(Content content) => __builder =>

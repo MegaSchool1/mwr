@@ -108,7 +108,7 @@
                 }
             },
             notFound => { },
-            error => { Console.Error.WriteLine($"Failed to initialize events page{Environment.NewLine}{error.Value}"); }
+            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to initialize events page{Environment.NewLine}{error.Value}"); }
         );
     }
 
@@ -136,8 +136,8 @@
 
                  this.StateHasChanged();
             },
-            notFound => { Console.Error.WriteLine("No settings found in local storage!"); },
-            error => { Console.Error.WriteLine($"Failed to load settings{Environment.NewLine}{error.Value}"); }
+            notFound => { Console.WriteLine($"{this.GetType().FullName} - No settings found in local storage!"); },
+            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to load settings{Environment.NewLine}{error.Value}"); }
         );
     }
 }

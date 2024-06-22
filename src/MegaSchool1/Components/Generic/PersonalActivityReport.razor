@@ -191,8 +191,8 @@
 
                 this.LoadProspects(userDataToLoad);
             },
-            notFound => { Console.Error.WriteLine("No user data found in local storage!"); },
-            error => { Console.Error.WriteLine($"Failed to load personal activity report for {teamMember.Name}{Environment.NewLine}{error.Value}"); }
+            notFound => { Console.WriteLine($"{this.GetType().FullName} - No user data found in local storage!"); },
+            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to load personal activity report for {teamMember.Name}{Environment.NewLine}{error.Value}"); }
         );
     }
 
@@ -240,8 +240,8 @@
 
                 _dropContainer.Refresh();
             },
-            notFound => { Console.Error.WriteLine("No user data found in local storage!"); },
-            error => { Console.Error.WriteLine($"Failed to load user data{Environment.NewLine}{error.Value}"); }
+            notFound => { Console.WriteLine($"{this.GetType().FullName} - No user data found in local storage!"); },
+            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to load user data{Environment.NewLine}{error.Value}"); }
         );
 	}
 
@@ -293,8 +293,8 @@
 
                 await Repo.SaveUserDataAsync(found);
             },
-            notFound => { Console.Error.WriteLine("No user data found in local storage!"); },
-            error => { Console.Error.WriteLine($"Failed to load user data{Environment.NewLine}{error.Value}"); }
+            notFound => { Console.WriteLine($"{this.GetType().FullName} - No user data found in local storage!"); },
+            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to load user data{Environment.NewLine}{error.Value}"); }
         );
     }
 

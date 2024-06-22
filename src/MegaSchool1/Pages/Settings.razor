@@ -14,80 +14,82 @@
 @inject IDialogService Dialog
 @inject IJSRuntime JS
 
-<MudStack Spacing="6">
-    <MudForm @bind-IsValid="_dataValid">
-        <MudStack Spacing="3">
-            <MudCard Outlined="true">
-                <MudCardContent>
-                    <MudTextField Value="_viewModel.GivBuxCode" Label="My GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
-                </MudCardContent>
-            </MudCard>
-            <MudCard Outlined="true">
-                <MudCardContent>
-                    <MudStack Row="true">
-                        <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)">
-                            @foreach (var teamMember in _settings.TeamMembers)
+<Loader Show="!_loaded">
+    <MudStack Spacing="6">
+        <MudForm @bind-IsValid="_dataValid">
+            <MudStack Spacing="3">
+                <MudCard Outlined="true">
+                    <MudCardContent>
+                        <MudTextField Value="_viewModel.GivBuxCode" Label="My GivBux Code" Variant="Variant.Outlined" Immediate="true" Placeholder="GivBux Code" Validation="@(new Func<string,  Task<string?>>(ValidateGivBuxCodeAsync))" DisableUnderLine="true" />
+                    </MudCardContent>
+                </MudCard>
+                <MudCard Outlined="true">
+                    <MudCardContent>
+                        <MudStack Row="true">
+                            <MudSelect T="TeamMember" Label="Team Members" @bind-Value="_selectedTeamMember" ToStringFunc="@(teamMember => teamMember.Name)">
+                                @foreach (var teamMember in _settings.TeamMembers)
+                                {
+                                    <MudSelectItem Value="@teamMember">
+                                        <MudStack Row="true">
+                                            <MudText>@teamMember.Name</MudText>
+                                            <MudSpacer />
+                                        </MudStack>
+                                    </MudSelectItem>
+                                }
+                            </MudSelect>
+                            @if (_selectedTeamMember != null)
                             {
-                                <MudSelectItem Value="@teamMember">
-                                    <MudStack Row="true">
-                                        <MudText>@teamMember.Name</MudText>
-                                        <MudSpacer />
-                                    </MudStack>
-                                </MudSelectItem>
+                                <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                               Color="Color.Primary"
+                                               OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("Edit Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.TeamMember, _selectedTeamMember }, { x => x.OnSave, OnTeamMemberEdited } }))" />
+                                <MudIconButton OnClick="@(e => OnDeleteTeamMember(_selectedTeamMember))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
                             }
-                        </MudSelect>
-                        @if (_selectedTeamMember != null)
-                        {
-                            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                            <MudIconButton Icon="@Icons.Material.Filled.PersonAdd"
                                            Color="Color.Primary"
-                                           OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("Edit Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.TeamMember, _selectedTeamMember }, { x => x.OnSave, OnTeamMemberEdited } }))" />
-                            <MudIconButton OnClick="@(e => OnDeleteTeamMember(_selectedTeamMember))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
-                        }
-                        <MudIconButton Icon="@Icons.Material.Filled.PersonAdd"
+                                           OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
+                        </MudStack>
+                    </MudCardContent>
+                </MudCard>
+            </MudStack>
+        </MudForm>
+        <MudDivider />
+        <Collapsable Title="Data">
+            <MudStack Spacing="3">
+                <MudStack Row="true">
+                    <MudSpacer />
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnExportData">Export Data</MudButton>
+                    <MudSpacer />
+                </MudStack>
+                <Centered>
+                    <MudFileUpload T="IBrowserFile" Accept=".json" FilesChanged="OnImportData" MaximumFileCount="100">
+                        <ButtonTemplate>
+                            <MudButton HtmlTag="label"
+                                       Variant="Variant.Filled"
                                        Color="Color.Primary"
-                                       OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
-                    </MudStack>
-                </MudCardContent>
-            </MudCard>
-        </MudStack>
-    </MudForm>
-    <MudDivider />
-    <Collapsable Title="Data">
-        <MudStack Spacing="3">
-            <MudStack Row="true">
-                <MudSpacer />
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnExportData">Export Data</MudButton>
-                <MudSpacer />
+                                       StartIcon="@Icons.Material.Filled.CloudUpload"
+                                       for="@context.Id">
+                                Import Data
+                            </MudButton>
+                        </ButtonTemplate>
+                    </MudFileUpload>
+                </Centered>
+                <MudStack Row="true">
+                    <MudSpacer />
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnRestoreData">Restore Data</MudButton>
+                    <MudSpacer />
+                </MudStack>
             </MudStack>
-            <Centered>
-                <MudFileUpload T="IBrowserFile" Accept=".json" FilesChanged="OnImportData" MaximumFileCount="100">
-                    <ButtonTemplate>
-                        <MudButton HtmlTag="label"
-                                   Variant="Variant.Filled"
-                                   Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.CloudUpload"
-                                   for="@context.Id">
-                            Import Data
-                        </MudButton>
-                    </ButtonTemplate>
-                </MudFileUpload>
-            </Centered>
-            <MudStack Row="true">
-                <MudSpacer />
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnRestoreData">Restore Data</MudButton>
-                <MudSpacer />
+        </Collapsable>
+        <MudDivider />
+        <MudText Align="Align.Center">Pay Annual Subscription<br/>($1/mo or $12/year)</MudText>
+       <Centered>
+            <MudStack>
+                <MudImage Src="/images/givbux-logo.png" Fluid="true" />
+                <MudText Align="Align.Center">Send to <span style="color:@(Theme.Palette.Secondary);">megaschool</span></MudText>
             </MudStack>
-        </MudStack>
-    </Collapsable>
-    <MudDivider />
-    <MudText Align="Align.Center">Pay Annual Subscription<br/>($1/mo or $12/year)</MudText>
-   <Centered>
-        <MudStack>
-            <MudImage Src="/images/givbux-logo.png" Fluid="true" />
-            <MudText Align="Align.Center">Send to <span style="color:@(Theme.Palette.Secondary);">megaschool</span></MudText>
-        </MudStack>
-   </Centered>
-</MudStack>
+       </Centered>
+    </MudStack>
+</Loader>
 
 @code {
     private readonly Regex ValidGivBuxCode = new (@"^([a-z]|\d)+$");
@@ -96,6 +98,7 @@
     private TeamMember? _selectedTeamMember;
     private bool _dataValid;
     private SettingsViewModel _viewModel = new();
+    private bool _loaded;
 
     private async Task<string?> ValidateGivBuxCodeAsync(string givBuxCode)
     {
@@ -103,11 +106,11 @@
 
         if(validationError == null)
         {
-            _settings.User = _settings.User with { GivBuxCode = givBuxCode };
+            _settings.User = (_settings.User ?? new()) with { GivBuxCode = givBuxCode };
 
             await Repo.SaveSettingsAsync(_settings);
 
-            AppState.User = AppState.User with { GivBuxCode = givBuxCode };
+            AppState.User = (AppState.User ?? new()) with { GivBuxCode = givBuxCode };
         }
 
         return validationError;
@@ -138,8 +141,8 @@
 
                this.StateHasChanged();
            },
-           notFound => { Console.Error.WriteLine("No settings found in local storage!"); },
-           error => { Console.Error.WriteLine($"Failed to load settings{Environment.NewLine}{error.Value}"); }
+           notFound => { Console.WriteLine($"{this.GetType().FullName} - No settings found in local storage!"); },
+           error => { Console.WriteLine($"{this.GetType().FullName} - Failed to load settings{Environment.NewLine}{error.Value}"); }
        );
     }
 
@@ -159,8 +162,8 @@
 
                 await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
             },
-            notFound => { Console.Error.WriteLine("No settings found in local storage!"); },
-            error => { Console.Error.WriteLine($"Failed to load settings{Environment.NewLine}{error.Value}"); }
+            notFound => { Console.WriteLine($"{this.GetType().FullName} - No settings found in local storage!"); },
+            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to load settings{Environment.NewLine}{error.Value}"); }
         );
     }
 
@@ -178,8 +181,8 @@
 
                 this.StateHasChanged();
             },
-            notFound => { Console.Error.WriteLine("Failed to restore exported data!"); },
-            error => { Console.Error.WriteLine($"Failed to restore exported data!{Environment.NewLine}{error.Value}"); }
+            notFound => { Console.WriteLine($"{this.GetType().FullName} - Failed to restore exported data!"); },
+            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to restore exported data!{Environment.NewLine}{error.Value}"); }
         );
     }
 
@@ -193,9 +196,11 @@
 
                 _selectedTeamMember = found.TeamMembers.FirstOrDefault();
                 _viewModel.GivBuxCode = found.User?.GivBuxCode;
+
+                _loaded = true;
             },
-            notFound => { Console.Error.WriteLine("No settings found in local storage!"); },
-            error => { Console.Error.WriteLine($"Failed to load settings{Environment.NewLine}{error.Value}"); }
+            notFound => { Console.WriteLine($"{this.GetType().FullName} - No settings found in local storage!"); },
+            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to load settings{Environment.NewLine}{error.Value}"); }
         );
     }
 
