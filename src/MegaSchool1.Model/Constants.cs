@@ -66,6 +66,7 @@ public enum Image
     MWRLogoTransparent = 17,
     GivBux = 18,
     AppLogo = 19,
+    MWRGivBuxLogo = 20,
 }
 
 public enum Strategy
@@ -227,6 +228,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         Image.MWRLogoTransparent => "/images/mwr-logo-transparent-221x221.png",
         Image.GivBux => "/images/givbux.jpeg",
         Image.AppLogo => "/images/app-logo.png",
+        Image.MWRGivBuxLogo => "/images/mwr-givbux-logo.png",
         _ => throw new Exception($"Image not found: {image}"),
     };
 
