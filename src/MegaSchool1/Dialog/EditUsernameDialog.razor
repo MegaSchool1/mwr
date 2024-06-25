@@ -73,7 +73,7 @@
         async Task Update(Settings settings)
         {
             var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(_username!);
-            settings.User = Util.Sanitize((settings.User ?? new()) with { MemberId = _username! }, marketingDirector, settings.User?.GivBuxCode);
+            settings.User = Util.Sanitize((settings.User ?? new()) with { MemberId = _username!, Name = null }, marketingDirector, settings.User?.GivBuxCode);
 
             await Repo.SaveSettingsAsync(settings);
 
