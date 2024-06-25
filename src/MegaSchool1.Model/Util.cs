@@ -73,7 +73,7 @@ public static class Util
         {
             sanitized = sanitized with 
             {
-                Name = marketingDirector.IsT1 ? teamMember.MemberId : (marketingDirector.AsT0.BusnmShow ? marketingDirector.AsT0.BusinessName : $"{marketingDirector.AsT0.FirstName} {marketingDirector.AsT0.FirstName}")
+                Name = marketingDirector.IsT1 ? teamMember.MemberId : (marketingDirector.AsT0.BusnmShow ? marketingDirector.AsT0.BusinessName : $"{marketingDirector.AsT0.FirstName} {marketingDirector.AsT0.LastName}")
             };
         }
 
