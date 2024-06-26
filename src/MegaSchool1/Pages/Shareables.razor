@@ -15,7 +15,7 @@
     <Collapsable Title="Essentials" ExpandPrompt="Show">
         <StrategyChooser>
             <MudTabPanel Tag="@Strategy.MegaSchool">
-                <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_megaSchoolEssentials.TeamMember">
+                <TeamMemberPicker Description="Capture Page For:" User="AppState?.User" @bind-SelectedTeamMember="_megaSchoolEssentials.TeamMember">
                     <MudSelect T="Content" Label="Capture Page" @bind-Value="_megaSchoolEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
                         @foreach (var content in new Content[] { Content.GivBux, Content.EDMGivBux, Content.GivBuxOpportunity, Content.GivBuxCharity, Content.GivBuxMerchant })
                         {
