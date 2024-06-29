@@ -5,7 +5,18 @@
 <MudStack Spacing="3">
     <MudText Align="Align.Center" Typo="Typo.h4">Trust Fund My Baby</MudText>
     <MudText Align="Align.Center" Typo="Typo.h6">6 Year Program</MudText>
-    <MudText Align="Align.Center">Parents need $250 TOTAL up front and receive a GUARANTEED reimbursement of $250+ within 30 days.</MudText>
+    <MudCard Outlined="true">
+        <MudCardContent>
+            <MudText Align="Align.Center">Parents need $350 TOTAL up front and are GUARANTEED $350+ of cash back wihtin 30 days.<br/>#NoRisk</MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Outlined="true">
+        <MudCardHeader>You Are in the DISTRIBUTION Industry</MudCardHeader>
+        <MudCardContent>
+            <EmbeddedVideo YouTube="4QwEiKuoMHc" />
+        </MudCardContent>
+    </MudCard>
+    <MudText Align="Align.Center" Typo="Typo.h6">Each One Reach One</MudText>
     <MudTimeline>
         @for (var i = 0; i < _steps.Count; i++)
         {
@@ -25,11 +36,19 @@
                     <MudStack>
                         <MudStack Row="true">
                             <MudText>@((MarkupString)"&#x2022;")</MudText>
-                            <MudText>$@(monthlyIncome.ToString("N0"))/mo passive</MudText>
+                            <MudText>$@(monthlyIncome.ToString("N0"))/mo</MudText>
                         </MudStack>
                         <MudStack Row="true">
                             <MudText>@((MarkupString)"&#x2022;")</MudText>
-                            <MudText>All team members get 1 new member</MudText>
+                            <MudText>$$$ from GivBux</MudText>
+                        </MudStack>
+                        <MudStack Row="true">
+                            <MudText>@((MarkupString)"&#x2022;")</MudText>
+                            <MudText>@(production.TeamMembershipEnrollments.ToString("N0"))<br />Memberships</MudText>
+                        </MudStack>
+                        <MudStack Row="true">
+                            <MudText>@((MarkupString)"&#x2022;")</MudText>
+                            <MudText>@(production.TeamMembershipEnrollments.ToString("N0"))<br/>GivBux users</MudText>
                         </MudStack>
                     </MudStack>
                 </ItemContent>
@@ -58,7 +77,7 @@
 
     private readonly List<(string Title, string[] Details)> _steps = 
     [
-        ("Freshman Orientation<br/>72-Hour Money Challenge", ["Dad purchases MWR Business Account for $250", "1$100 1-time business activation fee", "1$150/mo membership fee", "Mom likewise purchases an MWR Business Account for $250 on behalf of teen", "Teen owes Mom", "1$100 1-time business activation fee", "1$150/mo membership fee"]),
+        ("GivBux<br/>+<br/>72-Hour Money Challenge", ["Dad purchases MWR Business Account for $250", "1$100 1-time business activation fee", "1$150/mo membership fee", "Mom likewise purchases an MWR Business Account for $250 on behalf of teen", "Teen owes Mom", "1$100 1-time business activation fee", "1$150/mo membership fee"]),
         ("Step 2", ["0Month 1", "1Income - $700", "2$50 Membership Enrollment Bonus (Mom is Dad's referral)", "2$650+/mo cash back from 'Instant Pay Raise' and 'Lower My Bills'", "1Expenses - $700", "2$250 for Dad's MWR Account (Step 1)", "2$250 for Mom's MWR Account (Step 1)", "2$200 for monthly deposit into teen's bank (Step 3)", "0Month 2 & Beyond", "2Income - $650+/mo", "3$650+/mo cash back from 'Instant Pay Raise' and 'Lower My Bills'", "2Expenses - $500/mo", "3$150/mo - Dad's MWR Membership Fee", "3$150/mo - Mom's MWR Membership Fee", "3$200/mo - Monthly deposit into teen's bank (Step 3)", "2Net - $150/mo", "0", "0If the parents can't get $650/mo cash back from 'Instant Pay Raise' and 'Lower My Bills', then this car purchase strategy will NOT work for their family."]),
         ("Step 3", ["Teen opens Diversified Cashflow Account (DCA)", "This DCA is funded $200/mo by parents (see Step 2) as a college fund investment"]),
         ("Step 4", ["Parents fund their teen's DCA w/ $3,000 (transferred from existing college fund elsewhere)"]),
