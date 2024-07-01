@@ -65,7 +65,10 @@
                     </MudText>
                 </MudCardContent>
                 <MudCardActions>
-                    <ShareableContent TextToCopy="@(NavigationManager.Uri)"/>
+                    <MudStack Style="width:100%;">
+                        <MudDivider />
+                        <ShareableContent TextToCopy="@(NavigationManager.Uri)" />
+                    </MudStack>
                 </MudCardActions>
             </MudCard>
             <MudCard Outlined="true">
@@ -80,7 +83,10 @@
                     </MudStack>
                 </MudCardContent>
                 <MudCardActions>
-                    <ShareableContent TextToCopy="@(NavigationManager.Uri)" />
+                    <MudStack Style="width:100%;">
+                        <MudDivider />
+                        <ShareableContent TextToCopy="@(NavigationManager.Uri)" />
+                    </MudStack>
                 </MudCardActions>
             </MudCard>
         </MudStack>
