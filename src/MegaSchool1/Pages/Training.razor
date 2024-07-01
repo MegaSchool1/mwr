@@ -2,60 +2,88 @@
 @inherits Components.ComponentBase
 @using MegaSchool1.Components
 @using MegaSchool1.Model
+@inject NavigationManager NavigationManager
 
 <MudStack Spacing="3">
     <Collapsable Title="GivBux">
-        <MudText>
-            Because you were once a part of MWR, you can now trigger a new Residual Income Stream for FREE! 💰🤩🤑
-            <br/>
-            <br/>
-            (Make money at over 500 Store Icons like Amazon, Home Depot😱, Uber, LongHorns, Lowe’s😱, Nike, CVS, Kroger 😱!) 
-            <br />
-            <br />
-            Step 1 - Downlowd GivBux App from App Store✅!
-            <br />
-            <br />
-            Step 2 - Choose “Log In” (Not Sign Up) & Click “Forgot Password”✅!
-            <br />
-            <br />
-            Step 3 - Enter the email you have on file with MWR✅! 
-            <br />
-            <br />
-            Step 4 - Check your email for Code GivBux sent to you✅!
-            <br />
-            <br />
-            Step 5 - Return to Create your Profile✅!
-            <br />
-            <br />
-            (Note: 🛑The Username you create cannot be changed!)
-            <br />
-            <br />
-            (Note 2: Use the same password every time they ask you to create or enter password✅.)
-            <br />
-            <br />
-            NOW, SHARE THE APP: Note: (For Now)
-            <br />
-            ✅Apple can TEXT invite to Apple!
-            <br />
-            ✅Android can TEXT invite to Android!
-            <br />
-            <br />
-            ❌Apple CANNOT text invite Android.
-            <br />
-            ❌Android CANNOT text invite Apple.
-            <br />
-            <br />
-            ✅Solution:
-            <br />
-            <br />
-            1. User must download the GivBux App!
-            <br />
-            <br />
-            2. You must give the new user the Vanity Name you created in order for you to receive credit!
-            <br />
-            <br />
-            We will load/fund apps by Wed.🤩💰💵🤑
-        </MudText>
+        <MudStack Spacing="3">
+            <MudCard Outlined="true">
+                <MudCardHeader>
+                    <MudText Color="Color.Primary">Pre-Registered QMD Sign-in</MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText>
+                        Because you were once a part of MWR, you can now trigger a new Residual Income Stream for FREE! 💰🤩🤑
+                        <br />
+                        <br />
+                        (Make money at over 500 Store Icons like Amazon, Home Depot😱, Uber, LongHorns, Lowe’s😱, Nike, CVS, Kroger 😱!)
+                        <br />
+                        <br />
+                        Step 1 - Downlowd GivBux App from App Store✅!
+                        <br />
+                        <br />
+                        Step 2 - Choose “Log In” (Not Sign Up) & Click “Forgot Password”✅!
+                        <br />
+                        <br />
+                        Step 3 - Enter the email you have on file with MWR✅!
+                        <br />
+                        <br />
+                        Step 4 - Check your email for Code GivBux sent to you✅!
+                        <br />
+                        <br />
+                        Step 5 - Return to Create your Profile✅!
+                        <br />
+                        <br />
+                        (Note: 🛑The Username you create cannot be changed!)
+                        <br />
+                        <br />
+                        (Note 2: Use the same password every time they ask you to create or enter password✅.)
+                        <br />
+                        <br />
+                        NOW, SHARE THE APP: Note: (For Now)
+                        <br />
+                        ✅Apple can TEXT invite to Apple!
+                        <br />
+                        ✅Android can TEXT invite to Android!
+                        <br />
+                        <br />
+                        ❌Apple CANNOT text invite Android.
+                        <br />
+                        ❌Android CANNOT text invite Apple.
+                        <br />
+                        <br />
+                        ✅Solution:
+                        <br />
+                        <br />
+                        1. User must download the GivBux App!
+                        <br />
+                        <br />
+                        2. You must give the new user the Vanity Name you created in order for you to receive credit!
+                        <br />
+                        <br />
+                        We will load/fund apps by Wed.🤩💰💵🤑
+                    </MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <ShareableContent TextToCopy="@(NavigationManager.Uri)"/>
+                </MudCardActions>
+            </MudCard>
+            <MudCard Outlined="true">
+                <MudCardHeader>
+                    <MudText Color="Color.Primary">GivBux Customer Support</MudText>                    
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudStack Spacing="3">
+                        <MudText>Phone: <MudLink Href="tel:844-448-2899">844-448-2899</MudLink></MudText>
+                        <MudText>Email: <MudLink Href="mailto:cs@givbux.com">cs@givbux.com</MudLink></MudText>
+                        <MudText>Website: <ExternalLink Href="https://givbux.com/contact-us/" Text="https://givbux.com/contact-us/" /></MudText>
+                    </MudStack>
+                </MudCardContent>
+                <MudCardActions>
+                    <ShareableContent TextToCopy="@(NavigationManager.Uri)" />
+                </MudCardActions>
+            </MudCard>
+        </MudStack>
     </Collapsable>
     <Collapsable Title="Membership">
         <MudStack Spacing="3">
