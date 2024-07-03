@@ -1,8 +1,11 @@
 ﻿@page "/experimental"
 @using MegaSchool1.Components
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
 
 <MudStack Spacing="6">
     <Centered><MudIcon Icon="@Icons.Material.Filled.School" /><MudLink Href="/wealthmap">Mega GED</MudLink></Centered>
     <Centered><MudIcon Icon="@Icons.Material.Filled.DirectionsCar" /><MudLink Href="/carpurchase">Teen Car Purchase</MudLink></Centered>
     <Centered><MudIcon Icon="@Icons.Material.Filled.Security" /><MudLink Href="/trustfundmybaby">Trust Fund My Baby</MudLink></Centered>
+    <Centered><MudLink OnClick="@(async () =>  await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", $"{NavigationManager.BaseUri}en/GivBux/MS1/megaschool"))">Capture Page Redirect</MudLink></Centered>
 </MudStack>
