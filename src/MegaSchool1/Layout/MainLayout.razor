@@ -8,6 +8,7 @@
 @using MegaSchool1.ViewModel
 @using OneOf
 @using OneOf.Types
+@using Serilog
 @implements IDisposable
 @inject NavigationManager MyNavigationManager
 @inject IJSRuntime JSRuntime
@@ -261,11 +262,34 @@ else
         if(IsCapturePage)
         {
             await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", e.Location);
-            MyNavigationManager.NavigateTo(_pageHistory.Last());
+
+            (await Repo.GetUserDataAsync())
+                .MapT0(userData => userData?.LastPage ?? NavigationManager.BaseUri)
+                .Switch(
+                    redirect => MyNavigationManager.NavigateTo(redirect),
+                    redirectNotFound => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri),
+                    error => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri));
         }
         else
         {
-            _pageHistory.Add(e.Location);
+            var userData = (await Repo.GetUserDataAsync())
+                .Match(
+                    userData =>
+                    {
+                        userData.LastPage = e.Location;
+
+                        return userData;
+                    },
+                    notFound => new UserData() { LastPage = e.Location },
+                    error =>
+                    {
+                        Log.Error("Failed to load user data");
+
+                        return new UserData() { LastPage = e.Location };
+                    }
+                );
+
+            await Repo.SaveUserDataAsync(userData);
         }
     }
 

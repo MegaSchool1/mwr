@@ -9,6 +9,8 @@ using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using MegaSchool1;
 using Microsoft.AspNetCore.Components;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -34,5 +36,14 @@ builder.Services.AddSingleton(sp =>
 builder.Services.AddMudServices();
 builder.Services.AddWebShare();
 builder.Services.AddBlazoredLocalStorage();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Verbose()
+    .WriteTo.Async(async x => { await Task.Delay(1000); })
+    .WriteTo.BrowserConsole()
+    .CreateLogger();
+
+Log.Information("Program - Information");
+Log.Debug("Program - Debug");
 
 await builder.Build().RunAsync();

@@ -10,4 +10,7 @@ public class UserData
 
     [JsonPropertyName("team_data")]
     public List<TeamMemberData> TeamData { get; set; } = [];
+
+    [JsonPropertyName("last_page")]
+    public string? LastPage { get; set; }
 }

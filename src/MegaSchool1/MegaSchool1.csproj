@@ -24,6 +24,9 @@
     <PackageReference Include="OneOf.SourceGenerator" Version="3.0.271" />
     <PackageReference Include="QRCoder" Version="1.5.1" />
     <PackageReference Include="Riok.Mapperly" Version="3.5.1" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
