@@ -149,7 +149,6 @@ else
     private static MainLayout? Instance;
 
     private readonly AppState _appState = new();
-    private readonly List<string> _pageHistory = [];
     private readonly MudTheme _capturePageTheme = new()
     {
         Palette = new PaletteDark()
@@ -209,7 +208,14 @@ else
     {
         _componentInitialized = true;
 
-        _pageHistory.Add(MyNavigationManager.BaseUri);
+        if(IsCapturePage)
+        {
+            var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
+            if (isStandaloneMode)
+            {
+                await this.RedirectAsync(NavigationManager.Uri);
+            }
+        }
 
         NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
 
@@ -255,20 +261,25 @@ else
         Instance = this;
     }
 
+    private async Task RedirectAsync(string url)
+    {
+        await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", url);
+
+        (await Repo.GetUserDataAsync())
+            .MapT0(userData => userData?.LastPage ?? NavigationManager.BaseUri)
+            .Switch(
+                redirect => MyNavigationManager.NavigateTo(redirect),
+                redirectNotFound => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri),
+                error => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri));
+    }
+
     private async void NavigationManagerOnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         this.NavigateToProspectPageIfApplicable();
 
         if(IsCapturePage)
         {
-            await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", e.Location);
-
-            (await Repo.GetUserDataAsync())
-                .MapT0(userData => userData?.LastPage ?? NavigationManager.BaseUri)
-                .Switch(
-                    redirect => MyNavigationManager.NavigateTo(redirect),
-                    redirectNotFound => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri),
-                    error => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri));
+            await RedirectAsync(e.Location);
         }
         else
         {

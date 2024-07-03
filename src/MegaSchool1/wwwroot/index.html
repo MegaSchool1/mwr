@@ -110,6 +110,20 @@
     </script>
 
     <script>
+        function isStandalone() {
+            let displayMode = 'browser tab';
+            let isStandaloneMode = false;
+
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                displayMode = 'standalone';
+                isStandaloneMode = true;
+            }
+            // Log launch display mode to analytics
+            console.log('DISPLAY_MODE_LAUNCH:', displayMode);
+
+            return isStandaloneMode;
+        };
+
         function openLinkInNewWindow(url) {
             window.open(url, "_blank");
         }
