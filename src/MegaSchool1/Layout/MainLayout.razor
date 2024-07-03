@@ -9,6 +9,7 @@
 @using OneOf
 @using OneOf.Types
 @using Serilog
+@using System.Web
 @implements IDisposable
 @inject NavigationManager MyNavigationManager
 @inject IJSRuntime JSRuntime
@@ -265,7 +266,7 @@ else
 
     private async Task RedirectAsync(string url)
     {
-        await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", url);
+        await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", $"https://theotherstuff.github.io/test?url={HttpUtility.UrlDecode(url)}");
 
         (await Repo.GetUserDataAsync())
             .MapT0(userData => userData?.LastPage ?? NavigationManager.BaseUri)
