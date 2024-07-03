@@ -210,6 +210,8 @@ else
 
         if(IsCapturePage)
         {
+            var sanity = await JSRuntime.InvokeAsync<object>("isStandalone");
+            Log.Information($"isStandalone: {sanity}");
             var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
             if (isStandaloneMode)
             {
