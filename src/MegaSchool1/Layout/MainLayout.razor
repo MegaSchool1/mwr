@@ -219,8 +219,6 @@ else
     {
         _windowMode = await JSRuntime.InvokeAsync<object>("isStandalone");
 
-        NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
-
         var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
         Log.Information($"isStandalone: {isStandaloneMode}");
         if (isStandaloneMode)
@@ -255,6 +253,8 @@ else
             async notFound => notFound,
             async error => error
         );
+
+        NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
 
         // navigate to prospect page if applicable
         this.NavigateToProspectPageIfApplicable();
