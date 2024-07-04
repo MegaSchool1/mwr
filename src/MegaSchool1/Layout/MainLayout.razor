@@ -280,14 +280,16 @@ else
 
     private async Task RedirectAsync(string url)
     {
-        await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", $"https://theotherstuff.github.io/test?url={HttpUtility.UrlDecode(url)}");
+        // await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", $"https://theotherstuff.github.io/test?url={HttpUtility.UrlDecode(url)}");
 
-        (await Repo.GetUserDataAsync())
-            .MapT0(userData => userData?.LastPage ?? NavigationManager.BaseUri)
-            .Switch(
-                redirect => MyNavigationManager.NavigateTo(redirect),
-                redirectNotFound => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri),
-                error => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri));
+        NavigationManager.NavigateTo($"https://theotherstuff.github.io/test?url={HttpUtility.UrlDecode(url)}");
+
+        // (await Repo.GetUserDataAsync())
+        //     .MapT0(userData => userData?.LastPage ?? NavigationManager.BaseUri)
+        //     .Switch(
+        //         redirect => MyNavigationManager.NavigateTo(redirect),
+        //         redirectNotFound => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri),
+        //         error => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri));
     }
 
     private async void NavigationManagerOnLocationChanged(object? sender, LocationChangedEventArgs e)
