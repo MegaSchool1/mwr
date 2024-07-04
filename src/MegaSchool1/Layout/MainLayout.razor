@@ -170,6 +170,9 @@ else
     private bool _showInstallInstructions;
     private object? _windowMode;
 
+    [SupplyParameterFromQuery(Name = "url")]
+    public string? Url { get; set; }
+
     public void Dispose()
     {
         _thisComponentReference?.Dispose();
@@ -215,24 +218,25 @@ else
     protected override async Task OnInitializedAsync()
     {
         _windowMode = await JSRuntime.InvokeAsync<object>("isStandalone");
-        Log.Information($"isStandalone: {_windowMode}");
-
-        if(IsCapturePage)
-        {
-            var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
-            Log.Information($"isStandalone-2.1: {isStandaloneMode}");
-            if (isStandaloneMode)
-            {
-                await this.RedirectAsync(NavigationManager.Uri);
-            }
-        }
-        else
-        {
-            var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
-            Log.Information($"isStandalone-2.2: {isStandaloneMode}");
-        }
 
         NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
+
+        var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
+        Log.Information($"isStandalone: {isStandaloneMode}");
+        if (isStandaloneMode)
+        {
+            if(IsCapturePage)
+            {
+                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={NavigationManager.Uri}");
+            }
+            else
+            {
+                if(!string.IsNullOrWhiteSpace(Url))
+                {
+                    this.Redirect(Url);
+                }
+            }
+        }
 
         // get user info
         var settings = await Repo.GetSettingsAsync();
@@ -278,7 +282,7 @@ else
         Instance = this;
     }
 
-    private async Task RedirectAsync(string url)
+    private void Redirect(string url)
     {
         // await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", $"https://theotherstuff.github.io/test?url={HttpUtility.UrlDecode(url)}");
 
@@ -296,11 +300,7 @@ else
     {
         this.NavigateToProspectPageIfApplicable();
 
-        if(IsCapturePage)
-        {
-            await RedirectAsync(e.Location);
-        }
-        else
+        if(!IsCapturePage)
         {
             var userData = (await Repo.GetUserDataAsync())
                 .Match(
