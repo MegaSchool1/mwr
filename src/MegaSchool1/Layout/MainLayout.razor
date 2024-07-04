@@ -228,12 +228,14 @@ else
             if(IsCapturePage)
             {
                 NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={HttpUtility.UrlEncode(NavigationManager.Uri)}");
+                return;
             }
             else
             {
                 if(!string.IsNullOrWhiteSpace(Url))
                 {
                     this.Redirect(HttpUtility.UrlDecode(Url));
+                    return;
                 }
             }
         }
