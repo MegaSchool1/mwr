@@ -53,7 +53,7 @@ else
         <div class="sidebar mud-elevation-1">
             <div class="top-row mud-drawer-head" style="background-color:@(Colors.Green.Default);">
                 <div>
-                    <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 1</a>
+                    <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 2</a>
                     <CopyContent TextToCopy="@NavigationManager.Uri" />
                     <CopyContent TextToCopy="@($"{_windowMode}")" />
                     <MudText>Standalone: @_windowMode</MudText>
@@ -261,16 +261,16 @@ else
         {
             if(IsCapturePage)
             {
-                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={HttpUtility.UrlEncode(NavigationManager.Uri)}");
                 Log.Information($"1");
+                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={HttpUtility.UrlEncode(NavigationManager.Uri)}");
                 return;
             }
             else
             {
                 if(!string.IsNullOrWhiteSpace(Url))
                 {
-                    this.Redirect(HttpUtility.UrlDecode(Url));
                     Log.Information($"2");
+                    this.Redirect(HttpUtility.UrlDecode(Url));
                     return;
                 }
             }
