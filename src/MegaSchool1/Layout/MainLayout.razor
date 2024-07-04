@@ -220,11 +220,16 @@ else
         if(IsCapturePage)
         {
             var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
-            Log.Information($"isStandalone2: {isStandaloneMode}");
+            Log.Information($"isStandalone-2.1: {isStandaloneMode}");
             if (isStandaloneMode)
             {
                 await this.RedirectAsync(NavigationManager.Uri);
             }
+        }
+        else
+        {
+            var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
+            Log.Information($"isStandalone-2.2: {isStandaloneMode}");
         }
 
         NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
