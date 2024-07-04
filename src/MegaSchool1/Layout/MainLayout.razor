@@ -217,11 +217,17 @@ else
 
     protected override void OnAfterRender(bool firstRender)
     {
+        Log.Information($"{nameof(OnAfterRender)} - {firstRender}");
+
         if(!firstRender)
         {
+            Log.Information($"3");
+
             var urlWithoutRedirectParameter = RemoveQueryStringByKey(NavigationManager.Uri, "url");
             if(!string.Equals(NavigationManager.Uri, urlWithoutRedirectParameter, StringComparison.InvariantCultureIgnoreCase))
             {
+                Log.Information($"4");
+
                 NavigationManager.NavigateTo(urlWithoutRedirectParameter);
             }
         }
@@ -256,6 +262,7 @@ else
             if(IsCapturePage)
             {
                 NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={HttpUtility.UrlEncode(NavigationManager.Uri)}");
+                Log.Information($"1");
                 return;
             }
             else
@@ -263,6 +270,7 @@ else
                 if(!string.IsNullOrWhiteSpace(Url))
                 {
                     this.Redirect(HttpUtility.UrlDecode(Url));
+                    Log.Information($"2");
                     return;
                 }
             }
