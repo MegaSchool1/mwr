@@ -214,7 +214,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _windowMode = await JSRuntime.InvokeAsync<object>("isStandalone");
+        _windowMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
         Log.Information($"isStandalone: {_windowMode}");
 
         if(IsCapturePage)
