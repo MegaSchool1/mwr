@@ -38,6 +38,7 @@
 
         <main>
             <CopyContent TextToCopy="@NavigationManager.Uri" />
+            <CopyContent TextToCopy="@($"{_windowMode}")" />
             <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-2 pt-2">
                 @Body
             </MudContainer>
@@ -53,6 +54,7 @@ else
                 <div>
                     <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 1</a>
                     <CopyContent TextToCopy="@NavigationManager.Uri" />
+                    <CopyContent TextToCopy="@($"{_windowMode}")" />
                 </div>
             </div>
 
@@ -164,6 +166,7 @@ else
     private bool _componentInitialized;
     private DotNetObjectReference<MainLayout>? _thisComponentReference;
     private bool _showInstallInstructions;
+    private object? _windowMode;
 
     public void Dispose()
     {
@@ -209,10 +212,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        _windowMode = await JSRuntime.InvokeAsync<object>("isStandalone");
+        Log.Information($"isStandalone: {_windowMode}");
+
         if(IsCapturePage)
         {
-            var sanity = await JSRuntime.InvokeAsync<object>("isStandalone");
-            Log.Information($"isStandalone: {sanity}");
             var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
             if (isStandaloneMode)
             {
