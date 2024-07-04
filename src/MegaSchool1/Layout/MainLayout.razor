@@ -215,23 +215,48 @@ else
         }
     }
 
-    protected override void OnAfterRender(bool firstRender)
-    {
-        Log.Information($"{nameof(OnAfterRender)} - {firstRender}");
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     Log.Information($"{nameof(OnAfterRender)} - {firstRender}");
 
-        if(!firstRender)
-        {
-            Log.Information($"3");
+    //     var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
+    //     Log.Information($"isStandalone: {isStandaloneMode}");
+    //     if (isStandaloneMode)
+    //     {
+    //         if (!string.IsNullOrWhiteSpace(Url))
+    //         {
+    //             if (firstRender)
+    //             {
+    //                 Log.Information($"1");
+    //                 NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={HttpUtility.UrlEncode(NavigationManager.Uri)}");
+    //             }
+    //             else
+    //             {
+    //                 var urlWithoutRedirectParameter = RemoveQueryStringByKey(NavigationManager.Uri, "url");
+    //                 if (!string.Equals(NavigationManager.Uri, urlWithoutRedirectParameter, StringComparison.InvariantCultureIgnoreCase))
+    //                 {
+    //                     Log.Information($"4");
 
-            var urlWithoutRedirectParameter = RemoveQueryStringByKey(NavigationManager.Uri, "url");
-            if(!string.Equals(NavigationManager.Uri, urlWithoutRedirectParameter, StringComparison.InvariantCultureIgnoreCase))
-            {
-                Log.Information($"4");
+    //                     NavigationManager.NavigateTo(urlWithoutRedirectParameter);
+    //                 }
+    //             }
+    //         }
 
-                NavigationManager.NavigateTo(urlWithoutRedirectParameter);
-            }
-        }
-    }
+    //         if (IsCapturePage)
+    //         {
+    //             return;
+    //         }
+    //         else
+    //         {
+    //             if (!string.IsNullOrWhiteSpace(Url))
+    //             {
+    //                 Log.Information($"2");
+    //                 this.Redirect(HttpUtility.UrlDecode(Url));
+    //                 return;
+    //             }
+    //         }
+    //     }
+    // }
 
     private static string RemoveQueryStringByKey(string url, string key)
     {
@@ -257,22 +282,29 @@ else
 
         var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
         Log.Information($"isStandalone: {isStandaloneMode}");
-        if (isStandaloneMode)
+        if (true || isStandaloneMode)
         {
             if(IsCapturePage)
             {
                 Log.Information($"1");
-                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={HttpUtility.UrlEncode(NavigationManager.Uri)}");
-                return;
-            }
-            else
-            {
-                if(!string.IsNullOrWhiteSpace(Url))
-                {
-                    Log.Information($"2");
-                    this.Redirect(HttpUtility.UrlDecode(Url));
-                    return;
-                }
+
+                var capturePageUrl = NavigationManager.Uri;
+
+                NavigationManager.NavigateTo(NavigationManager.BaseUri);
+
+                this.Redirect(capturePageUrl);
+
+        // var urlWithoutRedirectParameter = RemoveQueryStringByKey(NavigationManager.Uri, "url");
+        //         if (!string.Equals(NavigationManager.Uri, urlWithoutRedirectParameter, StringComparison.InvariantCultureIgnoreCase))
+        //         {
+        //             Log.Information($"4");
+
+        //             NavigationManager.NavigateTo(urlWithoutRedirectParameter);
+        //         }
+
+
+        //         NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={HttpUtility.UrlEncode(NavigationManager.Uri)}");
+        //         return;
             }
         }
 
