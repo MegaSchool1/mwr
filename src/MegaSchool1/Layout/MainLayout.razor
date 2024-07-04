@@ -39,6 +39,7 @@
         <main>
             <CopyContent TextToCopy="@NavigationManager.Uri" />
             <CopyContent TextToCopy="@($"{_windowMode}")" />
+            <MudText>Standalone: @_windowMode</MudText>
             <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-2 pt-2">
                 @Body
             </MudContainer>
@@ -55,6 +56,7 @@ else
                     <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 1</a>
                     <CopyContent TextToCopy="@NavigationManager.Uri" />
                     <CopyContent TextToCopy="@($"{_windowMode}")" />
+                    <MudText>Standalone: @_windowMode</MudText>
                 </div>
             </div>
 
