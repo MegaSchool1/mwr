@@ -227,13 +227,13 @@ else
         {
             if(IsCapturePage)
             {
-                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={NavigationManager.Uri}");
+                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={HttpUtility.UrlEncode(NavigationManager.Uri)}");
             }
             else
             {
                 if(!string.IsNullOrWhiteSpace(Url))
                 {
-                    this.Redirect(Url);
+                    this.Redirect(HttpUtility.UrlDecode(Url));
                 }
             }
         }
@@ -286,7 +286,7 @@ else
     {
         // await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", $"https://theotherstuff.github.io/test?url={HttpUtility.UrlDecode(url)}");
 
-        NavigationManager.NavigateTo($"https://theotherstuff.github.io/test?url={HttpUtility.UrlDecode(url)}");
+        NavigationManager.NavigateTo($"https://theotherstuff.github.io/test?url={HttpUtility.UrlEncode(url)}");
 
         // (await Repo.GetUserDataAsync())
         //     .MapT0(userData => userData?.LastPage ?? NavigationManager.BaseUri)
