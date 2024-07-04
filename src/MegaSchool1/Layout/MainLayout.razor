@@ -37,7 +37,7 @@
     <div class="page mud-layout" style="background-color:rgb(22,19,44);">
 
         <main>
-            <MudText Align="Align.Center">@NavigationManager.Uri</MudText>
+            <CopyContent TextToCopy="@NavigationManager.Uri" />
             <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-2 pt-2">
                 @Body
             </MudContainer>
@@ -51,7 +51,8 @@ else
         <div class="sidebar mud-elevation-1">
             <div class="top-row mud-drawer-head" style="background-color:@(Colors.Green.Default);">
                 <div>
-                    <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 1 - @NavigationManager.Uri</a>
+                    <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 1</a>
+                    <CopyContent TextToCopy="@NavigationManager.Uri" />
                 </div>
             </div>
 
