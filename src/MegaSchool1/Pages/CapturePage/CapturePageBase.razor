@@ -26,7 +26,7 @@
 
     private static string NormalizePhoneNumber(string phoneNumber) => phoneNumber.Length == 11 ? phoneNumber.Substring(1) : phoneNumber;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         _qmd = (await Repo.GetMarketingDirectorInfoAsync(this.MemberId)).AsT0;
     }
