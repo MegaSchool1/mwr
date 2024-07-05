@@ -53,7 +53,7 @@ else
         <div class="sidebar mud-elevation-1">
             <div class="top-row mud-drawer-head" style="background-color:@(Colors.Green.Default);">
                 <div>
-                    <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 4</a>
+                    <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 5 - iF - @_inIFrame</a>
                     <CopyContent TextToCopy="@NavigationManager.Uri" />
                     <CopyContent TextToCopy="@($"{_windowMode}")" />
                     <MudText>Standalone: @_windowMode</MudText>
@@ -276,23 +276,33 @@ else
             : pagePathWithoutQueryString;
     }
 
+    private bool _inIFrame;
+
     protected override async Task OnInitializedAsync()
     {
         _windowMode = await JSRuntime.InvokeAsync<object>("isStandalone");
 
-        var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
-        Log.Information($"isStandalone: {isStandaloneMode}");
-        if (isStandaloneMode)
+        _inIFrame = await JSRuntime.InvokeAsync<bool>("inIframe");
+        Log.Information($"In iFrame: {_inIFrame}");
+        if (!_inIFrame)
         {
-            if(IsCapturePage)
+            var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
+            Log.Information($"isStandalone: {isStandaloneMode}");
+            if (isStandaloneMode)
             {
-                Log.Information($"1");
+                if (IsCapturePage)
+                {
+                    Log.Information($"1");
 
-                var capturePageUrl = NavigationManager.Uri;
+                    var capturePageUrl = NavigationManager.Uri;
 
-                NavigationManager.NavigateTo(NavigationManager.BaseUri);
+                    NavigationManager.NavigateTo(NavigationManager.BaseUri);
 
-                this.Redirect(capturePageUrl);
+                    this.Redirect(capturePageUrl);
+
+                }
+            }
+        }
 
         // var urlWithoutRedirectParameter = RemoveQueryStringByKey(NavigationManager.Uri, "url");
         //         if (!string.Equals(NavigationManager.Uri, urlWithoutRedirectParameter, StringComparison.InvariantCultureIgnoreCase))
@@ -305,8 +315,6 @@ else
 
         //         NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={HttpUtility.UrlEncode(NavigationManager.Uri)}");
         //         return;
-            }
-        }
 
         // get user info
         var settings = await Repo.GetSettingsAsync();

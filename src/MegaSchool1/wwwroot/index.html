@@ -110,6 +110,14 @@
     </script>
 
     <script>
+        function inIframe() {
+            try {
+                return window.self !== window.top;
+            } catch (e) {
+                return false;
+            }
+        }
+
         function isStandalone() {
             let displayMode = 'browser tab';
             var isStandaloneMode = false;
