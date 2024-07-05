@@ -250,7 +250,6 @@ else
                     NavigationManager.NavigateTo(NavigationManager.BaseUri);
 
                     this.RedirectTo(capturePageUrl);
-
                 }
             }
         }
@@ -303,7 +302,7 @@ else
 
     private void RedirectTo(string url)
     {
-        NavigationManager.NavigateTo($"https://theotherstuff.github.io/test?url={HttpUtility.UrlEncode(url)}");
+        NavigationManager.NavigateTo($"https://theotherstuff.github.io/iframe?url={HttpUtility.UrlEncode(url)}");
     }
 
     private async void NavigationManagerOnLocationChanged(object? sender, LocationChangedEventArgs e)
