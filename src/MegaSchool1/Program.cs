@@ -43,7 +43,4 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.BrowserConsole()
     .CreateLogger();
 
-Log.Information("Program - Information");
-Log.Debug("Program - Debug");
-
 await builder.Build().RunAsync();

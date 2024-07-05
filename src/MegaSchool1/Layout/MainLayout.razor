@@ -37,9 +37,6 @@
     <div class="page mud-layout" style="background-color:rgb(22,19,44);">
 
         <main>
-            <CopyContent TextToCopy="@NavigationManager.Uri" />
-            <CopyContent TextToCopy="@($"{_windowMode}")" />
-            <MudText>Standalone: @_windowMode</MudText>
             <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-2 pt-2">
                 @Body
             </MudContainer>
@@ -53,10 +50,7 @@ else
         <div class="sidebar mud-elevation-1">
             <div class="top-row mud-drawer-head" style="background-color:@(Colors.Green.Default);">
                 <div>
-                    <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 5 - iF - @_inIFrame</a>
-                    <CopyContent TextToCopy="@NavigationManager.Uri" />
-                    <CopyContent TextToCopy="@($"{_windowMode}")" />
-                    <MudText>Standalone: @_windowMode</MudText>
+                    <a href="https://www.ms1.megaschool.me/" target="_blank" class="ml-2 navbar-brand">Mega School 1</a>
                 </div>
             </div>
 
@@ -170,8 +164,8 @@ else
     private bool _showInstallInstructions;
     private object? _windowMode;
 
-    [SupplyParameterFromQuery(Name = "url")]
-    public string? Url { get; set; }
+    [SupplyParameterFromQuery(Name = "r")]
+    public string? Redirect { get; set; }
 
     public void Dispose()
     {
@@ -215,49 +209,6 @@ else
         }
     }
 
-    // protected override async Task OnAfterRenderAsync(bool firstRender)
-    // {
-    //     Log.Information($"{nameof(OnAfterRender)} - {firstRender}");
-
-    //     var isStandaloneMode = await JSRuntime.InvokeAsync<bool>("isStandalone");
-    //     Log.Information($"isStandalone: {isStandaloneMode}");
-    //     if (isStandaloneMode)
-    //     {
-    //         if (!string.IsNullOrWhiteSpace(Url))
-    //         {
-    //             if (firstRender)
-    //             {
-    //                 Log.Information($"1");
-    //                 NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={HttpUtility.UrlEncode(NavigationManager.Uri)}");
-    //             }
-    //             else
-    //             {
-    //                 var urlWithoutRedirectParameter = RemoveQueryStringByKey(NavigationManager.Uri, "url");
-    //                 if (!string.Equals(NavigationManager.Uri, urlWithoutRedirectParameter, StringComparison.InvariantCultureIgnoreCase))
-    //                 {
-    //                     Log.Information($"4");
-
-    //                     NavigationManager.NavigateTo(urlWithoutRedirectParameter);
-    //                 }
-    //             }
-    //         }
-
-    //         if (IsCapturePage)
-    //         {
-    //             return;
-    //         }
-    //         else
-    //         {
-    //             if (!string.IsNullOrWhiteSpace(Url))
-    //             {
-    //                 Log.Information($"2");
-    //                 this.Redirect(HttpUtility.UrlDecode(Url));
-    //                 return;
-    //             }
-    //         }
-    //     }
-    // }
-
     private static string RemoveQueryStringByKey(string url, string key)
     {
         var uri = new Uri(url);
@@ -298,23 +249,11 @@ else
 
                     NavigationManager.NavigateTo(NavigationManager.BaseUri);
 
-                    this.Redirect(capturePageUrl);
+                    this.RedirectTo(capturePageUrl);
 
                 }
             }
         }
-
-        // var urlWithoutRedirectParameter = RemoveQueryStringByKey(NavigationManager.Uri, "url");
-        //         if (!string.Equals(NavigationManager.Uri, urlWithoutRedirectParameter, StringComparison.InvariantCultureIgnoreCase))
-        //         {
-        //             Log.Information($"4");
-
-        //             NavigationManager.NavigateTo(urlWithoutRedirectParameter);
-        //         }
-
-
-        //         NavigationManager.NavigateTo($"{NavigationManager.BaseUri}?url={HttpUtility.UrlEncode(NavigationManager.Uri)}");
-        //         return;
 
         // get user info
         var settings = await Repo.GetSettingsAsync();
@@ -362,18 +301,9 @@ else
         Instance = this;
     }
 
-    private void Redirect(string url)
+    private void RedirectTo(string url)
     {
-        // await JSRuntime.InvokeVoidAsync("openLinkInNewWindow", $"https://theotherstuff.github.io/test?url={HttpUtility.UrlDecode(url)}");
-
         NavigationManager.NavigateTo($"https://theotherstuff.github.io/test?url={HttpUtility.UrlEncode(url)}");
-
-        // (await Repo.GetUserDataAsync())
-        //     .MapT0(userData => userData?.LastPage ?? NavigationManager.BaseUri)
-        //     .Switch(
-        //         redirect => MyNavigationManager.NavigateTo(redirect),
-        //         redirectNotFound => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri),
-        //         error => MyNavigationManager.NavigateTo(MyNavigationManager.BaseUri));
     }
 
     private async void NavigationManagerOnLocationChanged(object? sender, LocationChangedEventArgs e)
