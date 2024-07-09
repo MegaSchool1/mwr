@@ -15,15 +15,17 @@
     <Collapsable Title="Essentials" ExpandPrompt="Show">
         <StrategyChooser>
             <MudTabPanel Tag="@Strategy.MegaSchool">
-                <TeamMemberPicker Description="Capture Page For:" User="AppState?.User" @bind-SelectedTeamMember="_megaSchoolEssentials.TeamMember">
-                    <MudSelect T="Content" Label="Capture Page" @bind-Value="_megaSchoolEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                        @foreach (var content in new Content[] { Content.GivBux, Content.EDMGivBux, Content.GivBuxOpportunity, Content.GivBuxCharity, Content.GivBuxMerchant })
-                        {
-                            <MudSelectItem Value="@content" />
-                        }
-                    </MudSelect>
-                    <CapturePage Content="_megaSchoolEssentials.Content" TeamMember="_megaSchoolEssentials.TeamMember" />
-                </TeamMemberPicker>
+                <Loader Loaded="@(_megaSchoolEssentials.TeamMember != null)">
+                    <TeamMemberPicker Description="Capture Page For:" User="AppState?.User" @bind-SelectedTeamMember="_megaSchoolEssentials.TeamMember">
+                        <MudSelect T="Content" Label="Capture Page" @bind-Value="_megaSchoolEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                            @foreach (var content in new Content[] { Content.GivBux, Content.EDMGivBux, Content.GivBuxOpportunity, Content.GivBuxCharity, Content.GivBuxMerchant })
+                            {
+                                <MudSelectItem Value="@content" />
+                            }
+                        </MudSelect>
+                        <CapturePage Content="_megaSchoolEssentials.Content" TeamMember="_megaSchoolEssentials.TeamMember" />
+                    </TeamMemberPicker>
+                </Loader>
             </MudTabPanel>
             <MudTabPanel Tag="@Strategy.Corporate">
                 <MudStack>
@@ -59,15 +61,17 @@
                 </MudStack>
             </MudTabPanel>
             <MudTabPanel Tag="@Strategy.ExtraDigitMovement">
-                <TeamMemberPicker Description="Capture Page For:" User="AppState?.User" @bind-SelectedTeamMember="_megaSchoolEssentials.TeamMember">
-                    <MudSelect T="Content" Label="Capture Page" @bind-Value="_edmEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                        @foreach (var content in new Content[] { Content.EDMGivBux, Content.EDMNeedMoreInfo })
-                        {
-                            <MudSelectItem Value="@content" />
-                        }
-                    </MudSelect>
-                    <CapturePage Content="_edmEssentials.Content" TeamMember="_edmEssentials.TeamMember" />
-                </TeamMemberPicker>
+                <Loader Loaded="@(_edmEssentials.TeamMember != null)">
+                    <TeamMemberPicker Description="Capture Page For:" User="AppState?.User" @bind-SelectedTeamMember="_edmEssentials.TeamMember">
+                        <MudSelect T="Content" Label="Capture Page" @bind-Value="_edmEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                            @foreach (var content in new Content[] { Content.EDMGivBux, Content.EDMNeedMoreInfo })
+                            {
+                                <MudSelectItem Value="@content" />
+                            }
+                        </MudSelect>
+                        <CapturePage Content="_edmEssentials.Content" TeamMember="_edmEssentials.TeamMember" />
+                    </TeamMemberPicker>
+                </Loader>
             </MudTabPanel>
             <MudTabPanel Tag="@Strategy.FaithAndFinance">
                 <MudStack>
@@ -115,42 +119,48 @@
                     </MudStack>
                 </MudCardContent>
             </MudCard>
-            <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_capturePage.TeamMember">
-                <MudSelect T="Content" Label="Capture Page" @bind-Value="_capturePage.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in Constants.OrderedContent)
-                    {
-                        <MudSelectItem Value="@content" />
-                    }
-                </MudSelect>
-                <CapturePage Content="_capturePage.Content" TeamMember="_capturePage.TeamMember"/>
-            </TeamMemberPicker>
+            <Loader Loaded="@(_capturePage.TeamMember != null)">
+                <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_capturePage.TeamMember">
+                    <MudSelect T="Content" Label="Capture Page" @bind-Value="_capturePage.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                        @foreach (var content in Constants.OrderedContent)
+                        {
+                            <MudSelectItem Value="@content" />
+                        }
+                    </MudSelect>
+                    <CapturePage Content="_capturePage.Content" TeamMember="_capturePage.TeamMember" />
+                </TeamMemberPicker>
+            </Loader>
         </MudStack>
     </Collapsable>
     <Collapsable Title="Marketing Directors" ExpandPrompt="Show">
         <MudStack>
-            <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMemberMarketingDirector">
-                <ShareableVideoMultilingual Description="Join MWR"
-                                            Url="@Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.English)"
-
-                                            EnglishTextToCopy="@($"MWR Sign-up{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.English)}{Constants.GetBusinessEnrollmentPromo(_selectedTeamMemberMarketingDirector?.MemberId!)}")"
-                                            EnglishTooltip="English shareable copied!"
-                                            EnglishImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)"
-
-                                            SpanishTextToCopy="@($"MWR Sign-up{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.Spanish)}{Constants.GetBusinessEnrollmentPromo(_selectedTeamMemberMarketingDirector?.MemberId!)}")"
-                                            SpanishTooltip="Español shareable copied!"
-                                            SpanishImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)"/>
-            </TeamMemberPicker>
-            <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMemberMarketingDirector">
-                <ShareableVideoMultilingual Description="My Website"                                              
+            <Loader Loaded="@(_selectedTeamMemberMarketingDirector != null)">
+                <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMemberMarketingDirector">
+                    <ShareableVideoMultilingual Description="Join MWR"
+                                                Url="@Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.English)"
+                                              
+                                                EnglishTextToCopy="@($"MWR Sign-up{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.English)}{Constants.GetBusinessEnrollmentPromo(_selectedTeamMemberMarketingDirector?.MemberId!)}")"
+                                                EnglishTooltip="English shareable copied!"
+                                                EnglishImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)"
                                                 
-                                            EnglishTextToCopy="@Constants.MarketingDirectorUrlEnglish(_selectedTeamMemberMarketingDirector?.MemberId)"
-                                            EnglishTooltip="English shareable copied!"
-                                            EnglishImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)"
-                                                
-                                            SpanishTextToCopy="@Constants.MarketingDirectorUrlSpanish(_selectedTeamMemberMarketingDirector?.MemberId)"
-                                            SpanishTooltip="Español shareable copied!"
-                                            SpanishImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)" />
-            </TeamMemberPicker>
+                                                SpanishTextToCopy="@($"MWR Sign-up{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.Spanish)}{Constants.GetBusinessEnrollmentPromo(_selectedTeamMemberMarketingDirector?.MemberId!)}")"
+                                                SpanishTooltip="Español shareable copied!"
+                                                SpanishImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)" />
+                </TeamMemberPicker>
+            </Loader>
+            <Loader Loaded="@(_selectedTeamMemberWebsite != null)">
+                <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMemberWebsite">
+                    <ShareableVideoMultilingual Description="My Website"
+                                               
+                                                EnglishTextToCopy="@Constants.MarketingDirectorUrlEnglish(_selectedTeamMemberWebsite?.MemberId)"
+                                                EnglishTooltip="English shareable copied!"
+                                                EnglishImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)"
+                        
+                                                SpanishTextToCopy="@Constants.MarketingDirectorUrlSpanish(_selectedTeamMemberWebsite?.MemberId)"
+                                                SpanishTooltip="Español shareable copied!"
+                                                SpanishImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)" />
+                </TeamMemberPicker>
+            </Loader>
             <CardShareableMulti Description="Extra Digit Wealth Worksheet" Url="https://5f35ec78-8acd-4f4f-9b98-5439adb647ec.usrfiles.com/ugd/5f35ec_811dce03aa9c440fbf22bcb2c3d3a602.pdf">
                 <Top>
                     <ShareableContent Title="For Prospects" Tooltip="Copied Shareable" ImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)" TextToCopy="@($"Wealth Worksheet{Environment.NewLine}{Environment.NewLine}Print out before our meeting!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://5f35ec78-8acd-4f4f-9b98-5439adb647ec.usrfiles.com/ugd/5f35ec_811dce03aa9c440fbf22bcb2c3d3a602.pdf")" />
@@ -238,12 +248,14 @@
     private readonly ShareableViewModel _capturePage = new() { Content = Content.GivBux };
 
     private TeamMember? _selectedTeamMemberMarketingDirector;
+    private TeamMember? _selectedTeamMemberWebsite;
     private Content _selectedMiscellaneous = Content.TeenCarPurchase;
     private Content _selectedService = Content.GivBux;
 
     protected override void OnParametersSet()
     {
         _selectedTeamMemberMarketingDirector = AppState?.User;
+        _selectedTeamMemberWebsite = AppState?.User;
 
         _megaSchoolEssentials.TeamMember = AppState?.User;
         _edmEssentials.TeamMember = AppState?.User;

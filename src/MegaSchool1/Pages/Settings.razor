@@ -14,7 +14,7 @@
 @inject IDialogService Dialog
 @inject IJSRuntime JS
 
-<Loader Show="!_loaded">
+<Loader Loaded="_loaded">
     <MudStack Spacing="6">
         <MudForm @bind-IsValid="_dataValid">
             <MudStack Spacing="3">

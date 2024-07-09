@@ -1,14 +1,8 @@
 ﻿@inherits Components.ComponentBase
 
-@if(Show)
+@if(!Loaded)
 {
-    <div class="container" style="height:50vh;">
-        <div class="center">
-            <MudOverlay Visible="true" DarkBackground="true" Absolute="true">
-                <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
-            </MudOverlay>
-        </div>
-    </div>
+    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="110px" />
 }
 else
 {
@@ -17,5 +11,5 @@ else
 
 @code {
     [Parameter]
-    public bool Show { get; set; }
+    public bool Loaded { get; set; }
 }
