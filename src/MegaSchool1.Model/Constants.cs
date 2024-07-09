@@ -118,7 +118,7 @@ public enum Content
     MichelleEliseHealthShare = 25,
     TeenCarPurchase = 26,
     MembershipBasedBusiness = 27,
-    WealthWorksheetV1 = 28,
+    WealthWorksheet = 28,
     GivBux = 29,
     GivBuxMerchant = 30,
     EDMGivBux = 31,
@@ -175,7 +175,7 @@ public enum ProspectVersion
 
 public class Constants(UISettings ui, NavigationManager navigationManager)
 {
-    public static readonly Content[] GivBuxContent = [Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity, Content.EDMGivBux, Content.GivBuxOpportunity];
+    public static readonly Content[] GivBuxContent = [Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity, Content.EDMGivBux, Content.GivBuxOpportunity, Content.EDMNeedMoreInfo, Content.WealthWorksheet];
     public static readonly Content[] OrderedContent = GivBuxContent.Union(Enum.GetValues<Content>().Except(GivBuxContent).Except([Content.None, Content.TeenCarPurchase])).ToArray();
 
     public static readonly TimeZoneInfo NewYorkTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
@@ -190,6 +190,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     public static readonly string MinimalistVideoLinkPrefix = "https://megaschool.me/v";
     public static readonly string MinimalistYouTubeVideoLinkPrefix = $"{MinimalistVideoLinkPrefix}?y=";
     public const string AppInstallTutorialUrl = "https://video.wixstatic.com/video/5f35ec_33bda4fc60fd41cf8c3a09924f204746/480p/mp4/file.mp4";
+    public static readonly DateTimeOffset FinancialIndependenceMonthPromoExpiration = new(2024, 7, 31, 11, 59, 59, LosAngelesTimeZone.BaseUtcOffset);
 
     private static readonly DateTimeOffset PayItForwardPromoExpiration = new(2024, 5, 15, 11, 59, 59, LosAngelesTimeZone.BaseUtcOffset);
 
@@ -223,7 +224,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         Image.NextLevelStrategies => "images/next-level-strategies-logo.png",
         Image.StudentLoanDebtReliefTile => "/images/student-loan-debt-relief-tile.png",
         Image.KeysToHomeOwnership => "/images/keys-to-home-ownership-banner.jpg",
-        Image.WealthWorksheet => "/images/WealthWorksheet-Blank-v1.png",
+        Image.WealthWorksheet => "/images/WealthWorksheet-202406.jpeg",
         Image.MoneyChallengeTransparent => "/images/72-hour-money-challenge.png",
         Image.MWRLogoTransparent => "/images/mwr-logo-transparent-221x221.png",
         Image.GivBux => "/images/givbux.jpeg",
@@ -236,9 +237,9 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     {
         string? promo;
 
-        if (DateTimeOffset.Now <= PayItForwardPromoExpiration)
+        if (DateTimeOffset.Now <= FinancialIndependenceMonthPromoExpiration)
         {
-            promo = $"{Environment.NewLine}{Environment.NewLine}For $100 off, use coupon code:{Environment.NewLine}{Environment.NewLine}{memberId}code";
+            promo = $"{Environment.NewLine}{Environment.NewLine}For $200 off, use coupon code:{Environment.NewLine}{Environment.NewLine}{memberId}code";
         }
         else
         {

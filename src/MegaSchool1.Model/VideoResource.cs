@@ -46,10 +46,10 @@ public class VideoResource
     public string? DownloadUrl { get; set; }
 
     [JsonPropertyName("promo")]
-    public string? Promo { get; set; }
-   
+    public string? Promo { get; set; } = "For $200 off, text";
+
     [JsonPropertyName("promoExpiration")]
-    public DateTimeOffset? PromoExpiration { get; set; }
+    public DateTimeOffset? PromoExpiration { get; set; } = Constants.FinancialIndependenceMonthPromoExpiration;
 
     [JsonPropertyName("event")]
     public EventDto? Event { get; set; }

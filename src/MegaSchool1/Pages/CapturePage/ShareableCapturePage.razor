@@ -30,6 +30,10 @@
             </video>
         }
     </Centered>
+    @if (!string.IsNullOrWhiteSpace(this.Video?.DownloadUrl))
+    {
+        <Centered><ExternalLink Text="@(Video?.DownloadText ?? "Download")" Href="@this.Video?.DownloadUrl" /></Centered>
+    }
     @if (!string.IsNullOrWhiteSpace(this.Video?.AuxiliaryText))
     {
         <br/>
@@ -47,10 +51,6 @@
             </MudStack>
         </Centered>
     }
-    @if (!string.IsNullOrWhiteSpace(this.Video?.DownloadUrl))
-    {
-        <Centered><ExternalLink Text="@(Video?.DownloadText ?? "Download")" Href="@this.Video?.DownloadUrl" /></Centered>
-    }
     @if (DateTimeOffset.Now <= Video?.Event?.StartDate)
     {
         @if (!string.IsNullOrWhiteSpace(this.Video?.Event?.Header))
@@ -61,7 +61,7 @@
     }
     @if (Video?.ShowBusinessSignUp is true)
     {
-        <MudText Align="Align.Center"><ExternalLink Text="Sign Up NOW!" Href="@Constants.JoinMakeWealthReal(this.MemberId, Model.Language.English)" /></MudText>
+        <MudText Align="Align.Center"><ExternalLink Text="Join MWR NOW!" Href="@Constants.JoinMakeWealthReal(this.MemberId, Model.Language.English)" /></MudText>
     }
     @if(Video?.HideShortCodePrompt is not true)
     {
