@@ -66,8 +66,7 @@ else
         <main>
             <div class="top-row px-4" style="background-color:@(Colors.Green.Default);">
                 <MudStack Row="true" Style="width:100%;">
-                    @if (_componentInitialized)
-                    {
+                    <Loader Loaded="_componentInitialized" Height="100px">
                         @if (ProspectMode)
                         {
                             <MudButton OnClick="ShowUsernameEditDialog" EndIcon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Primary">Set Member ID</MudButton>
@@ -86,7 +85,7 @@ else
                                 </MudStack>
                             }
                         }
-                    }
+                    </Loader>
                     <MudSpacer/>
                     <MudText Style="color:white;">@GetTitle()</MudText>
                 </MudStack>

@@ -62,14 +62,14 @@
             </MudTabPanel>
             <MudTabPanel Tag="@Strategy.ExtraDigitMovement">
                 <Loader Loaded="@(_edmEssentials.TeamMember != null)">
-                    <TeamMemberPicker Description="Capture Page For:" User="AppState?.User" @bind-SelectedTeamMember="_edmEssentials.TeamMember">
+                    <TeamMemberPicker Description="Shareable For:" User="AppState?.User" @bind-SelectedTeamMember="_edmEssentials.TeamMember">
                         <MudSelect T="Content" Label="Capture Page" @bind-Value="_edmEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                            @foreach (var content in new Content[] { Content.EDMGivBux, Content.EDMNeedMoreInfo })
+                            @foreach (var content in new Content[] { Content.EDMPique, Content.EDMNeedMoreInfo })
                             {
                                 <MudSelectItem Value="@content" />
                             }
                         </MudSelect>
-                        <CapturePage Content="_edmEssentials.Content" TeamMember="_edmEssentials.TeamMember" />
+                        @ContentView(_edmEssentials.Content)
                     </TeamMemberPicker>
                 </Loader>
             </MudTabPanel>
@@ -244,7 +244,7 @@
 </MudStack>
 @code {
     private readonly ShareableViewModel _megaSchoolEssentials = new() { Content = Content.GivBux };
-    private readonly ShareableViewModel _edmEssentials = new() { Content = Content.EDMGivBux };
+    private readonly ShareableViewModel _edmEssentials = new() { Content = Content.EDMPique };
     private readonly ShareableViewModel _capturePage = new() { Content = Content.GivBux };
 
     private TeamMember? _selectedTeamMemberMarketingDirector;

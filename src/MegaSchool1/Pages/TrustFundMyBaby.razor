@@ -13,9 +13,15 @@
     </MudCard>
     <MudDivider />
     <MudCard Outlined="true">
-        <MudCardHeader>You Are in the DISTRIBUTION Industry</MudCardHeader>
+        <MudCardHeader>Your Family is in the DISTRIBUTION Industry</MudCardHeader>
         <MudCardContent>
-            <EmbeddedVideo YouTube="4QwEiKuoMHc" />
+            <MudStack Spacing="3">
+                <EmbeddedVideo YouTube="4QwEiKuoMHc" />
+                <MudText Align="Align.Center">McDonald's Corporation = Your Family</MudText>
+                <MudText Align="Align.Center">McDonald's Franchises = Other Families</MudText>
+                <MudText Align="Align.Center">Franchisee's Rent = GivBux+Membership Commissions</MudText>
+                <MudText Align="Align.Center">Big Mac Purchases = New Memberships</MudText>
+            </MudStack>
         </MudCardContent>
     </MudCard>
     <MudDivider />
@@ -43,11 +49,7 @@
                         </MudStack>
                         <MudStack Row="true">
                             <MudText>@((MarkupString)"&#x2022;")</MudText>
-                            <MudText>@(production.TeamMembershipEnrollments.ToString("N0"))<br />Memberships</MudText>
-                        </MudStack>
-                        <MudStack Row="true">
-                            <MudText>@((MarkupString)"&#x2022;")</MudText>
-                            <MudText>@(production.TeamMembershipEnrollments.ToString("N0"))<br/>GivBux users</MudText>
+                            <MudText>@(production.TeamMembershipEnrollments.ToString("N0"))<br />Families</MudText>
                         </MudStack>
                     </MudStack>
                 </ItemContent>
