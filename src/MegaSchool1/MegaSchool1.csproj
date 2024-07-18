@@ -27,6 +27,7 @@
     <PackageReference Include="Serilog.Sinks.Async" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.InMemory" Version="0.11.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,6 +11,7 @@ using MegaSchool1;
 using Microsoft.AspNetCore.Components;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.InMemory;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -39,8 +40,16 @@ builder.Services.AddBlazoredLocalStorage();
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Verbose()
-    .WriteTo.Async(async x => { await Task.Delay(1000); })
+    .WriteTo.Memory()
     .WriteTo.BrowserConsole()
     .CreateLogger();
 
+Log.Information($"Program.InMemorySink - {InMemorySink.Instance.GetHashCode()}");
+Log.Information($"Program.Logger - {Log.Logger.GetHashCode()}");
+
+foreach (var log in InMemorySink.Instance.LogEvents)
+{
+    var foo = log.RenderMessage();
+}
+    
 await builder.Build().RunAsync();

@@ -9,6 +9,7 @@
 @using System.Text
 @using System.Text.RegularExpressions
 @using MegaSchool1.ViewModel
+@using Serilog.Sinks.InMemory
 @inherits Components.ComponentBase
 @inject Repository.Repository Repo
 @inject IDialogService Dialog
@@ -81,7 +82,16 @@
             </MudStack>
         </Collapsable>
         <MudDivider />
-        <MudText Align="Align.Center">Pay Annual Subscription<br/>($1/mo or $12/year)</MudText>
+        <Collapsable Title="Log">
+            <MudStack>
+                @foreach (var log in MemorySink.Instance.LogEvents)
+                {
+                    <MudText Align="Align.Center">@log.RenderMessage()</MudText>
+                }
+            </MudStack>
+        </Collapsable>
+        <MudDivider />
+        <MudText Align="Align.Center">Pay Annual Subscription<br />($1/mo or $12/year)</MudText>
        <Centered>
             <MudStack>
                 <MudImage Src="/images/givbux-logo.png" Fluid="true" />
@@ -188,6 +198,18 @@
 
     protected override async Task OnInitializedAsync()
     {
+        Serilog.Log.Information($"Settings.InMemorySink - {InMemorySink.Instance.GetHashCode()}");
+        Serilog.Log.Information($"Settings.Logger - {Serilog.Log.Logger.GetHashCode()}");
+        Serilog.Log.Information($"Settings.Test - {FooBar.Instance.GetHashCode()}");
+
+        var saniy = InMemorySink.Instance;
+        var sanity2 = saniy.LogEvents;
+
+        foreach (var log in InMemorySink.Instance.LogEvents)
+        {
+            var foo = log.RenderMessage();
+        }
+
         var settings = await Repo.GetSettingsAsync();
         settings.Switch(
             found =>
@@ -224,5 +246,10 @@
         this.StateHasChanged();
 
         await Repo.SaveSettingsAsync(_settings);
+    }
+
+    private class FooBar
+    {
+        public static readonly object Instance = new();
     }
 }
