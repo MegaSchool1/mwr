@@ -10,8 +10,6 @@ using System.Text.Json.Serialization;
 using MegaSchool1;
 using Microsoft.AspNetCore.Components;
 using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.InMemory;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -44,12 +42,4 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.BrowserConsole()
     .CreateLogger();
 
-Log.Information($"Program.InMemorySink - {InMemorySink.Instance.GetHashCode()}");
-Log.Information($"Program.Logger - {Log.Logger.GetHashCode()}");
-
-foreach (var log in InMemorySink.Instance.LogEvents)
-{
-    var foo = log.RenderMessage();
-}
-    
 await builder.Build().RunAsync();

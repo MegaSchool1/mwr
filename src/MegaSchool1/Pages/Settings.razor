@@ -9,7 +9,6 @@
 @using System.Text
 @using System.Text.RegularExpressions
 @using MegaSchool1.ViewModel
-@using Serilog.Sinks.InMemory
 @inherits Components.ComponentBase
 @inject Repository.Repository Repo
 @inject IDialogService Dialog
@@ -88,16 +87,20 @@
                 {
                     <MudText Align="Align.Center">@log.RenderMessage()</MudText>
                 }
+                <MudDivider/>
+                <Centered>
+                    <CopyContent TextToCopy="@(MemorySink.Instance.LogEvents.Select(_ => _.RenderMessage()).Aggregate((accumulated, next) => $"{accumulated}{Environment.NewLine}{next}"))" />
+                </Centered>
             </MudStack>
         </Collapsable>
         <MudDivider />
         <MudText Align="Align.Center">Pay Annual Subscription<br />($1/mo or $12/year)</MudText>
-       <Centered>
+        <Centered>
             <MudStack>
                 <MudImage Src="/images/givbux-logo.png" Fluid="true" />
                 <MudText Align="Align.Center">Send to <span style="color:@(Theme.Palette.Secondary);">megaschool</span></MudText>
             </MudStack>
-       </Centered>
+        </Centered>
     </MudStack>
 </Loader>
 
@@ -198,18 +201,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Serilog.Log.Information($"Settings.InMemorySink - {InMemorySink.Instance.GetHashCode()}");
-        Serilog.Log.Information($"Settings.Logger - {Serilog.Log.Logger.GetHashCode()}");
-        Serilog.Log.Information($"Settings.Test - {FooBar.Instance.GetHashCode()}");
-
-        var saniy = InMemorySink.Instance;
-        var sanity2 = saniy.LogEvents;
-
-        foreach (var log in InMemorySink.Instance.LogEvents)
-        {
-            var foo = log.RenderMessage();
-        }
-
         var settings = await Repo.GetSettingsAsync();
         settings.Switch(
             found =>
