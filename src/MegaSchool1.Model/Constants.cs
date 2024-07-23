@@ -126,6 +126,8 @@ public enum Content
     GivBuxOpportunity = 33,
     GivBuxCharity = 34,
     EDMPique = 35,
+    Opportunity202407 = 36,
+
 }
 
 public enum Video

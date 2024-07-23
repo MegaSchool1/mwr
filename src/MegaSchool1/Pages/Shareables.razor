@@ -29,35 +29,17 @@
             </MudTabPanel>
             <MudTabPanel Tag="@Strategy.Corporate">
                 <MudStack>
-                    <ShareableVideoMultilingual Description="@Constants.MoneyChallenge[Strategy.Corporate].Description"
-                                                Duration="@Constants.MoneyChallenge[Strategy.Corporate].Duration"
-                                                Url="@Constants.MoneyChallenge[Strategy.Corporate].PreviewUrl"
-
-                                                EnglishTextToCopy="@(Constants.MoneyChallenge[Strategy.Corporate].English.Message)"
-                                                EnglishTooltip="@(Constants.MoneyChallenge[Strategy.Corporate].English.Tooltip)"
-                                                EnglishImageUrl="@(Constants.MoneyChallenge[Strategy.Corporate].ImageUrl)"
-
-                                                SpanishTextToCopy="@(Constants.MoneyChallenge[Strategy.Corporate].Spanish!.Message)"
-                                                SpanishTooltip="@(Constants.MoneyChallenge[Strategy.Corporate].Spanish!.Tooltip)"
-                                                SpanishImageUrl="@(Constants.MoneyChallenge[Strategy.Corporate].ImageUrl)"/>
-                    <ShareableVideo Description=@($"Next Level Strategies")
-                                    Duration="new(0, 4, 0)"
-                                    Url="@(UI.EnglishLocale[Model.Content.NextLevelStrategies]!.MinimalistUrl())"
-                                    Tooltip="Shareable copied!"
-                                    TextToCopy="@(Shareable.VideoShareable("MWR Next Level Strategies", UI.EnglishLocale[Content.NextLevelStrategies]!.MinimalistUrl(), new(0, 4, 0)))"
-                                    ImageUrl="@(Constants.GetImageUrl(Image.NextLevelStrategies))"/>
-                    <ShareableVideoMultilingual Description="@($"MWR Opportunity")"
-                                                Duration="new(0, 5, 0)"
-                                                Url="@(UI.EnglishLocale[Model.Content.CorporateBusinessOverview]!.MinimalistUrl())"
-
-                                                EnglishTextToCopy="@Shareable.VideoShareable("MWR Opportunity", UI.EnglishLocale[Model.Content.CorporateBusinessOverview]!.MinimalistUrl(), new(0, 0, 5, 0))"
-                                                EnglishTooltip="English shareable copied!"
-                                                EnglishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"
-
-                                                SpanishTextToCopy="@Shareable.VideoShareable("MWR Opportunity", UI.SpanishLocale[Model.Content.CorporateBusinessOverview]!.MinimalistUrl(), new(0, 0, 6, 0))"
-                                                SpanishTooltip="Español shareable copied!"
-                                                SpanishImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)"/>
-                    @ContentView(Content.MembershipBasedBusiness)
+                    <Loader Loaded="@(_corporateEssentials.TeamMember != null)">
+                        <TeamMemberPicker Description="Shareable For:" User="AppState?.User" @bind-SelectedTeamMember="_corporateEssentials.TeamMember">
+                            <MudSelect T="Content" Label="Shareable" @bind-Value="_corporateEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                                @foreach (var content in new Content[] { Content.Opportunity202407 })
+                                {
+                                    <MudSelectItem Value="@content" />
+                                }
+                            </MudSelect>
+                            @ContentView(_corporateEssentials.Content)
+                        </TeamMemberPicker>
+                    </Loader>
                 </MudStack>
             </MudTabPanel>
             <MudTabPanel Tag="@Strategy.ExtraDigitMovement">
@@ -245,6 +227,7 @@
 @code {
     private readonly ShareableViewModel _megaSchoolEssentials = new() { Content = Content.GivBux };
     private readonly ShareableViewModel _edmEssentials = new() { Content = Content.EDMPique };
+    private readonly ShareableViewModel _corporateEssentials = new() { Content = Content.Opportunity202407 };
     private readonly ShareableViewModel _capturePage = new() { Content = Content.GivBux };
 
     private TeamMember? _selectedTeamMemberMarketingDirector;
@@ -260,6 +243,7 @@
         _megaSchoolEssentials.TeamMember = AppState?.User;
         _edmEssentials.TeamMember = AppState?.User;
         _capturePage.TeamMember = AppState?.User;
+        _corporateEssentials.TeamMember = AppState?.User;
     }
 
     private RenderFragment ContentView(Content content) => __builder =>
