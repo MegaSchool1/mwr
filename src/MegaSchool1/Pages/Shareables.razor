@@ -18,7 +18,7 @@
                 <Loader Loaded="@(_megaSchoolEssentials.TeamMember != null)">
                     <TeamMemberPicker Description="Capture Page For:" User="AppState?.User" @bind-SelectedTeamMember="_megaSchoolEssentials.TeamMember">
                         <MudSelect T="Content" Label="Capture Page" @bind-Value="_megaSchoolEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                            @foreach (var content in new Content[] { Content.GivBux, Content.EDMGivBux, Content.GivBuxOpportunity, Content.GivBuxCharity, Content.GivBuxMerchant })
+                            @foreach (var content in new Content[] { Content.GivBux, Content.EDMGivBux, Content.MS1Opportunity202407, Content.GivBuxCharity, Content.GivBuxMerchant })
                             {
                                 <MudSelectItem Value="@content" />
                             }

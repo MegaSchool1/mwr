@@ -127,6 +127,7 @@ public enum Content
     GivBuxCharity = 34,
     EDMPique = 35,
     Opportunity202407 = 36,
+    MS1Opportunity202407 = 37,
 }
 
 public enum Video
@@ -177,7 +178,7 @@ public enum ProspectVersion
 
 public class Constants(UISettings ui, NavigationManager navigationManager)
 {
-    public static readonly Content[] GivBuxContent = [Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity, Content.EDMGivBux, Content.GivBuxOpportunity, Content.EDMNeedMoreInfo, Content.WealthWorksheet];
+    public static readonly Content[] GivBuxContent = [Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity, Content.EDMGivBux, Content.GivBuxOpportunity, Content.EDMNeedMoreInfo, Content.WealthWorksheet, Content.MS1Opportunity202407];
     public static readonly Content[] OrderedContent = GivBuxContent.Union(Enum.GetValues<Content>().Except(GivBuxContent).Except([Content.None, Content.TeenCarPurchase])).ToArray();
 
     public static readonly TimeZoneInfo NewYorkTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
