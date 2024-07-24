@@ -58,7 +58,7 @@
     </MudTimeline>
 </MudStack>
 
-<MudDialog @bind-IsVisible="_dialogInfo.ShowDialog" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
+<MudDialog @bind-Visible="_dialogInfo.ShowDialog" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
     <DialogContent>
         <MudText Color="@GetColor(_dialogInfo.Step)" Typo="Typo.h6" GutterBottom="true">@((MarkupString)_dialogInfo.Step.Title)</MudText>
         <MudStack>

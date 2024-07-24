@@ -37,7 +37,7 @@
     </MudStack>
 </MudNavMenu>
 
-<MudDialog @bind-IsVisible="_showAppShareable" Options="@(new DialogOptions() { NoHeader = true })">
+<MudDialog @bind-Visible="_showAppShareable" Options="@(new DialogOptions() { NoHeader = true })">
     <DialogContent>
         <MudStack>
             <CapturePage Content="Content.MegaSchoolAppInstall" TeamMember="AppState?.User" ShowReferralCode="false" />

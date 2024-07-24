@@ -62,7 +62,7 @@
     </MudCardActions>
 </MudCard>
 
-<MudDialog @bind-IsVisible="_showImageDialog.ShowImageDialog" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
+<MudDialog @bind-Visible="_showImageDialog.ShowImageDialog" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
     <DialogContent>
         <MudImage Src="@(_showImageDialog.ImageUri)" Fluid="true" Class="rounded-lg" />
     </DialogContent>

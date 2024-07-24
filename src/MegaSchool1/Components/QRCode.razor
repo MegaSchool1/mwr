@@ -6,7 +6,7 @@
     <MudIconButton OnClick="@(() => ShowQRCode())" Icon="@Icons.Material.Filled.QrCode" Color="Color.Primary" />
 }
 
-<MudDialog @bind-IsVisible="_qrCodeDialog.Show">
+<MudDialog @bind-Visible="_qrCodeDialog.Show">
     <DialogContent>
         @{
             var imageSource = $"data:image/png;base64,{_qrCodeDialog.Base64Image}";

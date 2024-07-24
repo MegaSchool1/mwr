@@ -1,7 +1,7 @@
 ﻿@using MegaSchool1.Components
 @using MegaSchool1.Model
 
-<MudDialog @bind-IsVisible="_showInstallInstructions" Options="@(new DialogOptions() { FullScreen = true })">
+<MudDialog @bind-Visible="_showInstallInstructions" Options="@(new DialogOptions() { FullScreen = true })">
     <TitleContent>
         <Centered><MudButton Color="Color.Primary" OnClick="@(() => _showInstallInstructions = false)">Close</MudButton></Centered>
         <br />

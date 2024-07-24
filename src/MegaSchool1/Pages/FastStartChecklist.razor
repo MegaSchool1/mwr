@@ -239,7 +239,7 @@
     </MudTabPanel>
 </StrategyChooser>
 
-<MudDialog @bind-IsVisible="_dialog.ShowDialog" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
+<MudDialog @bind-Visible="_dialog.ShowDialog" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
     <DialogContent>
        @_dialog.Content
     </DialogContent>

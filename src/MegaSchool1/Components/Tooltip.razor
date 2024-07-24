@@ -1,6 +1,6 @@
 ﻿@inherits Components.ComponentBase
 
-<MudTooltip @bind-IsVisible="_showTooltip" ShowOnClick="false" ShowOnFocus="false" ShowOnHover="false">
+<MudTooltip @bind-Visible="_showTooltip" ShowOnClick="false" ShowOnFocus="false" ShowOnHover="false">
     <ChildContent>
         <MudContainer @onclick="() => { Command?.Invoke(); _showTooltip = true; }">
             @ChildContent

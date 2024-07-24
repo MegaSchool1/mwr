@@ -117,7 +117,7 @@ else
     <a class="dismiss">🗙</a>
 </div>
 
-<MudDialog @bind-IsVisible="_showInstallInstructions" Options="@(new DialogOptions() { FullScreen = true })">
+<MudDialog @bind-Visible="_showInstallInstructions" Options="@(new DialogOptions() { FullScreen = true })">
     <TitleContent>
         <Centered><MudButton Color="Color.Primary" OnClick="@(() => _showInstallInstructions = false)">Close</MudButton></Centered>
         <br/>

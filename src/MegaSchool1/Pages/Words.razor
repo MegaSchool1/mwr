@@ -226,7 +226,7 @@
 <br />
 <br />
 
-<MudDialog @bind-IsVisible="_showListenAndAsk" Options="@(new DialogOptions() { FullScreen = true })">
+<MudDialog @bind-Visible="_showListenAndAsk" Options="@(new DialogOptions() { FullScreen = true })">
     <DialogContent>
         <MudContainer Style="max-height:100vh; overflow-y: scroll;">
             <MudStack>
@@ -246,7 +246,7 @@
     </DialogContent>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_show72HourMoneyChallengeVideo" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
+<MudDialog @bind-Visible="_show72HourMoneyChallengeVideo" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
     <DialogContent>
         <MudStack>
             <MudText Align="Align.Center">English</MudText>
@@ -257,7 +257,7 @@
     </DialogContent>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_showFaqVideo" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
+<MudDialog @bind-Visible="_showFaqVideo" Options="@(new DialogOptions() { FullWidth = true, NoHeader = true })">
     <DialogContent>
         <MudStack>
             <EmbeddedVideo YouTube="@(UI.EnglishLocale[Content.MoneyChallengeFAQ]!.Id)" />
@@ -265,7 +265,7 @@
     </DialogContent>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_show1On1Presentation" Options="@(new DialogOptions() { FullScreen = true })">
+<MudDialog @bind-Visible="_show1On1Presentation" Options="@(new DialogOptions() { FullScreen = true })">
     <DialogContent>
         <MudContainer Style="max-height:100vh; overflow-y: scroll;">
             <MudStack>
@@ -288,7 +288,7 @@
     </DialogContent>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_show72HourMoneyChallengeShareable" Options="@(new DialogOptions() { NoHeader = true })">
+<MudDialog @bind-Visible="_show72HourMoneyChallengeShareable" Options="@(new DialogOptions() { NoHeader = true })">
     <DialogContent>
         <ShareableVideoMultilingual Description="@Constants.MoneyChallenge[CurrentStrategy].Description"
                                     Duration="@Constants.MoneyChallenge[CurrentStrategy].Duration"
@@ -304,7 +304,7 @@
     </DialogContent>
 </MudDialog>
 
-<MudDialog @bind-IsVisible="_signUpDialog.Show">
+<MudDialog @bind-Visible="_signUpDialog.Show">
     <DialogContent>
         <TeamMemberPicker Description="Sign Up Under:" @bind-SelectedTeamMember="_selectedTeamMember" User="AppState.User">
             <ShareableVideo Description="Take the 72-Hour Money Challenge!"
