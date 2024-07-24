@@ -1,8 +1,9 @@
-﻿@inherits Components.ComponentBase
+﻿@using OneOf
+@inherits Components.ComponentBase
 
 @if(!Loaded)
 {
-    <MudSkeleton SkeletonType="@SkeletonType" Height="@Height" Width="@Width"/>
+    <MudSkeleton SkeletonType="@SkeletonType" Height="@(HeightConverter(Height))" Width="@WidthConverter(Width)"/>
 }
 else
 {
@@ -14,11 +15,23 @@ else
     public bool Loaded { get; set; }
 
     [Parameter]
-    public string? Height { get; set; } = "100px";
+    public OneOf<Pixel, Percentage, string?>? Height { get; set; } = "100px";
 
     [Parameter]
-    public string? Width { get; set; }
+    public OneOf<Pixel, Percentage, string?>? Width { get; set; }
 
     [Parameter]
     public SkeletonType SkeletonType { get; set; } = SkeletonType.Rectangle;
+
+    private static string? HeightConverter(OneOf<Pixel, Percentage, string?>? height) =>
+        height?.Match(
+            pixel => $"{pixel.Value}px",
+            percentage => $"{percentage.Value}%",
+            @string => @string);
+
+    private static string? WidthConverter(OneOf<Pixel, Percentage, string?>? width) =>
+        width?.Match(
+            pixel => $"{pixel.Value}px",
+            percentage => $"{percentage.Value}%",
+            @string => @string);
 }

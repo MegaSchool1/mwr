@@ -66,7 +66,7 @@ else
         <main>
             <div class="top-row px-4" style="background-color:@(Colors.Green.Default);">
                 <MudStack Row="true" Style="width:100%;">
-                    <Loader Loaded="_componentInitialized" Height="50px" Width="100%" SkeletonType="SkeletonType.Text">
+                    <Loader Loaded="_componentInitialized" Height="new Pixel(50)" Width="new Percentage(100)" SkeletonType="SkeletonType.Text">
                         @if (ProspectMode)
                         {
                             <MudButton OnClick="ShowUsernameEditDialog" EndIcon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Primary">Set Member ID</MudButton>
@@ -275,6 +275,7 @@ else
         this.NavigateToProspectPageIfApplicable();
 
         _componentInitialized = true;
+        this.StateHasChanged();
 
         // start checking for updates
         _ = CheckForUpdatesAsync();
