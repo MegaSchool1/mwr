@@ -2,7 +2,7 @@
 
 @if(!Loaded)
 {
-    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="@Height" />
+    <MudSkeleton SkeletonType="@SkeletonType" Height="@Height" Width="@Width"/>
 }
 else
 {
@@ -15,4 +15,10 @@ else
 
     [Parameter]
     public string? Height { get; set; } = "100px";
+
+    [Parameter]
+    public string? Width { get; set; }
+
+    [Parameter]
+    public SkeletonType SkeletonType { get; set; } = SkeletonType.Rectangle;
 }
