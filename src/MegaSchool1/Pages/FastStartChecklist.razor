@@ -28,7 +28,7 @@
                         </MudStack>
                     </Centered>
                     <MudDivider/>
-                        <MudCheckBox Disabled="true" Value="_viewModel.InstallGivBuxApp && _viewModel.SetGivBuxCode" ReadOnly="true" Size="Size.Medium" Color="Color.Primary">
+                        <MudCheckBox Disabled="true" Value="_viewModel.InstallGivBuxApp && _viewModel.SetGivBuxCode && _viewModel.ReportGivBuxCode" ReadOnly="true" Size="Size.Medium" Color="Color.Primary">
                             <MudText Typo="Typo.h6">Set Up GivBux:</MudText>I have done the following:
                         </MudCheckBox>
                         <MudStack Row="true">
@@ -39,6 +39,9 @@
                                 </MudCheckBox>
                                 <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.SetGivBuxCode" Validation="@SaveAndValidateTrueAsync()" Size="Size.Small" Color="Color.Primary">
                                     <MudText>Set My GivBux "Vanity Name" / Handle / Code</MudText>
+                                </MudCheckBox>
+                                <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.ReportGivBuxCode" Validation="@SaveAndValidateTrueAsync()" Size="Size.Small" Color="Color.Primary">
+                                    <MudText>Share My GivBux "Vanity Name" w/ My Upline (via text message)</MudText>
                                 </MudCheckBox>
                             </MudContainer>
                         </MudStack>                    
@@ -344,12 +347,15 @@
    
     private RenderFragment CorporateSocialMedia => __builder =>
     {
-        <MudCheckBox Value="_viewModel.SubscribedToFacebook && _viewModel.SubscribedToYouTube && _viewModel.SubscribedToTwitter && _viewModel.SubscribedToLinkedIn && _viewModel.SubscribedToInstagram && _viewModel.SubscribedToTestimonials" ReadOnly="true" Size="Size.Medium" Color="Color.Primary">
+        <MudCheckBox Value="_viewModel.SubscribedToFacebook && _viewModel.SubscribedToYouTube && _viewModel.SubscribedToTwitter && _viewModel.SubscribedToLinkedIn && _viewModel.SubscribedToInstagram && _viewModel.SubscribedToTestimonials && _viewModel.SubscribedToCorporateTelegram" ReadOnly="true" Size="Size.Medium" Color="Color.Primary">
             <MudText Typo="Typo.h6">Plugged In:</MudText>I am following MWR on the Social Media Platforms listed below to stay informed:
         </MudCheckBox>
         <MudStack Row="true">
             <MudSpacer />
             <MudContainer Style="width:75%;">
+                <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.SubscribedToCorporateTelegram" Validation="@SaveAndValidateTrueAsync()" Size="Size.Small" Color="Color.Primary">
+                    <ExternalLink Href="http://mwrtelegram.com" Text="Telegram" />
+                </MudCheckBox>
                 <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.SubscribedToFacebook" Validation="@SaveAndValidateTrueAsync()" Size="Size.Small" Color="Color.Primary">
                     <ExternalLink Href="https://facebook.com/MWRFinancial" Text="Facebook" />
                 </MudCheckBox>

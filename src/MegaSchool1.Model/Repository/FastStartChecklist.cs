@@ -93,6 +93,9 @@ public class FastStartChecklist
     [JsonPropertyName("testimonials_subscription")]
     public bool SubscribedToTestimonials { get; set; }
 
+    [JsonPropertyName("telegram_corporate_subscription")]
+    public bool SubscribedToCorporateTelegram { get; set; }
+
     [JsonPropertyName("headshot")]
     public bool Headshot { get; set; }
 
@@ -101,6 +104,9 @@ public class FastStartChecklist
 
     [JsonPropertyName("set_givbux_code")]
     public bool SetGivBuxCode { get; set; }
+
+    [JsonPropertyName("report_givbux_code")]
+    public bool ReportGivBuxCode { get; set; }
 
     [JsonPropertyName("mega_school")]
     public MegaSchoolFastStartChecklist MegaSchool { get; set; } = new();
