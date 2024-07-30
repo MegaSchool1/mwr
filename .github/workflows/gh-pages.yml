@@ -47,6 +47,14 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 8.0.x
+    - name: Version Increment
+      id: version
+      uses: reecetech/version-increment@2024.4.4
+      with:
+        scheme: calver
+        increment: patch
+    - name: Debug - Version
+      run: echo ${{ steps.version.outputs.version }}
     - name: DotNet Bump Versions
       uses: SiqiLu/dotnet-bump-version@2.0.0
       with:
