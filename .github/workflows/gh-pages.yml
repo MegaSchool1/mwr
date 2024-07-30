@@ -58,9 +58,8 @@ jobs:
     - name: DotNet Bump Versions
       uses: SiqiLu/dotnet-bump-version@2.0.0
       with:
-          version_file: "**/*.csproj"
-          version_mask: "0.0.0.1"
-          version_overwrite: "*.*.*.${{ needs.push.outputs.pull_request_number || needs.pull-request.outputs.pull_request_number || 9999 }}" 
+          version_files: "**/*.csproj"
+          version_overwrite: "${{ steps.version.outputs.version }}" 
     - name: Publish with dotnet
       run: dotnet publish ./src --configuration Release --output build
     - name: Deploy to Github Pages
