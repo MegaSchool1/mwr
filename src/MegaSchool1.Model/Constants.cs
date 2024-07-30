@@ -243,7 +243,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
 
         if (DateTimeOffset.Now <= FinancialIndependenceMonthPromoExpiration)
         {
-            promo = $"{Environment.NewLine}{Environment.NewLine}For $200 off, use coupon code:{Environment.NewLine}{Environment.NewLine}{memberId}code";
+            promo = $"{Environment.NewLine}{Environment.NewLine}For $100 off, use coupon code:{Environment.NewLine}{Environment.NewLine}{memberId}code";
         }
         else
         {
