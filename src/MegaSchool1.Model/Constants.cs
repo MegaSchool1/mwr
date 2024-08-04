@@ -194,9 +194,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     public static readonly string MinimalistVideoLinkPrefix = "https://megaschool.me/v";
     public static readonly string MinimalistYouTubeVideoLinkPrefix = $"{MinimalistVideoLinkPrefix}?y=";
     public const string AppInstallTutorialUrl = "https://video.wixstatic.com/video/5f35ec_33bda4fc60fd41cf8c3a09924f204746/480p/mp4/file.mp4";
-    public static readonly DateTimeOffset FinancialIndependenceMonthPromoExpiration = new(2024, 7, 31, 11, 59, 59, LosAngelesTimeZone.BaseUtcOffset);
-
-    private static readonly DateTimeOffset PayItForwardPromoExpiration = new(2024, 5, 15, 11, 59, 59, LosAngelesTimeZone.BaseUtcOffset);
+    public static readonly DateTimeOffset FinancialIndependenceMonthPromoExpiration = new(2024, 8, 8, 11, 59, 59, LosAngelesTimeZone.BaseUtcOffset);
 
     public static string BusinessEnrollmentUrl(string username) => $"https://user.mwrfinancial.com/{username}/join";
     public static string MembershipEnrollmentUrl(string username) => $"https://user.mwrfinancial.com/{username}/signup-financialedge";
