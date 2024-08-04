@@ -35,6 +35,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Pages\GivBuxProjections.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
     <Content Update="Pages\TrustFundMyBaby.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
