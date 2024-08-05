@@ -32,7 +32,7 @@
     </Centered>
     @if (!string.IsNullOrWhiteSpace(this.Video?.DownloadUrl))
     {
-        <Centered><ExternalLink Text="@(Video?.DownloadText ?? "Download")" Href="@this.Video?.DownloadUrl" /></Centered>
+        <Centered><ExternalLink Href="@this.Video?.DownloadUrl">@(Video?.DownloadText ?? "Download")</ExternalLink></Centered>
     }
     @if (!string.IsNullOrWhiteSpace(this.Video?.AuxiliaryText))
     {
@@ -57,11 +57,11 @@
         {
             <MudText Align="Align.Center" Color="Color.Secondary">@Video?.Event?.Header</MudText>
         }
-        <MudText Align="Align.Center"><ExternalLink Text="@Video?.Event?.ShareableHeader" Href="@Video?.Event?.Link" /> <br /> @($"{Video?.Event?.StartDate:dddd, MMMM d} @ {Video?.Event?.StartDate?.ToOffset(TimeZoneInfo.Local.BaseUtcOffset): h:mm tt} {TimeZoneInfo.Local.StandardName}")</MudText>
+        <MudText Align="Align.Center"><ExternalLink Href="@Video?.Event?.Link">@Video?.Event?.ShareableHeader</ExternalLink> <br /> @($"{Video?.Event?.StartDate:dddd, MMMM d} @ {Video?.Event?.StartDate?.ToOffset(TimeZoneInfo.Local.BaseUtcOffset): h:mm tt} {TimeZoneInfo.Local.StandardName}")</MudText>
     }
     @if (Video?.ShowBusinessSignUp is true)
     {
-        <MudText Align="Align.Center"><ExternalLink Text="Join MWR NOW!" Href="@Constants.JoinMakeWealthReal(this.MemberId, Model.Language.English)" /></MudText>
+        <MudText Align="Align.Center"><ExternalLink Href="@Constants.JoinMakeWealthReal(this.MemberId, Model.Language.English)">Join MWR NOW!</ExternalLink></MudText>
     }
     @if(Video?.HideShortCodePrompt is not true)
     {

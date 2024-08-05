@@ -1,16 +1,13 @@
 ﻿@using System.Runtime.CompilerServices
 @using System.ComponentModel.DataAnnotations
+@inherits Components.ComponentBase
+
 <MudLink Href="@Href" Target="_blank" Style="align-content:center; text-align:center;">
-    @((MarkupString)Text.Replace(Environment.NewLine, "<br/>"))<MudIconButton Size="Size.Small" Color="Color.Primary" Icon="@Icons.Material.Filled.OpenInNew" />
+    @ChildContent<MudIconButton Size="Size.Small" Color="Color.Primary" Icon="@Icons.Material.Filled.OpenInNew" />
 </MudLink>
 
 @code {
 
     [Parameter]
-    [Required]
-    public string Href { get; set; }
-
-    [Parameter]
-    [Required]
-    public string Text { get; set; }
+    public string? Href { get; set; }
 }

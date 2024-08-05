@@ -8,7 +8,7 @@
         {
             <MudStack Row="true">
                 <MudSpacer/>
-                <MudText Align="Align.Center"><ExternalLink Text="@Description" Href="@($"https://theotherstuff.github.io/iframe?url={HttpUtility.UrlEncode(Url)}")" /></MudText>
+                <MudText Align="Align.Center"><ExternalLink Href="@($"https://theotherstuff.github.io/iframe?url={HttpUtility.UrlEncode(Url)}")">@Description</ExternalLink></MudText>
                 <MudSpacer/>
             </MudStack>
         }
