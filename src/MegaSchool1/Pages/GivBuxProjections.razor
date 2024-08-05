@@ -1,12 +1,11 @@
-﻿@page "/"
+﻿@page "/givbuxfundraiserprojections"
 @using MegaSchool1.Components
 @using MegaSchool1.Model
 @inherits Components.ComponentBase
-@inject NavigationManager NavigationManager
 
 <MudStack Spacing="3">
     <MudTextField Label="Total App Referal Rewards (Monthly)" Value="@($"${_projections.Select(p => p.NumUsersMultiplier * _avgAppUserSpend * p.RewardPercentage).Sum():N0}")" Variant="Variant.Outlined" ReadOnly="true" />
-    <MudNumericField @bind-Value="_avgAppUserSpend" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Immediate="true" Label="Avg App User Spend (Monthly)" Variant="Variant.Outlined" Min="0" Max="@MaxMonthlyIncomeDemo" />
+    <MudNumericField @bind-Value="_avgAppUserSpend" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Immediate="true" Label="Avg App User Spend (Monthly)" Variant="Variant.Outlined" Min="0" />
     <MudText Align="Align.Center" Typo="Typo.h3">GivBux Fundraising Projection</MudText>
     <MudTable Items="_projections" Breakpoint="Breakpoint.None" Hover="true" SortLabel="Sort By" Elevation="0">
         <HeaderContent>
@@ -25,23 +24,7 @@
 </MudStack>
 
 @code {
-    private static readonly int[] TwelveWideTeamDistribution = [12, 5, 3, 2, 1];
-    private static readonly int MaxMonthlyIncomeDemo =
-        Util.GetMonthlyIncome(TeamLevel.GetTeamDistribution(TwelveWideTeamDistribution).MaxBy(x => x.TeamMembersTotal)!.TeamMembersTotal);
-
-    private const int MillionaireResidualIncomeClubMonthlyThreshold = 8400;
-
-    private TeamDistribution _selectedDistribution = TeamDistribution.TwelveWide;
-    private int _avgAppUserSpend = 100;
-    private bool _millionaireClubTooltipVisible;
-    private int _level1Custom = 1;
-    private int _level2Custom = 1;
-    private int _level3Custom = 1;
-    private int _level4Custom = 1;
-    private int _level5Custom = 1;
-    private int _level6Custom = 1;
-    private ProductionDuplicationLevel[] _productionDuplicationLevels = new ProductionDuplicationLevel[10];
-    private ProjectionViewModel[] _projections =
+    private static readonly ProjectionViewModel[] _projections =
     [
         new() { RewardPercentage = 0.0200, NumUsersMultiplier = 1 },
         new() { RewardPercentage = 0.0050, NumUsersMultiplier = 5 },
@@ -53,55 +36,11 @@
         new() { RewardPercentage = 0.0025, NumUsersMultiplier = 78125 },
    ];
 
-    private readonly List<CashFlowEquivalent> _cashFlowEquivalents =
-    [
-        new(Rank.ExecutiveDirector1),
-    new(Rank.ExecutiveDirector2),
-    new(Rank.ExecutiveDirector3),
-    new(Rank.ExecutiveDirector4),
-    new(Rank.ExecutiveDirector5)
-    ];
-
-    protected override void OnInitialized()
-    {
-        for(var i =0; i< _productionDuplicationLevels.Length; i++)
-        {
-            if(i == 0)
-            {
-                _productionDuplicationLevels[i] = new(1, null);
-            }
-            else
-            {
-                _productionDuplicationLevels[i] = new(1, _productionDuplicationLevels[i - 1]);
-            }
-        }
-    }
-
-    private enum TeamDistribution
-    {
-        TwelveWide = 0,
-        SixWide = 1,
-        Custom = 2,
-    }
+    private int _avgAppUserSpend = 100;
 
     public class ProjectionViewModel()
     {
         public double RewardPercentage { get; set; }
         public int NumUsersMultiplier { get; set; }
-    }
-
-    private class CashFlowEquivalent(Rank rank)
-    {
-        public int InvestmentPrinciple { get; } = InvestmentCashFlowEquivalent(Constants.DailyGuarantee[rank].MonthlyPay);
-        public int MonthlyRoi { get; } = Constants.DailyGuarantee[rank].MonthlyPay;
-        public int NumMemberships { get; } = Constants.DailyGuarantee[rank].NumMemberships;
-
-        private static int InvestmentCashFlowEquivalent(int monthlyCashFlow)
-        {
-            const int MonthsPerYear = 12;
-            const double Apy = 0.05;
-
-            return monthlyCashFlow * MonthsPerYear * (int)(1 / Apy);
-        }
     }
 }

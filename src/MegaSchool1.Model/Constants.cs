@@ -85,7 +85,8 @@ public enum VideoPlatform
     YouTube = 1,
     Vimeo = 2,
     TikTok = 3,
-    Html5 = 4,
+    Facebook = 4,
+    Html5 = 5,
 }
 
 public enum Content

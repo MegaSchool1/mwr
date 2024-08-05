@@ -1,0 +1,78 @@
+﻿@page "/shareables"
+@using MegaSchool1.Components
+@using MegaSchool1.Model
+@using MegaSchool1.Model.Repository
+@using MegaSchool1.Model.UI
+@using MegaSchool1.Repository.Model
+@using Content = MegaSchool1.Model.Content
+@using OneOf
+@using OneOf.Types
+@inherits Components.ComponentBase
+@inject Constants Constants
+@inject UISettings UI
+@inject NavigationManager NavigationManager
+@inject Repository.Repository Repo
+
+<MudCard>
+    <MudCardContent>
+        <MudStack Spacing="3">
+            <MudSelect T="Content" Label="Shareable" @bind-Value="_videoShareableContent" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                @foreach (var content in new Content[] { Content.Membership, Content.Opportunity202407, Content.MoneyChallenge, Content.MoneyChallengeFAQ, Content.CreditRestoration, Content.HealthShare, Content.KeysToHomeOwnership, Content.TrustMyAssets, Content.RealEstatePros })
+                {
+                    <MudSelectItem Value="@content" />
+                }
+            </MudSelect>
+            @ContentView(_videoShareableContent)
+        </MudStack>
+    </MudCardContent>
+</MudCard>
+@code {
+    private Content _videoShareableContent = Content.Membership;
+
+    private RenderFragment ContentView(Content content) => __builder =>
+    {
+        var english = UI.EnglishLocale[content];
+        var spanish = UI.SpanishLocale[content];
+
+        OneOf<YouTube, TikTok, Vimeo, Facebook, None> videoId = english?.Platform switch
+        {
+            VideoPlatform.YouTube => new YouTube(english.Id),
+            VideoPlatform.TikTok => new TikTok(english.UserHandle, english.Id),
+            VideoPlatform.Vimeo => new Vimeo(english.Id, english.Hash != null ? english.Hash : new None()),
+            VideoPlatform.Facebook => new Facebook(english.UserHandle, english.Id),
+            _ => new None()
+        };
+
+        <MudStack Spacing="3">
+            <EmbeddedVideo Video="videoId" />
+            @if(spanish != null)
+            {
+                <ShareableVideoMultilingual Description="@english.AppTitle"
+                                            Duration="@english.Duration"
+                                            Url="@english.MinimalistUrl()"
+                                         
+                                            EnglishTextToCopy="@($"{Shareable.VideoShareable(english)}")"
+                                            EnglishTooltip="Copied!"
+                                            EnglishImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"
+                                            
+                                            SpanishTextToCopy="@($"{Shareable.VideoShareable(spanish)}")"
+                                            SpanishTooltip="Copied"
+                                            SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)" />
+            }
+            else
+            {
+                <ShareableVideo Description="@english.AppTitle"
+                                Duration="@english.Duration"
+                                Url="@english.MinimalistUrl()"
+                                TextToCopy="@($"{Shareable.VideoShareable(english)}")"
+                                Tooltip="Copied!"
+                                ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)" />
+            }
+            <MudCard Outlined="true">
+                <MudCardContent>
+                    <MudText Align="Align.Center">@((MarkupString)$"{Shareable.VideoShareable(english)}".ReplaceLineEndings("<br/>"))</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudStack>
+    };
+}

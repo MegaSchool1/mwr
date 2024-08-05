@@ -182,7 +182,8 @@ else
     private bool IsWhitelistedProspectPage =>
         IsCapturePage 
         || IsCarPurchasePage
-        || NavigationManager.Uri.Contains("/trustfundmybaby");
+        || NavigationManager.Uri.Contains("/trustfundmybaby")
+        || NavigationManager.Uri.Contains("/shareables");
 
     private bool ProspectMode => _appState.User == null;
 
@@ -387,6 +388,8 @@ else
             "experimental" => "Experimental",
             "training" => "Trainings",
             "trustfundmybaby" => "Trust Fund My Baby",
+            "givbuxfundraiserprojections" => "GivBux Fundraiser Projections",
+            "shareables" => "Shareables",
             _ => string.Empty
         };
     }

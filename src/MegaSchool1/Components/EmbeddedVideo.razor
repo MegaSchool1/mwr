@@ -1,4 +1,6 @@
 ﻿@using MegaSchool1.Model
+@using OneOf
+@using OneOf.Types
 @inherits Components.ComponentBase
 
 <div style="display:@_display;">
@@ -56,14 +58,25 @@
     [Parameter]
     public (string ChannelId, string VideoId)? Facebook { get; set; }
 
+    [Parameter]
+    public OneOf<YouTube, TikTok, Vimeo, Facebook, None> Video { get; set; } = new None();
+
     private bool ValidYouTube => !string.IsNullOrWhiteSpace(YouTube);
     private bool ValidVimeo => !string.IsNullOrWhiteSpace(Vimeo?.VideoId);
     private bool ValidTikTok => !string.IsNullOrWhiteSpace(TikTok?.UserHandle) && !string.IsNullOrWhiteSpace(TikTok?.VideoId);
     private bool ValidFacebook => !string.IsNullOrWhiteSpace(Facebook?.ChannelId) && !string.IsNullOrWhiteSpace(Facebook?.VideoId);
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
-        if(ValidTikTok)
+        if(!Video.IsT4)
+        {
+            this.YouTube = this.Video.IsT0 ? this.Video.AsT0.VideoId : null;
+            this.TikTok = this.Video.IsT1 ? (this.Video.AsT1.UserHandle, this.Video.AsT1.VideoId) : null;
+            this.Vimeo = this.Video.IsT2 ? (this.Video.AsT2.VideoId, this.Video.AsT2.Hash.Match(hash => hash, none => (string?)null)) : null;
+            this.Facebook = this.Video.IsT3 ? (this.Video.AsT3.ChannelId, this.Video.AsT3.VideoId) : null;
+        }
+  
+        if (ValidTikTok)
         {
             this.ShowVideo();
         }
