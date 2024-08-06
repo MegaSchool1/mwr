@@ -14,7 +14,7 @@
         }
         else
         {
-            <MudText Typo="Typo.body2" Align="Align.Center">@((MarkupString)Description.Replace(Environment.NewLine, "<br/>"))</MudText>
+            <MudText Typo="Typo.body2" Align="Align.Center">@((MarkupString)(Description ?? string.Empty).Replace(Environment.NewLine, "<br/>"))</MudText>
         }
         @if(this.Duration != null)
         {
@@ -72,7 +72,7 @@
     private bool _webshareAllowed = false;
 
     [Parameter]
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     [Parameter]
     public RenderFragment DescriptionContent { get; set; }
