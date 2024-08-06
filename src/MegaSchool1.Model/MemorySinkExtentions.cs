@@ -22,7 +22,7 @@ public static class MemorySinkExtensions
         this LoggerSinkConfiguration sinkConfiguration,
         LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
         string outputTemplate = DefaultOutputTemplate,
-        LoggingLevelSwitch levelSwitch = null)
+        LoggingLevelSwitch? levelSwitch = null)
     {
         if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
         if (outputTemplate == null) throw new ArgumentNullException(nameof(outputTemplate));

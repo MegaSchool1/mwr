@@ -20,7 +20,7 @@
                               DebounceInterval="1.0" />
                 <br/>
                 <br/>
-                <MudTooltip Text="Saved!" IsVisible="_showTooltip" ShowOnClick="true" ShowOnFocus="false" ShowOnHover="false">
+                <MudTooltip Text="Saved!" Visible="_showTooltip" ShowOnClick="true" ShowOnFocus="false" ShowOnHover="false">
                     <MudButton OnClick="OnUsernameSaveClick" Disabled="@(!_dataValid)" EndIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Primary">Save</MudButton>
                 </MudTooltip>
             </MudStack>
@@ -36,7 +36,7 @@
     private string? _username;
 
     [CascadingParameter] 
-    private MudDialogInstance MudDialog { get; set; }
+    private MudDialogInstance? MudDialog { get; set; }
 
     private AppState? _appState;
     [Parameter]
@@ -56,16 +56,24 @@
         _dataValid = false;
         this.StateHasChanged();
 
-        var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(username);
-        var memberIdValidationError = Util.ValidateMemberIdChange(this.AppState?.User?.MemberId, (username, marketingDirector));
+        var oldMemberId = this.AppState?.User?.MemberId;
+        if(oldMemberId == null)
+        {
+            return null;
+        }
+        else
+        {
+            var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(username);
+            var memberIdValidationError = Util.ValidateMemberIdChange(oldMemberId, (username, marketingDirector));
 
-        var validationError = memberIdValidationError.Match(
-            memberDoesNotExist => memberDoesNotExist.Message,
-            memberIdNotSet => memberIdNotSet.Message,
-            _ => null
-        );
+            var validationError = memberIdValidationError.Match(
+                memberDoesNotExist => (string?)memberDoesNotExist.Message,
+                memberIdNotSet => (string?)memberIdNotSet.Message,
+                _ => null
+            );
 
-        return validationError;
+            return validationError;
+        }
     }
 
     private async Task OnUsernameSaveClick()
@@ -81,7 +89,7 @@
             this.StateHasChanged();
 
             MainLayout.Refresh();
-            this.MudDialog.Close();
+            this.MudDialog?.Close();
 
             _showTooltip = true;
             this.StateHasChanged();

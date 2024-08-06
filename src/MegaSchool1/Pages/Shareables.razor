@@ -124,11 +124,11 @@
                 <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMemberWebsite">
                     <ShareableVideoMultilingual Description="My Website"
                                                
-                                                EnglishTextToCopy="@Constants.MarketingDirectorUrlEnglish(_selectedTeamMemberWebsite?.MemberId)"
+                                                EnglishTextToCopy="@Constants.MarketingDirectorUrlEnglish(_selectedTeamMemberWebsite!.MemberId)"
                                                 EnglishTooltip="English shareable copied!"
                                                 EnglishImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)"
                         
-                                                SpanishTextToCopy="@Constants.MarketingDirectorUrlSpanish(_selectedTeamMemberWebsite?.MemberId)"
+                                                SpanishTextToCopy="@Constants.MarketingDirectorUrlSpanish(_selectedTeamMemberWebsite!.MemberId)"
                                                 SpanishTooltip="Español shareable copied!"
                                                 SpanishImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)" />
                 </TeamMemberPicker>
@@ -241,28 +241,31 @@
         var english = UI.EnglishLocale[content];
         var spanish = UI.SpanishLocale[content];
 
-        if (spanish != null)
+        if(english != null)
         {
-            <ShareableVideoMultilingual Description="@english.AppTitle"
-                                        Duration="@english.Duration"
-                                        Url="@english.MinimalistUrl()"
-
-                                        EnglishTextToCopy="@($"{Shareable.VideoShareable(english)}")"
-                                        EnglishTooltip="Copied!"
-                                        EnglishImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"
-
-                                        SpanishTextToCopy="@($"{Shareable.VideoShareable(spanish)}")"
-                                        SpanishTooltip="Copied"
-                                        SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)"/>
-        }
-        else
-        {
-            <ShareableVideo Description="@english.AppTitle"
-                            Duration="@english.Duration"
-                            Url="@english.MinimalistUrl()"
-                            TextToCopy="@($"{Shareable.VideoShareable(english)}")"
-                            Tooltip="Copied!"
-            ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"/>
+            if (spanish != null)
+            {
+                <ShareableVideoMultilingual Description="@english.AppTitle"
+                                            Duration="@english.Duration"
+                                            Url="@english.MinimalistUrl()"
+                                          
+                                            EnglishTextToCopy="@($"{Shareable.VideoShareable(english)}")"
+                                            EnglishTooltip="Copied!"
+                                            EnglishImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"
+                                            
+                                            SpanishTextToCopy="@($"{Shareable.VideoShareable(spanish)}")"
+                                            SpanishTooltip="Copied"
+                                            SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)" />
+            }
+            else
+            {
+                <ShareableVideo Description="@english.AppTitle"
+                                Duration="@english.Duration"
+                                Url="@english.MinimalistUrl()"
+                                TextToCopy="@($"{Shareable.VideoShareable(english)}")"
+                                Tooltip="Copied!"
+                                ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)" />
+            }
         }
     };
 

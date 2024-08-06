@@ -1,6 +1,6 @@
 ﻿@inherits Components.ComponentBase
 
-<MudTooltip Text="@Tooltip" IsVisible="_showCopyTooltip" ShowOnClick="true" ShowOnFocus="false" ShowOnHover="false">
+<MudTooltip Text="@Tooltip" @bind-Visible="_showCopyTooltip" ShowOnClick="true" ShowOnFocus="false" ShowOnHover="false">
     <MudIconButton OnClick="OnCopyClick" Icon="@Icons.Material.Filled.ContentCopy" Color="Color.Primary" />
 </MudTooltip>
 
@@ -8,14 +8,14 @@
     private bool _showCopyTooltip;
 
     [Parameter]
-    public string TextToCopy { get; set; }
+    public string? TextToCopy { get; set; }
 
     [Parameter]
-    public string Tooltip { get; set; } = "Copied!";
+    public string? Tooltip { get; set; } = "Copied!";
 
     private async Task OnCopyClick()
     {
-        await this.CopyTextToClipboardAsync(this.TextToCopy.Replace("<br/>", Environment.NewLine));
+        await this.CopyTextToClipboardAsync((this.TextToCopy ?? string.Empty).Replace("<br/>", Environment.NewLine));
 
         _showCopyTooltip = true;
         base.StateHasChanged();

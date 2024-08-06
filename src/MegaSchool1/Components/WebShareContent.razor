@@ -3,7 +3,7 @@
 
 @if (_webshareAllowed)
 {
-    <MudTooltip Text="@Tooltip" IsVisible="_showShareTooltip" ShowOnClick="true" ShowOnFocus="false" ShowOnHover="false">
+    <MudTooltip Text="@Tooltip" Visible="_showShareTooltip" ShowOnClick="true" ShowOnFocus="false" ShowOnHover="false">
         <MudIconButton OnClick="OnShareClick" Icon="@Icons.Material.Filled.Share" Color="Color.Primary" />
     </MudTooltip>
 }
@@ -12,10 +12,10 @@
     private bool _webshareAllowed = false;
 
     [Parameter]
-    public string TextToCopy { get; set; }
+    public string? TextToCopy { get; set; }
 
     [Parameter]
-    public string Tooltip { get; set; }
+    public string? Tooltip { get; set; }
 
     [Parameter]
     public string ImageUrl { get; set; } = Constants.GetImageUrl(Image.MWRGivBuxLogo);
@@ -27,7 +27,7 @@
 
     private async Task OnShareClick()
     {
-        await this.ShareMessageAsync(this.TextToCopy.Replace("<br/>", Environment.NewLine), this.ImageUrl);
+        await this.ShareMessageAsync((this.TextToCopy ?? string.Empty).Replace("<br/>", Environment.NewLine), this.ImageUrl);
 
         _showShareTooltip = true;
         base.StateHasChanged();

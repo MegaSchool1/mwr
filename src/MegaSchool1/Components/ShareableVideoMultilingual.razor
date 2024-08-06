@@ -8,7 +8,7 @@
         {
             <MudStack Row="true">
                 <MudSpacer/>
-                <MudText Align="Align.Center"><ExternalLink Href="@($"https://theotherstuff.github.io/iframe?url={HttpUtility.UrlEncode(Url)}")">@Description</ExternalLink></MudText>
+                <MudText Align="Align.Center"><ExternalLink Href="@($"https://theotherstuff.github.io/iframe?url={HttpUtility.UrlEncode(Url)}")">@((MarkupString)(Description ?? string.Empty))</ExternalLink></MudText>
                 <MudSpacer/>
             </MudStack>
         }
@@ -33,28 +33,20 @@
                     <MudStack>
                         <MudStack Row="true">
                             <MudSpacer />
-                            <MudTooltip Text="@EnglishTooltip" IsVisible="_showEnglishCopyTooltip" ShowOnClick="true" ShowOnFocus="false" ShowOnHover="false">
-                                <MudIconButton OnClick="OnEnglishCopyClick" Icon="@Icons.Material.Filled.ContentCopy" Color="Color.Primary" Disabled="false" />
-                            </MudTooltip>
+                            <CopyContent TextToCopy="@EnglishTextToCopy" Tooltip="@EnglishTooltip" />
                             <MudPaper Class="d-flex align-center" Elevation="0">
                                 <MudText Style="">(English)</MudText>
                             </MudPaper>
-                            <MudTooltip Text="@EnglishTooltip" IsVisible="_showEnglishShareTooltip" ShowOnClick="true" ShowOnFocus="false" ShowOnHover="false">
-                                <MudIconButton OnClick="OnEnglishShareClick" Icon="@Icons.Material.Filled.Share" Color="Color.Primary" Disabled="@(!_webshareAllowed)" />
-                            </MudTooltip>
+                            <WebShareContent TextToCopy="@EnglishTextToCopy" Tooltip="@EnglishTooltip" ImageUrl="@EnglishImageUrl" />
                             <MudSpacer />
                         </MudStack>
                         <MudStack Row="true">
                             <MudSpacer />
-                            <MudTooltip Text="@SpanishTooltip" IsVisible="_showSpanishCopyTooltip" ShowOnClick="true" ShowOnFocus="false" ShowOnHover="false">
-                                <MudIconButton OnClick="OnSpanishCopyClick" Icon="@Icons.Material.Filled.ContentCopy" Color="Color.Primary" Disabled="false" />
-                            </MudTooltip>
+                            <CopyContent TextToCopy="@SpanishTextToCopy" Tooltip="@SpanishTooltip" />
                             <MudPaper Class="d-flex align-center" Elevation="0">
                                 <MudText>(Español)</MudText>
                             </MudPaper>
-                            <MudTooltip Text="@SpanishTooltip" IsVisible="_showSpanishShareTooltip" ShowOnClick="true" ShowOnFocus="false" ShowOnHover="false">
-                                <MudIconButton OnClick="OnSpanishShareClick" Icon="@Icons.Material.Filled.Share" Color="Color.Primary" Disabled="@(!_webshareAllowed)" />
-                            </MudTooltip>
+                            <WebShareContent TextToCopy="@SpanishTextToCopy" Tooltip="@SpanishTooltip" ImageUrl="@SpanishImageUrl" />
                             <MudSpacer />
                         </MudStack>
                     </MudStack>
@@ -65,32 +57,26 @@
     </MudCardActions>
 </MudCard>
 @code {
-    private bool _showEnglishCopyTooltip;
-    private bool _showEnglishShareTooltip;
-    private bool _showSpanishCopyTooltip;
-    private bool _showSpanishShareTooltip;
-    private bool _webshareAllowed = false;
-
     [Parameter]
     public string? Description { get; set; }
 
     [Parameter]
-    public RenderFragment DescriptionContent { get; set; }
+    public RenderFragment? DescriptionContent { get; set; }
 
     [Parameter]
-    public string EnglishTextToCopy { get; set; }
+    public string? EnglishTextToCopy { get; set; }
 
     [Parameter]
-    public string EnglishTooltip { get; set; }
+    public string? EnglishTooltip { get; set; }
 
     [Parameter]
     public string EnglishImageUrl { get; set; } = Constants.GetImageUrl(Image.MoneyChallengeLogo);
 
     [Parameter]
-    public string SpanishTextToCopy { get; set; }
+    public string? SpanishTextToCopy { get; set; }
 
     [Parameter]
-    public string SpanishTooltip { get; set; }
+    public string? SpanishTooltip { get; set; }
 
     [Parameter]
     public string SpanishImageUrl { get; set; } = Constants.GetImageUrl(Image.MoneyChallengeLogo);
@@ -103,61 +89,4 @@
 
     [Parameter]
     public TimeSpan? Duration { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        _webshareAllowed = await this.WebShareAllowedAsync();
-    }
-
-    private async Task OnEnglishCopyClick()
-    {
-        await this.CopyTextToClipboardAsync(this.EnglishTextToCopy);
-
-        _showEnglishCopyTooltip = true;
-        base.StateHasChanged();
-
-        await Task.Delay(3 * 1000);
-
-        _showEnglishCopyTooltip = false;
-        base.StateHasChanged();
-    }
-
-    private async Task OnEnglishShareClick()
-    {
-        await this.ShareMessageAsync(this.EnglishTextToCopy, this.EnglishImageUrl);
-
-        _showEnglishShareTooltip = true;
-        base.StateHasChanged();
-
-        await Task.Delay(3 * 1000);
-
-        _showEnglishShareTooltip = false;
-        base.StateHasChanged();
-    }
-
-    private async Task OnSpanishCopyClick()
-    {
-        await this.CopyTextToClipboardAsync(this.SpanishTextToCopy);
-
-        _showSpanishCopyTooltip = true;
-        base.StateHasChanged();
-
-        await Task.Delay(3 * 1000);
-
-        _showSpanishCopyTooltip = false;
-        base.StateHasChanged();
-    }
-
-    private async Task OnSpanishShareClick()
-    {
-        await this.ShareMessageAsync(this.SpanishTextToCopy, this.SpanishImageUrl);
-
-        _showSpanishShareTooltip = true;
-        base.StateHasChanged();
-
-        await Task.Delay(3 * 1000);
-
-        _showSpanishShareTooltip = false;
-        base.StateHasChanged();
-    }
 }

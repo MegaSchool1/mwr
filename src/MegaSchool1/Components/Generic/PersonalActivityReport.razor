@@ -78,7 +78,7 @@
             <MudStack>
                 <MudText>@context.Name</MudText>
                 <MudStack Row="true">
-                    <MudIconButton OnClick="@(() => (_prospectEditDialog = (context, _prospectEditDialog.ProspectEdit, default)).ProspectEdit.Visible = true)" Icon="@Icons.Material.Filled.Edit"/>
+                    <MudIconButton OnClick="@(() => _prospectEditDialog = (context, true, default))" Icon="@Icons.Material.Filled.Edit"/>
                     <MudSpacer/>
 					<MudIconButton OnClick="@(e => _deleteProspectDialog = (@context, true))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
                 </MudStack>
@@ -87,7 +87,7 @@
 	</ItemRenderer>
 </MudDropContainer>
 
-<MudDialog @ref="_prospectEditDialog.ProspectEdit" IsVisibleChanged="ProspectEditVisibleChanged">
+<MudDialog Visible="_prospectEditDialog.Show" VisibleChanged="ProspectEditVisibleChanged">
     <TitleContent>
         <MudText>Edit Prospect</MudText>
     </TitleContent>
@@ -115,28 +115,31 @@
                         <MudSelectItem Value="@content" />
                     }
                 </MudSelect>
-                @if (UI.SpanishLocale[_selectedShareable] != null)
+                @if (UI.EnglishLocale[_selectedShareable] != null)
                 {
-                    <ShareableVideoMultilingual Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
-                                                Duration="@(UI.EnglishLocale[_selectedShareable]?.Duration)"
-                                                Url="@(UI.EnglishLocale[_selectedShareable]?.ShareableUrl())"
-                                                
-                                                EnglishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]?.ShareableTitle, UI.EnglishLocale[_selectedShareable]!.MinimalistUrl(), UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
-                                                EnglishTooltip="Copied!"
-                                                EnglishImageUrl="@(Constants.GetImageUrl(UI.EnglishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))"
-                                                
-                                                SpanishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.SpanishLocale[_selectedShareable]?.ShareableTitle, UI.SpanishLocale[_selectedShareable]!.MinimalistUrl(), UI.SpanishLocale[_selectedShareable]?.Duration ?? default)}")"
-                                                SpanishTooltip="Copied"
-                                                SpanishImageUrl="@(Constants.GetImageUrl(UI.SpanishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))" />
-                }
-                else
-                {
-                    <ShareableVideo Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
-                                    Duration="@(UI.EnglishLocale[_selectedShareable]?.Duration)"
-                                    Url="@(UI.EnglishLocale[_selectedShareable]?.ShareableUrl())"
-                                    TextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]?.ShareableTitle, UI.EnglishLocale[_selectedShareable]?.ShareableUrl(), UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
-                                    Tooltip="Copied!"
-                                    ImageUrl="@(Constants.GetImageUrl(UI.EnglishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))" />
+                    @if (UI.SpanishLocale[_selectedShareable] != null)
+                    {
+                        <ShareableVideoMultilingual Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
+                                                    Duration="@(UI.EnglishLocale[_selectedShareable]?.Duration)"
+                                                    Url="@(UI.EnglishLocale[_selectedShareable]?.ShareableUrl())"
+                                                 
+                                                    EnglishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]!.ShareableTitle, UI.EnglishLocale[_selectedShareable]!.MinimalistUrl(), UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
+                                                    EnglishTooltip="Copied!"
+                                                    EnglishImageUrl="@(Constants.GetImageUrl(UI.EnglishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))"
+                                                   
+                                                    SpanishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.SpanishLocale[_selectedShareable]!.ShareableTitle, UI.SpanishLocale[_selectedShareable]!.MinimalistUrl(), UI.SpanishLocale[_selectedShareable]?.Duration ?? default)}")"
+                                                    SpanishTooltip="Copied"
+                                                    SpanishImageUrl="@(Constants.GetImageUrl(UI.SpanishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))" />
+                    }
+                    else
+                    {
+                        <ShareableVideo Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
+                                        Duration="@(UI.EnglishLocale[_selectedShareable]?.Duration)"
+                                        Url="@(UI.EnglishLocale[_selectedShareable]?.ShareableUrl())"
+                                        TextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]!.ShareableTitle, UI.EnglishLocale[_selectedShareable]!.ShareableUrl()!, UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
+                                        Tooltip="Copied!"
+                                        ImageUrl="@(Constants.GetImageUrl(UI.EnglishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))" />
+                    }
                 }
             </MudStack>
         </MudForm>
@@ -156,9 +159,9 @@
 @code {
     private readonly List<Prospect> _prospects = [];
 
-    private MudDropContainer<Prospect> _dropContainer;
+    private MudDropContainer<Prospect>? _dropContainer;
     private bool _addSectionOpen;
-    private (Prospect Prospect, MudDialog ProspectEdit, bool ValidEdit) _prospectEditDialog;
+    private (Prospect Prospect, bool Show, bool ValidEdit) _prospectEditDialog;
     private (Prospect Prospect, bool Show) _deleteProspectDialog;
     private Settings _settings = new();
     private TeamMember? _selectedTeamMember;
@@ -202,7 +205,7 @@
 
         await SaveAsync();
 
-		_dropContainer.Refresh();
+		_dropContainer?.Refresh();
     }
 
 	private async Task ProspectEditVisibleChanged(bool isVisible)
@@ -212,7 +215,7 @@
             await SaveAsync();
         }
 
-		_dropContainer.Refresh();
+		_dropContainer?.Refresh();
 	}
 
 	private string? ValidateProspectName(string prospectName)
@@ -238,7 +241,7 @@
             {
                 this.LoadProspects(found);
 
-                _dropContainer.Refresh();
+                _dropContainer?.Refresh();
             },
             notFound => { Console.WriteLine($"{this.GetType().FullName} - No user data found in local storage!"); },
             error => { Console.WriteLine($"{this.GetType().FullName} - Failed to load user data{Environment.NewLine}{error.Value}"); }
@@ -254,7 +257,7 @@
             _prospects.AddRange(userData.Prospects[this.Pipeline.Strategy]);
         }
 
-        _dropContainer.Refresh();
+        _dropContainer?.Refresh();
     }
 
     private async Task SaveAsync()
@@ -314,7 +317,7 @@
         await SaveAsync();
 
 		this.StateHasChanged();
-		_dropContainer.Refresh();
+		_dropContainer?.Refresh();
 	}
 
 	private KanBanSection[] _sections = [];
@@ -366,7 +369,7 @@
         section.NewTaskOpen = false;
         section.NewTaskName = string.Empty;
 
-        _dropContainer.Refresh();
+        _dropContainer?.Refresh();
 	}
 
 	private void DeleteSection(KanBanSection section)
