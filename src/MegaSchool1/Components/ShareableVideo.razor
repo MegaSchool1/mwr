@@ -1,35 +1,40 @@
 ﻿@using MegaSchool1.Model
 @using System.Web
+@using OneOf
+@using OneOf.Types
 @inherits Components.ComponentBase
 @inject Model.Constants Constants
 
 <MudCard Outlined="true">
     <MudCardContent>
-        @if (this.Description != null)
-        {
-            @if (this.Url != null)
+        <MudStack Spacing="3">
+            <EmbeddedVideo Video="Video" />
+            @if (this.Description != null)
             {
-                <MudStack Row="true">
-                    <MudSpacer/>
-                    <MudText Align="Align.Center"><ExternalLink Href="@($"https://theotherstuff.github.io/iframe?url={HttpUtility.UrlEncode(Url)}")">@Description</ExternalLink></MudText>
-                    <MudSpacer/>
-                </MudStack>
+                @if (this.Url != null)
+                {
+                    <MudStack Row="true">
+                        <MudSpacer />
+                        <MudText Align="Align.Center"><ExternalLink Href="@($"https://theotherstuff.github.io/iframe?url={HttpUtility.UrlEncode(Url)}")">@Description</ExternalLink></MudText>
+                        <MudSpacer />
+                    </MudStack>
+                }
+                else
+                {
+                    <MudText Align="Align.Center">@((MarkupString)this.Description.Replace(Environment.NewLine, "<br/>"))</MudText>
+                }
+                @if (this.Duration != null)
+                {
+                    <MudText Typo="Typo.body2" Align="Align.Center">@FormatTimeSpan(Duration.Value)</MudText>
+                }
             }
             else
             {
-               <MudText Align="Align.Center">@((MarkupString)this.Description.Replace(Environment.NewLine, "<br/>"))</MudText>
+                <div>
+                    @this.ChildContent
+                </div>
             }
-            @if (this.Duration != null)
-            {
-                <MudText Typo="Typo.body2" Align="Align.Center">@FormatTimeSpan(Duration.Value)</MudText>
-            }
-        }
-        else
-        {
-            <div>
-                @this.ChildContent
-            </div>
-        }
+        </MudStack>
     </MudCardContent>
     <MudCardActions>
         <ShareableContent TextToCopy="@TextToCopy"
@@ -39,6 +44,9 @@
     </MudCardActions>
 </MudCard>
 @code {
+    [Parameter]
+    public OneOf<YouTube, TikTok, Vimeo, Facebook, None> Video { get; set; } = new None();
+  
     [Parameter]
     public string? Description { get; set; }
 

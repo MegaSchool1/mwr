@@ -11,6 +11,15 @@ namespace MegaSchool1.Model;
 
 public static class Util
 {
+    public static OneOf<YouTube, TikTok, Vimeo, Facebook, None> GetVideoId(VideoResource? video) => video?.Platform switch
+    {
+        VideoPlatform.YouTube => new YouTube(video?.Id!),
+        VideoPlatform.TikTok => new TikTok(video?.UserHandle!, video?.Id!),
+        VideoPlatform.Vimeo => new Vimeo(video?.Id!, video?.Hash != null ? video.Hash : new None()),
+        VideoPlatform.Facebook => new Facebook(video?.UserHandle!, video?.Id!),
+        _ => new None()
+    };
+
     public static string? ValidateGivBuxCode(string givBuxCode)
     {
         // allow null or empty

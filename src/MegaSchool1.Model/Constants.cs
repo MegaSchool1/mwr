@@ -1,5 +1,7 @@
 ﻿using MegaSchool1.Model.UI;
 using Microsoft.AspNetCore.Components;
+using OneOf.Types;
+using OneOf;
 using System.Web;
 
 namespace MegaSchool1.Model;
@@ -130,6 +132,7 @@ public enum Content
     Opportunity202407 = 36,
     MS1Opportunity202407 = 37,
     GivBuxFundraiser = 38,
+    GivBuxAccountSetup = 39,
 }
 
 public enum Video
@@ -177,6 +180,16 @@ public enum ProspectVersion
 {
     v1_0_0_0 = 0,
 }
+
+public record YouTube(string VideoId);
+public record TikTok(string UserHandle, string VideoId);
+
+/// <summary>
+///     Hash - Required for private Vimeo videos. See https://www.drupal.org/project/video_embed_field/issues/3238136
+/// </summary>
+public record Vimeo(string VideoId, OneOf<string, None> Hash);
+
+public record Facebook(string ChannelId, string VideoId);
 
 public class Constants(UISettings ui, NavigationManager navigationManager)
 {

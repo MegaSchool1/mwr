@@ -76,17 +76,7 @@
             this.Facebook = this.Video.IsT3 ? (this.Video.AsT3.ChannelId, this.Video.AsT3.VideoId) : null;
         }
   
-        if (ValidTikTok)
-        {
-            this.ShowVideo();
-        }
-
-        if (ValidVimeo)
-        {
-            this.ShowVideo();
-        }
-
-        if (ValidFacebook)
+        if (ValidTikTok || ValidVimeo || ValidFacebook || Video.IsT4)
         {
             this.ShowVideo();
         }
