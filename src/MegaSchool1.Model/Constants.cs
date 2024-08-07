@@ -133,6 +133,7 @@ public enum Content
     MS1Opportunity202407 = 37,
     GivBuxFundraiser = 38,
     GivBuxAccountSetup = 39,
+    GivBuxUberDemo = 40,
 }
 
 public enum Video

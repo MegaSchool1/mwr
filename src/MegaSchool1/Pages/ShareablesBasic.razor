@@ -33,7 +33,7 @@
             <MudCardContent>
                 <MudStack Spacing="3">
                     <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedGivBuxTraining" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                        @foreach (var content in new Content[] { Content.GivBuxAccountSetup })
+                        @foreach (var content in new Content[] { Content.GivBuxAccountSetup, Content.GivBuxUberDemo })
                         {
                             <MudSelectItem Value="@content" />
                         }
