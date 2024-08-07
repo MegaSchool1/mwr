@@ -17,41 +17,37 @@
     <MudCard>
         <MudCardContent>
             <MudStack Spacing="3">
-                @{
-                    var _selectedShareable = Content.Membership;
-
-                    <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                        @foreach (var content in new Content[] { Content.Membership, Content.Opportunity202407, Content.MoneyChallenge, Content.MoneyChallengeFAQ, Content.CreditRestoration, Content.HealthShare, Content.KeysToHomeOwnership, Content.TrustMyAssets, Content.RealEstatePros })
-                        {
-                            <MudSelectItem Value="@content" />
-                        }
-                    </MudSelect>
-                    @ContentView(_selectedShareable)
-                }
+                <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                    @foreach (var content in new Content[] { Content.Membership, Content.Opportunity202407, Content.MoneyChallenge, Content.MoneyChallengeFAQ, Content.CreditRestoration, Content.HealthShare, Content.KeysToHomeOwnership, Content.TrustMyAssets, Content.RealEstatePros })
+                    {
+                        <MudSelectItem Value="@content" />
+                    }
+                </MudSelect>
+                @ContentView(_selectedShareable)
             </MudStack>
         </MudCardContent>
     </MudCard>
+    <MudDivider/>
     <Collapsable Title="GivBux Training">
         <MudCard>
             <MudCardContent>
                 <MudStack Spacing="3">
-                    @{
-                        var _selectedShareable = Content.GivBuxAccountSetup;
-
-                        <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                            @foreach (var content in new Content[] { Content.GivBuxAccountSetup })
-                            {
-                                <MudSelectItem Value="@content" />
-                            }
-                        </MudSelect>
-                        @ContentView(_selectedShareable)
-                    }
+                    <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedGivBuxTraining" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                        @foreach (var content in new Content[] { Content.GivBuxAccountSetup })
+                        {
+                            <MudSelectItem Value="@content" />
+                        }
+                    </MudSelect>
+                    @ContentView(_selectedGivBuxTraining)
                 </MudStack>
             </MudCardContent>
         </MudCard>
     </Collapsable>
 </MudStack>
 @code {
+    private Content _selectedShareable = Content.Membership;
+    private Content _selectedGivBuxTraining = Content.GivBuxAccountSetup;
+
     private RenderFragment ContentView(Content content) => __builder =>
     {
         var english = UI.EnglishLocale[content];
