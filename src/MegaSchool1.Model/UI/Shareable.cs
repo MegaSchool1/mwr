@@ -4,7 +4,7 @@ public record Content(string Message, string Tooltip, string YouTubeId);
 
 public record Shareable(string Description, Content English, Content? Spanish, string ImageUrl, TimeSpan? Duration, string PreviewUrl)
 {
-    public static string VideoShareable(VideoResource video) => VideoShareable(video.ShareableTitle, video.Platform == VideoPlatform.None ? video.Url : video.MinimalistUrl(), video.Duration);
+    public static string VideoShareable(VideoResource video) => VideoShareable(video.ShareableTitle, video.Platform == VideoPlatform.None ? video.Url! : video.MinimalistUrl()!, video.Duration);
 
     public static string VideoShareable(string heading, string videoUrl, TimeSpan? videoLength)
     {

@@ -10,7 +10,7 @@ public static class ExtensionMethods
         {
             VideoPlatform.YouTube => Constants.MinimalistYouTubeLink(video.Id),
             VideoPlatform.Vimeo => $"{Constants.MinimalistVimeoLink(video.Id, video.Hash)}",
-            VideoPlatform.TikTok => Constants.MinimalistTikTokLink(video.UserHandle, video.Id),
+            VideoPlatform.TikTok => Constants.MinimalistTikTokLink(video.UserHandle!, video.Id),
             _ => null
         };
 

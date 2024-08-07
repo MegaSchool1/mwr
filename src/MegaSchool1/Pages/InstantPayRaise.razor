@@ -40,8 +40,8 @@
 
     protected override void OnInitialized()
     {
-        _englishUrl = Constants.InstantPayRaiseUrlEnglish(AppState!.User?.MemberId);
-        _spanishUrl = Constants.InstantPayRaiseUrlSpanish(AppState.User?.MemberId);
+        _englishUrl = Constants.InstantPayRaiseUrlEnglish(AppState!.User!.MemberId);
+        _spanishUrl = Constants.InstantPayRaiseUrlSpanish(AppState.User!.MemberId);
 
         _iframeUrl = _englishUrl;
     }

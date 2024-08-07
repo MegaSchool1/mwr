@@ -1,6 +1,6 @@
 ﻿@inherits ComponentBase
 
-<MudLink OnClick="@(async e => { if (this.Date != null) { await _datePicker.GoToDate(this.Date.Value); } await _datePicker.OpenAsync(); })">
+<MudLink OnClick="@(async e => { if (this.Date != null && _datePicker != null) { await _datePicker.GoToDate(this.Date.Value); await _datePicker.OpenAsync(); } })">
     @Text
     <MudDatePicker @ref="_datePicker" Style="display:none;" @bind-Date="Date" PickerVariant="PickerVariant.Dialog" />
 </MudLink>
