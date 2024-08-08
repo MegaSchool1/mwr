@@ -49,7 +49,7 @@ public partial class Mappers
             &&
             // valid promo expiration
             dto.PromoExpiration != null;
-        viewModel.Promo = validPromo ? (dto.Promo!, dto.PromoExpiration!.Value) : new None();
+        viewModel.Promo = validPromo ? (dto.Promo!, dto.PromoExpiration!.Value) : ("For $100 off, text", Constants.FinancialIndependenceMonthPromoExpiration);
 
         viewModel.Event = dto.Event != null ? EventDtoToEventViewModel(dto.Event) : new None();
         viewModel.ShowBusinessSignUp = dto.ShowBusinessSignUp;
