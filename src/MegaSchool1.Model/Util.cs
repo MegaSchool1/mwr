@@ -6,12 +6,13 @@ using OneOf.Types;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using System.Web;
+using MegaSchool1.Model.Dto;
 
 namespace MegaSchool1.Model;
 
 public static class Util
 {
-    public static OneOf<YouTube, TikTok, Vimeo, Facebook, None> GetVideoId(VideoResource? video) => video?.Platform switch
+    public static OneOf<YouTube, TikTok, Vimeo, Facebook, None> GetVideoId(ShareableDto? video) => video?.Platform switch
     {
         VideoPlatform.YouTube => new YouTube(video?.Id!),
         VideoPlatform.TikTok => new TikTok(video?.UserHandle!, video?.Id!),
@@ -201,7 +202,13 @@ public static class Util
     public static Rank GetRankForMonthlyIncome(int monthlyIncome)
         => Constants.DailyGuarantee.First(x => x.Value.MonthlyPay >= monthlyIncome).Key;
 
-    public static int MinuteEstimate(TimeSpan duration) => duration.Minutes + (duration.Seconds >= 30 ? 1 : 0);
+    public static TimeSpan MinuteEstimate(TimeSpan duration)
+    {
+        var minutesToAdd = TimeSpan.FromMinutes(duration.Seconds >= 30 ? 1.0 : 0.0);
+        var secondsToSubtract = minutesToAdd > TimeSpan.Zero ? TimeSpan.FromSeconds(duration.Seconds) : TimeSpan.Zero;
+
+        return duration.Add(minutesToAdd).Subtract(secondsToSubtract);
+    }
 
     private static readonly TimeZoneInfo[] BusinessStandardTimeZonesOrdered = [Constants.DefaultTimeZone, Constants.ChicagoTimeZone, Constants.LosAngelesTimeZone];
 

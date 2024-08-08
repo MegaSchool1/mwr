@@ -1,5 +1,6 @@
 ﻿@using MegaSchool1.Model
 @using System.Web
+@using MegaSchool1.ViewModel
 @using OneOf
 @using OneOf.Types
 @inherits ComponentBase
@@ -63,7 +64,10 @@
 </MudCard>
 @code {
     [Parameter]
-    public OneOf<YouTube, TikTok, Vimeo, Facebook, None> Video { get; set; } = new None();
+    public OneOf<VideoViewModel, None> TheVideo { get; set; } = new None();
+
+    [Parameter]
+    public OneOf<Video, None> Video { get; set; } = new None();
 
     [Parameter]
     public string? Description { get; set; }
@@ -97,4 +101,19 @@
 
     [Parameter]
     public TimeSpan? Duration { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        this.Duration = this.TheVideo.Match(
+            video => video.Duration,
+            none => this.Duration);
+
+        this.Video = this.TheVideo.Match(
+            video => video.Video,
+            none => this.Video);
+
+        this.Url = this.TheVideo.Match(
+            video => video.Video.MinimalistUrl(),
+            none => this.Url);
+    }
 }

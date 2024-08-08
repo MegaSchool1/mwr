@@ -3,6 +3,7 @@
 @using MegaSchool1.Components
 @using MegaSchool1.Model
 @using System.Web
+@using MegaSchool1.Model.Dto
 @inject UISettings UI
 
 <PageTitle>@Video?.ShareableTitle</PageTitle>
@@ -77,7 +78,7 @@
 
     private Content ContentValue => Enum.Parse<Content>(this.ContentId);
 
-    private VideoResource? Video => this.Language == Spanish ? UI.SpanishLocale[ContentValue] : UI.EnglishLocale[ContentValue];
+    private ShareableDto? Video => this.Language == Spanish ? UI.SpanishLocale[ContentValue] : UI.EnglishLocale[ContentValue];
 
     private string GetImageUrl() => Constants.GetImageUrl(Video?.CapturePageImage ?? Video?.Image ?? Image.MoneyChallengeTransparent);
 }

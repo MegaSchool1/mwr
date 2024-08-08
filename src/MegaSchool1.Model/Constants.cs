@@ -136,13 +136,6 @@ public enum Content
     GivBuxUberDemo = 40,
 }
 
-public enum Video
-{
-    None = 0,
-    MoneyChallenge = 1,
-    MoneyChallengeFAQ = 2,
-}
-
 public enum Language
 {
     None = 0,
@@ -192,6 +185,9 @@ public record Vimeo(string VideoId, OneOf<string, None> Hash);
 
 public record Facebook(string ChannelId, string VideoId);
 
+[GenerateOneOf]
+public partial class Video : OneOfBase<YouTube, TikTok, Vimeo, Facebook> { }
+
 public class Constants(UISettings ui, NavigationManager navigationManager)
 {
     public static readonly Content[] GivBuxContent = [Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity, Content.EDMGivBux, Content.GivBuxOpportunity, Content.EDMNeedMoreInfo, Content.WealthWorksheet, Content.MS1Opportunity202407, Content.GivBuxFundraiser];
@@ -209,7 +205,6 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     public static readonly string MinimalistVideoLinkPrefix = "https://megaschool.me/v";
     public static readonly string MinimalistYouTubeVideoLinkPrefix = $"{MinimalistVideoLinkPrefix}?y=";
     public const string AppInstallTutorialUrl = "https://video.wixstatic.com/video/5f35ec_33bda4fc60fd41cf8c3a09924f204746/480p/mp4/file.mp4";
-    public static readonly DateTimeOffset FinancialIndependenceMonthPromoExpiration = new(2024, 8, 8, 11, 59, 59, LosAngelesTimeZone.BaseUtcOffset);
 
     public static string BusinessEnrollmentUrl(string username) => $"https://user.mwrfinancial.com/{username}/join";
     public static string MembershipEnrollmentUrl(string username) => $"https://user.mwrfinancial.com/{username}/signup-financialedge";
@@ -221,6 +216,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
 
     public static string MinimalistYouTubeLink(string youTubeId) => $"{MinimalistYouTubeVideoLinkPrefix}{youTubeId}";
     public static string MinimalistVimeoLink(string vimeoId, string? hash) => $"{MinimalistVideoLinkPrefix}?v={vimeoId}{(string.IsNullOrWhiteSpace(hash) ? string.Empty : $"&h={hash}")}";
+    public static string MinimalistVimeoLink(Vimeo video) => MinimalistVimeoLink(video.VideoId, video.Hash.Match(h => h, none => (string?)null));
     public static string MinimalistTikTokLink(string tikTokHandle, string videoId) => $"{MinimalistVideoLinkPrefix}?th={tikTokHandle}&t={videoId}";
     public static string EmbeddableYouTubeLink(string youTubeId) => $"{YouTubeEmbedLinkPrefix}{youTubeId}";
     public static string EmbeddableVimeoLink(string vimeoId) => $"{VimeoEmbedLinkPrefix}{vimeoId}";
@@ -250,22 +246,8 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         _ => throw new Exception($"Image not found: {image}"),
     };
 
-    public static string? GetBusinessEnrollmentPromo(string memberId)
-    {
-        string? promo;
-
-        if (DateTimeOffset.Now <= FinancialIndependenceMonthPromoExpiration)
-        {
-            promo = $"{Environment.NewLine}{Environment.NewLine}For $100 off, use coupon code:{Environment.NewLine}{Environment.NewLine}{memberId}code";
-        }
-        else
-        {
-            promo = null;
-        }
-
-        return promo;
-    }
-
+    public static string? GetBusinessEnrollmentPromo(string memberId) => null;
+    
     public string GetCapturePage(Content content, Language language, string memberId, string referralId)
         => $"{navigationManager.BaseUri}{(language == Language.Spanish ? "es" : "en")}/{content}/{memberId}/{HttpUtility.UrlEncode(referralId)}";
 

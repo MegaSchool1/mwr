@@ -59,7 +59,7 @@
     public (string ChannelId, string VideoId)? Facebook { get; set; }
 
     [Parameter]
-    public OneOf<YouTube, TikTok, Vimeo, Facebook, None> Video { get; set; } = new None();
+    public OneOf<Video, None> Video { get; set; } = new None();
 
     private bool ValidYouTube => !string.IsNullOrWhiteSpace(YouTube);
     private bool ValidVimeo => !string.IsNullOrWhiteSpace(Vimeo?.VideoId);
@@ -68,15 +68,15 @@
 
     protected override void OnParametersSet()
     {
-        if(!Video.IsT4)
+        if(Video.TryPickT0(out var video, out var _))
         {
-            this.YouTube = this.Video.IsT0 ? this.Video.AsT0.VideoId : null;
-            this.TikTok = this.Video.IsT1 ? (this.Video.AsT1.UserHandle, this.Video.AsT1.VideoId) : null;
-            this.Vimeo = this.Video.IsT2 ? (this.Video.AsT2.VideoId, this.Video.AsT2.Hash.Match(hash => hash, none => (string?)null)) : null;
-            this.Facebook = this.Video.IsT3 ? (this.Video.AsT3.ChannelId, this.Video.AsT3.VideoId) : null;
+            this.YouTube = video.IsT0 ? video.AsT0.VideoId : null;
+            this.TikTok = video.IsT1 ? (video.AsT1.UserHandle, video.AsT1.VideoId) : null;
+            this.Vimeo = video.IsT2 ? (video.AsT2.VideoId, video.AsT2.Hash.Match(hash => hash, none => (string?)null)) : null;
+            this.Facebook = video.IsT3 ? (video.AsT3.ChannelId, video.AsT3.VideoId) : null;
         }
   
-        if (ValidTikTok || ValidVimeo || ValidFacebook || Video.IsT4)
+        if (ValidTikTok || ValidVimeo || ValidFacebook || Video.IsT1)
         {
             this.ShowVideo();
         }

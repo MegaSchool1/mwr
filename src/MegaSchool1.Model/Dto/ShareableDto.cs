@@ -1,15 +1,15 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MegaSchool1.Model;
+namespace MegaSchool1.Model.Dto;
 
-public class VideoResource
+public class ShareableDto
 {
     [JsonPropertyName("contentId")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public Content ContentId { get; set; }
 
     [JsonPropertyName("videoId")]
-    public string Id { get; set; } = default!;
+    public string? Id { get; set; }
 
     [JsonPropertyName("platform")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -46,10 +46,10 @@ public class VideoResource
     public string? DownloadUrl { get; set; }
 
     [JsonPropertyName("promo")]
-    public string? Promo { get; set; } = "For $100 off, text";
+    public string? Promo { get; set; }
 
     [JsonPropertyName("promoExpiration")]
-    public DateTimeOffset? PromoExpiration { get; set; } = Constants.FinancialIndependenceMonthPromoExpiration;
+    public DateTimeOffset? PromoExpiration { get; set; }
 
     [JsonPropertyName("event")]
     public EventDto? Event { get; set; }

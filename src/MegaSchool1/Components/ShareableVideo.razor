@@ -45,7 +45,7 @@
 </MudCard>
 @code {
     [Parameter]
-    public OneOf<YouTube, TikTok, Vimeo, Facebook, None> Video { get; set; } = new None();
+    public OneOf<Video, None> Video { get; set; } = new None();
   
     [Parameter]
     public string? Description { get; set; }

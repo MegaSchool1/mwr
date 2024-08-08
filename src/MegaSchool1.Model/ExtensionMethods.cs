@@ -1,11 +1,13 @@
-﻿namespace MegaSchool1.Model;
+﻿using MegaSchool1.Model.Dto;
+
+namespace MegaSchool1.Model;
 
 public static class ExtensionMethods
 {
-    public static VideoResource? Content(this VideoResource[] videos, Content content)
+    public static ShareableDto? Content(this ShareableDto[] videos, Content content)
         => videos.FirstOrDefault(v => v.ContentId == content);
 
-    public static string? MinimalistUrl(this VideoResource video)
+    public static string? MinimalistUrl(this ShareableDto video)
         => video.Platform switch
         {
             VideoPlatform.YouTube => Constants.MinimalistYouTubeLink(video.Id),
@@ -14,9 +16,9 @@ public static class ExtensionMethods
             _ => null
         };
 
-    public static string? ShareableUrl(this VideoResource video) => video.MinimalistUrl() ?? video.Url;
+    public static string? ShareableUrl(this ShareableDto video) => video.MinimalistUrl() ?? video.Url;
 
-    public static string EmbeddableUrl(this VideoResource video)
+    public static string EmbeddableUrl(this ShareableDto video)
         => video.Platform switch
         {
             VideoPlatform.YouTube => Constants.EmbeddableYouTubeLink(video.Id),

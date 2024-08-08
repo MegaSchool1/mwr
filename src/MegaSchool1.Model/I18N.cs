@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using MegaSchool1.Model.Dto;
 
 namespace MegaSchool1.Model;
 
@@ -8,7 +9,7 @@ public class I18N
     public string Language { get; set; } = default!;
 
     [JsonPropertyName("videos")]
-    public VideoResource[] Videos { get; set; } = [];
+    public ShareableDto[] Videos { get; set; } = [];
 
     [JsonPropertyName("testimonials")]
     public Testimonial[] Testimonials { get; set; } = [];
@@ -16,7 +17,7 @@ public class I18N
     [JsonPropertyName("events")]
     public EventDto[] Events { get; set; } = [];
 
-    public VideoResource? this[Content content]
+    public ShareableDto? this[Content content]
     {
         get
         {

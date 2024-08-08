@@ -1,24 +1,19 @@
 ﻿@page "/shareables"
 @using MegaSchool1.Components
 @using MegaSchool1.Model
-@using MegaSchool1.Model.Repository
-@using MegaSchool1.Model.UI
-@using MegaSchool1.Repository.Model
+@using MegaSchool1.ViewModel
 @using Content = MegaSchool1.Model.Content
 @using OneOf
 @using OneOf.Types
 @inherits Components.ComponentBase
-@inject Constants Constants
 @inject UISettings UI
-@inject NavigationManager NavigationManager
-@inject Repository.Repository Repo
 
 <MudStack Spacing="3">
     <MudCard>
         <MudCardContent>
             <MudStack Spacing="3">
                 <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in new Content[] { Content.Membership, Content.Opportunity202407, Content.MoneyChallenge, Content.MoneyChallengeFAQ, Content.CreditRestoration, Content.HealthShare, Content.KeysToHomeOwnership, Content.TrustMyAssets, Content.RealEstatePros })
+                    @foreach (var content in new [] { Content.Membership, Content.Opportunity202407, Content.MoneyChallenge, Content.MoneyChallengeFAQ, Content.CreditRestoration, Content.HealthShare, Content.KeysToHomeOwnership, Content.TrustMyAssets, Content.RealEstatePros })
                     {
                         <MudSelectItem Value="@content" />
                     }
@@ -33,7 +28,7 @@
             <MudCardContent>
                 <MudStack Spacing="3">
                     <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedGivBuxTraining" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                        @foreach (var content in new Content[] { Content.GivBuxAccountSetup, Content.GivBuxUberDemo })
+                        @foreach (var content in new [] { Content.GivBuxAccountSetup, Content.GivBuxUberDemo })
                         {
                             <MudSelectItem Value="@content" />
                         }
@@ -50,33 +45,34 @@
 
     private RenderFragment ContentView(Content content) => __builder =>
     {
-        var english = UI.EnglishLocale[content];
-        var spanish = UI.SpanishLocale[content];
+        var mapper = new Mappers();
+        var englishDto = UI.EnglishLocale[content];
+        var spanishDto = UI.SpanishLocale[content];
+        var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto) : new();
+        OneOf<ShareableViewModel, None> spanish = spanishDto != null ? mapper.ShareableDtoToViewModel(spanishDto) : new None();
 
-        @if (spanish != null)
+        @if (spanish.IsT0)
         {
-            <ShareableVideoMultilingual Description="@english.AppTitle"
-                                        Duration="@english.Duration"
-                                        Url="@english.MinimalistUrl()"
-                                        Video="Util.GetVideoId(english)"
+            <ShareableVideoMultilingual Description="@english.AppDescription"
+                                        TheVideo="@english.Video"
                                        
-                                        EnglishTextToCopy="@($"{Shareable.VideoShareable(english)}")"
+                                        EnglishTextToCopy="@($"{ShareableViewModel.VideoShareable(english)}")"
                                         EnglishTooltip="Copied!"
-                                        EnglishImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"
+                                        EnglishImageUrl="@Constants.GetImageUrl(english.ShareableImage)"
                                         
-                                        SpanishTextToCopy="@($"{Shareable.VideoShareable(spanish)}")"
+                                        SpanishTextToCopy="@($"{ShareableViewModel.VideoShareable(spanish.AsT0)}")"
                                         SpanishTooltip="Copied"
-                                        SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)" />
+                                        SpanishImageUrl="@Constants.GetImageUrl(spanish.AsT0.ShareableImage)" />
         }
         else
         {
-            <ShareableVideo Description="@english.AppTitle"
-                            Duration="@english.Duration"
-                            Url="@english.MinimalistUrl()"
-                            Video="Util.GetVideoId(english)"
-                            TextToCopy="@($"{Shareable.VideoShareable(english)}")"
+            <ShareableVideo Description="@english.AppDescription"
+                            Duration="@english.Video.Match(video => video.Duration, none => TimeSpan.Zero)"
+                            Url="@english.Video.Match(video => video.Video.MinimalistUrl(), none => null)"
+                            Video="@english.Video.MapT0(video => video.Video)"
+                            TextToCopy="@($"{ShareableViewModel.VideoShareable(english)}")"
                             Tooltip="Copied!"
-                            ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)" />
+                            ImageUrl="@Constants.GetImageUrl(english.ShareableImage)" />
         }
     };
 }
