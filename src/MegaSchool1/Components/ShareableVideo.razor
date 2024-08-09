@@ -1,5 +1,6 @@
 ﻿@using MegaSchool1.Model
 @using System.Web
+@using MegaSchool1.ViewModel
 @using OneOf
 @using OneOf.Types
 @inherits Components.ComponentBase
@@ -8,7 +9,7 @@
 <MudCard Outlined="true">
     <MudCardContent>
         <MudStack Spacing="3">
-            <EmbeddedVideo Video="Video" />
+            <EmbeddedVideo Video="@Video.MapT0(video => video.Video)" />
             @if (this.Description != null)
             {
                 @if (this.Url != null)
@@ -45,8 +46,8 @@
 </MudCard>
 @code {
     [Parameter]
-    public OneOf<Video, None> Video { get; set; } = new None();
-  
+    public OneOf<VideoViewModel, None> Video { get; set; } = new None();
+
     [Parameter]
     public string? Description { get; set; }
 
@@ -67,4 +68,15 @@
 
     [Parameter]
     public TimeSpan? Duration { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        this.Duration = this.Video.Match(
+            video => video.Duration,
+            none => this.Duration);
+
+        this.Url = this.Video.Match(
+            video => video.Video.MinimalistUrl(),
+            none => this.Url);
+    }
 }

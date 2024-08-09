@@ -54,7 +54,7 @@
         @if (spanish.IsT0)
         {
             <ShareableVideoMultilingual Description="@english.AppDescription"
-                                        TheVideo="@english.Video"
+                                        Video="@english.Video"
                                        
                                         EnglishTextToCopy="@($"{ShareableViewModel.VideoShareable(english)}")"
                                         EnglishTooltip="Copied!"
@@ -67,9 +67,7 @@
         else
         {
             <ShareableVideo Description="@english.AppDescription"
-                            Duration="@english.Video.Match(video => video.Duration, none => TimeSpan.Zero)"
-                            Url="@english.Video.Match(video => video.Video.MinimalistUrl(), none => null)"
-                            Video="@english.Video.MapT0(video => video.Video)"
+                            Video="@english.Video"
                             TextToCopy="@($"{ShareableViewModel.VideoShareable(english)}")"
                             Tooltip="Copied!"
                             ImageUrl="@Constants.GetImageUrl(english.ShareableImage)" />

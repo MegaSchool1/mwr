@@ -8,7 +8,7 @@
 <MudCard Outlined="true">
     <MudCardContent>
         <MudStack Spacing="3">
-            <EmbeddedVideo Video="Video" />
+            <EmbeddedVideo Video="Video.MapT0(video => video.Video)" />
             @if (this.Url != null)
             {
                 <MudStack Row="true">
@@ -64,10 +64,7 @@
 </MudCard>
 @code {
     [Parameter]
-    public OneOf<VideoViewModel, None> TheVideo { get; set; } = new None();
-
-    [Parameter]
-    public OneOf<Video, None> Video { get; set; } = new None();
+    public OneOf<VideoViewModel, None> Video { get; set; } = new None();
 
     [Parameter]
     public string? Description { get; set; }
@@ -104,15 +101,11 @@
 
     protected override void OnParametersSet()
     {
-        this.Duration = this.TheVideo.Match(
+        this.Duration = this.Video.Match(
             video => video.Duration,
             none => this.Duration);
 
-        this.Video = this.TheVideo.Match(
-            video => video.Video,
-            none => this.Video);
-
-        this.Url = this.TheVideo.Match(
+        this.Url = this.Video.Match(
             video => video.Video.MinimalistUrl(),
             none => this.Url);
     }

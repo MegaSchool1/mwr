@@ -4,6 +4,8 @@
 @using MegaSchool1.Model.Repository
 @using MegaSchool1.Model.UI
 @using MegaSchool1.Repository.Model
+@using OneOf
+@using OneOf.Types
 @using Content = MegaSchool1.Model.Content
 @inherits Components.ComponentBase
 @inject Constants Constants
@@ -56,14 +58,7 @@
                 </Loader>
             </MudTabPanel>
             <MudTabPanel Tag="@Strategy.FaithAndFinance">
-                <MudStack>
-                    <ShareableVideo Description="Faith & Finance"
-                                    Duration="new(0, 2, 0)"
-                                    Url="@(UI.EnglishLocale[Model.Content.FaithAndFinance]!.MinimalistUrl())"
-                                    Tooltip="Shareable copied!"
-                                    TextToCopy="@($"MWR Faith & Finance{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}(2min){Environment.NewLine}{UI.EnglishLocale[Model.Content.FaithAndFinance]!.MinimalistUrl()}")"
-                                    ImageUrl="@Constants.GetImageUrl(Image.FaithAndFinance)"/>
-                </MudStack>
+                @ContentView(Content.FaithAndFinance)
             </MudTabPanel>
             <MudTabPanel Tag="@Strategy.RealEstate">
                 <MudText Align="Align.Center">Coming Soon!</MudText>
@@ -238,33 +233,36 @@
 
     private RenderFragment ContentView(Content content) => __builder =>
     {
-        var english = UI.EnglishLocale[content];
-        var spanish = UI.SpanishLocale[content];
+        var mapper = new Mappers();
+        var englishDto = UI.EnglishLocale[content];
+        var spanishDto = UI.SpanishLocale[content];
+        var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto) : new();
+        OneOf<ViewModel.ShareableViewModel, None> spanish = spanishDto != null ? mapper.ShareableDtoToViewModel(spanishDto) : new None();
 
-        if(english != null)
+        if(englishDto != null)
         {
-            if (spanish != null)
+            if (spanishDto != null)
             {
-                <ShareableVideoMultilingual Description="@english.AppTitle"
-                                            Duration="@english.Duration"
-                                            Url="@english.MinimalistUrl()"
+                <ShareableVideoMultilingual Description="@englishDto.AppTitle"
+                                            Duration="@englishDto.Duration"
+                                            Url="@englishDto.MinimalistUrl()"
                                           
-                                            EnglishTextToCopy="@($"{Shareable.VideoShareable(english)}")"
+                                            EnglishTextToCopy="@($"{Shareable.VideoShareable(englishDto)}")"
                                             EnglishTooltip="Copied!"
-                                            EnglishImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"
+                                            EnglishImageUrl="@Constants.GetImageUrl(englishDto.Image ?? Image.MoneyChallengeLogo)"
                                             
-                                            SpanishTextToCopy="@($"{Shareable.VideoShareable(spanish)}")"
+                                            SpanishTextToCopy="@($"{Shareable.VideoShareable(spanishDto)}")"
                                             SpanishTooltip="Copied"
-                                            SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)" />
+                                            SpanishImageUrl="@Constants.GetImageUrl(spanishDto.Image ?? Image.MoneyChallengeLogo)" />
             }
             else
             {
-                <ShareableVideo Description="@english.AppTitle"
-                                Duration="@english.Duration"
-                                Url="@english.MinimalistUrl()"
-                                TextToCopy="@($"{Shareable.VideoShareable(english)}")"
+                <ShareableVideo Description="@englishDto.AppTitle"
+                                Duration="@englishDto.Duration"
+                                Url="@englishDto.MinimalistUrl()"
+                                TextToCopy="@($"{Shareable.VideoShareable(englishDto)}")"
                                 Tooltip="Copied!"
-                                ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)" />
+                                ImageUrl="@Constants.GetImageUrl(englishDto.Image ?? Image.MoneyChallengeLogo)" />
             }
         }
     };

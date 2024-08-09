@@ -1,86 +1,68 @@
 ﻿@using MegaSchool1.Model
 @using MegaSchool1.Model.Repository
 @using MegaSchool1.Model.UI
+@using MegaSchool1.ViewModel
+@using OneOf
+@using OneOf.Types
 @inherits Components.ComponentBase
 @inject Constants Constants
 @inject UISettings UI
 
 @{
-    var english = UI.EnglishLocale[Content];
-    var spanish = UI.SpanishLocale[Content];
-    var url = Constants.GetCapturePage(Content, Language.English, TeamMember?.MemberId, _referralCode);
-    var qrCodeFileName = $"{Content}-{TeamMember?.MemberId}-{_referralCode}.png";
+    const string DefaultMemberId = "MS1";
+
+    var mapper = new Mappers();
+    var englishDto = UI.EnglishLocale[this.Content];
+    var spanishDto = UI.SpanishLocale[this.Content];
+    var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto) : new();
+    OneOf<ShareableViewModel, None> spanish = spanishDto != null ? mapper.ShareableDtoToViewModel(spanishDto) : new None();
+    var memberId = TeamMember?.MemberId ?? DefaultMemberId;
+    var url = Constants.GetCapturePage(Content, Language.English, memberId, ReferralCode);
+    var qrCodeFileName = $"{Content}-{memberId}-{ReferralCode}.png";
 }
 <MudStack Spacing="3">
     @if(ShowReferralCode)
     {
         <Centered>
-            <MudTextField @bind-Value="_referralCode" Label="Referral Code" Disabled="@(Constants.GivBuxContent.Contains(Content))" Variant="Variant.Outlined" Immediate="true" Placeholder="Referral Code" DisableUnderLine="true" />
+            <MudTextField Value="ReferralCode" Label="Referral Code" Disabled="@(Constants.GivBuxContent.Contains(Content))" Variant="Variant.Outlined" Immediate="true" Placeholder="Referral Code" Underline="false" />
         </Centered>
     }
-    @if (spanish != null)
+    @if (spanishDto != null)
     {
-        <ShareableVideoMultilingual Description="@english.AppTitle"
-                                    Duration="@english.Duration"
+        <ShareableVideoMultilingual Description="@english.AppDescription"
+                                    Video="@english.Video"
                                     Url="@url"
                                     QRCode="@((url, qrCodeFileName))"
                                    
-                                    EnglishTextToCopy="@Shareable.VideoShareable(english.ShareableTitle, Constants.GetCapturePage(Content, Language.English, TeamMember?.MemberId, _referralCode), english.Duration)"
+                                    EnglishTextToCopy="@ShareableViewModel.VideoShareable(english)"
                                     EnglishTooltip="Copied!"
-                                    EnglishImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)"
+                                    EnglishImageUrl="@Constants.GetImageUrl(english.ShareableImage)"
                                     
-                                    SpanishTextToCopy="@Shareable.VideoShareable(spanish.ShareableTitle, Constants.GetCapturePage(Content, Language.Spanish, TeamMember?.MemberId, _referralCode), spanish.Duration)"
+                                    SpanishTextToCopy="@Shareable.VideoShareable(spanishDto.ShareableTitle, Constants.GetCapturePage(Content, Language.Spanish, TeamMember?.MemberId, ReferralCode), spanishDto.Duration)"
                                     SpanishTooltip="Copied"
-                                    SpanishImageUrl="@Constants.GetImageUrl(spanish.Image ?? Image.MoneyChallengeLogo)" />
+                                    SpanishImageUrl="@Constants.GetImageUrl(spanishDto.Image ?? Image.MoneyChallengeLogo)" />
     }
     else
     {
-        <ShareableVideo Description="@english.AppTitle"
-                        Duration="@english.Duration"
+        <ShareableVideo Description="@englishDto.AppTitle"
+                        Duration="@englishDto.Duration"
                         Url="@url"
-                        TextToCopy="@Shareable.VideoShareable(english.ShareableTitle, Constants.GetCapturePage(Content, Language.English, TeamMember?.MemberId, _referralCode), english.Duration)"
+                        TextToCopy="@Shareable.VideoShareable(englishDto.ShareableTitle, Constants.GetCapturePage(Content, Language.English, TeamMember?.MemberId, ReferralCode), englishDto.Duration)"
                         QRCode="@((url, qrCodeFileName))"
                         Tooltip="Copied!"
-                        ImageUrl="@Constants.GetImageUrl(english.Image ?? Image.MoneyChallengeLogo)" />
+                        ImageUrl="@Constants.GetImageUrl(englishDto.Image ?? Image.MoneyChallengeLogo)" />
     }
 </MudStack>
 
 @code {
-    private string? _referralCode;
+    private string ReferralCode => Constants.GivBuxContent.Contains(Content) && !string.IsNullOrWhiteSpace(TeamMember?.GivBuxCode) ? TeamMember?.GivBuxCode! : "Example-Referral-Code";
 
-    private Model.Content _content;
     [Parameter]
-    public Model.Content Content 
-    {
-        get => _content;
-        set
-        {
-            _content = value;
-            this.RefreshReferralCode();
-        }
-    }
+    public Model.Content Content { get; set; }
 
-    private TeamMember? _teamMember;
     [Parameter]
-    public TeamMember? TeamMember
-    {
-        get => _teamMember;
-        set
-        {
-            _teamMember = value;
-            this.RefreshReferralCode();
-        }
-    }
+    public TeamMember? TeamMember { get; set; }
 
     [Parameter]
     public bool ShowReferralCode { get; set; } = true;
-
-    protected override void OnInitialized()
-    {
-    }
-
-    private void RefreshReferralCode()
-    {
-        _referralCode = Constants.GivBuxContent.Contains(Content) && !string.IsNullOrWhiteSpace(TeamMember?.GivBuxCode) ? TeamMember?.GivBuxCode : "Example-Referral-Code";
-    }
 }
