@@ -18,7 +18,7 @@
                         <MudSelectItem Value="@content" />
                     }
                 </MudSelect>
-                @ContentView(_selectedShareable)
+                <ShareableVideo Content="_selectedShareable"/>
             </MudStack>
         </MudCardContent>
     </MudCard>
@@ -33,7 +33,7 @@
                             <MudSelectItem Value="@content" />
                         }
                     </MudSelect>
-                    @ContentView(_selectedGivBuxTraining)
+                    <ShareableVideo Content="_selectedGivBuxTraining"/>
                 </MudStack>
             </MudCardContent>
         </MudCard>
@@ -42,18 +42,4 @@
 @code {
     private Content _selectedShareable = Content.Membership;
     private Content _selectedGivBuxTraining = Content.GivBuxAccountSetup;
-
-    private RenderFragment ContentView(Content content) => __builder =>
-    {
-        var spanish = UI.SpanishLocale[content];
-
-        if (spanish != null)
-        {
-            <ShareableVideoMultilingual Content="content" />
-        }
-        else
-        {
-            <ShareableVideo Content="content"/>
-        }
-    };
 }

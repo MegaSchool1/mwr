@@ -290,7 +290,7 @@
 
 <MudDialog @bind-Visible="_show72HourMoneyChallengeShareable" Options="@(new DialogOptions() { NoHeader = true })">
     <DialogContent>
-        <ShareableVideoMultilingual Description="@Constants.MoneyChallenge[CurrentStrategy].Description"
+        <ShareableMultilingual Description="@Constants.MoneyChallenge[CurrentStrategy].Description"
                                     Duration="@Constants.MoneyChallenge[CurrentStrategy].Duration"
                                     Url="@Constants.MoneyChallenge[CurrentStrategy].PreviewUrl"
                                     
@@ -307,7 +307,7 @@
 <MudDialog @bind-Visible="_signUpDialog.Show">
     <DialogContent>
         <TeamMemberPicker Description="Sign Up Under:" @bind-SelectedTeamMember="_selectedTeamMember" User="AppState.User">
-            <ShareableVideo Description="Take the 72-Hour Money Challenge!"
+            <Shareable Description="Take the 72-Hour Money Challenge!"
                             Url="@_signUpDialog.Url(_selectedTeamMember?.MemberId)"
                             Tooltip="Shareable copied!"
                             TextToCopy="@($"Take the 72-Hour Money Challenge!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{_signUpDialog.Url(_selectedTeamMember?.MemberId)}")"

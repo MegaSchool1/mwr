@@ -29,7 +29,7 @@
     }
     @if (spanishDto != null)
     {
-        <ShareableVideoMultilingual Description="@english.AppDescription"
+        <ShareableMultilingual Description="@english.AppDescription"
                                     Video="@english.Video"
                                     Url="@url"
                                     QRCode="@((url, qrCodeFileName))"
@@ -38,16 +38,16 @@
                                     EnglishTooltip="Copied!"
                                     EnglishImageUrl="@Constants.GetImageUrl(english.ShareableImage)"
                                     
-                                    SpanishTextToCopy="@Shareable.VideoShareable(spanishDto.ShareableTitle, Constants.GetCapturePage(Content, Language.Spanish, TeamMember?.MemberId, ReferralCode), spanishDto.Duration)"
+                                    SpanishTextToCopy="@Model.UI.Shareable.VideoShareable(spanishDto.ShareableTitle, Constants.GetCapturePage(Content, Language.Spanish, TeamMember?.MemberId, ReferralCode), spanishDto.Duration)"
                                     SpanishTooltip="Copied"
                                     SpanishImageUrl="@Constants.GetImageUrl(spanishDto.Image ?? Image.MoneyChallengeLogo)" />
     }
     else
     {
-        <ShareableVideo Description="@englishDto.AppTitle"
+        <Shareable Description="@englishDto.AppTitle"
                         Duration="@englishDto.Duration"
                         Url="@url"
-                        TextToCopy="@Shareable.VideoShareable(englishDto.ShareableTitle, Constants.GetCapturePage(Content, Language.English, TeamMember?.MemberId, ReferralCode), englishDto.Duration)"
+                        TextToCopy="@Model.UI.Shareable.VideoShareable(englishDto.ShareableTitle, Constants.GetCapturePage(Content, Language.English, TeamMember?.MemberId, ReferralCode), englishDto.Duration)"
                         QRCode="@((url, qrCodeFileName))"
                         Tooltip="Copied!"
                         ImageUrl="@Constants.GetImageUrl(englishDto.Image ?? Image.MoneyChallengeLogo)" />

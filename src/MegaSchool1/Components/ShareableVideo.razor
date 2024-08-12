@@ -1,101 +1,17 @@
 ﻿@using MegaSchool1.Model
-@using System.Web
-@using MegaSchool1.ViewModel
-@using OneOf
-@using OneOf.Types
+@using MegaSchool1.Model.Dto
 @inherits Components.ComponentBase
-@inject Model.Constants Constants
 @inject UISettings UI
 
-<MudCard Outlined="true">
-    <MudCardContent>
-        <MudStack Spacing="3">
-            <EmbeddedVideo Video="@Video.MapT0(video => video.Video)" />
-            @if (this.Description != null)
-            {
-                @if (this.Url != null)
-                {
-                    <MudStack Row="true">
-                        <MudSpacer />
-                        <MudText Align="Align.Center"><ExternalLink Href="@($"https://theotherstuff.github.io/iframe?url={HttpUtility.UrlEncode(Url)}")">@Description</ExternalLink></MudText>
-                        <MudSpacer />
-                    </MudStack>
-                }
-                else
-                {
-                    <MudText Align="Align.Center">@((MarkupString)this.Description.Replace(Environment.NewLine, "<br/>"))</MudText>
-                }
-                @if (this.Duration != null)
-                {
-                    <MudText Typo="Typo.body2" Align="Align.Center">@FormatTimeSpan(Duration.Value)</MudText>
-                }
-            }
-            else
-            {
-                <div>
-                    @this.ChildContent
-                </div>
-            }
-        </MudStack>
-    </MudCardContent>
-    <MudCardActions>
-        <ShareableContent TextToCopy="@TextToCopy"
-                          Tooltip="@Tooltip"
-                          QRCode="@QRCode"
-                          ImageUrl="@ImageUrl" />
-    </MudCardActions>
-</MudCard>
+@if (UI.SpanishLocale[this.Content] != null)
+{
+    <ShareableMultilingual Content="Content" />
+}
+else
+{
+    <Shareable Content="Content"/>
+}
 @code {
     [Parameter]
-    public OneOf<Content, None> Content { get; set; } = new None();
-
-    [Parameter]
-    public OneOf<VideoViewModel, None> Video { get; set; } = new None();
-
-    [Parameter]
-    public string? Description { get; set; }
-
-    [Parameter]
-    public string TextToCopy { get; set; }
-
-    [Parameter]
-    public string Tooltip { get; set; }
-
-    [Parameter]
-    public string ImageUrl { get; set; } = Constants.GetImageUrl(Image.MoneyChallengeLogo);
-
-    [Parameter]
-    public string? Url { get; set; }
-
-    [Parameter]
-    public (string Content, string FileName)? QRCode { get; set; }
-
-    [Parameter]
-    public TimeSpan? Duration { get; set; }
-
-    protected override void OnParametersSet()
-    {
-        if (this.Content.TryPickT0(out var content, out _))
-        {
-            var mapper = new Mappers();
-            var englishDto = UI.EnglishLocale[content];
-            var spanishDto = UI.SpanishLocale[content];
-            var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto) : new();
-            OneOf<ViewModel.ShareableViewModel, None> spanish = spanishDto != null ? mapper.ShareableDtoToViewModel(spanishDto) : new None();
-
-            this.Description = english.AppDescription;
-            this.Video = english.Video;
-            this.TextToCopy = ShareableViewModel.VideoShareable(english);
-            this.Tooltip = "Copied!";
-            this.ImageUrl = Constants.GetImageUrl(english.ShareableImage);
-        }
-
-        this.Duration = this.Video.Match(
-            video => video.Duration,
-            none => this.Duration);
-
-        this.Url = this.Video.Match(
-            video => video.Video.MinimalistUrl(),
-            none => this.Url);
-    }
+    public Content Content { get; set; } = Content.Membership;
 }

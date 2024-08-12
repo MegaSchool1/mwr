@@ -9,6 +9,7 @@
 @using MegaSchool1.ViewModel
 @using MudBlazor.Utilities
 @using Content = MegaSchool1.Model.Content
+@using Shareable = MegaSchool1.Components.Shareable
 @inject UISettings UI
 @inject Repository.Repository Repo
 @inject ILocalStorageService LocalStorage
@@ -119,24 +120,24 @@
                 {
                     @if (UI.SpanishLocale[_selectedShareable] != null)
                     {
-                        <ShareableVideoMultilingual Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
+                        <ShareableMultilingual Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
                                                     Duration="@(UI.EnglishLocale[_selectedShareable]?.Duration)"
                                                     Url="@(UI.EnglishLocale[_selectedShareable]?.ShareableUrl())"
                                                  
-                                                    EnglishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]!.ShareableTitle, UI.EnglishLocale[_selectedShareable]!.MinimalistUrl(), UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
+                                                    EnglishTextToCopy="@($"{ShareableContentPrefix()}{Model.UI.Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]!.ShareableTitle, UI.EnglishLocale[_selectedShareable]!.MinimalistUrl(), UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
                                                     EnglishTooltip="Copied!"
                                                     EnglishImageUrl="@(Constants.GetImageUrl(UI.EnglishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))"
                                                    
-                                                    SpanishTextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.SpanishLocale[_selectedShareable]!.ShareableTitle, UI.SpanishLocale[_selectedShareable]!.MinimalistUrl(), UI.SpanishLocale[_selectedShareable]?.Duration ?? default)}")"
+                                                    SpanishTextToCopy="@($"{ShareableContentPrefix()}{Model.UI.Shareable.VideoShareable(UI.SpanishLocale[_selectedShareable]!.ShareableTitle, UI.SpanishLocale[_selectedShareable]!.MinimalistUrl(), UI.SpanishLocale[_selectedShareable]?.Duration ?? default)}")"
                                                     SpanishTooltip="Copied"
                                                     SpanishImageUrl="@(Constants.GetImageUrl(UI.SpanishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))" />
                     }
                     else
                     {
-                        <ShareableVideo Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
+                        <Shareable Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
                                         Duration="@(UI.EnglishLocale[_selectedShareable]?.Duration)"
                                         Url="@(UI.EnglishLocale[_selectedShareable]?.ShareableUrl())"
-                                        TextToCopy="@($"{ShareableContentPrefix()}{Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]!.ShareableTitle, UI.EnglishLocale[_selectedShareable]!.ShareableUrl()!, UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
+                                        TextToCopy="@($"{ShareableContentPrefix()}{Model.UI.Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]!.ShareableTitle, UI.EnglishLocale[_selectedShareable]!.ShareableUrl()!, UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
                                         Tooltip="Copied!"
                                         ImageUrl="@(Constants.GetImageUrl(UI.EnglishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))" />
                     }

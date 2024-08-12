@@ -111,16 +111,16 @@
             var englishDto = UI.EnglishLocale[content];
             var spanishDto = UI.SpanishLocale[content];
             var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto) : new();
-            OneOf<ViewModel.ShareableViewModel, None> spanish = spanishDto != null ? mapper.ShareableDtoToViewModel(spanishDto) : new None();
+            var spanish = spanishDto != null ? mapper.ShareableDtoToViewModel(spanishDto) : english;
 
             this.Description = english.AppDescription;
             this.Video = english.Video;
             this.EnglishTextToCopy = ShareableViewModel.VideoShareable(english);
             this.EnglishTooltip = "Copied!";
             this.EnglishImageUrl = Constants.GetImageUrl(english.ShareableImage);
-            this.SpanishTextToCopy = ShareableViewModel.VideoShareable(spanish.AsT0);
+            this.SpanishTextToCopy = ShareableViewModel.VideoShareable(spanish);
             this.SpanishTooltip = "Copied!";
-            this.SpanishImageUrl = Constants.GetImageUrl(spanish.AsT0.ShareableImage);
+            this.SpanishImageUrl = Constants.GetImageUrl(spanish.ShareableImage);
         }
 
         this.Duration = this.Video.Match(

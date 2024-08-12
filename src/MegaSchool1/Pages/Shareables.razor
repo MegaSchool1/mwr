@@ -8,6 +8,7 @@
 @using OneOf.Types
 @using Serilog
 @using Content = MegaSchool1.Model.Content
+@using Shareable = MegaSchool1.Components.Shareable
 @inherits Components.ComponentBase
 @inject Constants Constants
 @inject UISettings UI
@@ -104,7 +105,7 @@
         <MudStack>
             <Loader Loaded="@(_selectedTeamMemberMarketingDirector != null)">
                 <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMemberMarketingDirector">
-                    <ShareableVideoMultilingual Description="Join MWR"
+                    <ShareableMultilingual Description="Join MWR"
                                                 Url="@Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.English)"
                                               
                                                 EnglishTextToCopy="@($"MWR Sign-up{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.English)}{Constants.GetBusinessEnrollmentPromo(_selectedTeamMemberMarketingDirector?.MemberId!)}")"
@@ -118,7 +119,7 @@
             </Loader>
             <Loader Loaded="@(_selectedTeamMemberWebsite != null)">
                 <TeamMemberPicker Description="Shareable For:" @bind-SelectedTeamMember="_selectedTeamMemberWebsite">
-                    <ShareableVideoMultilingual Description="My Website"
+                    <ShareableMultilingual Description="My Website"
                                                
                                                 EnglishTextToCopy="@Constants.MarketingDirectorUrlEnglish(_selectedTeamMemberWebsite!.MemberId)"
                                                 EnglishTooltip="English shareable copied!"
@@ -137,7 +138,7 @@
                     <ShareableContent Title="For QMDs" Tooltip="Copied Shareable" ImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)" TextToCopy="@($"Wealth Worksheet{Environment.NewLine}{Environment.NewLine}Print out before our meeting!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://5f35ec78-8acd-4f4f-9b98-5439adb647ec.usrfiles.com/ugd/5f35ec_05b111199bee4d559058161fc236e7c8.pdf")" />
                 </Bottom>
             </CardShareableMulti>
-            <ShareableVideoMultilingual Description="Income Goal Simulator"
+            <ShareableMultilingual Description="Income Goal Simulator"
                                         Url="https://www.mwrfinancial.com/simulator/"
 
                                         EnglishTextToCopy="@($"MWR Income Goal Simulator{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://www.mwrfinancial.com/simulator/")"
@@ -147,23 +148,23 @@
                                         SpanishTextToCopy="@($"MWR Income Goal Simulator{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://www.mwrfinancial.com/es/simulator/")"
                                         SpanishTooltip="Español shareable copied!"
                                         SpanishImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)" />
-            <ShareableVideo Description="MWR Events"
+            <Shareable Description="MWR Events"
                             Url="http://MakeWealthRealEvents.com"
                             Tooltip="Copied Shareable"
                             TextToCopy="http://MakeWealthRealEvents.com"/>
-            <ShareableVideo Description="MWR Corporate Calendar"
+            <Shareable Description="MWR Corporate Calendar"
                             Url="https://calendar.time.ly/zb6amxcw/posterboard"
                             Tooltip="Copied Shareable"
                             TextToCopy="@($"MWR Corporate Calendar{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://calendar.time.ly/zb6amxcw/posterboard")"/>
-            <ShareableVideo Description="MWR Corporate Telegram Group"
+            <Shareable Description="MWR Corporate Telegram Group"
                             Url="https://t.me/+gpFmytqMETExNDUx"
                             Tooltip="Copied Shareable"
                             TextToCopy="@($"MWR Corporate Telegram Group{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://t.me/+gpFmytqMETExNDUx")"/>
-            <ShareableVideo Description=@Constants.AppShareable.Description
+            <Shareable Description=@Constants.AppShareable.Description
                             Tooltip=@Constants.AppShareable.English.Tooltip
                             TextToCopy=@Constants.AppShareable.English.Message
                             ImageUrl=@Constants.AppShareable.ImageUrl/>
-            <ShareableVideo Description="@("Mega School App Install Instructions")"
+            <Shareable Description="@("Mega School App Install Instructions")"
                             Url="@Constants.AppInstallTutorialUrl"
                             Tooltip="Copied!"
                             TextToCopy="@($"Mega School App Install Instructions{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.AppInstallTutorialUrl}")"
@@ -185,7 +186,7 @@
                 <MudText Align="Align.Center">Coming Soon!</MudText>
             </MudTabPanel>
             <MudTabPanel Tag="@Strategy.Latino">
-                <ShareableVideo Description="Official Facebook Group"
+                <Shareable Description="Official Facebook Group"
                                 Url="https://www.facebook.com/groups/frbeempoweringdiversitynationalteams"
                                 Tooltip="Copied!"
                                 TextToCopy="@($"FRBE Empowering Diversity National Teams Facebook Group{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://www.facebook.com/groups/frbeempoweringdiversitynationalteams")" />
@@ -219,8 +220,7 @@
     private Content _videoShareableContent = Content.GivBux;
     private TeamMember? _selectedTeamMemberMarketingDirector;
     private TeamMember? _selectedTeamMemberWebsite;
-
-
+    
     protected override void OnParametersSet()
     {
         _selectedTeamMemberMarketingDirector = AppState?.User;
@@ -234,35 +234,7 @@
 
     private RenderFragment ContentView(Content content) => __builder =>
     {
-        var mapper = new Mappers();
-        var englishDto = UI.EnglishLocale[content];
-        var spanishDto = UI.SpanishLocale[content];
-        var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto) : new();
-        OneOf<ViewModel.ShareableViewModel, None> spanish = spanishDto != null ? mapper.ShareableDtoToViewModel(spanishDto) : new None();
-        var video = english.Video.MapT0(v => v.Video).AsT0.Value;
-        Log.Information($"content: {content}, video: {video}");
-
-        @if (spanish.IsT0)
-        {
-            <ShareableVideoMultilingual Description="@english.AppDescription"
-                                        Video="@english.Video"
-                                    
-                                        EnglishTextToCopy="@($"{ViewModel.ShareableViewModel.VideoShareable(english)}")"
-                                        EnglishTooltip="Copied!"
-                                        EnglishImageUrl="@Constants.GetImageUrl(english.ShareableImage)"
-                                        
-                                        SpanishTextToCopy="@($"{ViewModel.ShareableViewModel.VideoShareable(spanish.AsT0)}")"
-                                        SpanishTooltip="Copied"
-                                        SpanishImageUrl="@Constants.GetImageUrl(spanish.AsT0.ShareableImage)" />
-        }
-        else
-        {
-            <ShareableVideo Description="@english.AppDescription"
-                            Video="@english.Video"
-                            TextToCopy="@($"{ViewModel.ShareableViewModel.VideoShareable(english)}")"
-                            Tooltip="Copied!"
-                            ImageUrl="@Constants.GetImageUrl(english.ShareableImage)" />
-        }
+        <ShareableVideo Content="content"/>
     };
 
     private class ShareableViewModel
