@@ -4,6 +4,7 @@
 @using OneOf
 @using OneOf.Types
 @inherits ComponentBase
+@inject UISettings UI
 
 <MudCard Outlined="true">
     <MudCardContent>
@@ -64,6 +65,9 @@
 </MudCard>
 @code {
     [Parameter]
+    public OneOf<Content, None> Content { get; set; } = new None();
+
+    [Parameter]
     public OneOf<VideoViewModel, None> Video { get; set; } = new None();
 
     [Parameter]
@@ -101,6 +105,24 @@
 
     protected override void OnParametersSet()
     {
+        if (this.Content.TryPickT0(out var content, out _))
+        {
+            var mapper = new Mappers();
+            var englishDto = UI.EnglishLocale[content];
+            var spanishDto = UI.SpanishLocale[content];
+            var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto) : new();
+            OneOf<ViewModel.ShareableViewModel, None> spanish = spanishDto != null ? mapper.ShareableDtoToViewModel(spanishDto) : new None();
+
+            this.Description = english.AppDescription;
+            this.Video = english.Video;
+            this.EnglishTextToCopy = ShareableViewModel.VideoShareable(english);
+            this.EnglishTooltip = "Copied!";
+            this.EnglishImageUrl = Constants.GetImageUrl(english.ShareableImage);
+            this.SpanishTextToCopy = ShareableViewModel.VideoShareable(spanish.AsT0);
+            this.SpanishTooltip = "Copied!";
+            this.SpanishImageUrl = Constants.GetImageUrl(spanish.AsT0.ShareableImage);
+        }
+
         this.Duration = this.Video.Match(
             video => video.Duration,
             none => this.Duration);
