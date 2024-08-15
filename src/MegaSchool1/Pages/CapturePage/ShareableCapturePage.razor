@@ -40,6 +40,7 @@
         <br/>
         <Centered><MudText Align="Align.Center">@((MarkupString)HttpUtility.UrlDecode(Video?.AuxiliaryText.Replace("{ReferralCode}", $@"<span style=""color:{Theme.PaletteDark.Secondary};"">{ReferralId}</span>")))</MudText></Centered>
     }
+    <MudSpacer/>
     @if (Video?.Images.Any() is true)
     {
         <br/>
