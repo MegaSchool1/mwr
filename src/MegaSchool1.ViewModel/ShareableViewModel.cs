@@ -1,6 +1,8 @@
 ﻿using MegaSchool1.Model;
+using Microsoft.AspNetCore.Components;
 using OneOf;
 using OneOf.Types;
+using System;
 
 namespace MegaSchool1.ViewModel;
 
@@ -43,6 +45,17 @@ public class ShareableViewModel
         var videoUrl = shareable.Video.Match(
             video => video.Video.MinimalistUrl(),
             none => null);
+
+        return $"{shareable.Title}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}({(durationEstimate.Hours == 0 ? string.Empty : $"{durationEstimate.Hours}hr ")}{durationEstimate.Minutes}min){Environment.NewLine}{videoUrl}";
+    }
+
+    public static string CapturePageShareable(ShareableViewModel shareable, NavigationManager navigationManager, Language language, string memberId, string referralCode)
+    {
+        var durationEstimate = shareable.Video.Match(
+            video => Util.MinuteEstimate(video.Duration),
+            none => TimeSpan.Zero);
+
+        var videoUrl = Constants.GetCapturePage(shareable.Id, language, navigationManager, memberId, referralCode);
 
         return $"{shareable.Title}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}({(durationEstimate.Hours == 0 ? string.Empty : $"{durationEstimate.Hours}hr ")}{durationEstimate.Minutes}min){Environment.NewLine}{videoUrl}";
     }
