@@ -13,7 +13,7 @@
         <MudCardContent>
             <MudStack Spacing="3">
                 <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in new [] { Content.Membership, Content.Opportunity202407, Content.MoneyChallenge, Content.MoneyChallengeFAQ, Content.CreditRestoration, Content.HealthShare, Content.KeysToHomeOwnership, Content.TrustMyAssets, Content.RealEstatePros, Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity })
+                    @foreach (var content in new [] { Content.Membership, Content.MS1Opportunity, Content.Opportunity202407, Content.MoneyChallenge, Content.MoneyChallengeFAQ, Content.CreditRestoration, Content.HealthShare, Content.KeysToHomeOwnership, Content.TrustMyAssets, Content.RealEstatePros, Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity })
                     {
                         <MudSelectItem Value="@content" />
                     }

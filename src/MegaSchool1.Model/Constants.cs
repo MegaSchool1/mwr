@@ -134,6 +134,7 @@ public enum Content
     GivBuxFundraiser = 38,
     GivBuxAccountSetup = 39,
     GivBuxUberDemo = 40,
+    MS1Opportunity = 41,
 }
 
 public enum Language
@@ -190,7 +191,7 @@ public partial class Video : OneOfBase<YouTube, TikTok, Vimeo, Facebook> { }
 
 public class Constants(UISettings ui, NavigationManager navigationManager)
 {
-    public static readonly Content[] GivBuxContent = [Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity, Content.EDMGivBux, Content.GivBuxOpportunity, Content.EDMNeedMoreInfo, Content.WealthWorksheet, Content.MS1Opportunity202407, Content.GivBuxFundraiser];
+    public static readonly Content[] GivBuxContent = [Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity, Content.EDMGivBux, Content.GivBuxOpportunity, Content.EDMNeedMoreInfo, Content.WealthWorksheet, Content.MS1Opportunity202407, Content.MS1Opportunity, Content.GivBuxFundraiser];
     public static readonly Content[] OrderedContent = GivBuxContent.Union(Enum.GetValues<Content>().Except(GivBuxContent).Except([Content.None, Content.TeenCarPurchase])).ToArray();
 
     public static readonly TimeZoneInfo NewYorkTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
