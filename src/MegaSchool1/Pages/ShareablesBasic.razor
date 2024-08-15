@@ -38,8 +38,42 @@
             </MudCardContent>
         </MudCard>
     </Collapsable>
+    <MudDivider />
+    <Collapsable Title="Faith & Finance">
+        <MudCard>
+            <MudCardContent>
+                <MudStack Spacing="3">
+                    <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedFaithAndFinance" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                        @foreach (var content in new[] { Content.FaithAndFinance, Content.FaithAndFinanceOverview })
+                        {
+                            <MudSelectItem Value="@content" />
+                        }
+                    </MudSelect>
+                    <ShareableVideo Content="_selectedFaithAndFinance" />
+                </MudStack>
+            </MudCardContent>
+        </MudCard>
+    </Collapsable>
+    <MudDivider />
+    <Collapsable Title="Extra Digit Movement">
+        <MudCard>
+            <MudCardContent>
+                <MudStack Spacing="3">
+                    <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedExtraDigit" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                        @foreach (var content in new[] { Content.EDMPique })
+                        {
+                            <MudSelectItem Value="@content" />
+                        }
+                    </MudSelect>
+                    <ShareableVideo Content="_selectedExtraDigit" />
+                </MudStack>
+            </MudCardContent>
+        </MudCard>
+    </Collapsable>
 </MudStack>
 @code {
     private Content _selectedShareable = Content.Membership;
     private Content _selectedGivBuxTraining = Content.GivBuxAccountSetup;
+    private Content _selectedFaithAndFinance = Content.FaithAndFinance;
+    private Content _selectedExtraDigit = Content.EDMPique;
 }
