@@ -136,6 +136,7 @@ public enum Content
     GivBuxUberDemo = 40,
     MS1Opportunity = 41,
     FaithAndFinanceOverview = 42,
+    CreditTeamOpportunity = 43,
 }
 
 public enum Language
