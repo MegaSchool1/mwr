@@ -123,11 +123,11 @@
             this.SpanishImageUrl = Constants.GetImageUrl(spanish.ShareableImage);
         }
 
-        this.Duration ??= this.Video.Match(
+        this.Duration = this.Video.Match(
             video => video.Duration,
             none => this.Duration);
 
-        this.Url ??= this.Video.Match(
+        this.Url = this.Video.Match(
             video => video.Video.MinimalistUrl(),
             none => this.Url);
     }
