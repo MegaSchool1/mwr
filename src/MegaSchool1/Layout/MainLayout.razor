@@ -183,7 +183,8 @@ else
         IsCapturePage 
         || IsCarPurchasePage
         || NavigationManager.Uri.Contains("/trustfundmybaby")
-        || NavigationManager.Uri.Contains("/shareables");
+        || NavigationManager.Uri.Contains("/shareables")
+        || NavigationManager.Uri.Contains("/welcome");
 
     private bool ProspectMode => _appState.User == null;
 
@@ -205,7 +206,7 @@ else
     {
         if (ProspectMode && !IsWhitelistedProspectPage)
         {
-            NavigationManager.NavigateTo("/carpurchase");
+            NavigationManager.NavigateTo("/welcome");
         }
     }
 
@@ -373,9 +374,9 @@ else
 
         return page switch
         {
+            "" => "My Shareables",
             "words" => "Words",
             "ipr" => "Instant Pay Raise",
-            "" => "My Shareables",
             "settings" => "Settings",
             "faststartchecklist" => "Fast Start",
             "revenuesharing" => "Revenue Sharing",
@@ -390,6 +391,7 @@ else
             "trustfundmybaby" => "Trust Fund My Baby",
             "givbuxfundraiserprojections" => "GivBux Fundraiser Projections",
             "shareables" => "Shareables",
+            "welcome" => "Welcome!",
             _ => string.Empty
         };
     }

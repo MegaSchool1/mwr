@@ -13,7 +13,7 @@
         <MudCardContent>
             <MudStack Spacing="3">
                 <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in new [] { Content.Membership, Content.MS1Opportunity, Content.Opportunity202407, Content.FaithAndFinanceOverview, Content.EDMPique, Content.CreditTeamOpportunity, Content.MoneyChallenge, Content.MoneyChallengeFAQ, Content.CreditRestoration, Content.HealthShare, Content.KeysToHomeOwnership, Content.TrustMyAssets, Content.RealEstatePros, Content.FaithAndFinance, Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity })
+                    @foreach (var content in new [] { Content.Membership, Content.MS1Opportunity, Content.Opportunity202407, Content.FaithAndFinanceOverview, Content.EDMPique, Content.CreditTeamOpportunity, Content.MoneyChallenge, Content.MoneyChallengeFAQ, Content.CreditRestoration, Content.HealthShare, Content.KeysToHomeOwnership, Content.TrustMyAssets, Content.RealEstatePros, Content.FaithAndFinance, Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity, Content.FastStart })
                     {
                         <MudSelectItem Value="@content" />
                     }
@@ -27,13 +27,13 @@
         <MudCard>
             <MudCardContent>
                 <MudStack Spacing="3">
-                    <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedGivBuxTraining" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                        @foreach (var content in new [] { Content.GivBuxAccountSetup, Content.GivBuxUberDemo })
+                    <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedTraining" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                        @foreach (var content in new[] { Content.FastStart, Content.GivBuxAccountSetup, Content.GivBuxUberDemo })
                         {
                             <MudSelectItem Value="@content" />
                         }
                     </MudSelect>
-                    <ShareableVideo Content="_selectedGivBuxTraining"/>
+                    <ShareableVideo Content="_selectedTraining"/>
                 </MudStack>
             </MudCardContent>
         </MudCard>
@@ -41,5 +41,5 @@
 </MudStack>
 @code {
     private Content _selectedShareable = Content.Membership;
-    private Content _selectedGivBuxTraining = Content.GivBuxAccountSetup;
+    private Content _selectedTraining = Content.FastStart;
 }

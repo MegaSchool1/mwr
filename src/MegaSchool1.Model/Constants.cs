@@ -137,6 +137,7 @@ public enum Content
     MS1Opportunity = 41,
     FaithAndFinanceOverview = 42,
     CreditTeamOpportunity = 43,
+    FastStart = 44,
 }
 
 public enum Language
