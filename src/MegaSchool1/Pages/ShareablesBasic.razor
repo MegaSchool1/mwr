@@ -13,7 +13,7 @@
         <MudCardContent>
             <MudStack Spacing="3">
                 <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in new [] { Content.Membership, Content.MS1Opportunity, Content.Opportunity202407, Content.FaithAndFinanceOverview, Content.EDMPique, Content.CreditTeamOpportunity, Content.MoneyChallenge, Content.MoneyChallengeFAQ, Content.CreditRestoration, Content.HealthShare, Content.KeysToHomeOwnership, Content.TrustMyAssets, Content.RealEstatePros, Content.FaithAndFinance, Content.GivBux, Content.GivBuxMerchant, Content.GivBuxCharity, Content.FastStart })
+                    @foreach (var content in Shareables)
                     {
                         <MudSelectItem Value="@content" />
                     }
@@ -42,4 +42,28 @@
 @code {
     private Content _selectedShareable = Content.Membership;
     private Content _selectedTraining = Content.FastStart;
+
+    private readonly Content[] Shareables =
+    [
+        Content.Membership,
+        Content.MS1Opportunity,
+        Content.Opportunity202407,
+        Content.FaithAndFinanceOverview,
+        Content.EDMPique,
+        Content.CreditTeamOpportunity,
+        Content.MoneyChallenge,
+        Content.MoneyChallengeFAQ,
+        Content.CreditRestoration,
+        Content.HealthShare,
+        Content.KeysToHomeOwnership,
+        Content.TrustMyAssets,
+        Content.RealEstatePros,
+        Content.FaithAndFinance,
+        Content.GivBux,
+        Content.GivBuxMerchant,
+        Content.GivBuxCharity,
+        Content.FastStart,
+        Content.HowBanksMakeMoney,
+        Content.PayoffMortgage,
+    ];
 }

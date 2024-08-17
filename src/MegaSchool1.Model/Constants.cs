@@ -138,6 +138,8 @@ public enum Content
     FaithAndFinanceOverview = 42,
     CreditTeamOpportunity = 43,
     FastStart = 44,
+    HowBanksMakeMoney = 45,
+    PayoffMortgage = 46,
 }
 
 public enum Language
