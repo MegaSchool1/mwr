@@ -5,6 +5,7 @@
 @using OneOf.Types
 @inherits ComponentBase
 @inject UISettings UI
+@inject NavigationManager NavigationManager
 
 <MudCard Outlined="true">
     <MudCardContent>
@@ -32,9 +33,9 @@
         <MudStack Row="true" Style="width:100%;">
             <MudSpacer />
             <MudStack>
-                @if (QRCode != null)
+                @if (QRCode.TryPickT0(out var qrCode, out _))
                 {
-                    <QRCode Content="@QRCode?.Content" FileName="@QRCode?.FileName" />
+                    <QRCode Content="@qrCode.Content" FileName="@qrCode.FileName" />
                 }
                 <Centered>
                     <MudStack>
@@ -98,12 +99,15 @@
     public string? Url { get; set; }
 
     [Parameter]
-    public (string Content, string FileName)? QRCode { get; set; }
+    public OneOf<(string Content, string FileName), None> QRCode { get; set; } = new None();
 
     [Parameter]
     public TimeSpan? Duration { get; set; }
+    
+    [Parameter]
+    public OneOf<(string MemberId, string ReferralCode), None> CapturePage { get; set; } = new None();
 
-    protected override void OnParametersSet()
+    protected override void OnInitialized()
     {
         if (this.Content.TryPickT0(out var content, out _))
         {
@@ -115,10 +119,10 @@
 
             this.Description = english.AppDescription;
             this.Video = english.Video;
-            this.EnglishTextToCopy = ShareableViewModel.VideoShareable(english);
+            this.EnglishTextToCopy = CapturePage.Match(info => ShareableViewModel.CapturePageShareable(english, NavigationManager, Language.English, info.MemberId, info.ReferralCode), none => ShareableViewModel.VideoShareable(english));
             this.EnglishTooltip = "Copied!";
             this.EnglishImageUrl = Constants.GetImageUrl(english.ShareableImage);
-            this.SpanishTextToCopy = ShareableViewModel.VideoShareable(spanish);
+            this.SpanishTextToCopy = CapturePage.Match(info => ShareableViewModel.CapturePageShareable(spanish, NavigationManager, Language.Spanish, info.MemberId, info.ReferralCode), none => ShareableViewModel.VideoShareable(spanish));
             this.SpanishTooltip = "Copied!";
             this.SpanishImageUrl = Constants.GetImageUrl(spanish.ShareableImage);
         }
@@ -128,7 +132,9 @@
             none => this.Duration);
 
         this.Url = this.Video.Match(
-            video => video.Video.MinimalistUrl(),
+            video => CapturePage.Match(info => Constants.GetCapturePage(content, Language.English, NavigationManager, info.MemberId, info.ReferralCode), none => video.Video.MinimalistUrl()),
             none => this.Url);
+
+        this.QRCode = CapturePage.MapT0(info => (this.Url!, $"{Content}-{info.MemberId}-{info.ReferralCode}.png"));
     }
 }

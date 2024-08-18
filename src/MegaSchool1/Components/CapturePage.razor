@@ -1,9 +1,5 @@
 ﻿@using MegaSchool1.Model
 @using MegaSchool1.Model.Repository
-@using MegaSchool1.Model.UI
-@using MegaSchool1.ViewModel
-@using OneOf
-@using OneOf.Types
 @inherits Components.ComponentBase
 @inject Constants Constants
 @inject UISettings UI
@@ -12,14 +8,8 @@
 @{
     const string DefaultMemberId = "MS1";
 
-    var mapper = new Mappers();
-    var englishDto = UI.EnglishLocale[this.Content];
     var spanishDto = UI.SpanishLocale[this.Content];
-    var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto) : new();
-    OneOf<ShareableViewModel, None> spanish = spanishDto != null ? mapper.ShareableDtoToViewModel(spanishDto) : new None();
     var memberId = TeamMember?.MemberId ?? DefaultMemberId;
-    var url = Constants.GetCapturePage(Content, Language.English, memberId, ReferralCode);
-    var qrCodeFileName = $"{Content}-{memberId}-{ReferralCode}.png";
 }
 <MudStack Spacing="3">
     @if(ShowReferralCode)
@@ -30,28 +20,11 @@
     }
     @if (spanishDto != null)
     {
-        <ShareableMultilingual  Description="@english.AppDescription"
-                                Video="@english.Video"
-                                Url="@url"
-                                QRCode="@((url, qrCodeFileName))"
-                                   
-                                EnglishTextToCopy="@ShareableViewModel.CapturePageShareable(english, NavigationManager, Language.English, memberId, ReferralCode)"
-                                EnglishTooltip="Copied!"
-                                EnglishImageUrl="@Constants.GetImageUrl(english.ShareableImage)"
-
-                                SpanishTextToCopy="@ShareableViewModel.CapturePageShareable(spanish.AsT0, NavigationManager, Language.Spanish, memberId, ReferralCode)"
-                                SpanishTooltip="Copied"
-                                SpanishImageUrl="@Constants.GetImageUrl(spanishDto.Image ?? Image.MoneyChallengeLogo)" />
+        <ShareableMultilingual Content="Content" CapturePage="(memberId, ReferralCode)"/>
     }
     else
     {
-        <Shareable  Description="@english.AppDescription"
-                    Video="@english.Video"
-                    Url="@url"
-                    TextToCopy="@ShareableViewModel.CapturePageShareable(english, NavigationManager, Language.English, memberId, ReferralCode)"
-                    QRCode="@((url, qrCodeFileName))"
-                    Tooltip="Copied!"
-                    ImageUrl="@Constants.GetImageUrl(englishDto.Image ?? Image.MoneyChallengeLogo)" />
+        <Shareable Content="Content" CapturePage="(memberId, ReferralCode)" />
     }
 </MudStack>
 

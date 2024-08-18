@@ -6,6 +6,7 @@
 @inherits Components.ComponentBase
 @inject Model.Constants Constants
 @inject UISettings UI
+@inject NavigationManager NavigationManager
 
 <MudCard Outlined="true">
     <MudCardContent>
@@ -41,7 +42,7 @@
     <MudCardActions>
         <ShareableContent TextToCopy="@TextToCopy"
                           Tooltip="@Tooltip"
-                          QRCode="@QRCode"
+                          QRCode="@(QRCode.TryPickT0(out var qrCode, out _) ? qrCode : null)"
                           ImageUrl="@ImageUrl" />
     </MudCardActions>
 </MudCard>
@@ -68,12 +69,15 @@
     public string? Url { get; set; }
 
     [Parameter]
-    public (string Content, string FileName)? QRCode { get; set; }
+    public OneOf<(string Content, string FileName), None> QRCode { get; set; } = new None();
 
     [Parameter]
     public TimeSpan? Duration { get; set; }
 
-    protected override void OnParametersSet()
+    [Parameter]
+    public OneOf<(string MemberId, string ReferralCode), None> CapturePage { get; set; } = new None();
+
+    protected override void OnInitialized()
     {
         if (this.Content.TryPickT0(out var content, out _))
         {
@@ -83,7 +87,7 @@
 
             this.Description = english.AppDescription;
             this.Video = english.Video;
-            this.TextToCopy = ShareableViewModel.VideoShareable(english);
+            this.TextToCopy = CapturePage.Match(info => ShareableViewModel.CapturePageShareable(english, NavigationManager, Language.English, info.MemberId, info.ReferralCode), none => ShareableViewModel.VideoShareable(english));
             this.Tooltip = "Copied!";
             this.ImageUrl = Constants.GetImageUrl(english.ShareableImage);
         }
@@ -93,7 +97,9 @@
             none => this.Duration);
 
         this.Url = this.Video.Match(
-            video => video.Video.MinimalistUrl(),
+            video => CapturePage.Match(info => Constants.GetCapturePage(content, Language.English, NavigationManager, info.MemberId, info.ReferralCode), none => video.Video.MinimalistUrl()),
             none => this.Url);
+
+        this.QRCode = CapturePage.MapT0(info => (this.Url!, $"{Content}-{info.MemberId}-{info.ReferralCode}.png"));
     }
 }
