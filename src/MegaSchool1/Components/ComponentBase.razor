@@ -55,21 +55,40 @@
         return nextEvent;
     }
 
-    protected async Task CopyTextToClipboardAsync(string text)
+    protected Task CopyTextToClipboardAsync(string text) => CopyTextToClipBoardAsync(text, JSRuntime);
+
+    protected static async Task CopyTextToClipBoardAsync(string text, IJSRuntime js)
     {
-        await JSRuntime.InvokeVoidAsync("clipboardCopy.copyText", text);
+        await js.InvokeVoidAsync("clipboardCopy.copyText", text);
     }
 
-    protected async Task<bool> WebShareAllowedAsync()
+    public static async Task ShareOrCopyTextAsync(string text, Image image, IJSRuntime js)
     {
-        return await JSRuntime.InvokeAsync<bool>("webshareAllowed");
+        // copy text to clipboard
+        await CopyTextToClipBoardAsync(text, js);
+
+        // open share dialog
+        var webShareAllowed = await WebShareAllowedAsync(js);
+        if (webShareAllowed)
+        {
+            await ShareMessageAsync(text, Constants.GetImageUrl(image), js);
+        }
     }
 
-    protected async Task ShareMessageAsync(string message, string imageUrl)
+    protected Task<bool> WebShareAllowedAsync() => WebShareAllowedAsync(JSRuntime);
+
+    protected static async Task<bool> WebShareAllowedAsync(IJSRuntime js)
+    {
+        return await js.InvokeAsync<bool>("webshareAllowed");
+    }
+
+    protected Task ShareMessageAsync(string message, string imageUrl) => ShareMessageAsync(message, imageUrl, JSRuntime);
+
+    protected static async Task ShareMessageAsync(string message, string imageUrl, IJSRuntime js)
     {
         const string DefaultWebShareTitle = "Mega School";
 
-        await JSRuntime.InvokeVoidAsync("webshare", DefaultWebShareTitle, message, imageUrl);
+        await js.InvokeVoidAsync("webshare", DefaultWebShareTitle, message, imageUrl);
     }
 
     protected Task ShareMessageAsync(string message, Image image) => ShareMessageAsync(message, Constants.GetImageUrl(image));

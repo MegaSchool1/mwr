@@ -35,7 +35,9 @@ public class ShareableViewModel
     public OneOf<ImageInfo[], None> Images { get; set; } = new None();
 
     public OneOf<string, None> AuxiliaryText { get; set; } = new None();
-
+ 
+    public OneOf<string, None> Metadata { get; set; } = new None();
+    
     public static string VideoShareable(ShareableViewModel shareable)
     {
         var durationEstimate = shareable.Video.Match(

@@ -56,6 +56,7 @@ public partial class Mappers
         viewModel.HideShortCodePrompt = dto.HideShortCodePrompt;
         viewModel.Images = dto.Images.Any() ? dto.Images : new None();
         viewModel.AuxiliaryText = !string.IsNullOrWhiteSpace(dto.AuxiliaryText) ? dto.AuxiliaryText : new None();
+        viewModel.Metadata = !string.IsNullOrWhiteSpace(dto.Metadata) ? dto.Metadata : new None();
 
         return viewModel;
     }

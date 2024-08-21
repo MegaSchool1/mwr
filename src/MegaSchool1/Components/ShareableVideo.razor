@@ -3,14 +3,24 @@
 @inherits Components.ComponentBase
 @inject UISettings UI
 
-@if (UI.SpanishLocale[this.Content] != null)
-{
-    <ShareableMultilingual Content="Content" />
-}
-else
-{
-    <Shareable Content="Content"/>
-}
+<MudStack Spacing="3">
+    @if (UI.SpanishLocale[this.Content] != null)
+    {
+        <ShareableMultilingual Content="Content" />
+    }
+    else
+    {
+        <Shareable Content="Content"/>
+    }
+    @if (UI.EnglishLocale[this.Content]?.Metadata != null)
+    {
+        <MudCard Outlined="true">
+            <MudCardContent>
+                <MudText>@((MarkupString)UI.EnglishLocale[this.Content]!.Metadata!)</MudText>
+            </MudCardContent>
+        </MudCard>
+    }
+</MudStack>
 @code {
     [Parameter]
     public Content Content { get; set; } = Content.Membership;

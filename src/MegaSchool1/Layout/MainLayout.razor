@@ -10,6 +10,7 @@
 @using OneOf.Types
 @using Serilog
 @using System.Web
+@using ComponentBase = MegaSchool1.Components.ComponentBase
 @implements IDisposable
 @inject NavigationManager MyNavigationManager
 @inject IJSRuntime JSRuntime
@@ -94,6 +95,14 @@ else
             <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-2 pt-2">
                 <CascadingValue Value="_appState">
                     @Body
+                    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                        <MudFab Style="position:fixed; bottom:0; left:0; padding-left:5;"
+                                Color="Color.Primary"
+                                StartIcon="@Icons.Material.Filled.Share"
+                                OnClick="@(async e => await ComponentBase.ShareOrCopyTextAsync(NavigationManager.Uri, Image.AppLogo, JSRuntime))"
+                                Size="Size.Small"  />
+                    </MudHidden>
+
                     @if (_showAppUpdatePrompt)
                     {
                         <MudFab Style="position:fixed; bottom:0; right:0; padding-right:5;"

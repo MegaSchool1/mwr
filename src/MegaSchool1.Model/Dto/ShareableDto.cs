@@ -68,4 +68,7 @@ public class ShareableDto
 
     [JsonPropertyName("alternateVideos")]
     public VideoDto[] AlternateVideos { get; set; } = [];
+
+    [JsonPropertyName("metadata")]
+    public string? Metadata { get; set; }
 }
