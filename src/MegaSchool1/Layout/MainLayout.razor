@@ -1,18 +1,14 @@
 ﻿@inherits LayoutComponentBase
-@using Blazored.LocalStorage
 @using MegaSchool1.Components
 @using MegaSchool1.Dialog
 @using MegaSchool1.Model
-@using MegaSchool1.Model.Repository
 @using MegaSchool1.Repository.Model
-@using MegaSchool1.ViewModel
 @using OneOf
 @using OneOf.Types
 @using Serilog
 @using System.Web
 @using ComponentBase = MegaSchool1.Components.ComponentBase
 @implements IDisposable
-@inject NavigationManager MyNavigationManager
 @inject IJSRuntime JSRuntime
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
@@ -379,7 +375,7 @@ else
 
     private string GetTitle()
     {
-        var page = MyNavigationManager.ToBaseRelativePath(MyNavigationManager.Uri);
+        var page = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
 
         return page switch
         {

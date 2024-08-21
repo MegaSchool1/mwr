@@ -8,6 +8,7 @@
 @using MegaSchool1.Repository.Model
 @using MegaSchool1.ViewModel
 @using MudBlazor.Utilities
+@using Serilog
 @using Content = MegaSchool1.Model.Content
 @using Shareable = MegaSchool1.Components.Shareable
 @inject UISettings UI
@@ -110,38 +111,6 @@
                               Variant="Variant.Outlined"
                               Lines="8"
                               Immediate="true"/>
-                <MudSelect T="Content" Label="Shareable" @bind-Value="_selectedShareable" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
-                    @foreach (var content in Constants.OrderedContent)
-                    {
-                        <MudSelectItem Value="@content" />
-                    }
-                </MudSelect>
-                @if (UI.EnglishLocale[_selectedShareable] != null)
-                {
-                    @if (UI.SpanishLocale[_selectedShareable] != null)
-                    {
-                        <ShareableMultilingual Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
-                                                    Duration="@(UI.EnglishLocale[_selectedShareable]?.Duration)"
-                                                    Url="@(UI.EnglishLocale[_selectedShareable]?.ShareableUrl())"
-                                                 
-                                                    EnglishTextToCopy="@($"{ShareableContentPrefix()}{Model.UI.Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]!.ShareableTitle, UI.EnglishLocale[_selectedShareable]!.MinimalistUrl(), UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
-                                                    EnglishTooltip="Copied!"
-                                                    EnglishImageUrl="@(Constants.GetImageUrl(UI.EnglishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))"
-                                                   
-                                                    SpanishTextToCopy="@($"{ShareableContentPrefix()}{Model.UI.Shareable.VideoShareable(UI.SpanishLocale[_selectedShareable]!.ShareableTitle, UI.SpanishLocale[_selectedShareable]!.MinimalistUrl(), UI.SpanishLocale[_selectedShareable]?.Duration ?? default)}")"
-                                                    SpanishTooltip="Copied"
-                                                    SpanishImageUrl="@(Constants.GetImageUrl(UI.SpanishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))" />
-                    }
-                    else
-                    {
-                        <Shareable Description="@UI.EnglishLocale[_selectedShareable]?.AppTitle"
-                                        Duration="@(UI.EnglishLocale[_selectedShareable]?.Duration)"
-                                        Url="@(UI.EnglishLocale[_selectedShareable]?.ShareableUrl())"
-                                        TextToCopy="@($"{ShareableContentPrefix()}{Model.UI.Shareable.VideoShareable(UI.EnglishLocale[_selectedShareable]!.ShareableTitle, UI.EnglishLocale[_selectedShareable]!.ShareableUrl()!, UI.EnglishLocale[_selectedShareable]?.Duration ?? default)}")"
-                                        Tooltip="Copied!"
-                                        ImageUrl="@(Constants.GetImageUrl(UI.EnglishLocale[_selectedShareable]?.Image ?? Image.MoneyChallengeLogo))" />
-                    }
-                }
             </MudStack>
         </MudForm>
     </DialogContent>
@@ -195,8 +164,8 @@
 
                 this.LoadProspects(userDataToLoad);
             },
-            notFound => { Console.WriteLine($"{this.GetType().FullName} - No user data found in local storage!"); },
-            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to load personal activity report for {teamMember.Name}{Environment.NewLine}{error.Value}"); }
+            notFound => { Log.ForContext<PersonalActivityReport<TPipeline>>().Warning($"No user data found in local storage!"); },
+            error => { Log.ForContext<PersonalActivityReport<TPipeline>>().Error($"Failed to load personal activity report for {teamMember.Name}{Environment.NewLine}{error.Value}"); }
         );
     }
 
@@ -211,12 +180,20 @@
 
 	private async Task ProspectEditVisibleChanged(bool isVisible)
 	{
-		if (!isVisible && _prospectEditDialog.ValidEdit)
+        try
         {
-            await SaveAsync();
-        }
+            if (!isVisible && _prospectEditDialog.ValidEdit)
+            {
+                await SaveAsync();
+            }
 
-		_dropContainer?.Refresh();
+            _dropContainer?.Refresh();
+
+        }
+        catch (Exception e)
+        {
+            Log.ForContext<PersonalActivityReport<TPipeline>>().Error(e.Message);
+        }
 	}
 
 	private string? ValidateProspectName(string prospectName)
@@ -244,8 +221,8 @@
 
                 _dropContainer?.Refresh();
             },
-            notFound => { Console.WriteLine($"{this.GetType().FullName} - No user data found in local storage!"); },
-            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to load user data{Environment.NewLine}{error.Value}"); }
+            notFound => { Log.ForContext<PersonalActivityReport<TPipeline>>().Warning($"No user data found in local storage!"); },
+            error => { Log.ForContext<PersonalActivityReport<TPipeline>>().Error($"Failed to load user data{Environment.NewLine}{error.Value}"); }
         );
 	}
 
@@ -297,8 +274,8 @@
 
                 await Repo.SaveUserDataAsync(found);
             },
-            notFound => { Console.WriteLine($"{this.GetType().FullName} - No user data found in local storage!"); },
-            error => { Console.WriteLine($"{this.GetType().FullName} - Failed to load user data{Environment.NewLine}{error.Value}"); }
+            notFound => { Log.ForContext<PersonalActivityReport<TPipeline>>().Warning($"No user data found in local storage!"); },
+            error => { Log.ForContext<PersonalActivityReport<TPipeline>>().Error($"Failed to load user data{Environment.NewLine}{error.Value}"); }
         );
     }
 
