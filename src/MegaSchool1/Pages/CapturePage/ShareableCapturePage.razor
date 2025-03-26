@@ -54,16 +54,7 @@
             <MudStack Row="true">
                 @foreach (var image in images)
                 {
-                    var imageUri = new Uri(image.Url!);
-                    var imageUriAbsolute = imageUri.IsAbsoluteUri ? imageUri.AbsoluteUri : $"{NavigationManager.BaseUri.TrimEnd('/')}{imageUri.OriginalString}";
-                 
-                    <a>NavigationManage.BaseUri: @NavigationManager.BaseUri</a>
-                    <br/>
-                    <a>Image URI Is Absolute: @imageUri.IsAbsoluteUri</a>
-                    <br/>
-                    <a>@imageUriAbsolute</a>
-                    <br/>
-                    <a href="@image.Href" target="_blank"><div style="max-width:300px;"><MudImage Src="@($"{NavigationManager.BaseUri.TrimEnd('/')}{imageUri.OriginalString}")" Fluid="true" /></div></a>
+                    <a href="@image.Href" target="_blank"><div style="max-width:300px;"><MudImage Src="@($"{NavigationManager.BaseUri.TrimEnd('/')}{image!.Url}")" Fluid="true" /></div></a>
                 }
             </MudStack>
         </Centered>
