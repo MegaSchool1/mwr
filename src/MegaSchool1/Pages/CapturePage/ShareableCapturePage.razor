@@ -10,6 +10,7 @@
 @using OneOf.Types
 @inject UISettings UI
 @inject Mappers Mappers
+@inject NavigationManager NavigationManager
 
 <PageTitle>@Video?.ShareableTitle</PageTitle>
 
@@ -53,7 +54,9 @@
             <MudStack Row="true">
                 @foreach (var image in images)
                 {
-                    <a href="@image.Href" target="_blank"><div style="max-width:300px;"><MudImage Src="@image.Url" Fluid="true" /></div></a>
+                    var imageUri = new Uri(image.Url!);
+                    
+                    <a href="@image.Href" target="_blank"><div style="max-width:300px;"><MudImage Src="@(imageUri.IsAbsoluteUri ? imageUri.AbsoluteUri : $"{NavigationManager.BaseUri.TrimEnd('/')}{imageUri.OriginalString}")" Fluid="true" /></div></a>
                 }
             </MudStack>
         </Centered>
