@@ -63,7 +63,7 @@
                     <br/>
                     <a>@imageUriAbsolute</a>
                     <br/>
-                    <a href="@image.Href" target="_blank"><div style="max-width:300px;"><MudImage Src="@(imageUri.IsAbsoluteUri ? imageUri.AbsoluteUri : $"{NavigationManager.BaseUri.TrimEnd('/')}{imageUri.OriginalString}")" Fluid="true" /></div></a>
+                    <a href="@image.Href" target="_blank"><div style="max-width:300px;"><MudImage Src="@($"{NavigationManager.BaseUri.TrimEnd('/')}{imageUri.OriginalString}")" Fluid="true" /></div></a>
                 }
             </MudStack>
         </Centered>
