@@ -17,7 +17,7 @@
 <MudStack Spacing="3" Style="height:100%;">
     @if (Video?.ShowHeaderImage is true && GetHeaderImageUrl().TryPickT0(out var imageUrl, out _))
     {
-        <Centered><MudImage Src="@imageUrl" Fluid="true" Width="300" /></Centered>
+        <Centered><MudImage Src="@SanitizeImageUri(imageUrl)" Fluid="true" Width="300" /></Centered>
     }
     @if (Video?.HideCapturePageVideo is not true)
     {
@@ -27,7 +27,7 @@
     }
     @if (_shareable.FlyerImage.TryPickT0(out var url, out _))
     {
-        <Centered><MudImage Src="@url.AbsoluteUri" Fluid="true" Width="300" /></Centered>
+        <Centered><MudImage Src="@SanitizeImageUri(url.OriginalString)" Fluid="true" Width="300" /></Centered>
     }
     @if (!string.IsNullOrWhiteSpace(this.Video?.DownloadUrl))
     {
@@ -54,7 +54,7 @@
             <MudStack Row="true">
                 @foreach (var image in images)
                 {
-                    <a href="@image.Href" target="_blank"><div style="max-width:300px;"><MudImage Src="@($"{NavigationManager.BaseUri.TrimEnd('/')}{image!.Url}")" Fluid="true" /></div></a>
+                    <a href="@image.Href" target="_blank"><div style="max-width:300px;"><MudImage Src="@SanitizeImageUri(image!.Url!)" Fluid="true" /></div></a>
                 }
             </MudStack>
         </Centered>
@@ -70,7 +70,7 @@
 
         @if (!string.IsNullOrWhiteSpace(@event.Image))
         {
-            <Centered><MudImage Src="@(@event.Image)" Fluid="true" Width="300" /></Centered>
+            <Centered><MudImage Src="@SanitizeImageUri(@event.Image)" Fluid="true" Width="300" /></Centered>
         }
         
         <br/>
@@ -113,6 +113,13 @@
         return imageId != null ? Constants.GetImageUrl(imageId.Value) : new None();
     }
 
+    private string SanitizeImageUri(string imageUri)
+    {
+        const string FileScheme = "file";
+        
+        return new Uri(imageUri).Scheme == FileScheme ? $"{NavigationManager.BaseUri.TrimEnd('/')}{imageUri}" : imageUri;
+    }
+    
     protected override void OnAfterRender(bool firstRender)
     {
         if (!firstRender)
