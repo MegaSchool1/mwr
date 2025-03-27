@@ -46,8 +46,13 @@ public class ShareableDto
     public bool ShowHeaderImage { get; set; } = true;
 
     [JsonPropertyName("capturePageImageId")]
+    [ConfigurationKeyName("capturePageImageId")]
     public Image? CapturePageImage { get; set; }
 
+    [JsonPropertyName("capturePageImageUrl")]
+    [ConfigurationKeyName("capturePageImageUrl")]
+    public string? CapturePageImageUrl { get; set; }
+    
     [JsonPropertyName("downloadText")]
     public string? DownloadText { get; set; }
 

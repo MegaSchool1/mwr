@@ -22,7 +22,7 @@ public class ShareableViewModel
 
     public OneOf<Image, Uri, None> ShareableImage { get; set; } = new None();
 
-    public Image CapturePageImage { get; set; } = Image.MoneyChallengeLogo;
+    public OneOf<Image, Uri, None> CapturePageImage { get; set; } = Image.MoneyChallengeLogo;
 
     public OneOf<(string Text, Uri Url), None> Download { get; set; } = new None();
 

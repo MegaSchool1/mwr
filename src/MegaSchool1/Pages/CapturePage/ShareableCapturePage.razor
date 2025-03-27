@@ -109,8 +109,11 @@
     private OneOf<string, None> GetHeaderImageUrl()
     {
         var imageId = Video?.CapturePageImage ?? Video?.Image;
-
-        return imageId != null ? Constants.GetImageUrl(imageId.Value) : new None();
+        var imageUrl = Video?.CapturePageImageUrl;
+        
+        return imageId != null
+            ? Constants.GetImageUrl(imageId.Value) 
+            : imageUrl != null ? imageUrl : new None();
     }
 
     private string SanitizeImageUri(string imageUri)
