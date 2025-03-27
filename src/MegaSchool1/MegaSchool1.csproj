@@ -8,7 +8,8 @@
 	<AssemblyVersion>1.0.0.0</AssemblyVersion>
     <BlazorWasmPrerenderingDeleteLoadingContents>true</BlazorWasmPrerenderingDeleteLoadingContents>
 	<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>
-    <BlazorWasmPrerenderingUrlPathToExplicitFetch>/prisonministry;/en/CollegeFund/MS1/megaschool/0;/en/GivBuxAccountSetup/MS1/megaschool/0;/en/JoinMWR/MS1/TIP/0;/en/JoinMWR/MS1/megaschool/0;/en/WealthWorksheet/MS1/megaschool;/en/RealEstatePros/MS1/GuyWhoKnowsTheGuy</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+    <BlazorWasmPrerenderingUrlPathToExplicitFetch>/prisonministry;/en/CollegeFund/MS1/megaschool/0;/en/GivBuxAccountSetup/MS1/megaschool/0;/en/JoinMWR/MS1/TIP/0;/en/JoinMWR/MS1/megaschool/0;/en/WealthWorksheet/MS1/megaschool;/en/RealEstatePros/MS1/GuyWhoKnowsTheGuy;/en/GivBux/MS1/megaschool/0</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+	<GHPages>true</GHPages>
   </PropertyGroup>
 
 
@@ -28,6 +29,7 @@
     <PackageReference Include="MudBlazor" Version="7.15.0" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="OneOf.SourceGenerator" Version="3.0.271" />
+    <PackageReference Include="PublishSPAforGitHubPages.Build" Version="3.0.0" />
     <PackageReference Include="QRCoder" Version="1.6.0" />
     <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
     <PackageReference Include="Serilog" Version="4.2.0" />

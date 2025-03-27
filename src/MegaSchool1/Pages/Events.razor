@@ -105,7 +105,7 @@
                 // auto-navigate to the current day if a specific anchor was not already specified
                 if (!NavigationManager.Uri.Contains("#"))
                 {
-                    NavigationManager.NavigateTo($"/events#{DateTime.Now.DayOfWeek}", true);
+                    NavigationManager.NavigateTo($"{NavigationManager.BaseUri}events#{DateTime.Now.DayOfWeek}", true);
                 }
             },
             notFound => { },
