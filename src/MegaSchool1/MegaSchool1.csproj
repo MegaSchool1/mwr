@@ -9,7 +9,8 @@
     <BlazorWasmPrerenderingDeleteLoadingContents>true</BlazorWasmPrerenderingDeleteLoadingContents>
 	<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>
     <BlazorWasmPrerenderingUrlPathToExplicitFetch>/prisonministry;/en/CollegeFund/MS1/megaschool/0;/en/GivBuxAccountSetup/MS1/megaschool/0;/en/JoinMWR/MS1/TIP/0;/en/JoinMWR/MS1/megaschool/0;/en/WealthWorksheet/MS1/megaschool;/en/RealEstatePros/MS1/GuyWhoKnowsTheGuy;/en/GivBux/MS1/megaschool/0</BlazorWasmPrerenderingUrlPathToExplicitFetch>
-	<GHPages>true</GHPages>
+    <BlazorWasmPrerenderingLocale>megaschool1</BlazorWasmPrerenderingLocale>
+    <GHPages>true</GHPages>
   </PropertyGroup>
 
 

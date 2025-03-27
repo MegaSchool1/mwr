@@ -50,7 +50,7 @@ public partial class Mappers
         viewModel.AppDescription = dto.AppTitle;
         viewModel.Title = dto.ShareableTitle;
         viewModel.ShareableImage = dto.Image ?? (!string.IsNullOrWhiteSpace(dto.ImageUrl) ? (OneOf<Image, Uri, None>)new Uri(dto.ImageUrl) : new None());
-        viewModel.CapturePageImage = dto.CapturePageImage ?? viewModel.CapturePageImage;
+        viewModel.CapturePageImage = dto.CapturePageImage ?? (!string.IsNullOrWhiteSpace(dto.CapturePageImageUrl) ? (OneOf<Image, Uri, None>)new Uri(dto.CapturePageImageUrl) : new None());
         viewModel.Download = !string.IsNullOrWhiteSpace(dto.DownloadUrl) ? (!string.IsNullOrWhiteSpace(dto.DownloadText) ? dto.DownloadText : dto.DownloadUrl, new Uri(dto.DownloadUrl)) : new None();
 
         var validPromo =
