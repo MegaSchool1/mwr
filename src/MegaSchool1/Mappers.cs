@@ -73,7 +73,6 @@ public partial class Mappers
 
         return viewModel;
     }
-
-    public static OneOf<T, None> GetNullableToOption<T>(T? value) where T : struct => value.HasValue ? value.Value : new None();
-    public static OneOf<DateTimeOffset, None> NullableToOption(DateTimeOffset? value) => GetNullableToOption(value);
+    
+    public static OneOf<DateTimeOffset, None> NullableToOption(DateTimeOffset? value) => value.ToOption();
 }

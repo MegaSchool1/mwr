@@ -14,18 +14,8 @@ public static class ExtensionMethods
         => video.Platform switch
         {
             VideoPlatform.YouTube => Constants.MinimalistYouTubeLink(video.Id!, video.Start.ToOption()),
-            VideoPlatform.Vimeo => $"{Constants.MinimalistVimeoLink(video.Id, video.Hash)}",
+            VideoPlatform.Vimeo => $"{Constants.MinimalistVimeoLink(video.Id!, video.Hash.ToOption(), video.Start.ToOption())}",
             VideoPlatform.TikTok => Constants.MinimalistTikTokLink(video.UserHandle!, video.Id),
             _ => null
-        };
-
-    public static string? ShareableUrl(this ShareableDto video) => video.MinimalistUrl() ?? video.Url;
-
-    public static string EmbeddableUrl(this ShareableDto video)
-        => video.Platform switch
-        {
-            VideoPlatform.YouTube => Constants.EmbeddableYouTubeLink(video.Id),
-            VideoPlatform.Vimeo => $"{Constants.EmbeddableVimeoLink(video.Id)}{(string.IsNullOrWhiteSpace(video.Hash) ? string.Empty : $"&h={video.Hash}")}",
-            _ => throw new Exception("No video set!")
         };
 }

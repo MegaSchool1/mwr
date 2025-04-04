@@ -1,6 +1,8 @@
-﻿@using MegaSchool1.Model
+﻿@using Foundation.Model
+@using MegaSchool1.Model
 @using OneOf
 @using OneOf.Types
+@using Foundation.UI.Components
 @inherits Components.ComponentBase
 
 <div style="display:@_display;">
@@ -8,7 +10,7 @@
         video => video.Match<RenderFragment>(
             youTube => YouTubeView(youTube, video.Start),
             tikTok => TikTokView(tikTok),
-            vimeo => VimeoView(vimeo),
+            vimeo => VimeoView(vimeo, video.Start),
             facebook => FacebookView(facebook),
             startMeeting => StartMeetingView(startMeeting),
             html5 => Html5View(html5),
@@ -47,9 +49,9 @@
         <script async src="https://www.tiktok.com/embed.js"></script>
     };
 
-    private RenderFragment VimeoView(Vimeo vimeo) => __builder =>
+    private RenderFragment VimeoView(Vimeo vimeo, OneOf<TimeSpan, None> start) => __builder =>
     {
-        <iframe src="@($"https://player.vimeo.com/video/{vimeo.VideoId}{vimeo.Hash.Match(hash => $"?h={hash}", none => string.Empty)}")" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen="" data-ready="true"></iframe>
+        <VimeoVideo Video="vimeo" Start="start"/>
     };
 
     private RenderFragment FacebookView(Facebook facebook) => __builder =>

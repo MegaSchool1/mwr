@@ -1,0 +1,14 @@
+﻿@inherits Components.ComponentBase
+@using Foundation.Model
+@using OneOf
+@using OneOf.Types
+
+<iframe src="@($"https://player.vimeo.com/video/{Video.Match(video => video.VideoId, none => string.Empty)}{Video.Match(video => video.Hash, none => new None()).Match(hash => $"?h={hash}", none => string.Empty)}{Start.Match(start => $"#t={start.TotalSeconds}s", none => string.Empty)}")" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen="" data-ready="true"></iframe>
+
+@code {
+    [Parameter]
+    public OneOf<Vimeo, None> Video { get; set; } = new None();
+    
+    [Parameter]
+    public OneOf<TimeSpan, None> Start { get; set; } = new None();
+}
