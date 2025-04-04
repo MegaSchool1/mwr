@@ -1,8 +1,10 @@
-﻿using MegaSchool1.Model.UI;
+﻿using System.Globalization;
+using MegaSchool1.Model.UI;
 using Microsoft.AspNetCore.Components;
 using OneOf.Types;
 using OneOf;
 using System.Web;
+using Foundation.Model;
 
 namespace MegaSchool1.Model;
 
@@ -155,7 +157,8 @@ public enum Content
     JoinMWR = 76,
     DebtDemo = 77,
     CollegeFund = 78,
-    BusinessLending = 79,
+    BusinessFunding = 79,
+    BusinessFundingPique = 80,
 }
 
 public enum Language
@@ -200,11 +203,6 @@ public enum ProspectVersion
 public record YouTube(string VideoId);
 public record TikTok(string UserHandle, string VideoId);
 
-/// <summary>
-///     Hash - Required for private Vimeo videos. See https://www.drupal.org/project/video_embed_field/issues/3238136
-/// </summary>
-public record Vimeo(string VideoId, OneOf<string, None> Hash);
-
 public record Facebook(string ChannelId, string VideoId);
 
 public record StartMeeting(string VideoId);
@@ -246,7 +244,29 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     public static string JoinMakeWealthReal(string username, Language language) => $"https://www.makewealthreal.com{(language == Language.Spanish ? "/es" : string.Empty)}/get-started/?member={username}";
 
     public static string MinimalistYouTubeLink(string youTubeId, OneOf<TimeSpan, None> videoStart) => $"{MinimalistVideoLinkPrefix}?y={youTubeId}{videoStart.Match(s => $"&s={s.TotalSeconds}", none => string.Empty)}";
-    public static string MinimalistVimeoLink(string vimeoId, string? hash) => $"{MinimalistVideoLinkPrefix}?v={vimeoId}{(string.IsNullOrWhiteSpace(hash) ? string.Empty : $"&h={hash}")}";
+
+    public static string MinimalistVimeoLink(string vimeoId, OneOf<string, None> hash, OneOf<TimeSpan, None> start)
+    {
+        var uriBuilder = new UriBuilder($"{MinimalistVideoLinkPrefix}?v={vimeoId}");
+        var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+        
+        // hash
+        if (hash.TryPickT0(out var h, out _))
+        {
+            query["h"] = h;
+        }
+        
+        // start time
+        if (start.TryPickT0(out var s, out _))
+        {
+            query["s"] = s.TotalSeconds.ToString();
+        }
+        
+        uriBuilder.Query = query.ToString();
+        
+        return uriBuilder.ToString().Replace(":443", string.Empty);
+    }
+        
     public static string MinimalistTikTokLink(string tikTokHandle, string videoId) => $"{MinimalistVideoLinkPrefix}?th={tikTokHandle}&t={videoId}";
     public static string EmbeddableYouTubeLink(string youTubeId) => $"{YouTubeEmbedLinkPrefix}{youTubeId}";
     public static string EmbeddableVimeoLink(string vimeoId) => $"{VimeoEmbedLinkPrefix}{vimeoId}";
@@ -254,7 +274,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     public static string MinimalistVideoLink(Video video) => video.Match(
         youTube => MinimalistYouTubeLink(youTube.VideoId, video.Start),
         tikTok => MinimalistTikTokLink(tikTok.UserHandle, tikTok.VideoId),
-        vimeo => MinimalistVimeoLink(vimeo.VideoId, vimeo.Hash.Match<string?>(h => h, none => null)),
+        vimeo => MinimalistVimeoLink(vimeo.VideoId, vimeo.Hash, video.Start),
         facebook => $"https://www.facebook.com/watch/live/?ref=watch_permalink&v={facebook.VideoId}",
         startMeeting => $"https://stme.in/{startMeeting.VideoId}",
         html5 => html5.Uri.AbsoluteUri,

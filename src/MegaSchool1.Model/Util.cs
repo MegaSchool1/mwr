@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using System.Web;
 using MegaSchool1.Model.Dto;
 using System.Text.Json;
+using Foundation.Model;
 
 namespace MegaSchool1.Model;
 
