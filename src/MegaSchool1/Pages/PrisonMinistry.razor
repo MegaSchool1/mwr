@@ -4,7 +4,7 @@
 @using MegaSchool1.Components
 @using MegaSchool1.Model
 @using Foundation.UI.Components
-@inject UISettings UI
+@inject NavigationManager NavigationManager
 
 <MudStack Spacing="6">
     <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Primary">Prison Justice Ministry</MudText>
@@ -66,10 +66,10 @@
     <Centered>
         <ResponsiveLayout>
             <MobileContent>
-                <MudText Align="Align.Center">The family trust receives ongoing funding through <ExternalLink Href="/en/GivBux/MS1/megaschool/0">GivBux</ExternalLink> (revenue sharing), the <ExternalLink Href="https://www.thirdoption.party/tax-income-bounty">TIB Bounty</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/retirement-income-bounty">RIB Bounty</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/hand-up-economy">GIB Bounty</ExternalLink>, and Learning Parties (tips).  When the incarcerated earns income from any of these, they will be paid directly to the family trust fund.</MudText>
-            </MobileContent>
+                <MudText Align="Align.Center">The family trust receives ongoing funding through <ExternalLink Href="/en/GivBux/MS1/megaschool/0">GivBux</ExternalLink> (revenue sharing), the <ExternalLink Href="https://www.thirdoption.party/tax-income-bounty">TIB Bounty</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/retirement-income-bounty">RIB Bounty</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/hand-up-economy">GIB Bounty</ExternalLink>, and <ExternalLink Href="@($"{NavigationManager.BaseUri}en/CollegeFund/MS1/megaschool/0")">Learning Parties</ExternalLink> (tips).  When the incarcerated earns income from any of these, they will be paid directly to the family trust fund.</MudText>
+            </MobileContent> 
             <DesktopContent>
-                <MudText Align="Align.Center" Style="width:50%;">The family trust receives ongoing funding through <ExternalLink Href="/en/GivBux/MS1/megaschool/0">GivBux</ExternalLink> (revenue sharing), the <ExternalLink Href="https://www.thirdoption.party/tax-income-bounty">TIB Bounty</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/retirement-income-bounty">RIB Bounty</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/hand-up-economy">GIB Bounty</ExternalLink>, and Learning Parties (tips).  When the incarcerated earns income from any of these, they will be paid directly to the family trust fund.</MudText>
+                <MudText Align="Align.Center" Style="width:50%;">The family trust receives ongoing funding through <ExternalLink Href="/en/GivBux/MS1/megaschool/0">GivBux</ExternalLink> (revenue sharing), the <ExternalLink Href="https://www.thirdoption.party/tax-income-bounty">TIB Bounty</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/retirement-income-bounty">RIB Bounty</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/hand-up-economy">GIB Bounty</ExternalLink>, and <ExternalLink Href="@($"{NavigationManager.BaseUri}en/CollegeFund/MS1/megaschool/0")">Learning Parties</ExternalLink> (tips).  When the incarcerated earns income from any of these, they will be paid directly to the family trust fund.</MudText>
             </DesktopContent>
         </ResponsiveLayout>
     </Centered>
@@ -123,7 +123,7 @@
                   </CardHeaderContent>    
               </MudCardHeader>
               <MudCardContent>
-                  <MudText>We generate funds for the family through <ExternalLink Href="/en/GivBux/MS1/megaschool/0">GivBux</ExternalLink>, community funding programs (<ExternalLink Href="https://www.thirdoption.party/tax-income-bounty">TIB</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/retirement-income-bounty">RIB</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/hand-up-economy">GIB</ExternalLink>), and Learning Parties.</MudText>
+                  <MudText>We generate funds for the family through <ExternalLink Href="/en/GivBux/MS1/megaschool/0">GivBux</ExternalLink>, community funding programs (<ExternalLink Href="https://www.thirdoption.party/tax-income-bounty">TIB</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/retirement-income-bounty">RIB</ExternalLink>, <ExternalLink Href="https://www.thirdoption.party/hand-up-economy">GIB</ExternalLink>), and <ExternalLink Href="@($"{NavigationManager.BaseUri}en/CollegeFund/MS1/megaschool/0")">Learning Parties</ExternalLink>.</MudText>
               </MudCardContent>
           </MudCard>
       };
