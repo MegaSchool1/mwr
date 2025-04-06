@@ -3,7 +3,7 @@
 [![](../../workflows/gh-pages/badge.svg)](../../actions)
 
 
-Visit site @ https://megaschool1.github.io
+Visit site @ https://megaschool1.github.io/mwr
 
 # How to Fork
 1. Fork this repository
