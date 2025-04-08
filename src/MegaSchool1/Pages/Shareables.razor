@@ -11,7 +11,7 @@
     <MudCard>
         <MudCardContent>
             <MudStack Spacing="6">
-                <MudSelect T="Content" Label="@($"Select Your Shareable {Constants.JeromePointingDownEmoji}")" @bind-Value="_selectedShareable" ToStringFunc="@(content => ShareableTitle(content))" Variant="Variant.Outlined" Style="width:300px;">
+                <MudSelect T="Content" Label="@($"Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_selectedShareable" ToStringFunc="@(content => ShareableTitle(content))" Variant="Variant.Outlined" Style="width:300px;">
                     @foreach (var content in GetSelectedContent([_selectedCategory]))
                     {
                         <MudSelectItem Value="@content" />
@@ -46,7 +46,7 @@
                 </MudCardHeader>
                 <MudCardContent>
                     <MudStack Spacing="3">
-                        <MudSelect T="Content" Label="@($"Select Your Shareable {Constants.JeromePointingDownEmoji}")" @bind-Value="_selectedInCompleteVideoLibrary" ToStringFunc="@(content => ShareableTitle(content))" Variant="Variant.Outlined" Style="width:300px;">
+                        <MudSelect T="Content" Label="@("Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_selectedInCompleteVideoLibrary" ToStringFunc="@(content => ShareableTitle(content))" Variant="Variant.Outlined" Style="width:300px;">
                             @foreach (var content in Constants.OrderedContent.Where(c => UI.EnglishLocale[c] is { Platform: not VideoPlatform.None, ContentId: not Content.Custom }).OrderBy(c => ShareableTitle(c)))
                             {
                                 <MudSelectItem Value="@content" />
@@ -122,7 +122,7 @@
                 </MudCardHeader>
                 <MudCardContent>
                     <MudStack Spacing="3">
-                        <MudSelect T="Content" Label="@($"Select a Video Shareable {Constants.JeromePointingDownEmoji}")" @bind-Value="_videoShareableContent" ToStringFunc="@(content => ShareableTitle(content))" Variant="Variant.Outlined" Style="width:300px;">
+                        <MudSelect T="Content" Label="@($"Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_videoShareableContent" ToStringFunc="@(content => ShareableTitle(content))" Variant="Variant.Outlined" Style="width:300px;">
                             @foreach (var content in Constants.OrderedContent.Where(c => UI.EnglishLocale[c] is { Platform: not VideoPlatform.None, ContentId: not Content.Custom }).OrderBy(c => ShareableTitle(c)))
                             {
                                 <MudSelectItem Value="@content" />
@@ -134,7 +134,7 @@
             </MudCard>
             <Loader Loaded="@(_capturePage.TeamMember != null)">
                 <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_capturePage.TeamMember">
-                    <MudSelect T="Content" Label="@($"Select a Capture Page {Constants.JeromePointingDownEmoji}")" @bind-Value="_capturePage.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                    <MudSelect T="Content" Label="@($"Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_capturePage.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
                         @foreach (var content in Constants.OrderedContent.Where(c => UI.EnglishLocale[c] is { Platform: not VideoPlatform.None, ContentId: not Content.Custom }))
                         {
                             <MudSelectItem Value="@content" />
@@ -298,6 +298,7 @@
     private readonly (Content Content, Category[] Categories)[] ContentCategories = 
     [
         (Content.Fundable360, [Category.Services]),
+        (Content.Fundable360Explainer, [Category.Services]),
 
         (Content.MWRPique, [Category.Corporate]),
         (Content.BusinessFundingPique, [Category.Corporate]),
@@ -317,10 +318,11 @@
         (Content.CorporateBusinessOverview, [Category.Corporate, Category.BusinessOverview]),
         (Content.NextLevelStrategies, [Category.Corporate]),
         
-        (Content.CollegeFund, [Category.MegaSchool, Category.BusinessOverview]),
+        (Content.CollegeFundingPique, [Category.MegaSchool]),
         (Content.BizOwnerPique, [Category.MegaSchool]),
         (Content.BitcoinPreview, [Category.MegaSchool]),
         (Content.PrisonMinistry, [Category.MegaSchool]),
+        (Content.CollegeFund, [Category.MegaSchool, Category.BusinessOverview]),
         
         (Content.EDMPique, [Category.ExtraDigitMovement, Category.BusinessOverview]),
         (Content.BusinessOwnerPique, [Category.ExtraDigitMovement]),

@@ -160,6 +160,8 @@ public enum Content
     BusinessFunding = 79,
     BusinessFundingPique = 80,
     Fundable360 = 81,
+    CollegeFundingPique = 82,
+    Fundable360Explainer = 83,
 }
 
 public enum Language
