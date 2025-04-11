@@ -52,6 +52,7 @@ public enum Image
     AppLogo = 19,
     MWRGivBuxLogo = 20,
     Bitcoin = 21,
+    Fundable360Logo = 22,
 }
 
 public enum Strategy
@@ -283,6 +284,8 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         html5 => html5.Uri.AbsoluteUri,
         wistia => $"{MinimalistVideoLinkPrefix}?w={wistia.VideoId}");
 
+    public static string GetImageUriOrDefault(Image image) => GetImageUri(image).Match(found => found, none => GetImageUrl(Image.MWRLogoTransparent));
+    
     public static OneOf<string, None> GetImageUri(Image image)
     {
         try
@@ -318,6 +321,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         Image.AppLogo => "/images/app-logo.png",
         Image.MWRGivBuxLogo => "/images/mwr-givbux-logo.png",
         Image.Bitcoin => "images/bitcoin.png",
+        Image.Fundable360Logo => "https://static.wixstatic.com/media/5f35ec_a147b37684694e2caa99fa301539a6ad~mv2.jpeg",
         _ => throw new Exception($"Image not found: {image}"),
     };
 
