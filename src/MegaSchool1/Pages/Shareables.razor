@@ -430,6 +430,8 @@
 
     private RenderFragment Fundable360ShareableView() => __builder =>
     {
+        var pique = "I'm licensed to provide $50K of business credit & funding w/ NO personal guarantee. If you're interested, I can connect you to my team?";
+        
         <MudCard Outlined="true">
             <MudCardContent>
                 <MudStack Spacing="3">
@@ -440,6 +442,11 @@
                             QRCode="@((Fundable360CapturePage, $"Fundable360-{AppState?.User?.MemberId}.png"))"
                             TextToCopy="@($"MWR Fundable360{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Fundable360CapturePage}")"
                             Tooltip="Copied!" />
+                    </Centered>
+                    <MudDivider/>
+                    <MudText Align="Align.Center">Pique: <br/> "@pique"</MudText>
+                    <Centered>
+                        <CopyContent TextToCopy="@pique"/>
                     </Centered>
                 </MudStack>
             </MudCardContent>
