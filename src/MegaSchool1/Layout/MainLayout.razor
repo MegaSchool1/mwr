@@ -246,7 +246,7 @@ else
             : pagePathWithoutQueryString;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override Task OnAfterRenderAsync(bool firstRender)
     {
         var runInitialization =
             // prerendering complete
@@ -256,11 +256,18 @@ else
             firstRender;
         if (!runInitialization || _componentInitialized)
         {
-            return;
+            return Task.CompletedTask;
         }
         
         Instance = this;
 
+        _ = InitializeAsync();
+        
+        return Task.CompletedTask;
+    }
+
+    private async Task InitializeAsync()
+    {
         var inIFrame = await JSRuntime.InvokeAsync<bool>("inIframe");
         Log.Information($"In iFrame: {inIFrame}");
         if (!inIFrame)
@@ -317,7 +324,7 @@ else
         _componentInitialized = true;
         _ = this.InvokeAsync(this.StateHasChanged);
     }
-
+    
     private async Task ShowInstallButtonAsync()
     {
         var maxInstallationStatusWaitTime = Task.Delay(10 * 1000);
