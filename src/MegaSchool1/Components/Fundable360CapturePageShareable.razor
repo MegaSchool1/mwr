@@ -1,0 +1,28 @@
+﻿@inherits Components.ComponentBase
+@using MegaSchool1.Model
+
+@{
+    var pique = "I'm licensed to provide $50K of business credit & funding w/ NO personal guarantee. If you're interested, I can connect you to my team?";
+}
+<MudCard Outlined="true">
+    <MudCardContent>
+        <MudStack Spacing="3">
+            <Centered><ExternalLink Href="@Constants.Fundable360CapturePage(AppState?.User?.MemberId!)">My Fundable360 Link</ExternalLink></Centered>
+            <Centered>
+                <ShareableContent
+                    ImageUrl="@Constants.GetImageUriOrDefault(Image.Fundable360LogoExtended)"
+                    QRCode="@((Constants.Fundable360CapturePage(AppState?.User?.MemberId!), $"Fundable360-{AppState?.User?.MemberId}.png"))"
+                    TextToCopy="@($"MWR Fundable360{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.Fundable360CapturePage(AppState?.User?.MemberId!)}")"
+                    Tooltip="Copied!" />
+            </Centered>
+            @if (false)
+            {
+                <MudDivider/>
+                <MudText Align="Align.Center">Pique: <br/> "@pique"</MudText>
+                <Centered>
+                    <CopyContent TextToCopy="@pique"/>
+                </Centered>
+            }
+        </MudStack>
+    </MudCardContent>
+</MudCard>
