@@ -31,7 +31,7 @@
     }
     @if (!string.IsNullOrWhiteSpace(this.Video?.DownloadUrl))
     {
-        <Centered><ExternalLink Href="@this.Video?.DownloadUrl">@(Video?.DownloadText ?? "Download")</ExternalLink></Centered>
+        <Centered><ExternalLink Href="@this.Video?.DownloadUrl?.Replace("{AgentId}", this.MemberId)">@(Video?.DownloadText ?? "Download")</ExternalLink></Centered>
     }
     @if (int.TryParse(this.Index, out var index) && _shareable.AuxiliaryTexts.TryPickT0(out var auxTexts, out _) && index < auxTexts.Length)
     {

@@ -443,11 +443,14 @@
                             TextToCopy="@($"MWR Fundable360{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Fundable360CapturePage}")"
                             Tooltip="Copied!" />
                     </Centered>
-                    <MudDivider/>
-                    <MudText Align="Align.Center">Pique: <br/> "@pique"</MudText>
-                    <Centered>
-                        <CopyContent TextToCopy="@pique"/>
-                    </Centered>
+                    @if (false)
+                    {
+                        <MudDivider/>
+                        <MudText Align="Align.Center">Pique: <br/> "@pique"</MudText>
+                        <Centered>
+                            <CopyContent TextToCopy="@pique"/>
+                        </Centered>
+                    }
                 </MudStack>
             </MudCardContent>
         </MudCard>
