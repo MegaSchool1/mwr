@@ -53,6 +53,7 @@ public enum Image
     MWRGivBuxLogo = 20,
     Bitcoin = 21,
     Fundable360Logo = 22,
+    Fundable360LogoExtended = 23,
 }
 
 public enum Strategy
@@ -163,6 +164,7 @@ public enum Content
     Fundable360 = 81,
     CollegeFundingPique = 82,
     Fundable360Explainer = 83,
+    Fundable360Training = 84,
 }
 
 public enum Language
@@ -272,8 +274,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     }
         
     public static string MinimalistTikTokLink(string tikTokHandle, string videoId) => $"{MinimalistVideoLinkPrefix}?th={tikTokHandle}&t={videoId}";
-    public static string EmbeddableYouTubeLink(string youTubeId) => $"{YouTubeEmbedLinkPrefix}{youTubeId}";
-    public static string EmbeddableVimeoLink(string vimeoId) => $"{VimeoEmbedLinkPrefix}{vimeoId}";
+    public static string Fundable360CapturePage(string agentId) => $"https://www.makewealthreal.com/fundable360/?member={agentId}";
 
     public static string MinimalistVideoLink(Video video) => video.Match(
         youTube => MinimalistYouTubeLink(youTube.VideoId, video.Start),
@@ -322,6 +323,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         Image.MWRGivBuxLogo => "/images/mwr-givbux-logo.png",
         Image.Bitcoin => "images/bitcoin.png",
         Image.Fundable360Logo => "https://static.wixstatic.com/media/5f35ec_a147b37684694e2caa99fa301539a6ad~mv2.jpeg",
+        Image.Fundable360LogoExtended => "https://static.wixstatic.com/media/5f35ec_7b5683f431f14509a63432b25ef8c1a1~mv2.jpeg",
         _ => throw new Exception($"Image not found: {image}"),
     };
 
