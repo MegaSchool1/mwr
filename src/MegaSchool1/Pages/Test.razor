@@ -2,3 +2,19 @@
 @using MegaSchool1.Components
 @using MegaSchool1.Model
 @inject UISettings UI
+
+<MudText>Stats: @_status</MudText>
+
+@code {
+    private string _status = "Prerender";
+    
+    protected override void OnAfterRender(bool firstRender)
+    {
+        _status = "Post Render";
+
+        if (firstRender)
+        {
+            _ = this.InvokeAsync(this.StateHasChanged);
+        }
+    }
+}
