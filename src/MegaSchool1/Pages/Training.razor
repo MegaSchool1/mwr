@@ -8,20 +8,7 @@
 <MudStack Spacing="3">
     <Collapsable Title="Fundable360">
         <MudStack Spacing="3">
-            <MudCard Outlined="true">
-                <MudCardContent>
-                    <MudStack Spacing="3">
-                        <Centered><ExternalLink Href="@Constants.Fundable360CapturePage(AppState?.User?.MemberId!)">My Fundable360 Link</ExternalLink></Centered>
-                        <Centered>
-                            <ShareableContent
-                                ImageUrl="@Constants.GetImageUriOrDefault(Image.Fundable360Logo)"
-                                QRCode="@((Constants.Fundable360CapturePage(AppState?.User?.MemberId!), $"Fundable360-{AppState?.User?.MemberId}.png"))"
-                                TextToCopy="@($"MWR Fundable360{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.Fundable360CapturePage(AppState?.User?.MemberId!)}")"
-                                Tooltip="Copied!" />
-                        </Centered>
-                    </MudStack>
-                </MudCardContent>
-            </MudCard>
+            <Fundable360CapturePageShareable/>
             <ShareableVideo Content="Content.Fundable360" />
             <ShareableVideo Content="Content.Fundable360Training" />
         </MudStack>
