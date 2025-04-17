@@ -27,6 +27,13 @@
         return nextEvent;
     }
 
+    protected string SanitizeImageUri(string imageUri)
+    {
+        const string FileScheme = "file";
+        
+        return new Uri(imageUri).Scheme == FileScheme ? $"{NavigationManager.BaseUri.TrimEnd('/')}{imageUri}" : imageUri;
+    }
+    
     protected Task CopyTextToClipboardAsync(string text) => CopyTextToClipBoardAsync(text, JSRuntime);
 
     protected static async Task CopyTextToClipBoardAsync(string text, IJSRuntime js)
