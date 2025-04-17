@@ -44,7 +44,6 @@
         </MudStack>
     </MudCardContent>
     <MudCardActions>
-        <MudText Align="Align.Center">ImageUrl: @ImageUrl</MudText>
         <ShareableContent TextToCopy="@TextToCopy"
                           Tooltip="@Tooltip"
                           QRCode="@(QRCode.Match(qrCode => new (string Content, string Url)?(qrCode), none => null))"
@@ -97,7 +96,7 @@
             this.ImageUrl = english.ShareableImage.Match(
                 image => SanitizeImageUri(Constants.GetImageUrl(image)),
                 imageUri => imageUri.OriginalString,
-                none => Constants.GetImageUrl(ShareableViewModel.DefaultImage));
+                none => SanitizeImageUri(Constants.GetImageUrl(ShareableViewModel.DefaultImage)));
         }
 
         this.Duration = this.Video.Match(
