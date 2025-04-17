@@ -320,7 +320,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         Image.WealthWorksheet => "https://static.wixstatic.com/media/5f35ec_f9531ebb4a2d451cac0d6dd5b588c474~mv2.png",
         Image.MoneyChallengeTransparent => "/images/72-hour-money-challenge.png",
         Image.MWRLogoTransparent => "/images/mwr-logo-transparent-221x221.png",
-        Image.GivBux => "/images/givbux.jpeg",
+        Image.GivBux => "images/givbux.jpeg",
         Image.AppLogo => "/images/app-logo.png",
         Image.MWRGivBuxLogo => "/images/mwr-givbux-logo.png",
         Image.Bitcoin => "images/bitcoin.png",
