@@ -47,7 +47,7 @@
         <ShareableContent TextToCopy="@TextToCopy"
                           Tooltip="@Tooltip"
                           QRCode="@(QRCode.Match(qrCode => new (string Content, string Url)?(qrCode), none => null))"
-                          ImageUrl="@ImageUrl" />
+                          ImageUrl="@ImageUrl"/>
     </MudCardActions>
 </MudCard>
 @code {
@@ -94,9 +94,9 @@
             this.TextToCopy = CapturePage.Match(info => ShareableViewModel.CapturePageShareable(english, NavigationManager, Language.English, info.MemberId, info.ReferralCode), none => ShareableViewModel.VideoShareable(english));
             this.Tooltip = "Copied!";
             this.ImageUrl = english.ShareableImage.Match(
-                image => Constants.GetImageUrl(image),
+                image => SanitizeImageUri(Constants.GetImageUrl(image)),
                 imageUri => imageUri.OriginalString,
-                none => Constants.GetImageUrl(ShareableViewModel.DefaultImage));
+                none => SanitizeImageUri(Constants.GetImageUrl(ShareableViewModel.DefaultImage)));
         }
 
         this.Duration = this.Video.Match(

@@ -125,15 +125,15 @@
             this.EnglishTextToCopy = CapturePage.Match(info => ShareableViewModel.CapturePageShareable(english, NavigationManager, Language.English, info.MemberId, info.ReferralCode), none => ShareableViewModel.VideoShareable(english));
             this.EnglishTooltip = "Copied!";
             this.EnglishImageUrl = english.ShareableImage.Match(
-                image => Constants.GetImageUrl(image),
+                image => SanitizeImageUri(Constants.GetImageUrl(image)),
                 imageUri => imageUri.OriginalString,
-                none => Constants.GetImageUrl(ShareableViewModel.DefaultImage));
+                none => SanitizeImageUri(Constants.GetImageUrl(ShareableViewModel.DefaultImage)));
             this.SpanishTextToCopy = CapturePage.Match(info => ShareableViewModel.CapturePageShareable(spanish, NavigationManager, Language.Spanish, info.MemberId, info.ReferralCode), none => ShareableViewModel.VideoShareable(spanish));
             this.SpanishTooltip = "Copied!";
             this.SpanishImageUrl = spanish.ShareableImage.Match(
-                image => Constants.GetImageUrl(image),
+                image => SanitizeImageUri(Constants.GetImageUrl(image)),
                 imageUri => imageUri.OriginalString,
-                none => Constants.GetImageUrl(ShareableViewModel.DefaultImage));
+                none => SanitizeImageUri(Constants.GetImageUrl(ShareableViewModel.DefaultImage)));
         }
 
         this.Duration = this.Video.Match(

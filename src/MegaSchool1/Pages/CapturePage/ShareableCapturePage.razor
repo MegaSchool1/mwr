@@ -115,13 +115,6 @@
             ? Constants.GetImageUrl(imageId.Value) 
             : imageUrl != null ? imageUrl : new None();
     }
-
-    private string SanitizeImageUri(string imageUri)
-    {
-        const string FileScheme = "file";
-        
-        return new Uri(imageUri).Scheme == FileScheme ? $"{NavigationManager.BaseUri.TrimEnd('/')}{imageUri}" : imageUri;
-    }
     
     protected override void OnAfterRender(bool firstRender)
     {
