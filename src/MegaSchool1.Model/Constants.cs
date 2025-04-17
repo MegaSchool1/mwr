@@ -166,6 +166,7 @@ public enum Content
     Fundable360Explainer = 83,
     Fundable360Training = 84,
     Taxed5Percent = 85,
+    Fundable360Pique = 86,
 }
 
 public enum Language
