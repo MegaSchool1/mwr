@@ -10,6 +10,7 @@ namespace MegaSchool1.Model;
 
 public enum Highlight
 {
+    None,
     MoneyChallenge,
     ReduceMyTaxes,
     EliminateMyDebt,

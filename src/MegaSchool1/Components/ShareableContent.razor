@@ -27,10 +27,10 @@
     public string? TextToCopy { get; set; }
 
     [Parameter]
-    public string? Tooltip { get; set; }
+    public string? Tooltip { get; set; } = "Copied!";
 
     [Parameter]
-    public string ImageUrl { get; set; } = Constants.GetImageUrl(Image.MWRGivBuxLogo);
+    public string ImageUrl { get; set; } = Constants.GetImageUrl(Image.MWRLogoTransparent);
 
     [Parameter]
     public bool ShowWebShare { get; set; } = true;

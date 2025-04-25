@@ -3,6 +3,25 @@
 @using MegaSchool1.Model
 @inject UISettings UI
 
+<MudStack Spacing="3">
+    <MudCard Outlined="true">
+        <MudCardContent>
+            <Centered><ExternalLink Href="https://user.mwrfinancial.com/home/MWRStories">MWR Stories</ExternalLink></Centered>
+        </MudCardContent>
+        <MudCardActions>
+            <ShareableContent TextToCopy="https://user.mwrfinancial.com/home/MWRStories"/>
+        </MudCardActions>
+    </MudCard>
+    <MudCard Outlined="true">
+        <MudCardContent>
+            <Centered><ExternalLink Href="https://www.facebook.com/groups/544137812673453">MWR Facebook Testimonials</ExternalLink></Centered>
+        </MudCardContent>
+        <MudCardActions>
+            <ShareableContent TextToCopy="https://www.facebook.com/groups/544137812673453"/>
+        </MudCardActions>
+    </MudCard>
+</MudStack>
+<br/>
 <MudChipSet T="Highlight" @bind-SelectedValues="_selected" SelectionMode="SelectionMode.MultiSelection" CheckMark="true">
     @foreach(var filterableValue in Highlights)
     {

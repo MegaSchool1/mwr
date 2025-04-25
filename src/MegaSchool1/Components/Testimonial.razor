@@ -5,7 +5,7 @@
 @inherits Components.ComponentBase
 @inject Mappers Mappers
 
-<div style="display:@(!this.Filter.Any() || this.Filter.All(f => this.Highlights.Contains(f)) ? "block" : "none");">
+<div style="display:@(Filter.Any() && this.Filter.All(f => this.Highlights.Contains(f)) ? "block" : "none");">
     <MudCard>
         <MudStack>
             <EmbeddedVideo Video="Video" />
