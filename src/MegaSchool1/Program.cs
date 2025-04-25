@@ -9,21 +9,6 @@ using MegaSchool1;
 using Microsoft.AspNetCore.Components;
 using Serilog;
 
-string[] foo =
-[
-    // MegaSchool1.Model.dll
-    $"{nameof(MegaSchool1)}.{nameof(MegaSchool1.Model)}.dll",
-
-    // MegaSchool1.ViewModel.dll
-    $"{nameof(MegaSchool1)}.{nameof(MegaSchool1.ViewModel)}.dll",
-
-    // Foundation.Model.dll
-    $"{nameof(Foundation)}.{nameof(Foundation.Model)}.dll",
-
-    // Foundation.UI.dll
-    $"{nameof(Foundation)}.{nameof(Foundation.UI)}.dll",
-];
-
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 // Determine whether root components are already registered via prerednered HTML contents.
