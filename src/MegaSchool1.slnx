@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/Flow/">
+    <Project Path="Flow.Model/Flow.Model.csproj" />
+    <Project Path="Flow.UI/Flow.UI.csproj" />
+  </Folder>
+  <Folder Name="/Foundation/">
+    <Project Path="Foundation.Model/Foundation.Model.csproj" />
+    <Project Path="Foundation.UI/Foundation.UI.csproj" />
+  </Folder>
+  <Folder Name="/USA/">
+    <Project Path="HorizonProxy/HorizonProxy.csproj" />
+    <Project Path="Stellar/Stellar.csproj" />
+    <Project Path="USA.Model/USA.Model.csproj" />
+    <Project Path="USA.Test/USA.Test.csproj" />
+  </Folder>
+  <Project Path="MegaSchool1.Model.Test/MegaSchool1.Model.Test.csproj" />
+  <Project Path="MegaSchool1.Model/MegaSchool1.Model.csproj" />
+  <Project Path="MegaSchool1.ViewModel/MegaSchool1.ViewModel.csproj" />
+  <Project Path="MegaSchool1/MegaSchool1.csproj" />
+</Solution>
