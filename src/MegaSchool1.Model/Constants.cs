@@ -77,6 +77,7 @@ public enum VideoPlatform
     StartMeeting = 5,
     Html5 = 6,
     Wistia = 7,
+    Rumble = 8,
 }
 
 public enum Content
@@ -169,6 +170,7 @@ public enum Content
     Taxed5Percent = 85,
     Fundable360Pique = 86,
     RealEstateProsExt = 87,
+    Podcast1 = 88,
 }
 
 public enum Language
@@ -221,8 +223,10 @@ public record Html5(Uri Uri);
 
 public record Wistia(string VideoId);
 
+public record Rumble(string VideoId);
+
 [GenerateOneOf]
-public partial class Video : OneOfBase<YouTube, TikTok, Vimeo, Facebook, StartMeeting, Html5, Wistia>
+public partial class Video : OneOfBase<YouTube, TikTok, Vimeo, Facebook, StartMeeting, Html5, Wistia, Rumble>
 {
     public OneOf<TimeSpan, None> Start { get; set; }
 }
@@ -287,7 +291,8 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         facebook => $"https://www.facebook.com/watch/live/?ref=watch_permalink&v={facebook.VideoId}",
         startMeeting => $"https://stme.in/{startMeeting.VideoId}",
         html5 => html5.Uri.AbsoluteUri,
-        wistia => $"{MinimalistVideoLinkPrefix}?w={wistia.VideoId}");
+        wistia => $"{MinimalistVideoLinkPrefix}?w={wistia.VideoId}",
+        rumble => $"https://rumble.com/embed/{rumble.VideoId}/?pub=4");
 
     public static string GetImageUriOrDefault(Image image) => GetImageUri(image).Match(found => found, none => GetImageUrl(Image.MWRLogoTransparent));
     
