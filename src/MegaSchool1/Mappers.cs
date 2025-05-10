@@ -27,6 +27,7 @@ public partial class Mappers
             VideoPlatform.StartMeeting => !string.IsNullOrWhiteSpace(dto.Id) ? (Video)new StartMeeting(dto.Id) : new None(),
             VideoPlatform.Html5 => Uri.IsWellFormedUriString(dto.Url, UriKind.Absolute) ? (Video)new Html5(new(dto.Url)) : new None(),
             VideoPlatform.Wistia => !string.IsNullOrWhiteSpace(dto.Id) ? (Video)new Wistia(dto.Id) : new None(),
+            VideoPlatform.Rumble => !string.IsNullOrWhiteSpace(dto.Id) ? (Video)new Rumble(dto.Id) : new None(),
             _ => new None()
         };
 

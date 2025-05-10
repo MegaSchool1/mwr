@@ -14,7 +14,8 @@
             facebook => FacebookView(facebook),
             startMeeting => StartMeetingView(startMeeting),
             html5 => Html5View(html5),
-            wistia => WistiaView(wistia)),
+            wistia => WistiaView(wistia),
+            rumble => RumbleView(rumble)),
         none => null))
 </div>
 
@@ -81,6 +82,11 @@
         <script charset="ISO-8859-1" src="//fast.wistia.com/assets/external/E-v1.js"></script>
     };
 
+    private RenderFragment RumbleView(Rumble rumble) => __builder =>
+    {
+      <iframe src="https://rumble.com/embed/@rumble.VideoId/?pub=4"></iframe>
+    };
+    
     protected override void OnParametersSet()
     {
         if (Video.IsT0)
