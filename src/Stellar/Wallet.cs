@@ -19,7 +19,7 @@ public class ServerSubmissionException : Exception
     {
     }
 
-    public SubmitTransactionResponse Response { get; init; }
+    public required SubmitTransactionResponse Response { get; init; }
 }
 
 public record Wallet(
@@ -28,26 +28,13 @@ public record Wallet(
     OneOf<HomeDomain, None> HomeDomain) : IDisposable
 {
     public static readonly (string Mainnet, string Testnet) PublicNetworkUrl = ("https://horizon.stellar.org", "https://horizon-testnet.stellar.org");
-    private readonly HttpClient _httpClient = new();
-
-    public OneOf<Network, None> NetworkInfo { get; private set; } = new None();
+    
+   public OneOf<Network, None> NetworkInfo { get; private set; } = new None();
 
     public bool IsInitialized { get; private set; }
 
-    private Server _server;
-    public Server Server
-    {
-        get
-        {
-            if (_server == null)
-            {
-                _server = new Server(NetworkUrl, _httpClient);
-            }
-
-            return _server;
-        }
-    }
-
+    public Lazy<Server> Server { get; } = new(() => new Server(NetworkUrl));
+    
     public OneOf<AccountResponse, None> Account { get; private set; } = new None();
 
     public void Dispose()
@@ -60,7 +47,7 @@ public record Wallet(
     }
 
     private bool _disposed;
-    protected void Dispose(bool deterministicDisposal)
+    protected virtual void Dispose(bool deterministicDisposal)
     {
         if (_disposed)
         {
@@ -70,12 +57,10 @@ public record Wallet(
         // disposed managed objects
         if (deterministicDisposal)
         {
-            if (Server != null)
+            if (Server.IsValueCreated)
             {
-                Server.Dispose();
+                Server.Value.Dispose();
             }
-
-            _httpClient.Dispose();
         }
 
         _disposed = true;
@@ -87,14 +72,15 @@ public record Wallet(
             transaction.Operations.Select(o => o.SourceAccount)
             .Union(new[] { transaction.SourceAccount })
             .Where(account => account != null)
-            .Select(account => account.AccountId)
+            .Select(account => account!.AccountId)
             .Distinct()
             .ToList();
 
         var availableSigners =
             transaction.Operations.Select(o => o.SourceAccount)
-                .Union(new[] { transaction.SourceAccount, GetSigner(submittingAccount.AccountSecretSeed).Match(keypair => keypair, none => null) })
+                .Union(new[] { transaction.SourceAccount, GetSigner(submittingAccount.AccountSecretSeed).Match(keypair => (KeyPair?)keypair, none => null) })
                 .Where(account => account != null && account.SigningKey.CanSign())
+                .Cast<IAccountId>()
                 .DistinctBy(account => account.AccountId)
                 .ToList();
 
@@ -114,7 +100,7 @@ public record Wallet(
             transaction.Operations.Select(o => o.SourceAccount)
                 .Union(new[] { transaction.SourceAccount })
                 .Where(account => account != null)
-                .Select(account => account.AccountId)
+                .Select(account => account!.AccountId)
                 .Distinct()
                 .ToList();
 
@@ -122,6 +108,7 @@ public record Wallet(
             transaction.Operations.Select(o => o.SourceAccount)
                 .Union(new[] { transaction.SourceAccount })
                 .Where(account => account != null && account.SigningKey.CanSign())
+                .Cast<IAccountId>()
                 .DistinctBy(account => account.AccountId)
                 .ToList();
 
@@ -173,13 +160,13 @@ public record Wallet(
             // submit transaction
             var server = new Server(networkUrl, httpClient);
             var response = await server.SubmitTransaction(transaction, new SubmitTransactionOptions { EnsureSuccess = true });
-            if (response.IsSuccess)
+            if (response?.IsSuccess is true)
             {
                 Console.WriteLine($"{logDescription} - Success");
             }
             else
             {
-                throw new ServerSubmissionException() { Response = response };
+                throw new ServerSubmissionException() { Response = response! };
             }
 
             return response;
@@ -206,14 +193,14 @@ public record Wallet(
             }
 
             // submit transaction
-            var response = await Server.SubmitTransaction(transaction, new SubmitTransactionOptions { EnsureSuccess = true });
-            if (response.IsSuccess)
+            var response = await Server.Value.SubmitTransaction(transaction, new SubmitTransactionOptions { EnsureSuccess = true });
+            if (response?.IsSuccess is true)
             {
                 Console.WriteLine($"{logDescription} - Success");
             }
             else
             {
-                throw new ServerSubmissionException() { Response = response };
+                throw new ServerSubmissionException() { Response = response! };
             }
 
             return response;
@@ -241,10 +228,10 @@ public record Wallet(
         var canUseCryptography = CanUseCryptography();
 
         // get account info
-        Account = await Server.Accounts.Account(canUseCryptography && AccountSecretSeed.IsT0 ? StellarDotnetSdk.Accounts.KeyPair.FromSecretSeed(AccountSecretSeed.AsT0).AccountId : accountId);
+        Account = await Server.Value.Accounts.Account(canUseCryptography && AccountSecretSeed.IsT0 ? StellarDotnetSdk.Accounts.KeyPair.FromSecretSeed(AccountSecretSeed.AsT0).AccountId : accountId);
 
         // get network info
-        NetworkInfo = new Network((await this.Server.RootAsync()).NetworkPassphrase);
+        NetworkInfo = new Network((await this.Server.Value.RootAsync()).NetworkPassphrase);
 
         // set home domain
         if (Account.MapT0(account => account.HomeDomain).TryPickT0(out var existingHomeDomain, out _))
