@@ -16,6 +16,8 @@ public static class Util
 {
     public static readonly long MaxTrustlineLimit = long.Parse(ChangeTrustOperation.MaxLimit[..ChangeTrustOperation.MaxLimit.IndexOf('.')]);
 
+    private const bool EnableFeature = false;
+    
     private const double BaseReserve = 0.5;
     private const double AccountOperationalBuffer = 3.0;
 
@@ -152,7 +154,7 @@ public static class Util
         var wrapperAsset = Asset.CreateNonNativeAsset(wrapperAssetAccount.AssetCode, wrapperAssetAccount.Issuing.AccountId);
 
         // fund distribution account with wrapped asset
-        if (false)
+        if (EnableFeature)
         {
             SendPayment(
                 wrappedAsset,
@@ -196,7 +198,7 @@ public static class Util
     public static async Task<((KeyPair Issuing, List<KeyPair> Distributions) USA, (KeyPair Issuing, List<KeyPair> Distributions) GovFundRewards)>
         CreateGovFundRewardsEnvironmentAsync(string networkUrl, string homeDomain)
     {
-        var wallet = new Wallet(networkUrl, KeyPair.Random().SecretSeed, HomeDomain.From(homeDomain));
+        var wallet = new Wallet(networkUrl, KeyPair.Random().SecretSeed!, HomeDomain.From(homeDomain));
         await Wallet.CreateAccountAsync(KeyPair.FromSecretSeed(wallet.AccountSecretSeed.AsT0), networkUrl);
         await wallet.InitializeAsync();
 

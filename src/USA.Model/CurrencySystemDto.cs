@@ -2,7 +2,7 @@
 
 public class CurrencySystemDto
 {
-    public string AssetCode { get; set; }
-    public string BaseIssuingAccount { get; set; }
-    public string[] BaseDistributionAccounts { get; set; }
+    public string AssetCode { get; set; } = null!;
+    public string BaseIssuingAccount { get; set; } = null!;
+    public string[] BaseDistributionAccounts { get; set; } = [];
 }
