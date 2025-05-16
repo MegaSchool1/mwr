@@ -66,7 +66,7 @@ public static class Protocol
         await serviceFee.InitializeAsync();
         Console.WriteLine($"Service Fee: {serviceFee.Account.AsT0.KeyPair.AccountId}:{serviceFeeAccountSeed}");
 
-        var distributor = new Wallet(networkUrl, currency.Distributions.First().SecretSeed, new None());
+        var distributor = new Wallet(networkUrl, currency.Distributions.First().SecretSeed!, new None());
         await distributor.InitializeAsync();
 
         var tx = new TransactionBuilder(distributor.Account.AsT0);
