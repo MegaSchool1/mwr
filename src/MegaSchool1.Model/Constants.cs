@@ -171,6 +171,7 @@ public enum Content
     Fundable360Pique = 86,
     RealEstateProsExt = 87,
     Podcast1 = 88,
+    MoneyChallenge2 = 89,
 }
 
 public enum Language
