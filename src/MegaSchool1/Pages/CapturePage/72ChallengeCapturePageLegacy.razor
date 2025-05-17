@@ -2,13 +2,14 @@
 @inherits CapturePageBase
 @using MegaSchool1.Components
 @using MegaSchool1.Model
+@using OneOf.Types
 
 <PageTitle>72-Hour Money Challenge!</PageTitle>
 
 <Centered><MudImage Src="/images/72-hour-money-challenge.png" /></Centered>
 <br/>
 <br/>
-<Centered><EmbeddedVideo Video="@((Video)new YouTube("LtNcG_jxW7E"))" /></Centered>
+<Centered><EmbeddedVideo Video="@((Video)new YouTube("LtNcG_jxW7E", new None()))" /></Centered>
 <br />
 <br />
 <Centered><MudText Style="color:white;" Align="Align.Center">To take the challenge or learn more, text<br /><br />'@ReferralId' to @QMDPhoneNumber</MudText></Centered>

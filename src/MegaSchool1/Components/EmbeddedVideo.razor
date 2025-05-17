@@ -3,6 +3,7 @@
 @using OneOf
 @using OneOf.Types
 @using Foundation.UI.Components
+@using Microsoft.AspNetCore.Http
 @inherits Components.ComponentBase
 
 <div style="display:@_display;">
@@ -32,8 +33,22 @@
 
     private RenderFragment YouTubeView(YouTube youTube, OneOf<TimeSpan, None> videoStart) => __builder =>
     {
+        var videoParameters = new QueryString();
+
+        // clip
+        if (youTube.Clip.TryPickT0(out var clip, out _))
+        {
+            videoParameters = videoParameters.Add("clip", clip.Id).Add("clipt", clip.Timestamp);
+        }
+        
+        // start time
+        if (videoStart.TryPickT0(out var start, out _))
+        {
+            videoParameters = videoParameters.Add("start", ((int)start.TotalSeconds).ToString());
+        }
+        
         <iframe @onload="OnVideoLoaded"
-                src="@($"{Constants.YouTubeEmbedLinkPrefix}{youTube.VideoId}{videoStart.Match(s => $"?start={s.TotalSeconds}", none => string.Empty)}")"
+                src="@($"{Constants.YouTubeEmbedLinkPrefix}{youTube.VideoId}{videoParameters.ToString()}")"
                 width="560"
                 height="315"
                 title="YouTube video player"

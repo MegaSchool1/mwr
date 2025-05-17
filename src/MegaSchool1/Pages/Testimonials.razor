@@ -1,6 +1,7 @@
 ﻿@page "/testimonials"
 @using MegaSchool1.Components
 @using MegaSchool1.Model
+@using OneOf.Types
 @inject UISettings UI
 
 <MudStack Spacing="3">
@@ -46,7 +47,7 @@
     -->
     <div style="visibility:hidden;">
         <Testimonial Description="This testimonial is a UI hack, see comment above."
-                     Video="@((Video)new YouTube("Xlg3rp0D4aI"))"
+                     Video="@((Video)new YouTube("Xlg3rp0D4aI", new None()))"
                      Highlights="@([Highlight.MoneyChallenge])"
                      Filter="@([Highlight.MoneyChallenge])" />
     </div>
