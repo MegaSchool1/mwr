@@ -199,10 +199,12 @@ public static class Util
 
     public static TimeSpan MinuteEstimate(TimeSpan duration)
     {
+        var minimumAllowableTime = TimeSpan.FromMinutes(1);
         var minutesToAdd = TimeSpan.FromMinutes(duration.Seconds >= 30 ? 1.0 : 0.0);
         var secondsToSubtract = minutesToAdd > TimeSpan.Zero ? TimeSpan.FromSeconds(duration.Seconds) : TimeSpan.Zero;
-
-        return duration.Add(minutesToAdd).Subtract(secondsToSubtract);
+        var estimatedTime = duration.Add(minutesToAdd).Subtract(secondsToSubtract);
+        
+        return estimatedTime > minimumAllowableTime ? estimatedTime : minimumAllowableTime;
     }
 
     private static readonly TimeZoneInfo[] BusinessStandardTimeZonesOrdered = [Constants.DefaultTimeZone, Constants.ChicagoTimeZone, Constants.LosAngelesTimeZone];
