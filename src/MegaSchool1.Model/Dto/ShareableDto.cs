@@ -107,5 +107,13 @@ public class ShareableDto
     [ConfigurationKeyName("hideCapturePageVideo")]
     public bool HideCapturePageVideo { get;  set; }
     
+    [JsonPropertyName("clipId")]
+    [ConfigurationKeyName("clipId")]
+    public string? ClipId { get; set; }
+    
+    [JsonPropertyName("clipTimestamp")]
+    [ConfigurationKeyName("clipTimestamp")]
+    public string? ClipTimestamp { get; set; }
+    
     public override string ToString() => $"{ContentId}";
 }
