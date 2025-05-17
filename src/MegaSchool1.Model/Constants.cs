@@ -5,6 +5,7 @@ using OneOf.Types;
 using OneOf;
 using System.Web;
 using Foundation.Model;
+using Microsoft.AspNetCore.Http;
 
 namespace MegaSchool1.Model;
 
@@ -172,6 +173,8 @@ public enum Content
     RealEstateProsExt = 87,
     Podcast1 = 88,
     MoneyChallenge2 = 89,
+    InstantPayRaise = 90,
+    LowerMyBills = 91,
 }
 
 public enum Language
@@ -213,7 +216,7 @@ public enum ProspectVersion
     v1_0_0_0 = 0,
 }
 
-public record YouTube(string VideoId);
+public record YouTube(string VideoId, OneOf<(string Id, string Timestamp), None> Clip);
 public record TikTok(string UserHandle, string VideoId);
 
 public record Facebook(string ChannelId, string VideoId);
@@ -258,7 +261,24 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     public static string MarketingDirectorUrlSpanish(string username) => $"https://www.makewealthreal.com/es/?member={username}";
     public static string JoinMakeWealthReal(string username, Language language) => $"https://www.makewealthreal.com{(language == Language.Spanish ? "/es" : string.Empty)}/get-started/?member={username}";
 
-    public static string MinimalistYouTubeLink(string youTubeId, OneOf<TimeSpan, None> videoStart) => $"{MinimalistVideoLinkPrefix}?y={youTubeId}{videoStart.Match(s => $"&s={s.TotalSeconds}", none => string.Empty)}";
+    public static string MinimalistYouTubeLink(string youTubeId, OneOf<(string Id, string Timestamp), None> clipInfo, OneOf<TimeSpan, None> videoStart)
+    {
+        var videoParameters = QueryString.Create("y", youTubeId);
+        
+        // clip
+        if (clipInfo.TryPickT0(out var clip, out _))
+        {
+            videoParameters = videoParameters.Add("clip", clip.Id).Add("clipt", clip.Timestamp);
+        }
+        
+        // start time
+        if (videoStart.TryPickT0(out var start, out _))
+        {
+            videoParameters = videoParameters.Add("s", ((int)start.TotalSeconds).ToString());
+        }
+        
+        return $"{MinimalistVideoLinkPrefix}{videoParameters.ToString()}";
+    }
 
     public static string MinimalistVimeoLink(string vimeoId, OneOf<string, None> hash, OneOf<TimeSpan, None> start)
     {
@@ -286,7 +306,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
     public static string Fundable360CapturePage(string agentId) => $"https://www.makewealthreal.com/fundable360/?member={agentId}";
 
     public static string MinimalistVideoLink(Video video) => video.Match(
-        youTube => MinimalistYouTubeLink(youTube.VideoId, video.Start),
+        youTube => MinimalistYouTubeLink(youTube.VideoId, youTube.Clip, video.Start),
         tikTok => MinimalistTikTokLink(tikTok.UserHandle, tikTok.VideoId),
         vimeo => MinimalistVimeoLink(vimeo.VideoId, vimeo.Hash, video.Start),
         facebook => $"https://www.facebook.com/watch/live/?ref=watch_permalink&v={facebook.VideoId}",
