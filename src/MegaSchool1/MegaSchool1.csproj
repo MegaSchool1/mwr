@@ -8,7 +8,8 @@
 	<AssemblyVersion>1.0.0.0</AssemblyVersion>
     <BlazorWasmPrerenderingDeleteLoadingContents>true</BlazorWasmPrerenderingDeleteLoadingContents>
 	<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>
-    <BlazorWasmPrerenderingUrlPathToExplicitFetch>/shareables;/prisonministry;/test;/en/CollegeFundingPique/MS1/SCHOLARSHIP/0;/en/CollegeFundingPique/MS1/megaschool/0;/en/Fundable360Explainer/MS1/megaschool/0;/en/BusinessFundingPique/MS1/megaschool/0;/en/Fundable360/MS1/megaschool/0;/en/CollegeFund/MS1/megaschool/0;/en/GivBuxAccountSetup/MS1/megaschool/0;/en/JoinMWR/MS1/TIP/0;/en/JoinMWR/MS1/megaschool/0;/en/WealthWorksheet/MS1/megaschool;/en/RealEstatePros/MS1/megaschool;/en/RealEstatePros/MS1/GuyWhoKnowsTheGuy;/en/GivBux/MS1/megaschool/0</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+    <BlazorWasmPrerenderingUrlPathToExplicitFetch>
+      /shareables;/prisonministry;/test;/en/CollegeFundingPique/MS1/SCHOLARSHIP/0;/en/CollegeFundingPique/MS1/megaschool/0;/en/Fundable360Explainer/MS1/megaschool/0;/en/BusinessFundingPique/MS1/megaschool/0;/en/Fundable360/MS1/megaschool/0;/en/CollegeFund/MS1/megaschool/0;/en/GivBuxAccountSetup/MS1/megaschool/0;/en/JoinMWR/MS1/TIP/0;/en/JoinMWR/MS1/megaschool/0;/en/WealthWorksheet/MS1/megaschool;/en/RealEstatePros/MS1/megaschool;/en/RealEstatePros/MS1/GuyWhoKnowsTheGuy;/en/GivBux/MS1/megaschool/0</BlazorWasmPrerenderingUrlPathToExplicitFetch>
     <GHPages>true</GHPages>
   </PropertyGroup>
 
