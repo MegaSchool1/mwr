@@ -1,0 +1,19 @@
+﻿@page "/ptest"
+
+<PageTitle>Performance Test</PageTitle>
+
+<MudText>Status: @_status</MudText>
+
+@code {
+    private string _status = "Prerender";
+    
+    protected override void OnAfterRender(bool firstRender)
+    {
+        _status = "Post Render";
+
+        if (firstRender)
+        {
+            _ = this.InvokeAsync(this.StateHasChanged);
+        }
+    }
+}

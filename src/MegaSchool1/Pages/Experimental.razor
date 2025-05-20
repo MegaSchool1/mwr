@@ -1,6 +1,7 @@
 ﻿@page "/experimental"
 @using MegaSchool1.Components
-@inject IJSRuntime JS
+@using MegaSchool1.Model
+@inject NavigationManager NavigationManager
 
 <MudStack Spacing="6">
     <Centered><MudIcon Icon="@Icons.Material.Filled.School" /><MudLink Href="/wealthmap">Mega GED</MudLink></Centered>
@@ -25,6 +26,27 @@
                         <ExternalLink Href="https://megaschool.me/GivBuxMyBaby">megaschool.me/GivBuxMyBaby</ExternalLink>
                         <ExternalLink Href="https://bit.ly/UberEatsTip">bit.ly/UberEatsTip</ExternalLink>
 
+                    </MudStack>
+                </MudCardContent>
+            </MudCard>
+            <MudCard Outlined="true">
+                <MudCardHeader>
+                    <MudText Typo="Typo.h6">Affiliate Capture Pages (KodakHussle)</MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    @{ const string AffiliateCode = "KodakHussle"; }
+                    
+                    <MudStack Spacing="3">
+                        <ExternalLink Href="@Constants.GetCapturePage(Content.RealEstateProsExt, Language.English, NavigationManager, "MS1", AffiliateCode)">Real Estate</ExternalLink>
+                        <ExternalLink Href="@Constants.GetCapturePage(Content.InstantPayRaise, Language.English, NavigationManager, "MS1", AffiliateCode)">Instant Pay Raise</ExternalLink>
+                        <ExternalLink Href="@Constants.GetCapturePage(Content.PayoffMortgage, Language.English, NavigationManager, "MS1", AffiliateCode)">Debt Elimination</ExternalLink>
+                        <ExternalLink Href="@Constants.GetCapturePage(Content.CreditRestoration, Language.English, NavigationManager, "MS1", AffiliateCode)">Personal Credit</ExternalLink>
+                        <ExternalLink Href="@Constants.GetCapturePage(Content.HealthShare, Language.English, NavigationManager, "MS1", AffiliateCode)">Health Care</ExternalLink>
+                        <ExternalLink Href="@Constants.GetCapturePage(Content.LowerMyBills, Language.English, NavigationManager, "MS1", AffiliateCode)">Lower My Bills</ExternalLink>
+                        <ExternalLink Href="@Constants.GetCapturePage(Content.MWRPique, Language.English, NavigationManager, "MS1", AffiliateCode)">Side Hustles</ExternalLink>
+                        <ExternalLink Href="@Constants.GetCapturePage(Content.PRA, Language.English, NavigationManager, "MS1", AffiliateCode)">High Yield Savings</ExternalLink>
+                        <ExternalLink Href="@Constants.GetCapturePage(Content.PreciousMetals, Language.English, NavigationManager, "MS1", AffiliateCode)">Investments</ExternalLink>
+                        <ExternalLink Href="@Constants.GetCapturePage(Content.TrustMyAssets, Language.English, NavigationManager, "MS1", AffiliateCode)">Trusts</ExternalLink>
                     </MudStack>
                 </MudCardContent>
             </MudCard>
