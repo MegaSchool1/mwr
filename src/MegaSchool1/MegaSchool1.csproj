@@ -10,7 +10,37 @@
 	<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>
     <BlazorWasmPrerenderingUrlPathToExplicitFetch>
       /shareables;/prisonministry;/test;
-      /en/CollegeFundingPique/MS1/SCHOLARSHIP/0;/en/CollegeFundingPique/MS1/megaschool/0;/en/Fundable360Explainer/MS1/megaschool/0;/en/BusinessFundingPique/MS1/megaschool/0;/en/Fundable360/MS1/megaschool/0;/en/CollegeFund/MS1/megaschool/0;/en/GivBuxAccountSetup/MS1/megaschool/0;/en/JoinMWR/MS1/TIP/0;/en/JoinMWR/MS1/megaschool/0;/en/WealthWorksheet/MS1/megaschool;/en/RealEstatePros/MS1/megaschool;/en/RealEstatePros/MS1/GuyWhoKnowsTheGuy;/en/GivBux/MS1/megaschool/0</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+
+      /en/CollegeFund/MS1/megaschool/0;
+      /en/CollegeFundingPique/MS1/SCHOLARSHIP/0;
+      /en/CollegeFundingPique/MS1/megaschool/0;
+      
+      /en/Fundable360Explainer/MS1/megaschool/0;
+      /en/BusinessFundingPique/MS1/megaschool/0;
+      /en/Fundable360/MS1/megaschool/0;
+      
+      /en/GivBux/MS1/megaschool/0;
+      /en/GivBuxAccountSetup/MS1/megaschool/0;
+      
+      /en/JoinMWR/MS1/TIP/0;
+      /en/JoinMWR/MS1/megaschool/0;
+      
+      /en/WealthWorksheet/MS1/megaschool;
+      
+      /en/RealEstatePros/MS1/megaschool;
+      /en/RealEstatePros/MS1/GuyWhoKnowsTheGuy;
+
+      /en/RealEstateProsExt/MS1/KodakHussle/0;
+      /en/InstantPayRaise/MS1/KodakHussle/0;
+      /en/PayoffMortgage/MS1/KodakHussle/0;
+      /en/CreditRestoration/MS1/KodakHussle/0;
+      /en/HealthShare/MS1/KodakHussle/0;
+      /en/LowerMyBills/MS1/KodakHussle/0;
+      /en/MWRPique/MS1/KodakHussle/0;
+      /en/PRA/MS1/KodakHussle/0;
+      /en/PreciousMetals/MS1/KodakHussle/0;
+      /en/TrustMyAssets/MS1/KodakHussle/0;
+    </BlazorWasmPrerenderingUrlPathToExplicitFetch>
     <GHPages>true</GHPages>
   </PropertyGroup>
 
