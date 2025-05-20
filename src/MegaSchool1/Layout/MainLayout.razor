@@ -186,6 +186,7 @@ else
         NavigationManager.Uri.Contains("/72/")
         || NavigationManager.Uri.Contains("/promo/", StringComparison.InvariantCultureIgnoreCase)
         || NavigationManager.Uri.Contains("/thankyou/", StringComparison.InvariantCultureIgnoreCase)
+        || NavigationManager.Uri.Contains("/ptest", StringComparison.InvariantCultureIgnoreCase)
         || Enum.GetValues<Content>().Any(content => NavigationManager.Uri.Contains($"/en/{content}/", StringComparison.InvariantCultureIgnoreCase) ||  NavigationManager.Uri.Contains($"/es/{content}/", StringComparison.InvariantCultureIgnoreCase));
 
     private bool IsCarPurchasePage => NavigationManager.Uri.Contains("/carpurchase");
@@ -261,7 +262,10 @@ else
         
         Instance = this;
 
-        _ = InitializeAsync();
+        if (!IsCapturePage)
+        {
+            _ = InitializeAsync();
+        }
         
         return Task.CompletedTask;
     }
@@ -459,6 +463,7 @@ else
             "game" => "Game",
             "prisonministry" => "Prison Ministry",
             "test" => "Test",
+            "ptest" => "Performance Test",
             _ => string.Empty
         };
     }
