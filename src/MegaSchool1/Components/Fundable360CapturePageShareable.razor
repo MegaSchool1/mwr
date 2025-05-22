@@ -15,6 +15,15 @@
                     TextToCopy="@($"MWR Fundable360{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{Constants.Fundable360CapturePage(AppState?.User?.MemberId!)}")"
                     Tooltip="Copied!" />
             </Centered>
+            <MudDivider/>
+            <Centered><ExternalLink Href="https://fundable360.com/mwr/">Fundable360 Pre-Consultation Video</ExternalLink></Centered>
+            <Centered>
+                <ShareableContent
+                    ImageUrl="@Constants.GetImageUriOrDefault(Image.Fundable360LogoExtended)"
+                    QRCode="@(("https://fundable360.com/mwr/", $"Fundable360-{AppState?.User?.MemberId}.png"))"
+                    TextToCopy="@($"Fundable360 Pre-Consultation Video{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://fundable360.com/mwr/")"
+                    Tooltip="Copied!" />
+            </Centered>
             @if (false)
             {
                 <MudDivider/>
