@@ -2,6 +2,7 @@
 using Flow.Model;
 using FluentAssertions;
 using FsCheck;
+using FsCheck.Fluent;
 using NUnit.Framework;
 
 namespace MegaSchool1.Model.Test.Game;
