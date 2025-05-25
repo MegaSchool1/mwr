@@ -1,14 +1,12 @@
 ﻿@page "/events"
-@using Blazored.LocalStorage
 @using MegaSchool1.Components
 @using MegaSchool1.Model
 @using MegaSchool1.Model.Dto
 @using MegaSchool1.ViewModel
 @using Mappers = MegaSchool1.Mappers
-@inherits Components.ComponentBase
+@inherits PageBase
 @inject UISettings UI
 @inject NavigationManager NavigationManager
-@inject ILocalStorageService LocalStorage
 @inject Repository.Repository Repo
 
 <MudStack>
@@ -45,10 +43,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (this.NavigateToProspectPageIfApplicable())
-        {
-            return;
-        }
+        PageBase.NavigateToProspectPageIfApplicable(NavigationManager, AppState);
 
         var generatedDailyEvents = new List<EventDto>();
         var eventMapper = new Mappers();
