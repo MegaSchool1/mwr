@@ -8,6 +8,8 @@
 @using Serilog
 @using System.Web
 @using Foundation.Model
+@using MegaSchool1.Pages
+@using Settings = MegaSchool1.Repository.Model.Settings
 @using ComponentBase = MegaSchool1.Components.ComponentBase
 @implements IDisposable
 @inject IJSRuntime JSRuntime
@@ -17,7 +19,7 @@
 @inject IDialogService Dialog
 @inject PersistentComponentState ApplicationState
 
-<PageTitle>@((IsCapturePage ? "MWR" : $"{GetTitle()} | Mega School 1"))</PageTitle>
+<PageTitle>@((PageBase.IsCapturePage(NavigationManager) ? "MWR" : $"{GetTitle()} | Mega School 1"))</PageTitle>
 
 <HeadContent>
     <!-- Open Graph / Facebook -->
@@ -27,14 +29,14 @@
     <meta property="twitter:url" content="@NavigationManager.Uri" />
 </HeadContent>
 
-<MudThemeProvider IsDarkMode="true" Theme="@((IsCapturePage ? _capturePageTheme : new()))" />
+<MudThemeProvider IsDarkMode="true" Theme="@((PageBase.IsCapturePage(NavigationManager) ? _capturePageTheme : new()))" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider/>
 
 <OverlayLoader/>
 
-@if (IsCapturePage)
+@if (PageBase.IsCapturePage(NavigationManager))
 {
     <div class="page mud-layout" style="background-color:rgb(22,19,44);">
 
@@ -68,7 +70,7 @@ else
             <div class="top-row px-4" style="background-color:@(Colors.Green.Default);">
                 <MudStack Row="true" Style="width:100%;">
                     <Loader Loaded="_componentInitialized" Height="Pixel.From(50)" Width="Percentage.From(100)" SkeletonType="SkeletonType.Text">
-                        @if (ProspectMode)
+                        @if (ComponentBase.ProspectMode(_appState))
                         {
                             <MudButton OnClick="ShowUsernameEditDialog" EndIcon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Primary">Set Member ID</MudButton>
                         }
@@ -181,32 +183,7 @@ else
         _thisComponentReference?.Dispose();
         persistingSubscription.Dispose();
     }
-
-    private bool IsCapturePage =>
-        NavigationManager.Uri.Contains("/72/")
-        || NavigationManager.Uri.Contains("/promo/", StringComparison.InvariantCultureIgnoreCase)
-        || NavigationManager.Uri.Contains("/thankyou/", StringComparison.InvariantCultureIgnoreCase)
-        || NavigationManager.Uri.Contains("/ptest", StringComparison.InvariantCultureIgnoreCase)
-        || Enum.GetValues<Content>().Any(content => NavigationManager.Uri.Contains($"/en/{content}/", StringComparison.InvariantCultureIgnoreCase) ||  NavigationManager.Uri.Contains($"/es/{content}/", StringComparison.InvariantCultureIgnoreCase));
-
-    private bool IsCarPurchasePage => NavigationManager.Uri.Contains("/carpurchase");
-
-    private bool IsWhitelistedProspectPage =>
-        IsCapturePage 
-        || IsCarPurchasePage
-        || NavigationManager.Uri.Contains("/trustfundmybaby")
-        || NavigationManager.Uri.Contains("/shareables")
-        || NavigationManager.Uri.Contains("/home")
-        || NavigationManager.Uri.Contains("/game")
-        || NavigationManager.Uri.Contains("/prisonministry")
-        || NavigationManager.Uri.Contains("/test")
-
-        // home page
-        || string.IsNullOrWhiteSpace(NavigationManager.ToBaseRelativePath(NavigationManager.Uri));
     
-
-    private bool ProspectMode => _appState.User == null;
-
     private void ShowUsernameEditDialog()
     {
         var parameters = new DialogParameters<EditUsernameDialog> { { x => x.AppState, _appState } };
@@ -219,32 +196,6 @@ else
     {
         _thisComponentReference = DotNetObjectReference.Create(this);
         await JSRuntime.InvokeVoidAsync("promptToInstall", _thisComponentReference);
-    }
-
-    private void NavigateToProspectPageIfApplicable()
-    {
-        if (ProspectMode && !IsWhitelistedProspectPage)
-        {
-            NavigationManager.NavigateTo("/");
-        }
-    }
-
-    private static string RemoveQueryStringByKey(string url, string key)
-    {
-        var uri = new Uri(url);
-
-        // this gets all the query string key value pairs as a collection
-        var newQueryString = HttpUtility.ParseQueryString(uri.Query);
-
-        // this removes the key if exists
-        newQueryString.Remove(key);
-
-        // this gets the page path from root without QueryString
-        string pagePathWithoutQueryString = uri.GetLeftPart(UriPartial.Path);
-
-        return newQueryString.Count > 0
-            ? String.Format("{0}?{1}", pagePathWithoutQueryString, newQueryString)
-            : pagePathWithoutQueryString;
     }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
@@ -262,7 +213,7 @@ else
         
         Instance = this;
 
-        if (!IsCapturePage)
+        if (!PageBase.IsCapturePage(NavigationManager))
         {
             _ = InitializeAsync();
         }
@@ -280,7 +231,7 @@ else
             Log.Information($"isStandalone: {isStandaloneMode}");
             if (isStandaloneMode)
             {
-                if (IsCapturePage)
+                if (PageBase.IsCapturePage(NavigationManager))
                 {
                     Log.Information($"1");
 
@@ -310,7 +261,7 @@ else
         NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
 
         // navigate to prospect page if applicable
-        this.NavigateToProspectPageIfApplicable();
+        PageBase.NavigateToProspectPageIfApplicable(NavigationManager, _appState);
         
         // start checking for updates
         _ = CheckForUpdatesAsync();
@@ -378,9 +329,9 @@ else
 
     private async void NavigationManagerOnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        this.NavigateToProspectPageIfApplicable();
+        PageBase.NavigateToProspectPageIfApplicable(NavigationManager, _appState);
 
-        if(!IsCapturePage)
+        if(!PageBase.IsCapturePage(NavigationManager))
         {
             var userData = (await Repo.GetUserDataAsync())
                 .Match(
