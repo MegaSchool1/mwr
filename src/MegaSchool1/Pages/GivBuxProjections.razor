@@ -1,7 +1,5 @@
 ﻿@page "/givbuxfundraiserprojections"
-@using MegaSchool1.Components
-@using MegaSchool1.Model
-@inherits Components.ComponentBase
+@inherits PageBase
 
 <MudStack Spacing="3">
     <MudTextField Label="Total App Referal Rewards (Monthly)" Value="@($"${_projections.Select(p => p.NumUsersMultiplier * _avgAppUserSpend * p.RewardPercentage).Sum():N0}")" Variant="Variant.Outlined" ReadOnly="true" />

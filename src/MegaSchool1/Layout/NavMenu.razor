@@ -1,12 +1,8 @@
 ﻿@using MegaSchool1.Model
 @using MegaSchool1.Components
 @inherits Components.ComponentBase
-@inject IDialogService Dialog
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
-@inject Constants Constants
-@inject UISettings UI
-@inject Repository.Repository Repo
 
 <MudNavMenu>
     <MudNavLink Href="@PageFullPath(string.Empty)" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
@@ -20,7 +16,7 @@
     <MudNavLink Href="@PageFullPath("training")" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.School">Trainings</MudNavLink>
     <MudNavLink Href="@PageFullPath("experimental")" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Science">Experimental</MudNavLink>
     <MudNavLink Href="@ValidateUrl("https://us06web.zoom.us/j/82717222362?pwd=hHfsNkYfAr0jYdPN3Z2ma4yhc2RoMV.1")" Target="@ValidateTarget("_blank")" Icon="@Icons.Material.Filled.LiveHelp">Live Support via Zoom</MudNavLink>
-    <MudNavLink OnClick="@(() => _showAppShareable = !ProspectMode)" Icon="@Icons.Material.Filled.MobileScreenShare">Share This App!</MudNavLink>
+    <MudNavLink OnClick="@(() => _showAppShareable = !ProspectMode(AppState))" Icon="@Icons.Material.Filled.MobileScreenShare">Share This App!</MudNavLink>
     <MudNavLink Href="@PageFullPath("settings")" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Settings">Settings</MudNavLink>
     <MudDivider Class="my-2" />
     <MudStack Row="true">
@@ -50,9 +46,9 @@
     private bool _updateAvailable;
     private bool _showAppShareable;
 
-    private string ValidateUrl(string url) => ProspectMode ? "#" : url;
+    private string ValidateUrl(string url) => ProspectMode(AppState) ? "#" : url;
 
-    private string ValidateTarget(string target) => ProspectMode ? "_self" : target;
+    private string ValidateTarget(string target) => ProspectMode(AppState) ? "_self" : target;
 
     private string PageFullPath(string page) => $"{NavigationManager.BaseUri}{page}";
 

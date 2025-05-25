@@ -1,0 +1,42 @@
+@using MegaSchool1.Model
+@inherits MegaSchool1.Components.ComponentBase
+@inject NavigationManager NavigationManager
+
+@code {
+    internal static bool IsCapturePage(NavigationManager navigationManager) =>
+        navigationManager.Uri.Contains("/72/")
+        || navigationManager.Uri.Contains("/promo/", StringComparison.InvariantCultureIgnoreCase)
+        || navigationManager.Uri.Contains("/thankyou/", StringComparison.InvariantCultureIgnoreCase)
+        || navigationManager.Uri.Contains("/ptest", StringComparison.InvariantCultureIgnoreCase)
+        || Enum.GetValues<Content>().Any(content => navigationManager.Uri.Contains($"/en/{content}/", StringComparison.InvariantCultureIgnoreCase) ||  navigationManager.Uri.Contains($"/es/{content}/", StringComparison.InvariantCultureIgnoreCase));
+
+    private static bool IsCarPurchasePage(NavigationManager navigationManager) => navigationManager.Uri.Contains("/carpurchase");
+
+    private static bool IsWhitelistedProspectPage(NavigationManager navigationManager) =>
+        IsCapturePage(navigationManager)
+        || IsCarPurchasePage(navigationManager)
+        || navigationManager.Uri.Contains("/trustfundmybaby")
+        || navigationManager.Uri.Contains("/shareables")
+        || navigationManager.Uri.Contains("/home")
+        || navigationManager.Uri.Contains("/game")
+        || navigationManager.Uri.Contains("/prisonministry")
+        || navigationManager.Uri.Contains("/test")
+
+        // home page
+        || string.IsNullOrWhiteSpace(navigationManager.ToBaseRelativePath(navigationManager.Uri));
+    
+    internal static void NavigateToProspectPageIfApplicable(NavigationManager navigationManager, AppState? appState)
+    {
+        if (ProspectMode(appState) && !IsWhitelistedProspectPage(navigationManager))
+        {
+            navigationManager.NavigateTo(navigationManager.BaseUri);
+        }
+    }
+    
+    protected override void OnInitialized()
+    {
+        NavigateToProspectPageIfApplicable(NavigationManager, AppState);
+        
+        base.OnInitialized();
+    }
+}

@@ -9,26 +9,13 @@
 @inherits Foundation.UI.Components.ComponentBase
 
 @code {
+    protected static readonly MudTheme Theme = new();
+
     [CascadingParameter]
     public AppState? AppState { get; set; }
 
-    protected MudTheme Theme { get; } = new();
-    private bool IsCarPurchasePage => NavigationManager.Uri.Contains("/carpurchase");
-
-    protected bool NavigateToProspectPageIfApplicable()
-    {
-        if (!IsCarPurchasePage && ProspectMode)
-        {
-            NavigationManager.NavigateTo("/");
-
-            return true;
-        }
-
-        return false;
-    }
-
-    protected bool ProspectMode => AppState?.User == null;
-
+    public static bool ProspectMode(AppState? appState) => appState?.User == null;
+    
     public static async Task ShareOrCopyTextAsync(string text, Image image, IJSRuntime js)
     {
         // copy text to clipboard
