@@ -55,7 +55,7 @@
     private bool _dataValid;
 
     [CascadingParameter] 
-    private MudDialogInstance MudDialog { get; set; }
+    private IMudDialogInstance MudDialog { get; set; }
 
     [Parameter]
     public string Label { get; set; } = "QMD Member ID";
