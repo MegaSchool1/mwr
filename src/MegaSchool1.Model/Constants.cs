@@ -175,6 +175,7 @@ public enum Content
     MoneyChallenge2 = 89,
     InstantPayRaise = 90,
     LowerMyBills = 91,
+    TrustPodcast1 = 92,
 }
 
 public enum Language
