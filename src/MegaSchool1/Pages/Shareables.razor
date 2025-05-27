@@ -4,6 +4,7 @@
 @using MegaSchool1.Model.Repository
 @using Content = MegaSchool1.Model.Content
 @using Shareable = MegaSchool1.Components.Shareable
+@using Foundation.UI.Components
 @inherits PageBase
 @inject UISettings UI
 
@@ -126,13 +127,33 @@
                 </MudCardHeader>
                 <MudCardContent>
                     <MudStack Spacing="3">
-                        <MudSelect T="Content" Label="@($"Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_videoShareableContent" ToStringFunc="@(content => ShareableTitle(content))" Variant="Variant.Outlined" Style="width:300px;">
-                            @foreach (var content in Constants.OrderedContent.Where(c => UI.EnglishLocale[c] is { Platform: not VideoPlatform.None, ContentId: not Content.Custom }).OrderBy(c => ShareableTitle(c)))
+                        @{
+                            IEnumerable<Content> GetVideoShareables(IEnumerable<Content> shareables) => shareables.Where(c => UI.EnglishLocale[c] is { Platform: not VideoPlatform.None, ContentId: not Content.Custom });
+
+                            var selectedVideoShareables = GetVideoShareables(GetSelectedContent([_selectedVideoShareableCategory])).ToArray();
+                            if (!selectedVideoShareables.Any())
                             {
-                                <MudSelectItem Value="@content" />
+                                selectedVideoShareables = GetVideoShareables(Constants.OrderedContent).OrderBy(c => ShareableTitle(c)).ToArray();
+                            }
+
+                            if (!selectedVideoShareables.Contains(_selectedVideoShareable))
+                            {
+                                _selectedVideoShareable = selectedVideoShareables.First();
+                            }
+                        }
+                        <MudSelect T="Content" Label="@($"Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_selectedVideoShareable" ToStringFunc="@(content => ShareableTitle(content))" Variant="Variant.Outlined" Style="width:300px;">
+                            @foreach (var content in selectedVideoShareables)
+                            {
+                                <MudSelectItem Value="@content"/>
                             }
                         </MudSelect>
-                        @ContentView(_videoShareableContent)
+                        @ContentView(_selectedVideoShareable)
+                        <Centered>
+                            <SingleChipSelection TSelection="Category"
+                                                 @bind-Selected="_selectedVideoShareableCategory"
+                                                 DefaultSelection="Category.All"
+                                                 Descriptions="VideoShareableCategories"/>
+                        </Centered>
                     </MudStack>
                 </MudCardContent>
             </MudCard>
@@ -276,6 +297,12 @@
         (Category.GivBux, "GivBux"),
         (Category.Training, "Training"),
     ];
+
+    private static readonly (Category Category, string Description)[] VideoShareableCategories =
+    [
+        (Category.All, "All"),
+        (Category.Trusts, "Trusts"),
+    ];
     
     private enum Category
     {
@@ -290,10 +317,13 @@
         GivBux = 8,
         Training = 9,
         Ark = 10,
+        Trusts = 11,
+        All = 100
     }
 
     private IReadOnlyCollection<Category> _selectedCategories = [Category.Corporate];
     private Category _selectedCategory = Category.Corporate;
+    private Category _selectedVideoShareableCategory = Category.None;
     
     private readonly ShareableViewModel _megaSchoolEssentials = new() { Content = Content.GivBux };
     private readonly ShareableViewModel _edmEssentials = new() { Content = Content.EDMPique };
@@ -345,6 +375,7 @@
 
         (Content.HBBTaxBenefits, [Category.Ark]),
 
+        // services
         (Content.EliminateMyDebtExplainer, [Category.Services]),
         (Content.InstantPayRaise, [Category.Services]),
         (Content.LowerMyBills, [Category.Services]),
@@ -362,10 +393,10 @@
         (Content.DCAExplainer1, [Category.Services]),
         (Content.PRA, [Category.Services]),
         (Content.PreciousMetals, [Category.Services]),
-        (Content.TrustMyAssets, [Category.Services]),
-        (Content.TrustPodcast1, [Category.Services]),
-        (Content.ProtectMyAssets, [Category.Services]),
-        (Content.StructureMyLegacy, [Category.Services]),
+        (Content.TrustPodcast1, [Category.Services, Category.Trusts]),
+        (Content.TrustMyAssets, [Category.Services, Category.Trusts]),
+        (Content.ProtectMyAssets, [Category.Services, Category.Trusts]),
+        (Content.StructureMyLegacy, [Category.Services, Category.Trusts]),
         (Content.InvestmentsExplainer, [Category.Services]),
 
         (Content.GivBux, [Category.GivBux]),
@@ -380,11 +411,18 @@
         (Content.DebtDemo, [Category.Training]),
         (Content.MembershipOrientation, [Category.Training]),
         (Content.FastStart, [Category.Training]),
+        
+        // trusts
+        (Content.TrustBenefits, [Category.Trusts]),
+        (Content.TrustJurisdiction, [Category.Trusts]),
+        (Content.TrustDefined, [Category.Trusts]),
+        (Content.Taxed5Percent, [Category.Trusts]),
+        (Content.EstatePlanning, [Category.Trusts]),
     ];
-
+    
     private readonly Content[] Fundable360Shareables = [Content.Fundable360, Content.Fundable360Explainer, Content.BusinessFundingPique, Content.CollegeFundingPique, Content.CollegeFund];
     
-    private Content _videoShareableContent = Content.MoneyChallenge;
+    private Content _selectedVideoShareable = Content.MoneyChallenge;
     private TeamMember? _selectedTeamMemberMarketingDirector;
     private TeamMember? _selectedTeamMemberWebsite;
     private Content _selectedShareable = Content.MWRPique;
@@ -393,7 +431,7 @@
     private IEnumerable<Content> GetSelectedContent(Category[] selectedCategories)
     {
         return ContentCategories
-            .Where(c => !selectedCategories.Any() || !selectedCategories.Except(c.Categories).Any())
+            .Where(c => selectedCategories.Contains(Category.All) || !selectedCategories.Any() || !selectedCategories.Except(c.Categories).Any())
             .Select(c => c.Content);
     }
     

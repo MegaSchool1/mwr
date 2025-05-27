@@ -1,0 +1,42 @@
+﻿@typeparam TSelection where TSelection : struct, Enum
+@inherits Components.ComponentBase
+@using MudBlazor
+
+<MudChipSet T="TSelection" @bind-SelectedValue="Selected" SelectionMode="SelectionMode.SingleSelection" CheckMark="true">
+    @foreach(var filterableValue in Descriptions!)
+    {
+        <MudChip Value="@filterableValue.Selection" Text="@(filterableValue.Description)" Color="Color.Primary" SelectedColor="Color.Secondary" />
+    }
+</MudChipSet>
+
+@code {
+    [Parameter]
+    public TSelection DefaultSelection { get; set; }
+
+    [Parameter]
+    public TSelection Selected
+    {
+        get;
+        set
+        {
+            if (!field.Equals(value))
+            {
+                field = value;
+                _ = SelectedChanged.InvokeAsync(field);
+            }
+        }
+    }
+
+    [Parameter]
+    public EventCallback<TSelection> SelectedChanged { get; set; }
+    
+    [Parameter]
+    public (TSelection Selection, string Description)[]? Descriptions { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        this.Selected = this.DefaultSelection;
+
+        this.Descriptions ??= Enum.GetValues<TSelection>().Select(selectionOption => (selectionOption, selectionOption.ToString())).ToArray();
+    }
+}
