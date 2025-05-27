@@ -16,7 +16,7 @@
             startMeeting => StartMeetingView(startMeeting),
             html5 => Html5View(html5),
             wistia => WistiaView(wistia),
-            rumble => RumbleView(rumble)),
+            rumble => RumbleView(rumble, video.Start)),
         none => null))
 </div>
 
@@ -97,9 +97,9 @@
         <script charset="ISO-8859-1" src="//fast.wistia.com/assets/external/E-v1.js"></script>
     };
 
-    private RenderFragment RumbleView(Rumble rumble) => __builder =>
+    private RenderFragment RumbleView(Rumble rumble, OneOf<TimeSpan, None> start) => __builder =>
     {
-      <iframe src="https://rumble.com/embed/@rumble.VideoId/?pub=4"></iframe>
+        <iframe src="https://rumble.com/embed/@rumble.VideoId/@start.Match(startTime => $"?start={((int)startTime.TotalSeconds).ToString()}", none => string.Empty)"></iframe>
     };
     
     protected override void OnParametersSet()
