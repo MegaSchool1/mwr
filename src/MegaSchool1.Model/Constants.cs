@@ -175,6 +175,11 @@ public enum Content
     MoneyChallenge2 = 89,
     InstantPayRaise = 90,
     LowerMyBills = 91,
+    TrustPodcast1 = 92,
+    TrustBenefits = 93,
+    TrustJurisdiction = 94,
+    TrustDefined = 95,
+    EstatePlanning = 96,
 }
 
 public enum Language
@@ -313,7 +318,7 @@ public class Constants(UISettings ui, NavigationManager navigationManager)
         startMeeting => $"https://stme.in/{startMeeting.VideoId}",
         html5 => html5.Uri.AbsoluteUri,
         wistia => $"{MinimalistVideoLinkPrefix}?w={wistia.VideoId}",
-        rumble => $"https://rumble.com/embed/{rumble.VideoId}/?pub=4");
+        rumble => $"https://rumble.com/embed/{rumble.VideoId}/{video.Start.Match(startTime => $"?start={((int)startTime.TotalSeconds).ToString()}", none => string.Empty)}");
 
     public static string GetImageUriOrDefault(Image image) => GetImageUri(image).Match(found => found, none => GetImageUrl(Image.MWRLogoTransparent));
     
