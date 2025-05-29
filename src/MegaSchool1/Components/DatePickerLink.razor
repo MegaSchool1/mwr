@@ -10,18 +10,17 @@
 
     [Parameter] public string Text { get; set; } = "Change Date";
 
-    private DateTime? _date;
     [Parameter]
     public DateTime? Date
     {
-        get => _date;
+        get;
         set
         {
-            if (value != _date)
+            if (value != field)
             {
-                _date = value;
+                field = value;
 
-                _ = DateChanged.InvokeAsync(_date);
+                _ = DateChanged.InvokeAsync(field);
             }
         }
     }

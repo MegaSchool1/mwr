@@ -194,9 +194,8 @@ public class Repository(ILocalStorageService localStorage, HttpClient http)
 
             return qmd?.Email != null ? (OneOf<QMD, None>)qmd : default(None);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            ;
         }
 
         return default(None);

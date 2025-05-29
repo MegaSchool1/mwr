@@ -20,7 +20,7 @@
                             <MudStack Row="true">
                                 <MudContainer Style="width:75%;">
                                     <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.MegaSchool.WatchAppInstallInstructions" Validation="@SaveAndValidateTrueAsync()" Size="Size.Small" Color="Color.Primary">
-                                        <Centered><MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => Dialog.Show<AppInstallInstructionsDialog>("72-Hour Money Challenge", new(), new() { NoHeader = true }))">Watch Instructions</MudButton></Centered>
+                                        <Centered><MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => Dialog.ShowAsync<AppInstallInstructionsDialog>("72-Hour Money Challenge", new(), new() { NoHeader = true }))">Watch Instructions</MudButton></Centered>
                                     </MudCheckBox>
                                     <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.MegaSchool.InstallApp" Validation="@SaveAndValidateTrueAsync()" Size="Size.Small" Color="Color.Primary">
                                         Install App

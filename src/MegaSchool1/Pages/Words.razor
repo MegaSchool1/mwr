@@ -1,4 +1,5 @@
 ﻿@page "/words"
+@using Foundation.UI.Components
 @using MegaSchool1.Components
 @using MegaSchool1.Dialog
 @using MegaSchool1.Model
@@ -297,11 +298,11 @@
 
 <MudDialog @bind-Visible="_signUpDialog.Show">
     <DialogContent>
-        <TeamMemberPicker Description="Sign Up Under:" @bind-SelectedTeamMember="_selectedTeamMember" User="AppState.User">
+        <TeamMemberPicker Description="Sign Up Under:" @bind-SelectedTeamMember="_selectedTeamMember" User="AppState?.User">
             <Shareable Description="Take the 72-Hour Money Challenge!"
-                            Url="@_signUpDialog.Url(_selectedTeamMember?.MemberId)"
+                            Url="@_signUpDialog.Url(_selectedTeamMember?.MemberId!)"
                             Tooltip="Shareable copied!"
-                            TextToCopy="@($"Take the 72-Hour Money Challenge!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{_signUpDialog.Url(_selectedTeamMember?.MemberId)}")"
+                            TextToCopy="@($"Take the 72-Hour Money Challenge!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}{_signUpDialog.Url(_selectedTeamMember?.MemberId!)}")"
                             ImageUrl="@Constants.GetImageUrl(Image.MoneyChallengeLogo)" />
         </TeamMemberPicker>
     </DialogContent>

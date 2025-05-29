@@ -38,16 +38,15 @@
     [CascadingParameter] 
     private IMudDialogInstance? MudDialog { get; set; }
 
-    private AppState? _appState;
     [Parameter]
     public AppState? AppState
     {
-        get => _appState;
+        get;
         set
         {
             _username = value?.User?.MemberId;
 
-            _appState = value;
+            field = value;
         }
     }
 
