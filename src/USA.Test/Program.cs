@@ -1,4 +1,6 @@
-﻿using OneOf.Types;
+﻿using FakeItEasy;
+using Microsoft.FeatureManagement;
+using OneOf.Types;
 using Stellar;
 using StellarDotnetSdk.Accounts;
 using StellarDotnetSdk.Transactions;
@@ -18,6 +20,13 @@ public class Program
     [Test]
     public async Task UniversalBasicIncome()
     {
-        await Protocol.UniversalBasicIncomeAsync();
+        // arrange
+        var featureManager = A.Fake<IFeatureManager>();
+        
+        A.CallTo(() => featureManager.IsEnabledAsync(A<string>.Ignored))
+            .Returns(false);
+        
+        // act
+        await Protocol.UniversalBasicIncomeAsync(featureManager);
     }
 }

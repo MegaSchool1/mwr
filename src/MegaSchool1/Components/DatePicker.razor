@@ -31,19 +31,17 @@
 @code {
     [Parameter] public string Title { get; set; } = "My Date & Time Picker";
 
-    private DateTime? _value;
-
     [Parameter]
     public DateTime? Value
     {
-        get => _value;
+        get;
         set
         {
-            if (value != _value)
+            if (value != field)
             {
-                _value = value;
+                field = value;
 
-                _ = ValueChanged.InvokeAsync(_value);
+                _ = ValueChanged.InvokeAsync(field);
             }
         }
     }

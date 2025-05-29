@@ -84,7 +84,7 @@ else
                             else
                             {
                                 <MudStack Row="true">
-                                    <MudText Style="color:white;">Hello @(_appState.User.Name) <MudIconButton OnClick="ShowUsernameEditDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
+                                    <MudText Style="color:white;">Hello @(_appState.User?.Name) <MudIconButton OnClick="ShowUsernameEditDialog" Icon="@Icons.Material.Filled.Edit" /></MudText>
                                 </MudStack>
                             }
                         }
@@ -184,12 +184,12 @@ else
         persistingSubscription.Dispose();
     }
     
-    private void ShowUsernameEditDialog()
+    private async void ShowUsernameEditDialog()
     {
         var parameters = new DialogParameters<EditUsernameDialog> { { x => x.AppState, _appState } };
         var options = new DialogOptions() { NoHeader = true };
 
-        Dialog.Show<EditUsernameDialog>("72-Hour Money Challenge", parameters, options);
+        await Dialog.ShowAsync<EditUsernameDialog>("72-Hour Money Challenge", parameters, options);
     }
 
     protected async Task OnInstallClick()
@@ -254,8 +254,8 @@ else
                 
                 return settings;
             },
-            async notFound => notFound,
-            async error => error
+            notFound => Task.FromResult(OneOf<Settings, None, Error<string>>.FromT1(notFound)),
+            error => Task.FromResult(OneOf<Settings, None, Error<string>>.FromT2(error))
         );
 
         NavigationManager.LocationChanged += NavigationManagerOnLocationChanged;
