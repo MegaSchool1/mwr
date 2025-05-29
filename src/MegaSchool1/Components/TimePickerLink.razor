@@ -10,18 +10,17 @@
 
     [Parameter] public string Text { get; set; } = "Change Time";
 
-    private TimeSpan? _time;
     [Parameter]
     public TimeSpan? Time
     {
-        get => _time;
+        get;
         set
         {
-            if (value != _time)
+            if (value != field)
             {
-                _time = value;
+                field = value;
 
-                _ = TimeChanged.InvokeAsync(_time);
+                _ = TimeChanged.InvokeAsync(field);
             }
         }
     }

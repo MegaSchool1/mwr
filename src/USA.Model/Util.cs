@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.FeatureManagement;
+using Newtonsoft.Json;
 using OneOf;
 using OneOf.Types;
 using Serilog;
@@ -77,11 +78,12 @@ public static class Util
         KeyPair wrappedAssetFunder,
         double liquidityVolume,
         (KeyPair WrapperAssetIssuer, KeyPair WrapperAssetDistribution, Wallet XlmFunder) accounts,
-        string[] rivalCoinAssetCodes)
+        string[] rivalCoinAssetCodes,
+        IFeatureManager featureManager)
     {
         foreach (var rivalCoinAssetCode in rivalCoinAssetCodes)
         {
-            await CreateRivalCoinInternalAsync(wrappedAsset, wrappedAssetFunder, liquidityVolume, rivalCoinAssetCode, accounts);
+            await CreateRivalCoinInternalAsync(wrappedAsset, wrappedAssetFunder, liquidityVolume, rivalCoinAssetCode, accounts, featureManager);
         }
     }
 
@@ -91,9 +93,10 @@ public static class Util
         double liquidityVolume,
         string wrapperAssetCode,
         (KeyPair Issuing, KeyPair Distribution) wrapperAccounts,
-        Wallet wallet)
+        Wallet wallet,
+        IFeatureManager featureManager)
     {
-        await CreateRivalCoinInternalAsync(wrappedAsset, wrappedAssetFunder, liquidityVolume, wrapperAssetCode, (wrapperAccounts.Issuing, wrapperAccounts.Distribution, wallet));
+        await CreateRivalCoinInternalAsync(wrappedAsset, wrappedAssetFunder, liquidityVolume, wrapperAssetCode, (wrapperAccounts.Issuing, wrapperAccounts.Distribution, wallet), featureManager);
     }
 
     private static async Task CreateRivalCoinInternalAsync(
@@ -101,7 +104,8 @@ public static class Util
         KeyPair wrappedAssetFunder,
         double liquidityVolume,
         string wrapperAssetCode,
-        (KeyPair WrapperAssetIssuing, KeyPair WrapperAssetDistribution, Wallet XlmFunder) accounts)
+        (KeyPair WrapperAssetIssuing, KeyPair WrapperAssetDistribution, Wallet XlmFunder) accounts,
+        IFeatureManager featureManager)
     {
         var transactionBuilder = new TransactionBuilder(accounts.XlmFunder.Account.AsT0);
 
@@ -111,7 +115,8 @@ public static class Util
             wrappedAsset,
             wrappedAssetFunder,
             liquidityVolume.ToString(),
-            (accounts.WrapperAssetIssuing, accounts.WrapperAssetDistribution, wrapperAssetCode));
+            (accounts.WrapperAssetIssuing, accounts.WrapperAssetDistribution, wrapperAssetCode),
+            featureManager);
 
         var response = await accounts.XlmFunder.SubmitTransactionAsync(transactionBuilder.Build(), true, $"(1) Create Rival Coins, (2) fund {wrappedAsset.Code()}, (3) fund Rival Coins, (4) create orders");
         if (response?.IsSuccess is null or false)
@@ -149,12 +154,13 @@ public static class Util
         Asset wrappedAsset,
         KeyPair wrappedAssetFunder,
         string liquidityVolume,
-        (KeyPair Issuing, KeyPair Distribution, string AssetCode) wrapperAssetAccount)
+        (KeyPair Issuing, KeyPair Distribution, string AssetCode) wrapperAssetAccount,
+        IFeatureManager featureManager)
     {
         var wrapperAsset = Asset.CreateNonNativeAsset(wrapperAssetAccount.AssetCode, wrapperAssetAccount.Issuing.AccountId);
 
         // fund distribution account with wrapped asset
-        if (EnableFeature)
+        if (featureManager.IsEnabledAsync("FeatureFlags:Experimental").Result)
         {
             SendPayment(
                 wrappedAsset,
@@ -183,7 +189,7 @@ public static class Util
                 wrapperAssetAccount.Distribution));
 
         // buy back wrapper asset
-        if (false)
+        if (featureManager.IsEnabledAsync("FeatureFlags:Experimental").Result)
         {
             transactionBuilder.AddOperation(
                 new CreatePassiveSellOfferOperation(

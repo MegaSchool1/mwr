@@ -41,12 +41,12 @@
                             {
                                 <MudIconButton Icon="@Icons.Material.Filled.Edit"
                                                Color="Color.Primary"
-                                               OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("Edit Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.TeamMember, _selectedTeamMember }, { x => x.OnSave, OnTeamMemberEdited } }))" />
+                                               OnClick="@(() => Dialog.ShowAsync<TeamMemberEditDialog>("Edit Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.TeamMember, _selectedTeamMember }, { x => x.OnSave, OnTeamMemberEdited } }))" />
                                 <MudIconButton OnClick="@(e => OnDeleteTeamMember(_selectedTeamMember))" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
                             }
                             <MudIconButton Icon="@Icons.Material.Filled.PersonAdd"
                                            Color="Color.Primary"
-                                           OnClick="@(() => Dialog.Show<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
+                                           OnClick="@(() => Dialog.ShowAsync<TeamMemberEditDialog>("New Team Member", new DialogParameters<TeamMemberEditDialog>() { { x => x.OnSave, OnTeamMemberAdded } }))" />
                         </MudStack>
                     </MudCardContent>
                 </MudCard>
@@ -144,11 +144,11 @@
                var data = await reader.ReadToEndAsync();
                var deserializedData = JsonSerializer.Deserialize<GlobalData>(data);
 
-               await Repo.SaveSettingsAsync(deserializedData.Settings);
-               await Repo.SaveUserDataAsync(deserializedData.UserData);
+               await Repo.SaveSettingsAsync(deserializedData?.Settings!);
+               await Repo.SaveUserDataAsync(deserializedData?.UserData!);
 
-               var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(deserializedData.Settings.User.MemberId);
-               this.AppState!.User = Util.Sanitize(deserializedData.Settings.User, marketingDirector, deserializedData.Settings.User.GivBuxCode);
+               var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(deserializedData?.Settings?.User?.MemberId!);
+               this.AppState!.User = Util.Sanitize(deserializedData?.Settings?.User!, marketingDirector, deserializedData?.Settings?.User?.GivBuxCode);
 
                this.StateHasChanged();
            },
@@ -184,11 +184,11 @@
         globalData.Switch(
             async found =>
             {
-                await Repo.SaveSettingsAsync(found.Settings);
-                await Repo.SaveUserDataAsync(found.UserData);
+                await Repo.SaveSettingsAsync(found?.Settings!);
+                await Repo.SaveUserDataAsync(found?.UserData!);
 
-                var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(found.Settings.User.MemberId);
-                this.AppState!.User = Util.Sanitize(found.Settings.User, marketingDirector, found.Settings.User.GivBuxCode);
+                var marketingDirector = await Repo.GetMarketingDirectorInfoAsync(found?.Settings?.User?.MemberId!);
+                this.AppState!.User = Util.Sanitize(found?.Settings?.User!, marketingDirector, found?.Settings?.User?.GivBuxCode);
 
                 this.StateHasChanged();
             },

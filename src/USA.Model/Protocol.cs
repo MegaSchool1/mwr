@@ -1,4 +1,5 @@
-﻿using OneOf;
+﻿using Microsoft.FeatureManagement;
+using OneOf;
 using OneOf.Types;
 using Stellar;
 using StellarDotnetSdk.Accounts;
@@ -114,13 +115,13 @@ public static class Protocol
 
     private static KeyPair Signer(OneOf<string, None> seed) => KeyPair.FromSecretSeed(seed.AsT0);
 
-    public static async Task UniversalBasicIncomeAsync()
+    public static async Task UniversalBasicIncomeAsync(IFeatureManager featureManager)
     {
         var networkUrl = Wallet.PublicNetworkUrl.Testnet;
         (string Issuer, string Distributor) genesisSeed = (KeyPair.Random().SecretSeed!, KeyPair.Random().SecretSeed!);
         (string Alice, string Bob, string Carol) personSeed = (KeyPair.Random().SecretSeed!, KeyPair.Random().SecretSeed!, KeyPair.Random().SecretSeed!);
 
-        if (false)
+        if (await featureManager.IsEnabledAsync("FeatureFlags:Experimental"))
         {
             await Wallet.CreateAccountAsync(KeyPair.FromSecretSeed(personSeed.Alice).AccountId, networkUrl);
             await Wallet.CreateAccountAsync(KeyPair.FromSecretSeed(personSeed.Bob).AccountId, networkUrl);
@@ -139,7 +140,7 @@ public static class Protocol
         Console.WriteLine($"Bob: {person.Bob.Account.AsT0.KeyPair.AccountId}:{person.Bob.AccountSecretSeed.AsT0}");
         Console.WriteLine($"Carol: {person.Carol.Account.AsT0.KeyPair.AccountId}:{person.Carol.AccountSecretSeed.AsT0}");
 
-        if (false)
+        if (await featureManager.IsEnabledAsync("FeatureFlags:Experimental"))
         {
             await Wallet.CreateAccountAsync(KeyPair.FromSecretSeed(genesisSeed.Issuer).AccountId, networkUrl);
             await Wallet.CreateAccountAsync(KeyPair.FromSecretSeed(genesisSeed.Distributor).AccountId, networkUrl);
@@ -151,7 +152,7 @@ public static class Protocol
 
         var genesisToken = Asset.CreateNonNativeAsset("Genesis", genesis.Issuer.Account.AsT0.AccountId);
 
-        if (false)
+        if (await featureManager.IsEnabledAsync("FeatureFlags:Experimental"))
         {
             var createGenesisToken = new TransactionBuilder(genesis.Issuer.Account.AsT0)
                 .AddMemo(new MemoText("USA Genesis Token"))
