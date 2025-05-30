@@ -301,6 +301,7 @@
     private static readonly (Category Category, string Description)[] VideoShareableCategories =
     [
         (Category.All, "All"),
+        (Category.Fundable360, "Fundable360"),
         (Category.Trusts, "Trusts"),
     ];
     
@@ -318,6 +319,7 @@
         Training = 9,
         Ark = 10,
         Trusts = 11,
+        Fundable360 = 12,
         All = 100
     }
 
@@ -332,8 +334,10 @@
 
     private readonly (Content Content, Category[] Categories)[] ContentCategories = 
     [
-        (Content.Fundable360, [Category.Services]),
-        (Content.Fundable360Explainer, [Category.Services]),
+        // Fundable360
+        (Content.Fundable360, [Category.Services, Category.Fundable360]),
+        (Content.F360Overview, [Category.Services, Category.Fundable360]),
+        (Content.F360Testimonial1, [Category.Fundable360]),
 
         (Content.MWRPique, [Category.Corporate]),
         (Content.Fundable360Pique, [Category.Corporate]),
@@ -399,6 +403,7 @@
         (Content.StructureMyLegacy, [Category.Services, Category.Trusts]),
         (Content.InvestmentsExplainer, [Category.Services]),
 
+        // GivBux
         (Content.GivBux, [Category.GivBux]),
         (Content.GivBuxAccountSetup, [Category.GivBux]),
         (Content.GivBuxCharity, [Category.GivBux]),
@@ -406,8 +411,9 @@
         (Content.GivBuxFundraiser, [Category.GivBux, Category.MegaSchool, Category.BusinessOverview]),
         (Content.GivBuxUberDemo, [Category.GivBux]),
 
+        // Training
         (Content.MegaSchoolAppInstall, [Category.Training]),
-        (Content.Fundable360Training, [Category.Training]),
+        (Content.Fundable360Training, [Category.Training, Category.Fundable360]),
         (Content.DebtDemo, [Category.Training]),
         (Content.MembershipOrientation, [Category.Training]),
         (Content.FastStart, [Category.Training]),
@@ -420,7 +426,7 @@
         (Content.EstatePlanning, [Category.Trusts]),
     ];
     
-    private readonly Content[] Fundable360Shareables = [Content.Fundable360, Content.Fundable360Explainer, Content.BusinessFundingPique, Content.CollegeFundingPique, Content.CollegeFund];
+    private readonly Content[] Fundable360Shareables = [Content.Fundable360, Content.F360Overview, Content.BusinessFundingPique, Content.CollegeFundingPique, Content.CollegeFund, Content.F360Testimonial1];
     
     private Content _selectedVideoShareable = Content.MoneyChallenge;
     private TeamMember? _selectedTeamMemberMarketingDirector;

@@ -5,11 +5,11 @@
     <MudIconButton OnClick="OnShareClick" @bind-Disabled="_disableWebShare" Icon="@Icons.Material.Filled.Share" Color="Color.Primary" />
 </MudTooltip>
 
-<MudDialog @ref="_pasteTextReminderDialog" Options="@(new DialogOptions() { FullWidth = false, NoHeader = true })">
+<MudDialog @ref="_pasteTextReminderDialog" Options="@(new DialogOptions() {  FullWidth = false, NoHeader = true, BackdropClick = false })">
     <DialogContent>
         <MudStack>
             <MudText Align="Align.Center">Remember to PASTE the copied text! 😉</MudText>
-            <MudButton OnClick="@(() => _pasteTextReminderDialog?.CloseAsync())" Class="ml-auto mr-n3 mb-1" Color="Color.Error">Got it!</MudButton>
+            <MudButton OnClick="@(async () => { if(_pasteTextReminderDialog != null) await _pasteTextReminderDialog.CloseAsync(); })" Class="ml-auto mr-n3 mb-1" Color="Color.Error">Got it!</MudButton>
         </MudStack>
     </DialogContent>
 </MudDialog>
@@ -18,7 +18,7 @@
     private bool _showShareTooltip;
     private bool _disableWebShare = false;
     private MudDialog? _pasteTextReminderDialog;
-
+    
     [Parameter]
     public string? TextToCopy { get; set; }
 
@@ -42,30 +42,18 @@
     {
         if (_pasteTextReminderDialog != null)
         {
-            var dialogClosed = new TaskCompletionSource();
+            var dialog = await _pasteTextReminderDialog.ShowAsync();
+            await dialog.Result;
+        
+            await this.ShareMessageAsync((this.TextToCopy ?? string.Empty).Replace("<br/>", Environment.NewLine), this.ImageUrl);
 
-            void DialogVisibleChanged(bool visible)
-            {
-                if (!visible)
-                {
-                    dialogClosed.SetResult();
-                }
-            }
+            _showShareTooltip = true;
+            base.StateHasChanged();
 
-            _pasteTextReminderDialog.VisibleChanged = new EventCallback<bool>(_pasteTextReminderDialog, DialogVisibleChanged);
+            await Task.Delay(3 * 1000);
 
-            await _pasteTextReminderDialog.ShowAsync();
-            await dialogClosed.Task;
+            _showShareTooltip = false;
+            base.StateHasChanged();
         }
-
-        await this.ShareMessageAsync((this.TextToCopy ?? string.Empty).Replace("<br/>", Environment.NewLine), this.ImageUrl);
-
-        _showShareTooltip = true;
-        base.StateHasChanged();
-
-        await Task.Delay(3 * 1000);
-
-        _showShareTooltip = false;
-        base.StateHasChanged();
     }
 }
