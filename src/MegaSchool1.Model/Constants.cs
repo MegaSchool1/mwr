@@ -180,6 +180,8 @@ public enum Content
     TrustJurisdiction = 94,
     TrustDefined = 95,
     EstatePlanning = 96,
+    F360Testimonial1 = 97,
+    F360Overview = 98,
 }
 
 public enum Language
