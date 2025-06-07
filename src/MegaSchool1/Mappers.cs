@@ -12,6 +12,7 @@ namespace MegaSchool1;
 public partial class Mappers
 {
     [MapProperty(nameof(EventDto.StartDate), nameof(EventViewModel.StartDate), Use = nameof(NullableToOption))]
+    [MapProperty(nameof(EventDto.EndDate), nameof(EventViewModel.EndDate), Use = nameof(NullableToOption))]
     public partial EventViewModel EventDtoToEventViewModel(EventDto eventDto);
 
     public static OneOf<Video, None> TestimonialToVideo(Testimonial testimonial) => GetVideo(testimonial.Video);

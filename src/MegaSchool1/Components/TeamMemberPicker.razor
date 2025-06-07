@@ -44,17 +44,16 @@ else
     [Parameter]
     public string Description { get; set; } = "My Description";
 
-    private TeamMember? _selectedTeamMember;
     [Parameter]
     public TeamMember? SelectedTeamMember
     {
-        get => _selectedTeamMember;
+        get;
         set
         {
-            if (_selectedTeamMember != value)
+            if (field != value)
             {
-                _selectedTeamMember = value;
-                _ = SelectedTeamMemberChanged.InvokeAsync(_selectedTeamMember);
+                field = value;
+                _ = SelectedTeamMemberChanged.InvokeAsync(field);
             }
         }
     }

@@ -1,5 +1,8 @@
 ﻿@inherits Components.ComponentBase
+@using Foundation.UI.Components
 @using MegaSchool1.Model
+@using Microsoft.FeatureManagement
+@inject IFeatureManager FeatureManager
 
 @{
     var pique = "I'm licensed to provide $50K of business credit & funding w/ NO personal guarantee. If you're interested, I can connect you to my team?";
@@ -24,7 +27,7 @@
                     TextToCopy="@($"Fundable360 Pre-Consultation Video{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://fundable360.com/mwr/")"
                     Tooltip="Copied!" />
             </Centered>
-            @if (false)
+            @if (_enableExperimentalFeatures)
             {
                 <MudDivider/>
                 <MudText Align="Align.Center">Pique: <br/> "@pique"</MudText>
@@ -35,3 +38,12 @@
         </MudStack>
     </MudCardContent>
 </MudCard>
+
+@code {
+    private bool _enableExperimentalFeatures;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _enableExperimentalFeatures = await FeatureManager.IsEnabledAsync("Experimental");
+    }
+}
