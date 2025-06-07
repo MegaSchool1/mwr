@@ -37,4 +37,6 @@ public class EventViewModel
     public LivestreamPlatform LivestreamPlatform { get; set; } = LivestreamPlatform.YouTube;
 
     public OneOf<DateTimeOffset, None> StartDate { get; set; } = new None();
+
+    public OneOf<DateTimeOffset, None> EndDate { get; set; } = new None();
 }

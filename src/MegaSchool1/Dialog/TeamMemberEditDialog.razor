@@ -55,7 +55,7 @@
     private bool _dataValid;
 
     [CascadingParameter] 
-    private IMudDialogInstance MudDialog { get; set; }
+    private IMudDialogInstance? MudDialog { get; set; }
 
     [Parameter]
     public string Label { get; set; } = "QMD Member ID";
@@ -73,7 +73,7 @@
             await (this.OnSave?.Invoke(this.TeamMember) ?? Task.CompletedTask);
         }
 
-        this.MudDialog.Close();
+        this.MudDialog?.Close();
     }
 
     private async Task<string?> ValidateUsernameAsync(string username)

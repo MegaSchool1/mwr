@@ -3,16 +3,18 @@
 @using MegaSchool1.Model
 @using MegaSchool1.Model.Repository
 @using Content = MegaSchool1.Model.Content
+@using Microsoft.FeatureManagement
 @using Shareable = MegaSchool1.Components.Shareable
 @using Foundation.UI.Components
 @inherits PageBase
 @inject UISettings UI
+@inject IFeatureManager FeatureManager
 
 <MudStack Spacing="3">
     <MudCard>
         <MudCardContent>
             <MudStack Spacing="6">
-                <MudSelect T="Content" Label="@($"Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_selectedShareable" ToStringFunc="@(content => ShareableTitle(content))" Variant="Variant.Outlined" Style="width:300px;">
+                <MudSelect T="Content" Label="@($"Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_selectedShareable" ToStringFunc="@(content => ShareableTitle(content))" Variant="MudBlazor.Variant.Outlined" Style="width:300px;">
                     @foreach (var content in GetSelectedContent([_selectedCategory]))
                     {
                         <MudSelectItem Value="@content" />
@@ -36,7 +38,7 @@
     </MudCard>
     
     <MudDivider/>
-    @if (false)
+    @if (_enableExerimentalFeatures)
     {
         <div class="d-none">
             <MembershipTrainings/>
@@ -51,7 +53,7 @@
                 </MudCardHeader>
                 <MudCardContent>
                     <MudStack Spacing="3">
-                        <MudSelect T="Content" Label="@("Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_selectedInCompleteVideoLibrary" ToStringFunc="@(content => ShareableTitle(content))" Variant="Variant.Outlined" Style="width:300px;">
+                        <MudSelect T="Content" Label="@("Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_selectedInCompleteVideoLibrary" ToStringFunc="@(content => ShareableTitle(content))" Variant="MudBlazor.Variant.Outlined" Style="width:300px;">
                             @foreach (var content in Constants.OrderedContent.Where(c => UI.EnglishLocale[c] is { Platform: not VideoPlatform.None, ContentId: not Content.Custom }).OrderBy(c => ShareableTitle(c)))
                             {
                                 <MudSelectItem Value="@content" />
@@ -69,7 +71,7 @@
                 <MudTabPanel Tag="@Strategy.MegaSchool">
                     <Loader Loaded="@(_megaSchoolEssentials.TeamMember != null)">
                         <TeamMemberPicker Description="Capture Page For:" User="AppState?.User" @bind-SelectedTeamMember="_megaSchoolEssentials.TeamMember">
-                            <MudSelect T="Content" Label="Capture Page" @bind-Value="_megaSchoolEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                            <MudSelect T="Content" Label="Capture Page" @bind-Value="_megaSchoolEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="MudBlazor.Variant.Outlined" Style="width:300px;">
                                 @foreach (var content in new Content[] { Content.GivBux, Content.EDMGivBux, Content.GivBuxCharity, Content.GivBuxMerchant, Content.MS1Opportunity, Content.GivBuxFundraiser })
                                 {
                                     <MudSelectItem Value="@content" />
@@ -83,7 +85,7 @@
                     <MudStack>
                         <Loader Loaded="@(_corporateEssentials.TeamMember != null)">
                             <TeamMemberPicker Description="Shareable For:" User="AppState?.User" @bind-SelectedTeamMember="_corporateEssentials.TeamMember">
-                                <MudSelect T="Content" Label="Shareable" @bind-Value="_corporateEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                                <MudSelect T="Content" Label="Shareable" @bind-Value="_corporateEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="MudBlazor.Variant.Outlined" Style="width:300px;">
                                     @foreach (var content in new Content[] { Content.Opportunity202407 })
                                     {
                                         <MudSelectItem Value="@content" />
@@ -97,7 +99,7 @@
                 <MudTabPanel Tag="@Strategy.ExtraDigitMovement">
                     <Loader Loaded="@(_edmEssentials.TeamMember != null)">
                         <TeamMemberPicker Description="Shareable For:" User="AppState?.User" @bind-SelectedTeamMember="_edmEssentials.TeamMember">
-                            <MudSelect T="Content" Label="Shareable" @bind-Value="_edmEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                            <MudSelect T="Content" Label="Shareable" @bind-Value="_edmEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="MudBlazor.Variant.Outlined" Style="width:300px;">
                                 @foreach (var content in new Content[] { Content.EDMPique, Content.EDMNeedMoreInfo })
                                 {
                                     <MudSelectItem Value="@content" />
@@ -141,7 +143,7 @@
                                 _selectedVideoShareable = selectedVideoShareables.First();
                             }
                         }
-                        <MudSelect T="Content" Label="@($"Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_selectedVideoShareable" ToStringFunc="@(content => ShareableTitle(content))" Variant="Variant.Outlined" Style="width:300px;">
+                        <MudSelect T="Content" Label="@($"Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_selectedVideoShareable" ToStringFunc="@(content => ShareableTitle(content))" Variant="MudBlazor.Variant.Outlined" Style="width:300px;">
                             @foreach (var content in selectedVideoShareables)
                             {
                                 <MudSelectItem Value="@content"/>
@@ -159,7 +161,7 @@
             </MudCard>
             <Loader Loaded="@(_capturePage.TeamMember != null)">
                 <TeamMemberPicker Description="Capture Page For:" @bind-SelectedTeamMember="_capturePage.TeamMember">
-                    <MudSelect T="Content" Label="@($"Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_capturePage.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="Variant.Outlined" Style="width:300px;">
+                    <MudSelect T="Content" Label="@($"Tap Here! {Constants.JeromePointingDownEmoji}")" @bind-Value="_capturePage.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="MudBlazor.Variant.Outlined" Style="width:300px;">
                         @foreach (var content in Constants.OrderedContent.Where(c => UI.EnglishLocale[c] is { Platform: not VideoPlatform.None, ContentId: not Content.Custom }))
                         {
                             <MudSelectItem Value="@content" />
@@ -304,7 +306,7 @@
         (Category.Fundable360, "Fundable360"),
         (Category.Trusts, "Trusts"),
     ];
-    
+
     private enum Category
     {
         None = 0,
@@ -326,7 +328,8 @@
     private IReadOnlyCollection<Category> _selectedCategories = [Category.Corporate];
     private Category _selectedCategory = Category.Corporate;
     private Category _selectedVideoShareableCategory = Category.None;
-    
+    private bool _enableExerimentalFeatures;
+
     private readonly ShareableViewModel _megaSchoolEssentials = new() { Content = Content.GivBux };
     private readonly ShareableViewModel _edmEssentials = new() { Content = Content.EDMPique };
     private readonly ShareableViewModel _corporateEssentials = new() { Content = Content.Opportunity202407 };
@@ -468,6 +471,11 @@
         _edmEssentials.TeamMember = AppState?.User;
         _capturePage.TeamMember = AppState?.User;
         _corporateEssentials.TeamMember = AppState?.User;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _enableExerimentalFeatures = await FeatureManager.IsEnabledAsync("Experimental");
     }
 
     private string ShareableTitle(Content content) => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " ");

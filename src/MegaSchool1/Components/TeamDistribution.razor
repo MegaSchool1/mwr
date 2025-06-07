@@ -34,21 +34,17 @@ else
 }
 
 @code {
-    int _monthlyIncomeGoal;
     [Parameter]
     public int MonthlyIncomeGoal
     {
-        get
-        {
-            return _monthlyIncomeGoal;
-        }
+        get;
         set
         {
-            if (value != _monthlyIncomeGoal)
+            if (value != field)
             {
-                _monthlyIncomeGoal = value;
+                field = value;
 
-                _ = MonthlyIncomeGoalChanged.InvokeAsync(_monthlyIncomeGoal);
+                _ = MonthlyIncomeGoalChanged.InvokeAsync(field);
             }
         }
     }

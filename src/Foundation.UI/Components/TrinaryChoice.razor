@@ -44,17 +44,16 @@
     [Parameter]
     public RenderFragment? SecondChoiceContent { get; set; }
 
-    private OneOf<BinaryChoice.Choice, None> _selectedChoice = new None();
     [Parameter]
     public OneOf<BinaryChoice.Choice, None> SelectedChoice
     {
-        get => _selectedChoice;
+        get;
         set
         {
-            if (!_selectedChoice.Value.Equals(value.Value))
+            if (!field.Value.Equals(value.Value))
             {
-                _selectedChoice = value;
-                _ = SelectedChoiceChanged.InvokeAsync(_selectedChoice);
+                field = value;
+                _ = SelectedChoiceChanged.InvokeAsync(field);
             }
         }
     }

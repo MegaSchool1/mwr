@@ -215,8 +215,8 @@
         </MudStack>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="async () => await _instantPayRaiseDialogInstance.CloseAsync()" Color="Color.Primary" Variant="Variant.Filled">Summon!</MudButton>
-        <MudButton OnClick="async () => await _instantPayRaiseDialogInstance.CloseAsync()" Color="Color.Secondary" Variant="Variant.Filled">Cancel</MudButton>
+        <MudButton OnClick="async () => { if (_instantPayRaiseDialogInstance != null) await _instantPayRaiseDialogInstance.CloseAsync(); }" Color="Color.Primary" Variant="Variant.Filled">Summon!</MudButton>
+        <MudButton OnClick="async () => { if (_instantPayRaiseDialogInstance != null) await _instantPayRaiseDialogInstance.CloseAsync(); }" Color="Color.Secondary" Variant="Variant.Filled">Cancel</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -234,8 +234,8 @@
         </MudStack>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="async () => await _billNegotiatorDialog.CloseAsync()" Color="Color.Primary" Variant="Variant.Filled">Summon!</MudButton>
-        <MudButton OnClick="async () => { _billNegotiatorViewModel = new None(); await _billNegotiatorDialog.CloseAsync();}" Color="Color.Secondary" Variant="Variant.Filled">Cancel</MudButton>
+        <MudButton OnClick="async () =>{ if (_billNegotiatorDialog != null)  await _billNegotiatorDialog.CloseAsync(); }" Color="Color.Primary" Variant="Variant.Filled">Summon!</MudButton>
+        <MudButton OnClick="async () => { _billNegotiatorViewModel = new None(); if(_billNegotiatorDialog != null) await _billNegotiatorDialog.CloseAsync(); }" Color="Color.Secondary" Variant="Variant.Filled">Cancel</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -274,7 +274,7 @@
         </MudStack>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="async () => await _trinaryChoiceDialog.CloseAsync()" Color="Color.Primary" Variant="Variant.Filled">Done</MudButton>
+        <MudButton OnClick="async () =>{ if (_trinaryChoiceDialog != null)  await _trinaryChoiceDialog.CloseAsync(); }" Color="Color.Primary" Variant="Variant.Filled">Done</MudButton>
     </DialogActions>
 </MudDialog>
 @code {
@@ -285,25 +285,25 @@
     private MudDialog _dayActivityDialog = null!;
     private DayActivitiesViewModel _dayActivities = new();
 
-    private MudDialog _incomeDialog;
-    private IncomeDialogViewModel _incomeDialogViewModel = new(new((decimal)0, (TimeSpan)default, (string)default));
+    private MudDialog? _incomeDialog;
+    private IncomeDialogViewModel _incomeDialogViewModel = new(new((decimal)0, (TimeSpan)default, (string)default!));
 
-    private MudDialog _theftDialog;
+    private MudDialog? _theftDialog;
     private TheftDialogViewModel _theftDialogViewModel = new(default!, new((string)default!, (string)default!, (OneOf<Percentage, (Scalar Amount, TimeSpan Frequency)>)default));
 
-    private MudDialog _simpleDialog;
+    private MudDialog? _simpleDialog;
     private string _simpleDialogMessage = string.Empty;
 
-    private MudDialog _instantPayRaiseDialogInstance;
+    private MudDialog? _instantPayRaiseDialogInstance;
     private (OneOf<BinaryChoice.Choice, None> Choice, bool Show) _instantPayRaiseDialog = (BinaryChoice.Choice.First, false);
 
-    private MudDialog _billNegotiatorDialog;
+    private MudDialog? _billNegotiatorDialog;
     private OneOf<BinaryChoice.Choice, None> _billNegotiatorViewModel = BinaryChoice.Choice.First;
 
-    private MudDialog _treasureMasterDialog;
+    private MudDialog? _treasureMasterDialog;
     private OneOf<BinaryChoice.Choice, None> _treasureMasterViewModel = BinaryChoice.Choice.First;
 
-    private MudDialog _trinaryChoiceDialog;
+    private MudDialog? _trinaryChoiceDialog;
     private TrinaryChoiceViewModel _trinaryChoiceViewModel = new("Describe the choice!", ("First Choice Label", "First choice description"), ("Second Choice Label", "Second choice description")) { Choice = new None() };
 
     protected override void OnInitialized()
@@ -323,7 +323,10 @@
     private async Task OnBillNegotiatorSummon()
     {
         _billNegotiatorViewModel = BinaryChoice.Choice.First;
-        await _billNegotiatorDialog.ShowModalAsync();
+        if (_billNegotiatorDialog != null) 
+        { 
+            await _billNegotiatorDialog.ShowModalAsync();
+        }
 
         @if (_billNegotiatorViewModel.TryPickT0(out var choice, out _))
         {
@@ -341,7 +344,10 @@
 
     private async Task OnInstantPayRaise()
     {
-        await _instantPayRaiseDialogInstance.ShowModalAsync();
+        if (_instantPayRaiseDialogInstance != null)
+        {
+            await _instantPayRaiseDialogInstance.ShowModalAsync();
+        }
 
         @if (_instantPayRaiseDialog.Choice.TryPickT0(out var choice, out _))
         {
@@ -359,7 +365,10 @@
 
     private async Task OnTreasureMasters()
     {
-        await _treasureMasterDialog.ShowModalAsync();
+        if(_treasureMasterDialog != null)
+        {
+            await _treasureMasterDialog.ShowModalAsync();
+        }
 
         @if (_treasureMasterViewModel.TryPickT0(out var choice, out _))
         {
@@ -374,7 +383,10 @@
     {
         _incomeDialogViewModel = new(income);
 
-        await _incomeDialog.ShowModalAsync(_game.DialogAutoClose.Match(value => (TimeSpan?)value, none => null));
+        if(_incomeDialog != null)
+        {
+            await _incomeDialog.ShowModalAsync(_game.DialogAutoClose.Match(value => (TimeSpan?)value, none => null));
+        }
     }
 
     private async Task ShowTheftDialogAsync(Income income, Theft theft, TimeSpan? autoClose = null)
@@ -382,14 +394,20 @@
         _theftDialogViewModel = new(income, theft);
 
         _simpleDialogMessage = $"Oh, no! You just got robbed of {_theftDialogViewModel.Theft.StolenOn(_theftDialogViewModel.Income, _game.Day).Match(amount => amount, none => 0.0m):C} by {_theftDialogViewModel.Theft.Name}!";
-        await _simpleDialog.ShowModalAsync(autoClose);
+        if(_simpleDialog != null)
+        {
+            await _simpleDialog.ShowModalAsync(autoClose);
+        }        
     }
 
     private async Task ShowSimpleDialogAsync(string message)
     {
         _simpleDialogMessage = message;
 
-        await _simpleDialog.ShowModalAsync(_game.DialogAutoClose.Match(value => (TimeSpan?)value, none => null));
+        if (_simpleDialog != null)
+        {
+            await _simpleDialog.ShowModalAsync(_game.DialogAutoClose.Match(value => (TimeSpan?)value, none => null));
+        }
     }
 
     private async Task ShowTheftDialogsAsync(Income income, List<Theft> thefts, TimeSpan? autoClose = null)

@@ -1,12 +1,13 @@
 using Append.Blazor.WebShare;
 using Blazored.LocalStorage;
+using MegaSchool1;
 using MegaSchool1.Model;
 using MegaSchool1.Repository;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.FeatureManagement;
 using MudBlazor.Services;
-using MegaSchool1;
-using Microsoft.AspNetCore.Components;
 using Serilog;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -51,11 +52,11 @@ static void ConfigureServices(IServiceCollection services, string baseAddress, I
     services
         .AddSingleton(clientSettings!)
         .AddSingleton(sp => clientSettings?.UI ?? new())
-        .AddSingleton(sp => new Constants(sp.GetRequiredService<UISettings>(), sp.GetRequiredService<NavigationManager>()))
+        .AddSingleton(sp => new Constants(sp.GetRequiredService<UISettings>()))
         .AddSingleton(sp => new Mappers())
-        .AddSingleton<LazyLoader>();
-
-    services.AddMudServices();
-    services.AddWebShare();
-    services.AddBlazoredLocalStorage();
+        .AddSingleton<LazyLoader>()
+        .AddMudServices()
+        .AddWebShare()
+        .AddBlazoredLocalStorage()
+        .AddFeatureManagement(configuration.GetSection("FeatureFlags")); ;
 }

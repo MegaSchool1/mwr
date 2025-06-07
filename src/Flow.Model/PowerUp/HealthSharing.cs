@@ -5,8 +5,6 @@ namespace Flow.Model.PowerUp;
 
 public class HealthSharing : PowerUp
 {
-    private static readonly (decimal Amount, TimeSpan Epoch) PayRaise = (Random.Shared.Next(300, 600), GameState.BoardEpoch);
-
     public override (PowerUpResult Result, GameState game) Activate(GameState game)
     {
         return

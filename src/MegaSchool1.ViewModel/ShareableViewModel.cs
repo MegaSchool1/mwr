@@ -56,7 +56,7 @@ public class ShareableViewModel
 
         var videoUrl = shareable.Video.Match(
             video => video.Video.MinimalistUrl(),
-            none => null);
+            none => string.Empty);
 
         return $"{shareable.Title}{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}({(durationEstimate.Hours == 0 ? string.Empty : $"{durationEstimate.Hours}hr ")}{durationEstimate.Minutes}min){Environment.NewLine}{videoUrl}";
     }
