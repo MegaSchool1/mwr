@@ -7,6 +7,7 @@
 @using MegaSchool1.Model.UI
 @using MegaSchool1.Repository.Model
 @using MegaSchool1.ViewModel
+@using Microsoft.FeatureManagement
 @using MudBlazor.Utilities
 @using Serilog
 @using Content = MegaSchool1.Model.Content
@@ -14,6 +15,7 @@
 @inject UISettings UI
 @inject Repository.Repository Repo
 @inject ILocalStorageService LocalStorage
+@inject IFeatureManager FeatureManager
 
 <TeamMemberPicker Description="Report For:" SelectedTeamMemberChanged="SelectedTeamMemberChanged"/>
 <br/>
@@ -29,7 +31,7 @@
                         <MudText Typo="Typo.subtitle1" Align="Align.Center"><b>@((MarkupString)item.DisplayName.Replace(Environment.NewLine, "<br/>"))</b></MudText>
                         <MudSpacer/>
                     </MudStack>
-                    @if (false)
+                    @if (_enableExerimentalFeatures)
                     {
                         <MudSpacer/>
                         <MudMenu Icon="@Icons.Material.Rounded.MoreHoriz" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" ListClass="pa-2 d-flex flex-column" PopoverClass="mud-elevation-25">
@@ -49,13 +51,13 @@
                     }
                     else
                     {
-                        <MudButton OnClick="@(() => item.NewTaskOpen = !item.NewTaskOpen)" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" FullWidth="true" Class="rounded-lg py-2">Add Prospect</MudButton>
+                        <MudButton OnClick="@(() => item.NewTaskOpen = !item.NewTaskOpen)" Variant="MudBlazor.Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" FullWidth="true" Class="rounded-lg py-2">Add Prospect</MudButton>
                     }
                 }
                 <MudDropZone T="Prospect" Identifier="@item.Id" AllowReorder="true" Class="mud-height-full"/>
             </MudPaper>
         }
-        @if (false)
+        @if (_enableExerimentalFeatures)
         {
             <MudPaper Class="pa-4" Elevation="0" Width="224px">
                 @if (_addSectionOpen)
@@ -70,7 +72,7 @@
                 }
                 else
                 {
-                    <MudButton OnClick="OpenAddNewSection" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Class="rounded-lg py-2" FullWidth="true">Add Section</MudButton>
+                    <MudButton OnClick="OpenAddNewSection" Variant="MudBlazor.Variant.Outlined" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Class="rounded-lg py-2" FullWidth="true">Add Section</MudButton>
                 }
             </MudPaper>
         }
@@ -99,7 +101,7 @@
                 <MudTextField @bind-Value="@_prospectEditDialog.Prospect.Name"
                               Label="Prospect Name"
                               Placeholder="Your prospect's name"
-                              Variant="Variant.Outlined"
+                              Variant="MudBlazor.Variant.Outlined"
                               Validation="@(new Func<string, string?>(ValidateProspectName))"
                               Required="true"
                               RequiredError="Prospect username is required."
@@ -108,7 +110,7 @@
                 <MudTextField @bind-Value="@_prospectEditDialog.Prospect.Notes"
                               Label="Notes"
                               Placeholder="Notes"
-                              Variant="Variant.Outlined"
+                              Variant="MudBlazor.Variant.Outlined"
                               Lines="8"
                               Immediate="true"/>
             </MudStack>
@@ -122,7 +124,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@(() => _deleteProspectDialog.Show = false)">Cancel</MudButton>
-        <MudButton Color="Color.Secondary" Variant="Variant.Filled" OnClick="@(async () => { await OnProspectDelete(_deleteProspectDialog.Prospect); _deleteProspectDialog.Show = false; })">Delete</MudButton>
+        <MudButton Color="Color.Secondary" Variant="MudBlazor.Variant.Filled" OnClick="@(async () => { await OnProspectDelete(_deleteProspectDialog.Prospect); _deleteProspectDialog.Show = false; })">Delete</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -135,9 +137,10 @@
     private (Prospect Prospect, bool Show) _deleteProspectDialog;
     private Settings _settings = new();
     private TeamMember? _selectedTeamMember;
+    private bool _enableExerimentalFeatures;
 
     [Parameter]
-    public Pipeline<TPipeline> Pipeline { get; set; }
+    public Pipeline<TPipeline>? Pipeline { get; set; }
 
     [Parameter]
     public Func<Task>? OnSave { get; set; }
@@ -186,11 +189,11 @@
 
         await SaveAsync();
 
-		_dropContainer?.Refresh();
+        _dropContainer?.Refresh();
     }
 
-	private async Task ProspectEditVisibleChanged(bool isVisible)
-	{
+    private async Task ProspectEditVisibleChanged(bool isVisible)
+    {
         try
         {
             if (!isVisible && _prospectEditDialog.ValidEdit)
@@ -206,23 +209,23 @@
         {
             Log.ForContext<PersonalActivityReport<TPipeline>>().Error(e.Message);
         }
-	}
+    }
 
-	private string? ValidateProspectName(string prospectName)
-	{
-		return !string.IsNullOrWhiteSpace(prospectName) ? null : "Prospect name must have a value.";
-	}
+    private string? ValidateProspectName(string prospectName)
+    {
+        return !string.IsNullOrWhiteSpace(prospectName) ? null : "Prospect name must have a value.";
+    }
 
-	protected override async Task OnInitializedAsync()
-	{
-		_sections = Enum.GetValues<TPipeline>()
-			.Where(step => ((int)(object)step) != 0)
-			.Select(step => new KanBanSection(
-				this.Pipeline.DisplayName(step),
-				step,
-				false,
-				string.Empty,
-				step.Equals(this.Pipeline.FirstStep))).ToArray();
+    protected override async Task OnInitializedAsync()
+    {
+        _sections = Enum.GetValues<TPipeline>()
+            .Where(step => ((int)(object)step) != 0)
+            .Select(step => new KanBanSection(
+                this.Pipeline?.DisplayName(step)!,
+                step,
+                false,
+                string.Empty,
+                step.Equals(this.Pipeline?.FirstStep))).ToArray();
 
         // load prospects
         var userData = await Repo.GetUserDataAsync();
@@ -236,15 +239,19 @@
             notFound => { Log.ForContext<PersonalActivityReport<TPipeline>>().Warning($"No user data found in local storage!"); },
             error => { Log.ForContext<PersonalActivityReport<TPipeline>>().Error($"Failed to load user data{Environment.NewLine}{error.Value}"); }
         );
-	}
+
+        _enableExerimentalFeatures = await FeatureManager.IsEnabledAsync("Experimental");
+    }
 
     private void LoadProspects(UserData? userData)
     {
-        _prospects.Clear();
+        _prospects.Clear(); 
 
-        if (userData?.Prospects.ContainsKey(this.Pipeline.Strategy) is true)
+        var strategy = this.Pipeline?.Strategy;
+
+        if (strategy != null && userData?.Prospects.ContainsKey(strategy.Value) is true)
         {
-            _prospects.AddRange(userData.Prospects[this.Pipeline.Strategy]);
+            _prospects.AddRange(userData.Prospects[strategy.Value]);
         }
 
         _dropContainer?.Refresh();

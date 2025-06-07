@@ -38,17 +38,16 @@
     [Parameter]
     public RenderFragment? SecondChoiceContent { get; set; }
 
-    private Choice _selectedChoice = Choice.First;
     [Parameter]
     public Choice SelectedChoice
     {
-        get => _selectedChoice;
+        get;
         set
         {
-            if (_selectedChoice != value)
+            if (field != value)
             {
-                _selectedChoice = value;
-                _ = SelectedChoiceChanged.InvokeAsync(_selectedChoice);
+                field = value;
+                _ = SelectedChoiceChanged.InvokeAsync(field);
             }
         }
     }

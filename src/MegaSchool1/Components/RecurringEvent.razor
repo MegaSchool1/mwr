@@ -1,4 +1,5 @@
-﻿@using MegaSchool1.Model
+﻿@using Foundation.UI.Components
+@using MegaSchool1.Model
 @inherits Components.ComponentBase
 @inject NavigationManager NavigationManager
 
@@ -29,14 +30,14 @@
                 <MudText Align="Align.Center">Password: @Password</MudText>
             }
             <br/>
-            @if (Constants.CorporateLivestreamLink.ContainsValue(this.Url))
+            @if (this.Url != null && Constants.CorporateLivestreamLink.ContainsValue(this.Url))
             {
                 <MudStack Row="true">
                     <MudSpacer/>
                     <MudChipSet SelectedValues="@([LivestreamPlatform?.Platform])" SelectedChipChanged="OnSelectedLivestreamPlatformChanged" Filter="true" Mandatory="true">
-                        <MudChip Size="Size.Small" Value="Model.LivestreamPlatform.Facebook" Text="@nameof(Model.LivestreamPlatform.Facebook)" Color="Color.Primary" Variant="Variant.Outlined" Default="@(LivestreamPlatform?.Platform == Model.LivestreamPlatform.Facebook)" OnClose="(MudChip<LivestreamPlatform> _) => { return default; }" CloseIcon="@Icons.Material.Filled.ClosedCaption">Facebook</MudChip>
+                        <MudChip Size="Size.Small" Value="Model.LivestreamPlatform.Facebook" Text="@nameof(Model.LivestreamPlatform.Facebook)" Color="Color.Primary" Variant="Variant.Outlined" Default="@(LivestreamPlatform?.Platform == Model.LivestreamPlatform.Facebook)" OnClose="(MudChip<LivestreamPlatform> _) => { return Task.CompletedTask; }" CloseIcon="@Icons.Material.Filled.ClosedCaption">Facebook</MudChip>
                         <MudChip Size="Size.Small" Value="Model.LivestreamPlatform.YouTube" Text="@nameof(Model.LivestreamPlatform.YouTube)" Color="Color.Primary" Variant="Variant.Outlined" Default="@(LivestreamPlatform?.Platform == Model.LivestreamPlatform.YouTube)">YouTube</MudChip>
-                        <MudChip Size="Size.Small" Value="Model.LivestreamPlatform.LinkedIn" Text="@nameof(Model.LivestreamPlatform.LinkedIn)" Color="Color.Primary" Variant="Variant.Outlined" Default="@(LivestreamPlatform?.Platform == Model.LivestreamPlatform.LinkedIn)" OnClose="(MudChip<LivestreamPlatform> _) => { return default; }" CloseIcon="@Icons.Material.Filled.ClosedCaption">LinkedIn</MudChip>
+                        <MudChip Size="Size.Small" Value="Model.LivestreamPlatform.LinkedIn" Text="@nameof(Model.LivestreamPlatform.LinkedIn)" Color="Color.Primary" Variant="Variant.Outlined" Default="@(LivestreamPlatform?.Platform == Model.LivestreamPlatform.LinkedIn)" OnClose="(MudChip<LivestreamPlatform> _) => { return Task.CompletedTask; }" CloseIcon="@Icons.Material.Filled.ClosedCaption">LinkedIn</MudChip>
                     </MudChipSet>
                     <MudSpacer/>
                 </MudStack>
@@ -75,10 +76,10 @@
     public string Header { get; set; } = "72-Hour Money Challenge!";
 
     [Parameter]
-    public string ImageUri { get; set; }
+    public string? ImageUri { get; set; }
 
     [Parameter]
-    public string Text { get; set; }
+    public string? Text { get; set; }
 
     [Parameter]
     public (DayOfWeek? Day, TimeOnly Time, TimeZoneInfo TimeZone) Recurrence { get; set; }

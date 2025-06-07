@@ -1,6 +1,6 @@
 ﻿@inherits ComponentBase
 
-<MudLink OnClick="@(async e => { await _timePicker.OpenAsync(); })">
+<MudLink OnClick="@(async e => { if(_timePicker != null) await _timePicker.OpenAsync(); })">
     @Text
     <MudTimePicker @ref="_timePicker" Style="display:none;" @bind-Time="Time" PickerVariant="PickerVariant.Dialog" />
 </MudLink>
