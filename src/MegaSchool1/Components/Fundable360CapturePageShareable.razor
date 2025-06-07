@@ -27,7 +27,7 @@
                     TextToCopy="@($"Fundable360 Pre-Consultation Video{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://fundable360.com/mwr/")"
                     Tooltip="Copied!" />
             </Centered>
-            @if (_enableExerimentalFeatures)
+            @if (_enableExperimentalFeatures)
             {
                 <MudDivider/>
                 <MudText Align="Align.Center">Pique: <br/> "@pique"</MudText>
@@ -40,10 +40,10 @@
 </MudCard>
 
 @code {
-    private bool _enableExerimentalFeatures;
+    private bool _enableExperimentalFeatures;
 
     protected override async Task OnInitializedAsync()
     {
-        _enableExerimentalFeatures = await FeatureManager.IsEnabledAsync("Experimental");
+        _enableExperimentalFeatures = await FeatureManager.IsEnabledAsync("Experimental");
     }
 }
