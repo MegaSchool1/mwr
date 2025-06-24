@@ -25,6 +25,23 @@
                 {
                     <Fundable360CapturePageShareable/>
                 }
+                @if (_selectedShareable == Content.CorporateBusinessOverview)
+                {
+                    <MudCard Outlined="true">
+                        <MudCardContent>
+                            <Centered>
+                                <MudStack>
+                                    <MudStack Row="true">
+                                        <ExternalLink Href="http://mwrvip.com">English Presentation</ExternalLink>
+                                        <ExternalLink Href="http://mwrvisp.com">Spanish Presentation</ExternalLink>
+                                    </MudStack>
+                                    <MudDivider/>
+                                    <ExternalLink Href="https://ucbe189d8169a235aea2e811aee8.dl.dropboxusercontent.com/cd/0/get/CsMXDK_RI3MTwp-QxWERArwFVmT_6YpA2d6bpI-Zeoh0ErJ2AyTW-BaAO-2IbkqwELIYgWvE_SwjNMP2nOSkRv1oP9oAaaVY95YYYUAwggWmkcFPhTMAmJ6Tl2mMFb7Iu-hP295LZyv50cpu4w99Qju_/file?_download_id=4942392868610892697202322720681677410674599756366480526708600702&_log_download_success=1&_notify_domain=www.dropbox.com">Presentation Script</ExternalLink>
+                                </MudStack>
+                            </Centered>
+                        </MudCardContent>
+                    </MudCard>
+                }
                 <Centered>
                     <MudChipSet T="Category" SelectedValue="_selectedCategory" SelectedValueChanged="SelectedCategoryChanged" SelectedValues="_selectedCategories" SelectedValuesChanged="SelectedCategoriesChanged" SelectionMode="SelectionMode.SingleSelection" CheckMark="true">
                         @foreach(var filterableValue in Categories)
@@ -38,7 +55,7 @@
     </MudCard>
     
     <MudDivider/>
-    @if (_enableExerimentalFeatures)
+    @if (_enableExperimentalFeatures)
     {
         <div class="d-none">
             <MembershipTrainings/>
@@ -328,7 +345,7 @@
     private IReadOnlyCollection<Category> _selectedCategories = [Category.Corporate];
     private Category _selectedCategory = Category.Corporate;
     private Category _selectedVideoShareableCategory = Category.None;
-    private bool _enableExerimentalFeatures;
+    private bool _enableExperimentalFeatures;
 
     private readonly ShareableViewModel _megaSchoolEssentials = new() { Content = Content.GivBux };
     private readonly ShareableViewModel _edmEssentials = new() { Content = Content.EDMPique };
@@ -343,8 +360,7 @@
         (Content.F360Testimonial1, [Category.Fundable360]),
 
         (Content.MWRPique, [Category.Corporate]),
-        (Content.Fundable360Pique, [Category.Corporate]),
-        (Content.BusinessFundingPique, [Category.Corporate]),
+        (Content.CorporateBusinessOverview, [Category.Corporate]),
         (Content.MembershipPique, [Category.Corporate, Category.Services]),
         (Content.Membership, [Category.Corporate, Category.Services]),
         (Content.MindsetPique, [Category.Corporate]),
@@ -475,7 +491,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _enableExerimentalFeatures = await FeatureManager.IsEnabledAsync("Experimental");
+        _enableExperimentalFeatures = await FeatureManager.IsEnabledAsync("Experimental");
     }
 
     private string ShareableTitle(Content content) => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " ");

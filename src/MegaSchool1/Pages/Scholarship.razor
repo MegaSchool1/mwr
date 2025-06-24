@@ -1,0 +1,201 @@
+﻿@page "/scholarship"
+@using MegaSchool1.Components
+@using MegaSchool1.Model
+@inherits PageBase
+@inject NavigationManager NavigationManager
+
+@{
+    const decimal InitalFunding = 50 * 1000;
+}
+<MudStack Spacing="3">
+    <MudStack Row="true">
+        <MudNumericField @bind-Value="_apr" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Funding APR" Label="Funding APR" Variant="Variant.Outlined" Min="0" />
+        <MudNumericField @bind-Value="_apy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Precious Metals APY" Label="Precious Metals APY" Variant="Variant.Outlined" Min="0" />
+    </MudStack>
+    <MudNumericField Value="@((_apy == 0M ? 0 : InitalFunding * (1 - _apr / _apy)))" Label="Lifestyle Income Allocation" Format="N0" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Immediate="true" Variant="Variant.Outlined" Min="0" />
+    <MudNumericField Value="@((_apy == 0M ? 0 : InitalFunding * (_apr / _apy)))" Label="Precious Metals Allocation" Format="N0" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Immediate="true" Variant="Variant.Outlined" Min="0" />
+</MudStack>
+
+<br/>
+<br/>
+<MudStack Row="true">
+    <MudSpacer/>
+    <ExternalLink Href="https://www.mwrfinancial.com/simulator/">Official Income Goal Simulator</ExternalLink>
+    <MudSpacer/>
+</MudStack>
+<br/>
+<br/>
+<Collapsable Title="Residual Income Goal" ExpandPrompt="Show me the MONEY!">
+    <MudText id="monthly_income_goal">Monthly Income Goal:</MudText>
+    <MudNumericField @bind-Value="_monthlyIncomeGoal" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Immediate="true" HelperText="Monthly Income Goal" Variant="Variant.Outlined" Min="0" Max="@MaxMonthlyIncomeDemo" />
+    <br />
+    <br />
+    <MudStack>
+        <MudSpacer/>
+        <MudTextField Label="Rank to Achieve" Value="@Constants.DailyGuarantee[Util.GetRankForMonthlyIncome(_monthlyIncomeGoal)].Title" Variant="Variant.Outlined" ReadOnly="true" />
+        <MudTextField Label="Total Members" Value="@Util.GetNumMembershipsToFundMonthlyBill(this._monthlyIncomeGoal).ToString("N0")" Variant="Variant.Outlined" ReadOnly="true"/>
+        <MudTextField Label="Guaranteed Monthly Income" Value="@($"${Constants.DailyGuarantee[Util.GetRankForMonthlyIncome(_monthlyIncomeGoal)].MonthlyPay:N0}")" Variant="Variant.Outlined" ReadOnly="true" />
+        @if (_monthlyIncomeGoal >= MillionaireResidualIncomeClubMonthlyThreshold)
+        {
+            <MudText Color="Color.Secondary" Align="Align.Center">
+                This is enough to be in the Millionaire Residual Income Club ($8,400/mo+)!
+                <br/>
+                <Tooltip Text="Once your residuals reach the equivalent of $1Million at a 10% rate of return (rounded to $8,400/mo), you enter the Millionaire Residual Income Club.  In this club, you additionally participate in corporate revenue sharing.">
+                    <MudIconButton ClickPropagation="true" Class="mud-theme-primary rounded-circle" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.QuestionMark" />
+                </Tooltip>
+            </MudText>
+        }
+        <br />
+        <MudDivider />
+        <MudStack Row="true">
+            <MudSpacer />
+            <MudRadioGroup @bind-Value="_selectedDistribution">
+                <MudItem xs="12" md="2">
+                    <MudRadio Value="TeamDistribution.TwelveWide" Color="Color.Primary" Size="Size.Small">12-Wide</MudRadio>
+                </MudItem>
+                <MudItem xs="12" md="2">
+                    <MudRadio Value="TeamDistribution.SixWide" Color="Color.Primary" Size="Size.Small">6-Wide</MudRadio>
+                </MudItem>
+                <MudItem xs="12" md="2">
+                    <MudRadio Value="TeamDistribution.Custom" Color="Color.Primary" Size="Size.Small">Custom</MudRadio>
+                </MudItem>
+            </MudRadioGroup>
+            <MudSpacer />
+        </MudStack>
+        <br/>
+        <span hidden="@(_selectedDistribution != TeamDistribution.TwelveWide)">
+            <TeamDistribution @bind-MonthlyIncomeGoal="@_monthlyIncomeGoal" Distribution="@(TeamLevel.GetTeamDistribution(TwelveWideTeamDistribution))" Conservative="true" />
+        </span>
+        <span hidden="@(_selectedDistribution != TeamDistribution.SixWide)">
+            <TeamDistribution @bind-MonthlyIncomeGoal="@_monthlyIncomeGoal" Distribution="@(TeamLevel.GetTeamDistribution([6, 3, 2, 1]))" Conservative="true" />
+        </span>
+        <span hidden="@(_selectedDistribution != TeamDistribution.Custom)">
+            <MudStack Row="true">
+                <MudNumericField @bind-Value="_level1Custom" Immediate="true" HelperText="Level 1" Variant="Variant.Outlined" Min="1" Max="12" />
+                <MudNumericField @bind-Value="_level2Custom" Immediate="true" HelperText="Level 2" Variant="Variant.Outlined" Min="1" Max="12" />
+                <MudNumericField @bind-Value="_level3Custom" Immediate="true" HelperText="Level 3" Variant="Variant.Outlined" Min="1" Max="12" />
+            </MudStack>
+            <MudStack Row="true">
+                <MudNumericField @bind-Value="_level4Custom" Immediate="true" HelperText="Level 4" Variant="Variant.Outlined" Min="1" Max="12" />
+                <MudNumericField @bind-Value="_level5Custom" Immediate="true" HelperText="Level 5" Variant="Variant.Outlined" Min="1" Max="12" />
+                <MudNumericField @bind-Value="_level6Custom" Immediate="true" HelperText="Level 6" Variant="Variant.Outlined" Min="1" Max="12" />
+            </MudStack>
+            <br />
+            <br />
+            <TeamDistribution @bind-MonthlyIncomeGoal="@_monthlyIncomeGoal" 
+                Distribution="@(TeamLevel.GetTeamDistribution([_level1Custom, _level2Custom, _level3Custom, _level4Custom, _level5Custom, _level6Custom]))" />
+        </span>
+        <br />
+        <MudDivider />
+        <br />
+        <MudStack Row="true">
+            <MudSpacer />
+            <MudText Color="Color.Primary" Align="Align.Center">
+                <div @onclick="@(() => { NavigationManager.NavigateTo("/revenuesharing#monthly_income_goal"); _monthlyIncomeGoal = MillionaireResidualIncomeClubMonthlyThreshold; })">Show Millionaire Residual Income Club</div>
+                <Tooltip Text="Once your residuals reach the equivalent of $1Million at a 10% rate of return (rounded to $8,400/mo), you enter the Millionaire Residual Income Club.  In this club, you additionally participate in corporate revenue sharing.">
+                    <MudIconButton ClickPropagation="true" Class="mud-theme-primary rounded-circle" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.QuestionMark" />
+                </Tooltip>
+            </MudText>
+            <MudSpacer />
+        </MudStack>
+        <MudSpacer />
+    </MudStack>
+</Collapsable>
+<br />
+<br />
+<Collapsable Title="Each 1 Reach 1">
+    <MudTable Items="_productionDuplicationLevels" Breakpoint="Breakpoint.None" Hover="true" SortLabel="Sort By" Elevation="0">
+        <HeaderContent>
+            <MudTh Style="text-align:center; vertical-align:text-top; border-color:rgb(27,53,115);">Month #</MudTh>
+            <MudTh Style="text-align:center; vertical-align:text-top; border-color:rgb(27,53,115);">Total Memberships</MudTh>
+            <MudTh Style="text-align:center; vertical-align:text-top; border-color:rgb(27,53,115);">Monthly Residuals</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd Style="text-align:center;">@(_productionDuplicationLevels.ToList().IndexOf(context) + 1)</MudTd>
+            <MudTd Style="text-align:center;">@context.TeamMembershipEnrollments.ToString("N0")</MudTd>
+            <MudTd Style="text-align:center;">$@(Util.GetMonthlyIncome(context.TeamMembershipEnrollments).ToString("N0"))</MudTd>
+        </RowTemplate>
+    </MudTable>
+</Collapsable>
+<br />
+<br />
+<Collapsable Title="Cash Flow Equivalents">
+    <MudTable Items="_cashFlowEquivalents" Breakpoint="Breakpoint.None" Hover="true" SortLabel="Sort By" Elevation="0">
+        <HeaderContent>
+            <MudTh Style="text-align:center; vertical-align:text-top; border-color:rgb(27,53,115);">Investment <br /> @@ <br /> 5% APY</MudTh>
+            <MudTh Style="text-align:center; vertical-align:top; border-color:rgb(27,53,115);">Monthly <br /> ROI</MudTh>
+            <MudTh Style="text-align:center; vertical-align:top; border-color:rgb(27,53,115);">MWR <br /> Memberships</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd Style="text-align:center;" DataLabel="Investment at 5% APY">$@context.InvestmentPrinciple.ToString("N0")</MudTd>
+            <MudTd Style="text-align:center;" DataLabel="Monthly ROI">$@context.MonthlyRoi.ToString("N0") <br /> ($@((context.MonthlyRoi / 30).ToString("N0"))/day)</MudTd>
+            <MudTd Style="text-align:center;" DataLabel="MWR Memberships">@context.NumMemberships.ToString("N0")</MudTd>
+        </RowTemplate>
+    </MudTable>
+</Collapsable>
+
+@code {
+    private static readonly int[] TwelveWideTeamDistribution = [12, 5, 3, 2, 1];
+    private static readonly int MaxMonthlyIncomeDemo =
+        Util.GetMonthlyIncome(TeamLevel.GetTeamDistribution(TwelveWideTeamDistribution).MaxBy(x => x.TeamMembersTotal)!.TeamMembersTotal);
+
+    private const int MillionaireResidualIncomeClubMonthlyThreshold = 8400;
+
+    private TeamDistribution _selectedDistribution = TeamDistribution.TwelveWide;
+    private int _monthlyIncomeGoal;
+    private decimal _apr = 9M;
+    private decimal _apy = 12M;
+    private int _level1Custom = 1;
+    private int _level2Custom = 1;
+    private int _level3Custom = 1;
+    private int _level4Custom = 1;
+    private int _level5Custom = 1;
+    private int _level6Custom = 1;
+    private ProductionDuplicationLevel[] _productionDuplicationLevels = new ProductionDuplicationLevel[10];
+
+    private readonly List<CashFlowEquivalent> _cashFlowEquivalents =
+    [
+        new(Rank.ExecutiveDirector1),
+        new(Rank.ExecutiveDirector2),
+        new(Rank.ExecutiveDirector3),
+        new(Rank.ExecutiveDirector4),
+        new(Rank.ExecutiveDirector5)
+    ];
+
+    protected override void OnInitialized()
+    {
+        for(var i =0; i< _productionDuplicationLevels.Length; i++)
+        {
+            if(i == 0)
+            {
+                _productionDuplicationLevels[i] = new(1, null);
+            }
+            else
+            {
+                _productionDuplicationLevels[i] = new(1, _productionDuplicationLevels[i - 1]);
+            }
+        }
+    }
+
+    private enum TeamDistribution
+    {
+        TwelveWide = 0,
+        SixWide = 1,
+        Custom = 2,
+    }
+
+    private class CashFlowEquivalent(Rank rank)
+    {
+        public int InvestmentPrinciple { get; } = InvestmentCashFlowEquivalent(Constants.DailyGuarantee[rank].MonthlyPay);
+        public int MonthlyRoi { get; } = Constants.DailyGuarantee[rank].MonthlyPay;
+        public int NumMemberships { get; } = Constants.DailyGuarantee[rank].NumMemberships;
+
+        private static int InvestmentCashFlowEquivalent(int monthlyCashFlow)
+        {
+            const int MonthsPerYear = 12;
+            const double Apy = 0.05;
+
+            return monthlyCashFlow * MonthsPerYear * (int)(1 / Apy);
+        }
+    }
+}

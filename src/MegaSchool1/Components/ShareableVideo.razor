@@ -16,7 +16,10 @@
     {
         <MudCard Outlined="true">
             <MudCardContent>
-                <MudText>@((MarkupString)UI.EnglishLocale[this.Content]!.Metadata!)</MudText>
+                <MudStack>
+                    <MudText>@((MarkupString)UI.EnglishLocale[this.Content]!.Metadata!)</MudText>
+                </MudStack>
+                <MudContainer>@((MarkupString)UI.EnglishLocale[this.Content]!.Metadata!)</MudContainer>
             </MudCardContent>
         </MudCard>
     }
