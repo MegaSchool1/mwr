@@ -1,19 +1,81 @@
-﻿@page "/scholarship"
+﻿@page "/"
 @using MegaSchool1.Components
 @using MegaSchool1.Model
 @inherits PageBase
 @inject NavigationManager NavigationManager
 
-@{
-    const decimal InitalFunding = 50 * 1000;
-}
 <MudStack Spacing="3">
-    <MudStack Row="true">
-        <MudNumericField @bind-Value="_apr" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Funding APR" Label="Funding APR" Variant="Variant.Outlined" Min="0" />
-        <MudNumericField @bind-Value="_apy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Precious Metals APY" Label="Precious Metals APY" Variant="Variant.Outlined" Min="0" />
-    </MudStack>
-    <MudNumericField Value="@((_apy == 0M ? 0 : InitalFunding * (1 - _apr / _apy)))" Label="Lifestyle Income Allocation" Format="N0" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Immediate="true" Variant="Variant.Outlined" Min="0" />
-    <MudNumericField Value="@((_apy == 0M ? 0 : InitalFunding * (_apr / _apy)))" Label="Precious Metals Allocation" Format="N0" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Immediate="true" Variant="Variant.Outlined" Min="0" />
+    <MudCard Outlined="true">
+        <MudCardHeader>Basic Lifestyle Income Strategy</MudCardHeader>
+        <MudCardContent>
+            <MudStack Spacing="3">
+                <MudNumericField @bind-Value="_annualFundingIncrease" Label="Annual Funding Increase" Format="N0" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Immediate="true" Variant="Variant.Outlined" Min="0"/>
+                <MudStack Row="true">
+                    <MudNumericField @bind-Value="_apr" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Funding APR" Label="Funding APR" Variant="Variant.Outlined" Min="0"/>
+                    <MudNumericField @bind-Value="_apy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Precious Metals APY" Label="Precious Metals APY" Variant="Variant.Outlined" Min="0"/>
+                </MudStack>
+                @{
+                    var lifestyleIncomeStreamSetupTime = TimeSpan.FromDays(30 * 3);
+                    var newLifestyleIncomeStreamsPerYear = Math.DivRem((int)TimeSpan.FromDays(365).TotalDays, (int)lifestyleIncomeStreamSetupTime.TotalDays).Quotient;
+                    var lifestyleIncomeAllocation = _apy == 0M ? 0 : _annualFundingIncrease * (1 - _apr / _apy);
+                    var preciousMetalsAllocation = _apy == 0M ? 0 : _annualFundingIncrease * (_apr / _apy);
+                }
+                <MudText>Lifestyle Income Allocation: $@($"{lifestyleIncomeAllocation:N0}") <br/> Precious Metals Allocation: $@($"{preciousMetalsAllocation:N0}") <br/> Annual Income Increase: $@($"{lifestyleIncomeAllocation * newLifestyleIncomeStreamsPerYear:N0}")</MudText>
+            </MudStack>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Outlined="true">
+        <MudCardHeader>Advanced Lifestyle Income Strategy</MudCardHeader>
+        <MudCardContent>
+            <MudStack Spacing="3">
+                <MudNumericField @bind-Value="_annualFundingIncrease" Label="Annual Funding Increase" Format="N0" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Immediate="true" Variant="Variant.Outlined" Min="0"/>
+                <MudStack Row="true">
+                    <MudNumericField @bind-Value="_apr" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Funding APR" Label="Funding APR" Variant="Variant.Outlined" Min="0"/>
+                    <MudNumericField @bind-Value="_apy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Precious Metals APY" Label="Precious Metals APY" Variant="Variant.Outlined" Min="0"/>
+                </MudStack>
+                @{
+                    static double CompoundInterest(double principle, double apy, int years)
+                    {
+                        var compoundInterest = 0.0;
+                        
+                        for (var i = 0; i < years; i++)
+                        {
+                            compoundInterest += (principle + compoundInterest) * apy;
+                        }
+
+                        return compoundInterest;
+                    }
+
+                    var netApy = _apy - _apr;
+                    var numFundingRoundsPerCycle = Math.Ceiling(_apr / netApy);
+                    var annualInterest = _annualFundingIncrease * _apr / 100;
+                    var lifestyleIncomeAllocation = _annualFundingIncrease - (annualInterest * numFundingRoundsPerCycle);
+                    var interestPaymentReserve = _annualFundingIncrease - lifestyleIncomeAllocation;
+                    var fundable360Fee = _annualFundingIncrease * _apr / 100;
+                    var lifeInsuranceCashValue = (_annualFundingIncrease - fundable360Fee) * 0.70M;
+                    var loanLimit = lifeInsuranceCashValue * 0.90M;
+                    var numYearsOfInsuranceReserves = Math.Floor(loanLimit / annualInterest);
+                    var accumulatedCashValue = (double)lifeInsuranceCashValue * Math.Pow(1.03, (double)numYearsOfInsuranceReserves);
+
+                    var cashValueInterest = 0.0;
+                    var numYears = 0;
+                    while (cashValueInterest < (double)annualInterest)
+                    {
+                        cashValueInterest = CompoundInterest((double)lifeInsuranceCashValue, 0.03, ++numYears);
+                    }
+
+                    const double Principle = 50_955.0;
+                }
+                <MudText>$50K Accrued Interest Year 1: $@($"{CompoundInterest(Principle, (0.12 - 0.099) / 12, 1 * 12):N0}")</MudText>
+                <MudText>$50K Accrued Interest Year 2: $@($"{CompoundInterest(Principle, (0.12 - 0.099) / 12, 2 * 12):N0}")</MudText>
+                <MudText>$50K Accrued Interest Year 3: $@($"{CompoundInterest(Principle, (0.12 - 0.099) / 12, 3 * 12):N0}")</MudText>
+                <MudText>$50K Accrued Interest Year 4: $@($"{CompoundInterest(Principle, (0.12 - 0.099) / 12, 4 * 12):N0}")</MudText>
+                <MudText>$50K Accrued Interest Year 5: $@($"{CompoundInterest(Principle, (0.12 - 0.099) / 12, 5 * 12):N0}")</MudText>
+                
+                <MudText>Lifestyle Income Allocation: $@($"{lifestyleIncomeAllocation:N0}") <br/> Interest Payment Reserve: $@($"{interestPaymentReserve:N0}") <br/> # Iterations Per Cycle: @numFundingRoundsPerCycle <br/><br/> Life Insurance Cash Value: $@($"{lifeInsuranceCashValue:N0}") (Loanable: $@($"{loanLimit:N0}")) <br/> # Iterations Per Cycle: @numYears <br/> Cash Value Interest: $@($"{cashValueInterest:N0}")</MudText>
+            </MudStack>
+        </MudCardContent>
+    </MudCard>
 </MudStack>
 
 <br/>
@@ -135,6 +197,7 @@
 </Collapsable>
 
 @code {
+    private decimal _annualFundingIncrease = 50_000M;
     private static readonly int[] TwelveWideTeamDistribution = [12, 5, 3, 2, 1];
     private static readonly int MaxMonthlyIncomeDemo =
         Util.GetMonthlyIncome(TeamLevel.GetTeamDistribution(TwelveWideTeamDistribution).MaxBy(x => x.TeamMembersTotal)!.TeamMembersTotal);
@@ -143,7 +206,7 @@
 
     private TeamDistribution _selectedDistribution = TeamDistribution.TwelveWide;
     private int _monthlyIncomeGoal;
-    private decimal _apr = 9M;
+    private decimal _apr = 9.9M;
     private decimal _apy = 12M;
     private int _level1Custom = 1;
     private int _level2Custom = 1;
