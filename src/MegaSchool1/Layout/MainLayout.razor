@@ -70,7 +70,7 @@ else
         <main>
             <div class="top-row px-4" style="background-color:@(Colors.Green.Default);">
                 <MudStack Row="true" Style="width:100%;">
-                    <Loader Loaded="_componentInitialized" Height="Pixel.From(50)" Width="Percentage.From(100)" SkeletonType="SkeletonType.Text">
+                    <Loader Loaded="_componentInitialized" Height="Pixel.From(50)" Width="@(new Percentage(100, PercentageFormat.Instance))" SkeletonType="SkeletonType.Text">
                         @if (ComponentBase.ProspectMode(_appState))
                         {
                             <MudButton OnClick="ShowUsernameEditDialog" EndIcon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Primary">Set Member ID</MudButton>

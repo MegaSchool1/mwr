@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Foundation.Model
 @using MegaSchool1.Components
 @using MegaSchool1.Model
 @inherits PageBase
@@ -34,13 +35,13 @@
                     <MudNumericField @bind-Value="_apy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Precious Metals APY" Label="Precious Metals APY" Variant="Variant.Outlined" Min="0"/>
                 </MudStack>
                 @{
-                    static double CompoundInterest(double principle, double apy, int years)
+                    static double CompoundInterest(double principle, Percentage interest, int numCompounds)
                     {
                         var compoundInterest = 0.0;
                         
-                        for (var i = 0; i < years; i++)
+                        for (var i = 0; i < numCompounds; i++)
                         {
-                            compoundInterest += (principle + compoundInterest) * apy;
+                            compoundInterest += (principle + compoundInterest) * (double)interest.ToFormat(DecimalFormat.Instance);
                         }
 
                         return compoundInterest;
@@ -61,22 +62,80 @@
                     var numYears = 0;
                     while (cashValueInterest < (double)annualInterest)
                     {
-                        cashValueInterest = CompoundInterest((double)lifeInsuranceCashValue, 0.03, ++numYears);
+                        cashValueInterest = CompoundInterest((double)lifeInsuranceCashValue, new Percentage(0.03m, DecimalFormat.Instance), ++numYears);
                     }
 
                     const double Principle = 50_955.0;
+
+                    var lifestyleFundingFeePercentage = new Percentage(_apr, PercentageFormat.Instance);
+                    var lifestyleFundingFee = _annualFundingIncrease * lifestyleFundingFeePercentage.ToFormat(DecimalFormat.Instance);
+                    var lifestyleFundingAnnualInterest = _annualFundingIncrease * lifestyleFundingFeePercentage.ToFormat(DecimalFormat.Instance);
+                    
+                    var repaymentFundingFeePercentage = new Percentage(_apr, PercentageFormat.Instance);
+                    var apy = new Percentage(_apy, PercentageFormat.Instance);
+                    var repaymentFundingFee = _annualFundingIncrease * repaymentFundingFeePercentage.ToFormat(DecimalFormat.Instance);
+                    var repaymentFundingPreciousMetalsProfitYear1 = (decimal)CompoundInterest((double)(_annualFundingIncrease - repaymentFundingFee), new Percentage((_apy - _apr) / 12, PercentageFormat.Instance), 12);
+
+                    var annualProfit = 0m;
+                    numYears = 1;
+                    var annualProfits = new List<decimal>();
+                    while (annualProfit < lifestyleFundingAnnualInterest)
+                    {
+                        annualProfit = (decimal)CompoundInterest(
+                            (double)(_annualFundingIncrease - repaymentFundingFee + annualProfits.Sum()),
+                            new Percentage((_apy - _apr) / 12, PercentageFormat.Instance),
+                            12);
+
+                        annualProfits.Add(annualProfit);
+                        numYears++;
+                    }
+                    
+                    _fundingRounds.Add(new("Lifestyle Income", Enumerable.Range(1, annualProfits.Count + 1).Select(_ => (decimal?)lifestyleFundingAnnualInterest).ToArray()));
+                    _fundingRounds.Add(new("Repayment Funding", annualProfits.Cast<decimal?>().Prepend(null).ToArray()));
                 }
-                <MudText>$50K Accrued Interest Year 1: $@($"{CompoundInterest(Principle, (0.12 - 0.099) / 12, 1 * 12):N0}")</MudText>
-                <MudText>$50K Accrued Interest Year 2: $@($"{CompoundInterest(Principle, (0.12 - 0.099) / 12, 2 * 12):N0}")</MudText>
-                <MudText>$50K Accrued Interest Year 3: $@($"{CompoundInterest(Principle, (0.12 - 0.099) / 12, 3 * 12):N0}")</MudText>
-                <MudText>$50K Accrued Interest Year 4: $@($"{CompoundInterest(Principle, (0.12 - 0.099) / 12, 4 * 12):N0}")</MudText>
-                <MudText>$50K Accrued Interest Year 5: $@($"{CompoundInterest(Principle, (0.12 - 0.099) / 12, 5 * 12):N0}")</MudText>
+                
+                <MudText>NumYears: @numYears</MudText><br/>
+                
+                <MudText>$50K Accrued Interest Year 1: $@($"{CompoundInterest(Principle, new ((0.12m - 0.099m) / 12, DecimalFormat.Instance), 1 * 12):N0}")</MudText>
+               
+                <MudText>Interest: @lifestyleFundingAnnualInterest</MudText><br/>
                 
                 <MudText>Lifestyle Income Allocation: $@($"{lifestyleIncomeAllocation:N0}") <br/> Interest Payment Reserve: $@($"{interestPaymentReserve:N0}") <br/> # Iterations Per Cycle: @numFundingRoundsPerCycle <br/><br/> Life Insurance Cash Value: $@($"{lifeInsuranceCashValue:N0}") (Loanable: $@($"{loanLimit:N0}")) <br/> # Iterations Per Cycle: @numYears <br/> Cash Value Interest: $@($"{cashValueInterest:N0}")</MudText>
             </MudStack>
         </MudCardContent>
     </MudCard>
 </MudStack>
+
+<br/>
+<br/>
+
+<MudTable Items="_fundingRounds" Breakpoint="Breakpoint.None" Hover="true" SortLabel="Sort By" Elevation="0">
+    <HeaderContent>
+        <MudTh Style="text-align:center; vertical-align:text-top; border-color:rgb(27,53,115);">Description</MudTh>
+
+        @{
+            var yearsToRepay = _fundingRounds.FirstOrDefault()?.AnnualNetIncome.Length;
+            if (yearsToRepay.HasValue)
+            {
+                for (var i = 0; i < yearsToRepay; i++)
+                {
+                    var index = i;
+                    <MudTh Style="text-align:center; vertical-align:text-top; border-color:rgb(27,53,115);">Year @(index + 1)</MudTh>
+                }
+            }
+        }
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd Style="text-align:center;">@context.Description</MudTd>
+    
+        @for (var i = 0; i < context.AnnualNetIncome.Length; i++)
+        {
+            var annualNetIncome = context.AnnualNetIncome[i];
+            
+            <MudTd Style="text-align:center;">@($"{annualNetIncome:N0}")</MudTd>
+        }
+    </RowTemplate>
+</MudTable>
 
 <br/>
 <br/>
@@ -215,7 +274,8 @@
     private int _level5Custom = 1;
     private int _level6Custom = 1;
     private ProductionDuplicationLevel[] _productionDuplicationLevels = new ProductionDuplicationLevel[10];
-
+    private List<FundingRound> _fundingRounds = [];
+    
     private readonly List<CashFlowEquivalent> _cashFlowEquivalents =
     [
         new(Rank.ExecutiveDirector1),
@@ -247,6 +307,8 @@
         Custom = 2,
     }
 
+    private record FundingRound(string Description, decimal?[] AnnualNetIncome);
+    
     private class CashFlowEquivalent(Rank rank)
     {
         public int InvestmentPrinciple { get; } = InvestmentCashFlowEquivalent(Constants.DailyGuarantee[rank].MonthlyPay);

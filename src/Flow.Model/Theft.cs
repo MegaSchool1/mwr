@@ -12,7 +12,7 @@ public record Theft(string Name, string Description, OneOf<Percentage, (Scalar A
 
         if (Amount.TryPickT0(out var percentage, out var scalar))
         {
-            stolenAmount = (income.Gross / income.PayFrequency.Days) * percentage.Value;
+            stolenAmount = (income.Gross / income.PayFrequency.Days) * percentage.ToFormat(DecimalFormat.Instance);
         }
         else
         {
@@ -30,7 +30,7 @@ public record Theft(string Name, string Description, OneOf<Percentage, (Scalar A
     }
 }
 
-public record FederalIncomeTax() : Theft("Big Realm Levy", "United States Federal income tax", Percentage.From(0.22m));
-public record IllinoisIncomeTax() : Theft("Mid Realm Levy", "Illinois State Income tax", Percentage.From(0.0495m));
-public record SocialSecurityTax() : Theft("Common Wealth Levy", "United State Social Security Tax", Percentage.From(0.062m));
-public record MedicareTax() : Theft("Healing Pool Levy", "United State Medicare tax", Percentage.From(0.0145m));
+public record FederalIncomeTax() : Theft("Big Realm Levy", "United States Federal income tax", new Percentage(0.22m, DecimalFormat.Instance));
+public record IllinoisIncomeTax() : Theft("Mid Realm Levy", "Illinois State Income tax", new Percentage(0.0495m, DecimalFormat.Instance));
+public record SocialSecurityTax() : Theft("Common Wealth Levy", "United State Social Security Tax", new Percentage(0.062m, DecimalFormat.Instance));
+public record MedicareTax() : Theft("Healing Pool Levy", "United State Medicare tax", new Percentage(0.0145m, DecimalFormat.Instance));
