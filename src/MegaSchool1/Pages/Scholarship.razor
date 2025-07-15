@@ -76,22 +76,35 @@
                     var repaymentFundingFee = _annualFundingIncrease * repaymentFundingFeePercentage.ToFormat(DecimalFormat.Instance);
                     var repaymentFundingPreciousMetalsProfitYear1 = (decimal)CompoundInterest((double)(_annualFundingIncrease - repaymentFundingFee), new Percentage((_apy - _apr) / 12, PercentageFormat.Instance), 12);
 
-                    var annualProfit = 0m;
-                    numYears = 1;
-                    var annualProfits = new List<decimal>();
-                    while (annualProfit < lifestyleFundingAnnualInterest)
+                    var profitsOfFundingRounds = new List<List<decimal>>();
+                    while (profitsOfFundingRounds.Select(fundingRoundProfits => fundingRoundProfits.Last()).Sum() < lifestyleFundingAnnualInterest)
                     {
-                        annualProfit = (decimal)CompoundInterest(
-                            (double)(_annualFundingIncrease - repaymentFundingFee + annualProfits.Sum()),
-                            new Percentage((_apy - _apr) / 12, PercentageFormat.Instance),
-                            12);
+                        profitsOfFundingRounds.Add(new());
 
-                        annualProfits.Add(annualProfit);
-                        numYears++;
+                        foreach (var fundingRoundProfits in profitsOfFundingRounds)
+                        {
+                            var annualProfit = (decimal)CompoundInterest(
+                                (double)(_annualFundingIncrease - repaymentFundingFee + fundingRoundProfits.Sum()),
+                                new Percentage((_apy - _apr) / 12, PercentageFormat.Instance),
+                                12);
+                            
+                            fundingRoundProfits.Add(annualProfit);
+                        }
                     }
-                    
-                    _fundingRounds.Add(new("Lifestyle Income", Enumerable.Range(1, annualProfits.Count + 1).Select(_ => (decimal?)lifestyleFundingAnnualInterest).ToArray()));
-                    _fundingRounds.Add(new("Repayment Funding", annualProfits.Cast<decimal?>().Prepend(null).ToArray()));
+
+                    var repaymentFundingRoundsPerCycle = profitsOfFundingRounds.MaxBy(x => x.Count)?.Count ?? 0;
+                    _fundingRounds.Add(new("Lifestyle Income", Enumerable.Range(1, 1 + repaymentFundingRoundsPerCycle).Select(_ => (decimal?)lifestyleFundingAnnualInterest).ToArray()));
+
+                    var orderedProfitsOfFundingRounds = profitsOfFundingRounds.OrderByDescending(x => x.Count).ToArray();
+                    for (var i = 0; i < orderedProfitsOfFundingRounds.Length; i++)
+                    {
+                        var numEmptyYears = 1 + repaymentFundingRoundsPerCycle - orderedProfitsOfFundingRounds[i].Count;
+                        
+                        var annualNetIncomes = Enumerable.Range(1, numEmptyYears).Select(_ => (decimal?)null).ToList();
+                        annualNetIncomes.AddRange(orderedProfitsOfFundingRounds[i].Cast<decimal?>());
+                        
+                        _fundingRounds.Add(new("Funding Round " + (i + 1 + 1), annualNetIncomes.ToArray()));
+                    }
                 }
                 
                 <MudText>NumYears: @numYears</MudText><br/>
