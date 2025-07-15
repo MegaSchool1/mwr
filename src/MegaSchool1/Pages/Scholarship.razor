@@ -105,15 +105,13 @@
                         
                         _fundingRounds.Add(new("Funding Round " + (i + 1 + 1), annualNetIncomes.ToArray()));
                     }
+
+                    var yearsOfReserve = 1 + repaymentFundingRoundsPerCycle;
+                    interestPaymentReserve = lifestyleFundingAnnualInterest * yearsOfReserve;
+                    lifestyleIncomeAllocation = _annualFundingIncrease - interestPaymentReserve;
                 }
                 
-                <MudText>NumYears: @numYears</MudText><br/>
-                
-                <MudText>$50K Accrued Interest Year 1: $@($"{CompoundInterest(Principle, new ((0.12m - 0.099m) / 12, DecimalFormat.Instance), 1 * 12):N0}")</MudText>
-               
-                <MudText>Interest: @lifestyleFundingAnnualInterest</MudText><br/>
-                
-                <MudText>Lifestyle Income Allocation: $@($"{lifestyleIncomeAllocation:N0}") <br/> Interest Payment Reserve: $@($"{interestPaymentReserve:N0}") <br/> # Iterations Per Cycle: @numFundingRoundsPerCycle <br/><br/> Life Insurance Cash Value: $@($"{lifeInsuranceCashValue:N0}") (Loanable: $@($"{loanLimit:N0}")) <br/> # Iterations Per Cycle: @numYears <br/> Cash Value Interest: $@($"{cashValueInterest:N0}")</MudText>
+                <MudText>Lifestyle Income Allocation: $@($"{lifestyleIncomeAllocation:N0}") <br/> Interest Payment Reserve: $@($"{interestPaymentReserve:N0}")</MudText>
             </MudStack>
         </MudCardContent>
     </MudCard>
