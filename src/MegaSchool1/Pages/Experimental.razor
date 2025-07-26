@@ -6,11 +6,13 @@
 @inject NavigationManager NavigationManager
 
 <MudStack Spacing="6">
-    <Centered><MudIcon Icon="@Icons.Material.Filled.School" /><MudLink Href="/wealthmap">Mega GED</MudLink></Centered>
-    <Centered><MudIcon Icon="@Icons.Material.Filled.DirectionsCar" /><MudLink Href="/carpurchase">Teen Car Purchase</MudLink></Centered>
-    <Centered><MudIcon Icon="@Icons.Material.Filled.Security" /><MudLink Href="/trustfundmybaby">Trust Fund My Baby</MudLink></Centered>
-    <Centered><MudIcon Icon="@Icons.Material.Filled.Handshake" /><MudLink Href="/givbuxfundraiserprojections">GivBux Fundraiser Projections</MudLink></Centered>
-    <Centered><MudIcon Icon="@Icons.Material.Filled.Gamepad" /><MudLink Href="/game">Game</MudLink></Centered>
+    <Centered><MudIcon Icon="@Icons.Material.Filled.Church" /><MudLink Href="@PageFullPath("share360")">Share360</MudLink></Centered>
+    <Centered><MudIcon Icon="@Icons.Material.Filled.AttachMoney" /><MudLink Href="@PageFullPath("investment")">Investment Strategy</MudLink></Centered>
+    <Centered><MudIcon Icon="@Icons.Material.Filled.School" /><MudLink Href="@PageFullPath("wealthmap")">Mega GED</MudLink></Centered>
+    <Centered><MudIcon Icon="@Icons.Material.Filled.DirectionsCar" /><MudLink Href="@PageFullPath("carpurchase")">Teen Car Purchase</MudLink></Centered>
+    <Centered><MudIcon Icon="@Icons.Material.Filled.Security" /><MudLink Href="@PageFullPath("trustfundmybaby")">Trust Fund My Baby</MudLink></Centered>
+    <Centered><MudIcon Icon="@Icons.Material.Filled.Handshake" /><MudLink Href="@PageFullPath("givbuxfundraiserprojections")">GivBux Fundraiser Projections</MudLink></Centered>
+    <Centered><MudIcon Icon="@Icons.Material.Filled.Gamepad" /><MudLink Href="@PageFullPath("game")">Game</MudLink></Centered>
     <Centered><MudIcon Icon="@Icons.Material.Filled.Money" /><MudLink OnClick="OnRunProtocol">USA</MudLink></Centered>
     <MudDivider />
     <Collapsable Title="Tests">

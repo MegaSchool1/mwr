@@ -1,0 +1,35 @@
+﻿@page "/share360"
+@using MegaSchool1.Components
+@using MegaSchool1.Model
+@using MegaSchool1.ViewModel
+@using OneOf.Types
+@inherits PageBase
+
+<MudStack Spacing="3">
+    <Shareable Description="Share360 Landing Page"
+               TextToCopy="Share360<br/>👇<br/>https://bizconnect360-tracking.tracknow.info/s/i1GTT"
+               ImageUrl="https://pbs.twimg.com/profile_images/378800000231088026/576835def2f385ecb79679a54f1e970b_400x400.png" />
+    
+    <Shareable Description="Share360 Overview"
+               TextToCopy="Share360<br/>👇<br/>https://bizconnect360-tracking.tracknow.info/click?campaign_id=4&ref_id=41&path=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DmgioQ25kKqo&creative_Id=1" Video="@(new VideoViewModel(new YouTube("mgioQ25kKqo", new None()), new TimeSpan(0, 18, 0)))"
+               ImageUrl="https://pbs.twimg.com/profile_images/378800000231088026/576835def2f385ecb79679a54f1e970b_400x400.png" />
+
+    <MudCard Outlined="true">
+        <MudCardHeader>Share360 Dashboard</MudCardHeader>
+        <MudCardContent>
+            <MudStack Spacing="3">
+                <ExternalLink Href="https://bizconnect360.tracknow.io/">Share360 Dashboard</ExternalLink>
+                <EmbeddedVideo Video="@((Video)new YouTube("JwsaF5PIdM0", new None()))"/>
+            </MudStack>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Outlined="true">
+        <MudCardHeader>Share360 Training</MudCardHeader>
+        <MudCardContent>
+            <MudStack Spacing="3">
+                <ExternalLink Href="https://www.youtube.com/watch?v=60JnsTdAqXo">Watch in YouTube</ExternalLink>
+            </MudStack>
+            <EmbeddedVideo Video="@((Video)new YouTube("60JnsTdAqXo", new None()))"/>
+        </MudCardContent>
+    </MudCard>
+</MudStack>

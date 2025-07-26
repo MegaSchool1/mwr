@@ -28,12 +28,12 @@ else
     private static string? HeightConverter(OneOf<Pixel, Percentage, string?>? height) =>
         height?.Match(
             pixel => $"{pixel.Value}px",
-            percentage => $"{percentage.Value}%",
+            percentage => $"{percentage.ToFormat(PercentageFormat.Instance)}%",
             @string => @string);
 
     private static string? WidthConverter(OneOf<Pixel, Percentage, string?>? width) =>
         width?.Match(
             pixel => $"{pixel.Value}px",
-            percentage => $"{percentage.Value}%",
+            percentage => $"{percentage.ToFormat(PercentageFormat.Instance)}%",
             @string => @string);
 }

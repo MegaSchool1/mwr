@@ -61,7 +61,7 @@ public record GameState(
              // 3 month emergency fund
             primaryIncome.GrossDuring(3 * BoardEpoch),
             0,
-            Percentage.From(0),
+            new Percentage(0, DecimalFormat.Instance),
             (YearalMonth.January, 1),
             new None()
         );
@@ -77,16 +77,16 @@ public record GameState(
         {
             // credit card
             var balance = 2000.0m;
-            var apy = Percentage.From(0.22m);
+            var apy = new Percentage(0.22m, DecimalFormat.Instance);
             game.Debts.Add(new((string)"Credit Card", balance, (Percentage)apy,
-                (OneOf<decimal, None>)(balance * apy.Value / Enum.GetValues<YearalMonth>().Length)));
+                (OneOf<decimal, None>)(balance * apy.ToFormat(DecimalFormat.Instance) / Enum.GetValues<YearalMonth>().Length)));
         }
 
         {
             // student loan
             var balance = 10000.0m;
-            var apy = Percentage.From(0.055m);
-            game.Debts.Add(new((string)"Student Loan", balance, (Percentage)apy, (OneOf<decimal, None>)(balance * apy.Value / Enum.GetValues<YearalMonth>().Length)));
+            var apy = new Percentage(0.055m, DecimalFormat.Instance);
+            game.Debts.Add(new((string)"Student Loan", balance, (Percentage)apy, (OneOf<decimal, None>)(balance * apy.ToFormat(DecimalFormat.Instance) / Enum.GetValues<YearalMonth>().Length)));
         }
 
         // proces expenses

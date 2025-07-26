@@ -44,17 +44,17 @@
     <ResponsiveLayout>
         <MobileContent>
             <MudStack Spacing="3">
-                @ProtectFunds(Percentage.From(100))
-                @GenerateFunds(Percentage.From(100))
-                @DistributeFunds(Percentage.From(100))
+                @ProtectFunds(new Percentage(100, PercentageFormat.Instance))
+                @GenerateFunds(new Percentage(100, PercentageFormat.Instance))
+                @DistributeFunds(new Percentage(100, PercentageFormat.Instance))
             </MudStack>
         </MobileContent>
         <DesktopContent>
             <MudStack Row="true">
                 <MudSpacer/>
-                @ProtectFunds(Percentage.From(25))
-                @GenerateFunds(Percentage.From(25))
-                @DistributeFunds(Percentage.From(25))
+                @ProtectFunds(new Percentage(25, PercentageFormat.Instance))
+                @GenerateFunds(new Percentage(25, PercentageFormat.Instance))
+                @DistributeFunds(new Percentage(25, PercentageFormat.Instance))
                 <MudSpacer />
             </MudStack>
         </DesktopContent>
@@ -102,7 +102,7 @@
       
       private RenderFragment ProtectFunds(Percentage width) => __builder =>
       {
-          <MudCard Style="@($"width:{width.Value}%;")">
+          <MudCard Style="@($"width:{width.ToFormat(PercentageFormat.Instance)}%;")">
               <MudCardHeader>
                   <CardHeaderContent>
                       <MudText Color="Color.Primary">Protect Funds for Family</MudText>
@@ -116,7 +116,7 @@
       
       private RenderFragment GenerateFunds(Percentage width) => __builder =>
       {
-          <MudCard Style="@($"width:{width.Value}%;")">
+          <MudCard Style="@($"width:{width.ToFormat(PercentageFormat.Instance)}%;")">
               <MudCardHeader>
                   <CardHeaderContent>
                       <MudText Color="Color.Primary">Generate Funds for Family</MudText>
@@ -130,7 +130,7 @@
       
       private RenderFragment DistributeFunds(Percentage width) => __builder =>
       {
-          <MudCard Style="@($"width:{width.Value}%;")">
+          <MudCard Style="@($"width:{width.ToFormat(PercentageFormat.Instance)}%;")">
               <MudCardHeader>
                   <CardHeaderContent>
                       <MudText Color="Color.Primary">Distribute Funds to Family</MudText>

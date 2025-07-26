@@ -50,8 +50,6 @@
 
     private string ValidateTarget(string target) => ProspectMode(AppState) ? "_self" : target;
 
-    private string PageFullPath(string page) => $"{NavigationManager.BaseUri}{page}";
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)

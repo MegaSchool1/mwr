@@ -188,7 +188,7 @@ public static class GameEngine
 
             dailyIncomes = dailyIncomeResult.Incomes;
 
-            game = dailyIncomeResult.Game with { SickDayLikelihood = Percentage.From(0) };
+            game = dailyIncomeResult.Game with { SickDayLikelihood = new Percentage(0, DecimalFormat.Instance) };
         }
         else
         {
@@ -210,7 +210,7 @@ public static class GameEngine
                 game = dailyIncomeResult.Game;
             }
 
-            game = game with { SickDayLikelihood = Percentage.From(sickDayLikelihood) };
+            game = game with { SickDayLikelihood = new Percentage(sickDayLikelihood, PercentageFormat.Instance) };
         }
 
         game.CurrentDayStats.CompletedActiveIncomeWork = true;
@@ -234,7 +234,7 @@ public static class GameEngine
         game = game with
         {
             SuccessiveWorkDays = wentToWorkToday ? game.SuccessiveWorkDays : 0,
-            SickDayLikelihood = wentToWorkToday ? game.SickDayLikelihood : Percentage.From(0)
+            SickDayLikelihood = wentToWorkToday ? game.SickDayLikelihood : new Percentage(0, DecimalFormat.Instance)
         };
 
         // expense
