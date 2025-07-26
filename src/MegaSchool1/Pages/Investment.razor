@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/investment"
 @using System.Collections.ObjectModel
 @using Foundation.Model
 @inherits PageBase
@@ -10,22 +10,10 @@
             <MudStack Spacing="3">
                 <MudNumericField @bind-Value="_annualFundingIncrease" Label="Annual Funding Increase" Format="N0" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Immediate="true"  Variant="Variant.Outlined" Min="0"/>
                 <MudStack Row="true">
-                    <MudNumericField T="decimal" Value="_apr" ValueChanged="(value) => { _apr = value; StateHasChanged(); }" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Funding APR" Label="Funding APR" Variant="Variant.Outlined" Min="0"/>
+                    <MudNumericField @bind-Value="_apr" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Funding APR" Label="Funding APR" Variant="Variant.Outlined" Min="0"/>
                     <MudNumericField @bind-Value="_apy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Immediate="true" HelperText="Precious Metals APY" Label="Precious Metals APY" Variant="Variant.Outlined" Min="0"/>
                 </MudStack>
                 @{
-                    static double CompoundInterest(double principle, Percentage interest, int numCompounds)
-                    {
-                        var compoundInterest = 0.0;
-                        
-                        for (var i = 0; i < numCompounds; i++)
-                        {
-                            compoundInterest += (principle + compoundInterest) * (double)interest.ToFormat(DecimalFormat.Instance);
-                        }
-
-                        return compoundInterest;
-                    }
-
                     var netApy = _apy - _apr;
                     var numFundingRoundsPerCycle = Math.Ceiling(_apr / netApy);
                     var annualInterest = _annualFundingIncrease * _apr / 100;
@@ -43,9 +31,7 @@
                     {
                         cashValueInterest = CompoundInterest((double)lifeInsuranceCashValue, new Percentage(0.03m, DecimalFormat.Instance), ++numYears);
                     }
-
-                    const double Principle = 50_955.0;
-
+                    
                     var lifestyleFundingFeePercentage = new Percentage(_apr, PercentageFormat.Instance);
                     var lifestyleFundingFee = _annualFundingIncrease * lifestyleFundingFeePercentage.ToFormat(DecimalFormat.Instance);
                     var lifestyleFundingAnnualInterest = _annualFundingIncrease * lifestyleFundingFeePercentage.ToFormat(DecimalFormat.Instance);
@@ -72,25 +58,8 @@
                     }
 
                     var repaymentFundingRoundsPerCycle = profitsOfFundingRounds.MaxBy(x => x.Count)?.Count ?? 0;
-                    //_fundingRounds.Clear();
-                    var sanity = new ObservableCollection<FundingRound>();
-                    sanity.Add(new("Lifestyle Income" + $" {_apr}", Enumerable.Range(1, 1 + repaymentFundingRoundsPerCycle).Select(_ => (decimal?)lifestyleFundingAnnualInterest).ToArray()));
-
-                    var orderedProfitsOfFundingRounds = profitsOfFundingRounds.OrderByDescending(x => x.Count).ToArray();
-                    for (var i = 0; i < orderedProfitsOfFundingRounds.Length; i++)
-                    {
-                        var numEmptyYears = 1 + repaymentFundingRoundsPerCycle - orderedProfitsOfFundingRounds[i].Count;
-                        
-                        var annualNetIncomes = Enumerable.Range(1, numEmptyYears).Select(_ => (decimal?)null).ToList();
-                        annualNetIncomes.AddRange(orderedProfitsOfFundingRounds[i].Cast<decimal?>());
-                        
-                        sanity.Add(new("Funding Round " + (i + 1 + 1), annualNetIncomes.ToArray()));
-                    }
-
-                    _fundingRounds = sanity;
-                    
-                    // TODO update all values in a method
                     var yearsOfReserve = 1 + repaymentFundingRoundsPerCycle;
+
                     interestPaymentReserve = lifestyleFundingAnnualInterest * yearsOfReserve;
                     lifestyleIncomeAllocation = _annualFundingIncrease - interestPaymentReserve;
                 }
@@ -135,68 +104,55 @@
     private decimal _annualFundingIncrease = 50_000M;
     private decimal _apr = 9.9M;
     private decimal _apy = 12M;
-    private ObservableCollection<FundingRound> _fundingRounds = [];
 
     private static IEnumerable<FundingRound> GetFundingRounds(decimal fundingApr, decimal investmentApy, decimal fundingLimitPerRound)
     {
-           static double CompoundInterest(double principle, Percentage interest, int numCompounds)
-                    {
-                        var compoundInterest = 0.0;
-                        
-                        for (var i = 0; i < numCompounds; i++)
-                        {
-                            compoundInterest += (principle + compoundInterest) * (double)interest.ToFormat(DecimalFormat.Instance);
-                        }
+        var netApy = investmentApy - fundingApr;
+        var numFundingRoundsPerCycle = Math.Ceiling(fundingApr / netApy);
+        var annualInterest = fundingLimitPerRound * fundingApr / 100;
+        var lifestyleIncomeAllocation = fundingLimitPerRound - (annualInterest * numFundingRoundsPerCycle);
+        var interestPaymentReserve = fundingLimitPerRound - lifestyleIncomeAllocation;
+        var fundable360Fee = fundingLimitPerRound * fundingApr / 100;
+        var lifeInsuranceCashValue = (fundingLimitPerRound - fundable360Fee) * 0.70M;
+        var loanLimit = lifeInsuranceCashValue * 0.90M;
+        var numYearsOfInsuranceReserves = Math.Floor(loanLimit / annualInterest);
+        var accumulatedCashValue = (double)lifeInsuranceCashValue * Math.Pow(1.03, (double)numYearsOfInsuranceReserves);
 
-                        return compoundInterest;
-                    }
+        var cashValueInterest = 0.0;
+        var numYears = 0;
+        while (cashValueInterest < (double)annualInterest)
+        {
+            cashValueInterest = CompoundInterest((double)lifeInsuranceCashValue, new Percentage(0.03m, DecimalFormat.Instance), ++numYears);
+        }
+        
+        var lifestyleFundingFeePercentage = new Percentage(fundingApr, PercentageFormat.Instance);
+        var lifestyleFundingFee = fundingLimitPerRound * lifestyleFundingFeePercentage.ToFormat(DecimalFormat.Instance);
+        var lifestyleFundingAnnualInterest = fundingLimitPerRound * lifestyleFundingFeePercentage.ToFormat(DecimalFormat.Instance);
+        
+        var repaymentFundingFeePercentage = new Percentage(fundingApr, PercentageFormat.Instance);
+        var apy = new Percentage(investmentApy, PercentageFormat.Instance);
+        var repaymentFundingFee = fundingLimitPerRound * repaymentFundingFeePercentage.ToFormat(DecimalFormat.Instance);
+        var repaymentFundingPreciousMetalsProfitYear1 = (decimal)CompoundInterest((double)(fundingLimitPerRound - repaymentFundingFee), new Percentage((investmentApy - fundingApr) / 12, PercentageFormat.Instance), 12);
 
-                    var netApy = investmentApy - fundingApr;
-                    var numFundingRoundsPerCycle = Math.Ceiling(fundingApr / netApy);
-                    var annualInterest = fundingLimitPerRound * fundingApr / 100;
-                    var lifestyleIncomeAllocation = fundingLimitPerRound - (annualInterest * numFundingRoundsPerCycle);
-                    var interestPaymentReserve = fundingLimitPerRound - lifestyleIncomeAllocation;
-                    var fundable360Fee = fundingLimitPerRound * fundingApr / 100;
-                    var lifeInsuranceCashValue = (fundingLimitPerRound - fundable360Fee) * 0.70M;
-                    var loanLimit = lifeInsuranceCashValue * 0.90M;
-                    var numYearsOfInsuranceReserves = Math.Floor(loanLimit / annualInterest);
-                    var accumulatedCashValue = (double)lifeInsuranceCashValue * Math.Pow(1.03, (double)numYearsOfInsuranceReserves);
+        var profitsOfFundingRounds = new List<List<decimal>>();
+        while (profitsOfFundingRounds.Select(fundingRoundProfits => fundingRoundProfits.Last()).Sum() < lifestyleFundingAnnualInterest)
+        {
+            profitsOfFundingRounds.Add(new());
 
-                    var cashValueInterest = 0.0;
-                    var numYears = 0;
-                    while (cashValueInterest < (double)annualInterest)
-                    {
-                        cashValueInterest = CompoundInterest((double)lifeInsuranceCashValue, new Percentage(0.03m, DecimalFormat.Instance), ++numYears);
-                    }
-                    
-                    var lifestyleFundingFeePercentage = new Percentage(fundingApr, PercentageFormat.Instance);
-                    var lifestyleFundingFee = fundingLimitPerRound * lifestyleFundingFeePercentage.ToFormat(DecimalFormat.Instance);
-                    var lifestyleFundingAnnualInterest = fundingLimitPerRound * lifestyleFundingFeePercentage.ToFormat(DecimalFormat.Instance);
-                    
-                    var repaymentFundingFeePercentage = new Percentage(fundingApr, PercentageFormat.Instance);
-                    var apy = new Percentage(investmentApy, PercentageFormat.Instance);
-                    var repaymentFundingFee = fundingLimitPerRound * repaymentFundingFeePercentage.ToFormat(DecimalFormat.Instance);
-                    var repaymentFundingPreciousMetalsProfitYear1 = (decimal)CompoundInterest((double)(fundingLimitPerRound - repaymentFundingFee), new Percentage((investmentApy - fundingApr) / 12, PercentageFormat.Instance), 12);
+            foreach (var fundingRoundProfits in profitsOfFundingRounds)
+            {
+                var annualProfit = (decimal)CompoundInterest(
+                    (double)(fundingLimitPerRound - repaymentFundingFee + fundingRoundProfits.Sum()),
+                    new Percentage((investmentApy - fundingApr) / 12, PercentageFormat.Instance),
+                    12);
+                
+                fundingRoundProfits.Add(annualProfit);
+            }
+        }
 
-                    var profitsOfFundingRounds = new List<List<decimal>>();
-                    while (profitsOfFundingRounds.Select(fundingRoundProfits => fundingRoundProfits.Last()).Sum() < lifestyleFundingAnnualInterest)
-                    {
-                        profitsOfFundingRounds.Add(new());
-
-                        foreach (var fundingRoundProfits in profitsOfFundingRounds)
-                        {
-                            var annualProfit = (decimal)CompoundInterest(
-                                (double)(fundingLimitPerRound - repaymentFundingFee + fundingRoundProfits.Sum()),
-                                new Percentage((investmentApy - fundingApr) / 12, PercentageFormat.Instance),
-                                12);
-                            
-                            fundingRoundProfits.Add(annualProfit);
-                        }
-                    }
-
-                    var repaymentFundingRoundsPerCycle = profitsOfFundingRounds.MaxBy(x => x.Count)?.Count ?? 0;
-        var sanity = new ObservableCollection<FundingRound>();
-        sanity.Add(new("Lifestyle Income" + $" {fundingApr}", Enumerable.Range(1, 1 + repaymentFundingRoundsPerCycle).Select(_ => (decimal?)lifestyleFundingAnnualInterest).ToArray()));
+        var repaymentFundingRoundsPerCycle = profitsOfFundingRounds.MaxBy(x => x.Count)?.Count ?? 0;
+        var fundingRounds = new List<FundingRound>();
+        fundingRounds.Add(new($"Lifestyle Income", Enumerable.Range(1, 1 + repaymentFundingRoundsPerCycle).Select(_ => (decimal?)lifestyleFundingAnnualInterest).ToArray()));
 
         var orderedProfitsOfFundingRounds = profitsOfFundingRounds.OrderByDescending(x => x.Count).ToArray();
         for (var i = 0; i < orderedProfitsOfFundingRounds.Length; i++)
@@ -206,10 +162,22 @@
             var annualNetIncomes = Enumerable.Range(1, numEmptyYears).Select(_ => (decimal?)null).ToList();
             annualNetIncomes.AddRange(orderedProfitsOfFundingRounds[i].Cast<decimal?>());
                         
-            sanity.Add(new("Funding Round " + (i + 1 + 1), annualNetIncomes.ToArray()));
+            fundingRounds.Add(new("Funding Round " + (i + 1 + 1), annualNetIncomes.ToArray()));
         }
 
-        return sanity;
+        return fundingRounds;
+    }
+    
+    private static double CompoundInterest(double principle, Percentage interest, int numCompounds)
+    {
+        var compoundInterest = 0.0;
+                        
+        for (var i = 0; i < numCompounds; i++)
+        {
+            compoundInterest += (principle + compoundInterest) * (double)interest.ToFormat(DecimalFormat.Instance);
+        }
+
+        return compoundInterest;
     }
     
     private record FundingRound(string Description, decimal?[] AnnualNetIncome);
