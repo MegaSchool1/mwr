@@ -29,6 +29,8 @@
         }
     }
 
+    protected string PageFullPath(string page) => $"{NavigationManager.BaseUri}{page}";
+
     protected (OneOf<ShareableViewModel, None> English, OneOf<ShareableViewModel, None> Spanish) GetShareable(OneOf<Content, ShareableDto> content)
     {
         var spanishDto = content.Match(contentId => UI.SpanishLocale[contentId], dto => dto);
