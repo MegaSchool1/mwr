@@ -404,29 +404,29 @@ public class Constants(UISettings ui)
         {
             Strategy.Corporate,
             new ($"72-Hour Money Challenge",
-                    new(Shareable.VideoShareable("72-Hour Money Challenge!", ui.EnglishLocale[Content.MoneyChallenge]!.MinimalistUrl()!, new(0, 0, 1, 30)), "English shareable copied!", ui.EnglishLocale[Content.MoneyChallenge]!.MinimalistUrl()!),
-                    new(Shareable.VideoShareable("72-Hour Money Challenge!", ui.SpanishLocale[Content.MoneyChallenge]!.MinimalistUrl()!, new(0, 0, 1, 53)), "Español shareable copied!", ui.SpanishLocale[Content.MoneyChallenge]!.MinimalistUrl()!),
+                    new(Shareable.VideoShareable("72-Hour Money Challenge!", ui.EnglishLocale[Content.MoneyChallenge]?.MinimalistUrl()!, new(0, 0, 1, 30)), "English shareable copied!", ui.EnglishLocale[Content.MoneyChallenge]?.MinimalistUrl()!),
+                    new(Shareable.VideoShareable("72-Hour Money Challenge!", ui.SpanishLocale[Content.MoneyChallenge]?.MinimalistUrl()!, new(0, 0, 1, 53)), "Español shareable copied!", ui.SpanishLocale[Content.MoneyChallenge]?.MinimalistUrl()!),
                     GetImageUrl(Image.MoneyChallengeLogo),
                     new(0, 1, 30),
-                    ui.EnglishLocale[Content.MoneyChallenge]!.MinimalistUrl()!)
+                    ui.EnglishLocale[Content.MoneyChallenge]?.MinimalistUrl()!)
         },
         {
             Strategy.ExtraDigitMovement,
             new ($"72-Hour Money Challenge Overview",
-                    new(Shareable.VideoShareable("72-Hour Money Challenge!", ui.EnglishLocale[Content.EDMBusinessOverview]!.MinimalistUrl()!, new(0, 0, 15, 0)), "Shareable copied!", ui.EnglishLocale[Content.EDMBusinessOverview]!.MinimalistUrl()!),
+                    new(Shareable.VideoShareable("72-Hour Money Challenge!", ui.EnglishLocale[Content.EDMBusinessOverview]?.MinimalistUrl()!, new(0, 0, 15, 0)), "Shareable copied!", ui.EnglishLocale[Content.EDMBusinessOverview]?.MinimalistUrl()!),
                     null,
                     GetImageUrl(Image.MoneyChallengeLogo),
                     new(0, 15, 0),
-                    ui.EnglishLocale[Content.EDMBusinessOverview]!.MinimalistUrl()!)
+                    ui.EnglishLocale[Content.EDMBusinessOverview]?.MinimalistUrl()!)
         },
         {
             Strategy.MegaSchool,
             new ($"72-Hour Money Challenge",
-                    new($"{Shareable.VideoShareable("72-Hour Money Challenge!", ui.EnglishLocale[Content.MoneyChallenge]!.MinimalistUrl()!, new(0, 0, 1, 30))}{Environment.NewLine}{Environment.NewLine}{Shareable.VideoShareable("FAQ", ui.EnglishLocale[Content.MoneyChallengeFAQ]!.MinimalistUrl()!, new(0, 0, 5, 0))}", "Shareable copied!",  ui.EnglishLocale[Content.MoneyChallenge]!.Id!),
-                    new($"{Shareable.VideoShareable("72-Hour Money Challenge!", ui.SpanishLocale[Content.MoneyChallenge]!.MinimalistUrl()!, new(0, 0, 1, 30))}{Environment.NewLine}{Environment.NewLine}{Shareable.VideoShareable("FAQ", ui.EnglishLocale[Content.MoneyChallengeFAQ]!.MinimalistUrl()!, new(0, 0, 5, 0))}", "Shareable copied!", ui.SpanishLocale[Content.MoneyChallenge]!.Id!),
+                    new($"{Shareable.VideoShareable("72-Hour Money Challenge!", ui.EnglishLocale[Content.MoneyChallenge]?.MinimalistUrl()!, new(0, 0, 1, 30))}{Environment.NewLine}{Environment.NewLine}{Shareable.VideoShareable("FAQ", ui.EnglishLocale[Content.MoneyChallengeFAQ]?.MinimalistUrl()!, new(0, 0, 5, 0))}", "Shareable copied!",  ui.EnglishLocale[Content.MoneyChallenge]?.Id!),
+                    new($"{Shareable.VideoShareable("72-Hour Money Challenge!", ui.SpanishLocale[Content.MoneyChallenge]?.MinimalistUrl()!, new(0, 0, 1, 30))}{Environment.NewLine}{Environment.NewLine}{Shareable.VideoShareable("FAQ", ui.EnglishLocale[Content.MoneyChallengeFAQ]?.MinimalistUrl()!, new(0, 0, 5, 0))}", "Shareable copied!", ui.SpanishLocale[Content.MoneyChallenge]?.Id!),
                     GetImageUrl(Image.MoneyChallengeLogo),
                     new(0, 7, 0),
-                    ui.EnglishLocale[Content.MoneyChallenge]!.MinimalistUrl()!)
+                    ui.EnglishLocale[Content.MoneyChallenge]?.MinimalistUrl()!)
         },
     };
     public Dictionary<Strategy, Shareable> MoneyChallenge => _moneyChallengeShareable;
@@ -441,10 +441,10 @@ public class Constants(UISettings ui)
 
     private readonly Shareable _moneyChallengeFAQ = new(
         "72-Hour Money Challenge FAQ",
-        new(Shareable.VideoShareable("72-Hour Money Challenge - FAQ", ui.EnglishLocale[Content.MoneyChallengeFAQ]!.MinimalistUrl()!, new(0, 0, 5, 0)), "Shareable copied!", ui.EnglishLocale[Content.MoneyChallengeFAQ]!.MinimalistUrl()!),
+        new(Shareable.VideoShareable("72-Hour Money Challenge - FAQ", ui.EnglishLocale[Content.MoneyChallengeFAQ]?.MinimalistUrl()!, new(0, 0, 5, 0)), "Shareable copied!", ui.EnglishLocale[Content.MoneyChallengeFAQ]?.MinimalistUrl()!),
         null,
         GetImageUrl(Image.MoneyChallengeLogo),
         new(0, 0, 5, 0),
-        ui.EnglishLocale[Content.MoneyChallengeFAQ]!.MinimalistUrl()!);
+        ui.EnglishLocale[Content.MoneyChallengeFAQ]?.MinimalistUrl()!);
     public Shareable MoneyChallengeFAQ => _moneyChallengeFAQ;
 }

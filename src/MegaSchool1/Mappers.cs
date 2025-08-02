@@ -66,9 +66,9 @@ public partial class Mappers
         viewModel.Event = dto.Event != null ? EventDtoToEventViewModel(dto.Event) : new None();
         viewModel.ShowBusinessSignUp = dto.ShowBusinessSignUp;
         viewModel.HideShortCodePrompt = dto.HideShortCodePrompt;
-        viewModel.Images = dto.Images.Any() ? dto.Images : new None();
+        viewModel.Images = dto.Images != null && dto.Images.Any() ? dto.Images : new None();
         viewModel.AuxiliaryText = !string.IsNullOrWhiteSpace(dto.AuxiliaryText) ? dto.AuxiliaryText : new None();
-        viewModel.AuxiliaryTexts = dto.AuxiliaryTexts.Any() ? dto.AuxiliaryTexts : new None();
+        viewModel.AuxiliaryTexts = dto.AuxiliaryTexts != null && dto.AuxiliaryTexts.Any() ? dto.AuxiliaryTexts : new None();
         viewModel.Metadata = !string.IsNullOrWhiteSpace(dto.Metadata) ? dto.Metadata : new None();
         viewModel.FlyerImage = Uri.IsWellFormedUriString(dto.FlyerImageUrl, UriKind.RelativeOrAbsolute) ? new Uri(dto.FlyerImageUrl) : new None();
         viewModel.ShowHeaderImage = dto.ShowHeaderImage;
