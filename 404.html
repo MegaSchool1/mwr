@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <title>Mega School 1</title>
+    <meta name="title" content="Mega School App" />
+    <meta name="description" content="Turn your expenses back into income!  Get paid to share with family and friends. #CashBack #RevenueShare" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mega School App" />
+    <meta property="og:description" content="Turn your expenses back into income!  Get paid to share with family and friends. #CashBack #RevenueShare" />
+    <meta property="og:image" content="/images/app-logo.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Mega School App" />
+    <meta property="twitter:description" content="Turn your expenses back into income!  Get paid to share with family and friends. #CashBack #RevenueShare" />
+    <meta property="twitter:image" content="/images/app-logo.png" />
+
+    <!-- Meta Tags Generated with https://metatags.io -->
+
+    <style>
+        .container {
+            height: 100vh;
+            position: relative;
+        }
+
+        .vertical-center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+    </style>
+
+    <base href="/mwr/" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="MegaSchool1.styles.css" rel="stylesheet" />
+    <link href="manifest.webmanifest" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/13.1.0/stellar-sdk.js"></script>
+
+    <script>
+        window.createKeyPairFromSeed = (seed) => {
+            const pair = StellarSdk.Keypair.fromSecret(seed);
+
+            return pair.secret() + ":" + pair.publicKey();
+        }
+
+        window.createKeyPair = () => {
+            const pair = StellarSdk.Keypair.random();
+
+            return pair.secret() + ":" + pair.publicKey();
+        }
+    </script>
+
+    <!--
+        Refresh fix for Single Page Applications (SPAs)
+        Source: https://github.com/orgs/community/discussions/50269
+    -->
+    <script type="text/javascript">
+        (function (l) {
+            if (l.search[1] === '/') {
+                var decoded = l.search.slice(1).split('&').map(function (s) {
+                    return s.replace(/~and~/g, '&')
+                }).join('?');
+                window.history.replaceState(null, null,
+                    l.pathname.slice(0, -1) + decoded + l.hash
+                );
+            }
+        }(window.location))
+    </script>
+
+    <script>
+        window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+            const arrayBuffer = await contentStreamReference.arrayBuffer();
+            const blob = new Blob([arrayBuffer]);
+            const url = URL.createObjectURL(blob);
+            const anchorElement = document.createElement('a');
+            anchorElement.href = url;
+            anchorElement.download = fileName ?? '';
+            anchorElement.click();
+            anchorElement.remove();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+
+    <script>
+        function inIframe() {
+            try {
+                return window.self !== window.top;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function isStandalone() {
+            let displayMode = 'browser tab';
+            var isStandaloneMode = false;
+
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                displayMode = 'standalone';
+                isStandaloneMode = true;
+            }
+            // Log launch display mode to analytics
+            console.log('DISPLAY_MODE_LAUNCH:', displayMode);
+
+            return isStandaloneMode;
+        }
+
+        function openLinkInNewWindow(url) {
+            window.open(url, "_blank");
+        }
+
+        async function downloadFileFromStream(fileName, contentStreamReference) {
+            const arrayBuffer = await contentStreamReference.arrayBuffer();
+            const blob = new Blob([arrayBuffer]);
+            const url = URL.createObjectURL(blob);
+            const anchorElement = document.createElement('a');
+            anchorElement.href = url;
+            anchorElement.download = fileName ?? '';
+            anchorElement.click();
+            anchorElement.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        function getQualifiedMarketingDirectorPhoneNumber() {
+            var iframe = document.getElementById("myFrame");
+            console.log("iframe: " + iframe);
+            var elmnt = iframe.contentWindow.document.getElementsByClassName("client_phone")[0];
+            console.log("phone element: " + elmnt);
+        }
+
+        async function clipboardMethod() {
+            // this works perfectly on Signal Desktop
+
+            var image = await fetch('images/mwr-banner.png');
+
+            var blob = await image.blob();
+
+            await navigator.clipboard.write([
+                new ClipboardItem({
+                    [blob.type]: blob,
+                    'text/plain': new Blob(["my text value"], { type: 'text/plain' })
+                },
+                    {
+                        presentationStyle: "inline"
+                    }),
+            ]);
+        }
+
+        function webshareAllowed() {
+            return navigator.canShare && navigator.canShare({ title: "Value Does Not Matter", text: "Value Does Not Matter" });
+        }
+
+        async function webshare(title, message, imageUrl) {
+            const urlParameterIndex = imageUrl.indexOf('?');
+
+            const fileExtension =
+                urlParameterIndex == -1
+                    ? imageUrl.split('.').pop()
+                    : imageUrl.substring(0, urlParameterIndex).split('.').pop();
+
+            if (navigator.canShare) {
+                const image = await fetch(imageUrl);
+                const blob = await image.blob();
+
+                const data = {
+                    files: [
+                        new File([blob], 'MegaSchool1.' + fileExtension, {
+                            type: blob.type,
+                        }),
+                    ],
+                    title: title,
+                    text: message,
+                };
+
+                await clipboardCopy.copyText(message);
+
+                if (navigator.canShare(data)) {
+
+                    try {
+                        await navigator.share(data);
+                    }
+                    catch (e) {
+                        console.log(`webshare error: ${e}`);
+                    }
+                }
+            }
+        }
+
+        async function clipboardHTMLMethod() {
+            const myContent = document.getElementById("foobar");
+            const type = "text/html";
+            const myBlob = new Blob([myContent.innerHTML], { type });
+            console.log("clipboardHTMLMethod 1 - innerHTML: " + myContent.innerHTML);
+
+            await navigator.clipboard.write([
+                new ClipboardItem({
+                    [myBlob.type]: myBlob,
+                    //'text/plain': new Blob(["my text value"], { type: 'text/plain' })
+                },
+                    {
+                        presentationStyle: "inline"
+                    }),
+            ]);
+            console.log("clipboardHTMLMethod - 2");
+        }
+
+        window.clipboardCopy = {
+            copyText: async function (text) {
+                await navigator.clipboard.writeText(text);
+            }
+        };
+
+        // This variable will save the event for later use.
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', async (e) => {
+            // Prevents the default mini-infobar or install dialog from appearing on mobile
+            e.preventDefault();
+
+            // Save the event because you'll need to trigger it later.
+            deferredPrompt = e;
+        });
+
+        function appInstallationStatusReady() {
+            return !(deferredPrompt === undefined);
+        }
+
+        function appIsInstallable() {
+            return deferredPrompt != null;
+        }
+
+        async function promptToInstall() {
+            // deferredPrompt is a global variable we've been using in the sample to capture the `beforeinstallevent`
+            deferredPrompt.prompt();
+
+            // Find out whether the user confirmed the installation or not
+            const { outcome } = await deferredPrompt.userChoice;
+
+            // The deferredPrompt can only be used once.
+            deferredPrompt = null;
+
+            // Act on the user's choice
+            if (outcome === 'accepted') {
+                await DotNet.invokeMethodAsync("MegaSchool1", "OnInstallClick");
+            } else if (outcome === 'dismissed') {
+                ;
+            }
+        }
+
+        async function promptToInstall(componentReference) {
+            // deferredPrompt is a global variable we've been using in the sample to capture the `beforeinstallevent`
+            deferredPrompt.prompt();
+
+            // Find out whether the user confirmed the installation or not
+            const { outcome } = await deferredPrompt.userChoice;
+
+            // The deferredPrompt can only be used once.
+            deferredPrompt = null;
+
+            // Act on the user's choice
+            if (outcome === 'accepted') {
+                //await componentReference.invokeMethodAsync("ComponentBase", "OnAppInstalled");
+                //componentReference.dispose();
+
+                await DotNet.invokeMethodAsync("MegaSchool1", "OnAppInstalled");
+            } else if (outcome === 'dismissed') {
+                ;
+            }
+        }
+    </script>
+    <script src="brotliloader.min.js" type="module"></script>
+</body>
+
+</html>
