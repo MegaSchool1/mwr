@@ -255,9 +255,12 @@ public class Constants(UISettings ui)
     public static readonly string PointingDownEmoji = $"\ud83d\udc47";
     public static readonly string JeromePointingDownEmoji = "\ud83d\udc47\ud83c\udffd";
     public static readonly string MultiPlatformLivestreamUrlPlaceholder = "{Corporate.Livestream}";
+    public static readonly string ReferralCodePlaceholder = "{ReferralCode}";
+    public static readonly string MarketingDirectorPlaceholder = "{MarketingDirectorId}";
     public static readonly string YouTubeEmbedLinkPrefix = "https://www.youtube.com/embed/";
     public static readonly string VimeoEmbedLinkPrefix = "https://player.vimeo.com/video/";
     public static readonly string MinimalistVideoLinkPrefix = "https://megaschool.me/v";
+    public static readonly string DefaultMarketingDirectorId = "MS1";
     public const string AppInstallTutorialUrl = "https://video.wixstatic.com/video/5f35ec_33bda4fc60fd41cf8c3a09924f204746/480p/mp4/file.mp4";
 
     public static string BusinessEnrollmentUrl(string username) => $"https://user.mwrfinancial.com/{username}/join";

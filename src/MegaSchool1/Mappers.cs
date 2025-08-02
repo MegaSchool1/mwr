@@ -42,13 +42,13 @@ public partial class Mappers
         return video;
     }
 
-    public ShareableViewModel ShareableDtoToViewModel(ShareableDto dto)
+    public ShareableViewModel ShareableDtoToViewModel(ShareableDto dto, OneOf<string, None> marketingDirectorId)
     {
         var viewModel = new ShareableViewModel();
 
         viewModel.Id = dto.ContentId;
         viewModel.Video = GetVideo(dto).MapT0(v => new VideoViewModel(v, dto.Duration ?? TimeSpan.MinValue));
-        viewModel.Url = !string.IsNullOrWhiteSpace(dto.Url) ? dto.Url : new None();
+        viewModel.Url = !string.IsNullOrWhiteSpace(dto.Url) ? dto.Url.Replace(Constants.MarketingDirectorPlaceholder, marketingDirectorId.Match(id => id, none => Constants.DefaultMarketingDirectorId)) : new None();
         viewModel.AppDescription = dto.AppTitle;
         viewModel.Title = dto.ShareableTitle;
         viewModel.ShareableImage = dto.Image ?? (!string.IsNullOrWhiteSpace(dto.ImageUrl) ? (OneOf<Image, Uri, None>)new Uri(dto.ImageUrl) : new None());

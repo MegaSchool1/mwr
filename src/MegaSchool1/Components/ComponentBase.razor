@@ -36,7 +36,7 @@
         var spanishDto = content.Match(contentId => UI.SpanishLocale[contentId], dto => dto);
         var englishDto = content.Match(contentId => UI.EnglishLocale[contentId], dto => dto);
 
-        return (englishDto != null ? Mappers.ShareableDtoToViewModel(englishDto)  : new None(), spanishDto != null ? Mappers.ShareableDtoToViewModel(spanishDto) : new None());
+        return (englishDto != null ? Mappers.ShareableDtoToViewModel(englishDto, Constants.DefaultMarketingDirectorId)  : new None(), spanishDto != null ? Mappers.ShareableDtoToViewModel(spanishDto, Constants.DefaultMarketingDirectorId) : new None());
     }
 
     protected OneOf<Video, None> GetVideo(OneOf<Content, ShareableDto> content, Language language = Language.English)

@@ -2,15 +2,11 @@
 @using MegaSchool1.Model
 @using MegaSchool1.Model.Repository
 @inherits Components.ComponentBase
-@inject Constants Constants
 @inject UISettings UI
-@inject NavigationManager NavigationManager
 
 @{
-    const string DefaultMemberId = "MS1";
-
     var spanishDto = UI.SpanishLocale[this.Content];
-    var memberId = TeamMember?.MemberId ?? DefaultMemberId;
+    var memberId = TeamMember?.MemberId ?? Constants.DefaultMarketingDirectorId;
 }
 <MudStack Spacing="3">
     @if(ShowReferralCode)
