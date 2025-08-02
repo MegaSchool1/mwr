@@ -258,7 +258,7 @@
         @{
             var mapper = new Mappers();
             var englishDto = UI.EnglishLocale[_videoDialog.Content];
-            var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto, Constants.DefaultMarketingDirectorId) : new();
+            var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto.Value, Constants.DefaultMarketingDirectorId) : new();
             var video = english.Video.MapT0(v => v.Video);
         }
         <EmbeddedVideo Video="@video"/>

@@ -10,12 +10,12 @@
     <MudCardContent>
         @{
             var mapper = new Mappers();
-            var @default = mapper.ShareableDtoToViewModel(UI.EnglishLocale[Content.MembershipOrientation]!, Constants.DefaultMarketingDirectorId);
+            var @default = mapper.ShareableDtoToViewModel(UI.EnglishLocale[Content.MembershipOrientation]!.Value, Constants.DefaultMarketingDirectorId);
 
             ShareableViewModel[] membershipTrainings =
             [
                 @default,
-                mapper.ShareableDtoToViewModel(UI.EnglishLocale[Content.MyRewards]!, Constants.DefaultMarketingDirectorId)
+                mapper.ShareableDtoToViewModel(UI.EnglishLocale[Content.MyRewards]!.Value, Constants.DefaultMarketingDirectorId)
             ];
         }
         <ShareableCollection Label="@($"Select Your Training {Constants.JeromePointingDownEmoji}")" Default="@(@default)" Shareables="membershipTrainings"/>

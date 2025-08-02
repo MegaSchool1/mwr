@@ -140,7 +140,8 @@
             {
                 var youTubeVideoId = GetYouTubeVideoId(_addShareableDialog.Shareable.Url!).AsT0;
 
-                var newShareable = new ShareableDto()
+                var newShareable = default(ShareableDto)
+                with
                 {
                     ContentId = Content.Custom,
                     AppTitle = _addShareableDialog.Shareable.Title!,
@@ -378,13 +379,14 @@
         var defaultClientSettingsEnglish = DefaultClientSettings.UI.Localizations.First(l => l == DefaultClientSettings.UI.EnglishLocale);
         var loadedClientSettingsEnglish = loadedClientSettings.UI.Localizations.First(l => l == loadedClientSettings.UI.EnglishLocale);
 
-        // sync w/ modifed standard shareables
+        // sync w/ modified standard shareables
         var currentShareables = loadedClientSettingsEnglish.Shareables.ToList();
         for (var i = 0; i < currentShareables.Count; i++)
         {
             if (currentShareables[i].ContentId != Content.Custom)
             {
-                currentShareables[i] = defaultClientSettingsEnglish.Shareables.FirstOrDefault(s => s.ContentId == currentShareables[i].ContentId) ?? currentShareables[i];
+                var latestStandardShareable = defaultClientSettingsEnglish.Shareables.FirstOrDefault(s => s.ContentId == currentShareables[i].ContentId);
+                currentShareables[i] = latestStandardShareable != default ? latestStandardShareable : currentShareables[i];
             }
         }
 

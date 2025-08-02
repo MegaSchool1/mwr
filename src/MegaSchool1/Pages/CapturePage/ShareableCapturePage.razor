@@ -124,7 +124,7 @@
             return;
         }
         
-        _shareable = Mappers.ShareableDtoToViewModel((this.Language == Spanish ? UI.SpanishLocale[ContentValue] : UI.EnglishLocale[ContentValue]) ?? UI.EnglishLocale[ContentValue]!, Constants.DefaultMarketingDirectorId);
+        _shareable = Mappers.ShareableDtoToViewModel(this.Language == Spanish ? UI.SpanishLocale[ContentValue]!.Value : UI.EnglishLocale[ContentValue]!.Value, Constants.DefaultMarketingDirectorId);
         _pageLoaded = true;
     }
 }
