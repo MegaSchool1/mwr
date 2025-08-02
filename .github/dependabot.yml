@@ -5,3 +5,7 @@ updates:
     target-branch: "dev"
     schedule:
       interval: "daily"
+    groups:
+      minor-patch-updates:
+        patterns: ["FluentAssertions"]
+        update-types: ["minor", "patch"]  

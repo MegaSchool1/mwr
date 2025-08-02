@@ -37,14 +37,14 @@
     @if (int.TryParse(this.Index, out var index) && _shareable.AuxiliaryTexts.TryPickT0(out var auxTexts, out _) && index < auxTexts.Length)
     {
         <br />
-        <Centered><MudText Align="Align.Center">@((MarkupString)HttpUtility.UrlDecode(auxTexts[index].Replace("{ReferralCode}", $@"<span style=""color:{Theme.PaletteDark.Secondary};"">{ReferralId}</span>")))</MudText></Centered>
+        <Centered><MudText Align="Align.Center">@((MarkupString)HttpUtility.UrlDecode(auxTexts[index].Replace(Constants.ReferralCodePlaceholder, $@"<span style=""color:{Theme.PaletteDark.Secondary};"">{ReferralId}</span>")))</MudText></Centered>
     }
     else
     {
         @if (_shareable.AuxiliaryText.TryPickT0(out var aux, out _))
         {
             <br/>
-            <Centered><MudText Align="Align.Center">@((MarkupString)HttpUtility.UrlDecode(aux.Replace("{ReferralCode}", $@"<span style=""color:{Theme.PaletteDark.Secondary};"">{ReferralId}</span>")))</MudText></Centered>
+            <Centered><MudText Align="Align.Center">@((MarkupString)HttpUtility.UrlDecode(aux.Replace(Constants.ReferralCodePlaceholder, $@"<span style=""color:{Theme.PaletteDark.Secondary};"">{ReferralId}</span>")))</MudText></Centered>
         }
     }
     <MudSpacer />
@@ -124,7 +124,7 @@
             return;
         }
         
-        _shareable = Mappers.ShareableDtoToViewModel((this.Language == Spanish ? UI.SpanishLocale[ContentValue] : UI.EnglishLocale[ContentValue]) ?? UI.EnglishLocale[ContentValue]!);
+        _shareable = Mappers.ShareableDtoToViewModel((this.Language == Spanish ? UI.SpanishLocale[ContentValue] : UI.EnglishLocale[ContentValue]) ?? UI.EnglishLocale[ContentValue]!, Constants.DefaultMarketingDirectorId);
         _pageLoaded = true;
     }
 }
