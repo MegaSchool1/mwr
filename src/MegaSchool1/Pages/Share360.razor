@@ -6,13 +6,18 @@
 @inherits PageBase
 
 <MudStack Spacing="3">
+    @{
+        const string Share360AffiliateLink = "https://bizconnect360-tracking.tracknow.info/s/i1GTT";
+    }
     <Shareable Description="Share360 Landing Page"
-               TextToCopy="Share360<br/>👇<br/>https://bizconnect360-tracking.tracknow.info/s/i1GTT"
-               ImageUrl="https://pbs.twimg.com/profile_images/378800000231088026/576835def2f385ecb79679a54f1e970b_400x400.png" />
-    
+               Url="@Share360AffiliateLink"
+               TextToCopy="@($"Share360<br/>👇<br/>{Share360AffiliateLink}")"
+               ImageUrl="https://pbs.twimg.com/profile_images/378800000231088026/576835def2f385ecb79679a54f1e970b_400x400.png"/>
+
     <Shareable Description="Share360 Overview"
-               TextToCopy="Share360<br/>👇<br/>https://bizconnect360-tracking.tracknow.info/click?campaign_id=4&ref_id=41&path=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DmgioQ25kKqo&creative_Id=1" Video="@(new VideoViewModel(new YouTube("mgioQ25kKqo", new None()), new TimeSpan(0, 18, 0)))"
-               ImageUrl="https://pbs.twimg.com/profile_images/378800000231088026/576835def2f385ecb79679a54f1e970b_400x400.png" />
+               TextToCopy="Share360<br/>👇<br/>https://bizconnect360-tracking.tracknow.info/click?campaign_id=4&ref_id=41&path=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DmgioQ25kKqo&creative_Id=1"
+               Video="@(new VideoViewModel(new YouTube("mgioQ25kKqo", new None()), new TimeSpan(0, 18, 0)))"
+               ImageUrl="https://pbs.twimg.com/profile_images/378800000231088026/576835def2f385ecb79679a54f1e970b_400x400.png"/>
 
     <MudCard Outlined="true">
         <MudCardHeader>Share360 Dashboard</MudCardHeader>

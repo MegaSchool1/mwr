@@ -1,4 +1,4 @@
-﻿@page "/investment"
+﻿@page "/"
 @using System.Collections.ObjectModel
 @using Foundation.Model
 @inherits PageBase
@@ -152,7 +152,8 @@
 
         var repaymentFundingRoundsPerCycle = profitsOfFundingRounds.MaxBy(x => x.Count)?.Count ?? 0;
         var fundingRounds = new List<FundingRound>();
-        fundingRounds.Add(new($"Lifestyle Income", Enumerable.Range(1, 1 + repaymentFundingRoundsPerCycle).Select(_ => (decimal?)lifestyleFundingAnnualInterest).ToArray()));
+        var fundingRound1 = new FundingRound($"Lifestyle Income", Enumerable.Range(1, 1 + repaymentFundingRoundsPerCycle).Select(_ => (decimal?)lifestyleFundingAnnualInterest).ToArray());
+        fundingRounds.Add(fundingRound1);
 
         var orderedProfitsOfFundingRounds = profitsOfFundingRounds.OrderByDescending(x => x.Count).ToArray();
         for (var i = 0; i < orderedProfitsOfFundingRounds.Length; i++)
@@ -165,6 +166,23 @@
             fundingRounds.Add(new("Funding Round " + (i + 1 + 1), annualNetIncomes.ToArray()));
         }
 
+        var yearsOfReserve = fundingRound1.AnnualNetIncome.Length;
+        var reserveAmountPerYear = fundingRound1.AnnualNetIncome.First();
+        var round1AnnualInterests = new List<double>();
+
+        const int MonthsPerYear = 12;
+        
+        for (var i = 0; i < yearsOfReserve; i++)
+        {
+            var compoundInterest = CompoundInterest(
+                (double)reserveAmountPerYear!.Value * Math.Max(yearsOfReserve - i - 1, 0),
+                new(investmentApy / MonthsPerYear, PercentageFormat.Instance),
+                MonthsPerYear);
+            round1AnnualInterests.Add(compoundInterest);
+        }
+        
+        fundingRounds.Insert(1, new($"Round 1 Interest (${round1AnnualInterests.Sum():N0})", round1AnnualInterests.Select(d => (decimal?)d).ToArray()));
+        
         return fundingRounds;
     }
     
