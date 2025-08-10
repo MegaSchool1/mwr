@@ -112,6 +112,10 @@
     </script>
 
     <script>
+        function toggleNavMenu() {
+            document.querySelector('.navbar-toggler').click();
+        }
+        
         window.downloadFileFromStream = async (fileName, contentStreamReference) => {
             const arrayBuffer = await contentStreamReference.arrayBuffer();
             const blob = new Blob([arrayBuffer]);
