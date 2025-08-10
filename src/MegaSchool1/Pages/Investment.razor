@@ -1,5 +1,4 @@
-﻿@page "/"
-@using System.Collections.ObjectModel
+﻿@page "/investment"
 @using Foundation.Model
 @inherits PageBase
 
@@ -85,14 +84,11 @@
             }
         </HeaderContent>
         <RowTemplate>
-            @{
-                var foobar = context;
-            }
-            <MudTd Style="text-align:center;">@foobar.Description</MudTd>
+            <MudTd Style="text-align:center;">@((MarkupString)context.Description)</MudTd>
 
-            @for (var i = 0; i < foobar.AnnualNetIncome.Length; i++)
+            @for (var i = 0; i < context.AnnualNetIncome.Length; i++)
             {
-                var annualNetIncome = foobar.AnnualNetIncome[i];
+                var annualNetIncome = context.AnnualNetIncome[i];
 
                 <MudTd Style="text-align:center;">@($"{annualNetIncome:N0}")</MudTd>
             }
@@ -135,6 +131,8 @@
         var repaymentFundingPreciousMetalsProfitYear1 = (decimal)CompoundInterest((double)(fundingLimitPerRound - repaymentFundingFee), new Percentage((investmentApy - fundingApr) / 12, PercentageFormat.Instance), 12);
 
         var profitsOfFundingRounds = new List<List<decimal>>();
+        
+        // line of credit funding rounds
         while (profitsOfFundingRounds.Select(fundingRoundProfits => fundingRoundProfits.Last()).Sum() < lifestyleFundingAnnualInterest)
         {
             profitsOfFundingRounds.Add(new());
@@ -166,10 +164,17 @@
             fundingRounds.Add(new("Funding Round " + (i + 1 + 1), annualNetIncomes.ToArray()));
         }
 
+        // credit card funding round
+        var creditCardBalanceTransferFee = new Percentage(3m, PercentageFormat.Instance);
+        var creditCardLimit = fundingLimitPerRound;
+        var creditCardInterestFreePeriod = Months.From(12);
+
         var yearsOfReserve = fundingRound1.AnnualNetIncome.Length;
         var reserveAmountPerYear = fundingRound1.AnnualNetIncome.First();
         var round1AnnualInterests = new List<double>();
-
+        var reserveAnnualBalances = new List<double>();
+        (decimal InitialReserve, List<double> AnnualYields) investmentStrategy25K = (creditCardLimit - 30_000m - (creditCardLimit * creditCardBalanceTransferFee.ToFormat(DecimalFormat.Instance)), new());
+        
         const int MonthsPerYear = 12;
         
         for (var i = 0; i < yearsOfReserve; i++)
@@ -179,9 +184,19 @@
                 new(investmentApy / MonthsPerYear, PercentageFormat.Instance),
                 MonthsPerYear);
             round1AnnualInterests.Add(compoundInterest);
+
+            var reserveBalance = (double)Math.Max(investmentStrategy25K.InitialReserve - reserveAmountPerYear.Value * (i + 1), 0.0m);
+            var compoundInterest25K = CompoundInterest(
+                reserveBalance,
+                new(investmentApy / MonthsPerYear, PercentageFormat.Instance),
+                MonthsPerYear);
+            investmentStrategy25K.AnnualYields.Add(compoundInterest25K);
+            reserveAnnualBalances.Add(reserveBalance);
         }
         
-        fundingRounds.Insert(1, new($"Round 1 Interest (${round1AnnualInterests.Sum():N0})", round1AnnualInterests.Select(d => (decimal?)d).ToArray()));
+        fundingRounds.Add(new($"Line of Credit Reserve Yield <br/> (${round1AnnualInterests.Sum():N0})", round1AnnualInterests.Select(d => (decimal?)d).ToArray()));
+        fundingRounds.Add(new($"Credit Card Reserve Balance", reserveAnnualBalances.Select(d => (decimal?)d).ToArray()));
+        fundingRounds.Add(new($"Credit Card Reserve Yield <br/> Initial: {investmentStrategy25K.InitialReserve:N0} <br/> (${investmentStrategy25K.AnnualYields.Sum():N0})", investmentStrategy25K.AnnualYields.Select(d => (decimal?)d).ToArray()));
         
         return fundingRounds;
     }

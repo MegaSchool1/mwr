@@ -1,0 +1,64 @@
+﻿@page "/llc"
+@inherits PageBase
+@using MegaSchool1.Components
+
+<MudStack Spacing="3">
+    <MudCard Outlined="true">
+        <MudCardHeader>Step 1 - Choose an LLC Name</MudCardHeader>
+        <MudCardContent>
+            <MudText Align="Align.Left">1) Pick a name for your Wyoming LLC.</MudText>
+            <MudText Align="Align.Left">2) Ensure your LLC name is not already taken via the <ExternalLink Href="https://wyobiz.wyo.gov/business/filingsearch.aspx">Wyoming Secretary of State</ExternalLink>.</MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Outlined="true">
+        <MudCardHeader>Step 2 - Get Virtual Address & Registered Agent</MudCardHeader>
+        <MudCardContent>
+            <MudText Align="Align.Left">1) Get a Wyoming Virtual Address via <ExternalLink Href="https://www.northwestregisteredagent.com/">Northwest Registered Agent</ExternalLink>. ($29/mo)</MudText>
+            <MudText Align="Align.Left">2) Get a Wyoming Registered Agent via <ExternalLink Href="https://www.northwestregisteredagent.com/">Northwest Registered Agent</ExternalLink>. ($125/yr)</MudText>
+            <br/>
+            <br/>
+            <MudAlert Severity="Severity.Warning">
+                The Virtual Address from Northwest Registered Agent has the suite number formatted as "#12345". The IRS and even some banks will NOT accept this format because they do not allow the "#" symbol in an address. The solution is to format the suite number as "Ste 12345" 100% of the time. This is the same address according to the post office.
+                <br/>
+                <br/>
+                For example, ALWAYS change "213 Main St #12345" to "213 Main St Ste 12345"
+            </MudAlert>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Outlined="true">
+        <MudCardHeader>Step 3 - Create LLC</MudCardHeader>
+        <MudCardContent>
+            <MudAlert Severity="Severity.Warning">
+                Remember to change "213 Main St #12345" to "213 Main St Ste 12345"
+            </MudAlert>
+            <br/>
+            <br/>
+            <MudText Align="Align.Left">1) Create an LLC in Wyoming via <ExternalLink Href="https://www.legalzoom.com/">Legal Zoom</ExternalLink> ($100 total).</MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Outlined="true">
+        <MudCardHeader>Step 4 - Create EIN for LLC</MudCardHeader>
+        <MudCardContent>
+            <MudAlert Severity="Severity.Warning">
+                The Virtual Address from Northwest Registered Agent has the suite number formatted as "#12345". The IRS website will NOT accept this format because they do not allow the "#" symbol in an address. The solution is to format the suite number as "Ste 12345". This is the same address according to the post office.
+                <br/>
+                <br/>
+                For example, change "213 Main St #12345" to "213 Main St Ste 12345"
+            </MudAlert>
+            <br/>
+            <br/>
+            <MudText Align="Align.Left">1) Create an EIN for your LLC via the <ExternalLink Href="https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number">IRS</ExternalLink>. ($0 - FREE)</MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Outlined="true">
+        <MudCardHeader>Step 5 - Open Bank Account for LLC</MudCardHeader>
+        <MudCardContent>
+            <MudAlert Severity="Severity.Warning">
+                Remember to change "213 Main St #12345" to "213 Main St Ste 12345"
+            </MudAlert>
+            <br/>
+            <br/>
+            <MudText Align="Align.Left">1) Open a business bank account for your LLC at a bank of your choice.</MudText>
+        </MudCardContent>
+    </MudCard>
+</MudStack>

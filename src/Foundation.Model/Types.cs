@@ -43,6 +43,7 @@ public sealed class Percentage
     }
 }
 
+public class Months : ValueOf<int, Months>;
 public class Scalar : ValueOf<int, Scalar>;
 
 /// <summary>
