@@ -58,8 +58,8 @@ else
                 </div>
             </div>
 
-            <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-            <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+            <input type="checkbox" title="Navigation menu" class="navbar-toggler" @bind-value="_navMenuChecked"  />
+            <div class="nav-scrollable">
                 <CascadingValue Value="_appState">
                     <NavMenu />
                 </CascadingValue>
@@ -175,6 +175,7 @@ else
     private bool _showInstallInstructions;
     private PersistingComponentStateSubscription persistingSubscription;
     private OneOf<PrerenderedState, None> _prerenderedState = new None();
+    private bool _navMenuChecked;
     
     [SupplyParameterFromQuery(Name = "r")]
     public string? Redirect { get; set; }
@@ -352,6 +353,11 @@ else
                 );
 
             await Repo.SaveUserDataAsync(userData);
+        }
+
+        if (_navMenuChecked)
+        {
+            await JSRuntime.InvokeVoidAsync("toggleNavMenu");
         }
     }
 

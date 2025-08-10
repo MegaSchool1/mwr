@@ -10,7 +10,7 @@
     <BlazorWasmPrerenderingDeleteLoadingContents>true</BlazorWasmPrerenderingDeleteLoadingContents>
 	<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>
     <BlazorWasmPrerenderingUrlPathToExplicitFetch>
-      /shareables;/prisonministry;/test;/ptest;
+      /shareables;/prisonministry;/test;/ptest;/llc;
 
       /en/CollegeFund/MS1/megaschool/0;
       /en/CollegeFundingPique/MS1/SCHOLARSHIP/0;
@@ -45,10 +45,9 @@
     <GHPages>true</GHPages>
   </PropertyGroup>
 
-
-	<ItemGroup>
-		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
-	</ItemGroup>
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Append.Blazor.WebShare" Version="7.0.0" />
