@@ -15,6 +15,7 @@
     <MudNavLink Href="@PageFullPath("revenuesharing")" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Autorenew">Revenue Sharing</MudNavLink>
     <MudNavGroup Title="Trainings" Expanded="@(TrainingPages.Any(p => p == NavigationManager.ToBaseRelativePath(NavigationManager.Uri)))" Icon="@Icons.Material.Filled.School">
         <MudNavLink Href="@PageFullPath("llc")" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Business">LLC</MudNavLink>
+        <MudNavLink Href="@PageFullPath("businesscredit")" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.CreditScore">Business Credit & Funding</MudNavLink>
         <MudNavLink Href="@PageFullPath("training")" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.School">General</MudNavLink>
     </MudNavGroup>
     <MudNavLink Href="@PageFullPath("experimental")" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Science">Experimental</MudNavLink>
@@ -46,7 +47,7 @@
 </MudDialog>
 
 @code {
-    private readonly string[] TrainingPages = ["llc", "training"];
+    private readonly string[] TrainingPages = ["llc", "training", "businesscredit"];
     
     private bool _updateAvailable;
     private bool _showAppShareable;

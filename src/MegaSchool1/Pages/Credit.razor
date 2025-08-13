@@ -1,0 +1,26 @@
+﻿@page "/businesscredit"
+@inherits PageBase
+@using MegaSchool1.Components
+
+<style>
+    ol li {
+        margin-bottom: 12px;
+    }
+</style>
+
+<MudStack Spacing="3">
+    <MudCard Outlined="true">
+        <MudCardHeader>Step 1 - 6 Tradelines</MudCardHeader>
+        <MudCardContent>
+            <MudContainer>
+                <ol>
+                    <li><ExternalLink Href="https://www.nav.com/nav-prime/">Nav Prime</ExternalLink> ($40/mo)</li>
+                    <li><ExternalLink Href="https://www.nav.com/nav-prime-card/">Nav Prime Card</ExternalLink> (requires Nav Prime)</li>
+                    <li><ExternalLink Href="https://www.uline.com/">Uline</ExternalLink> ($20 including shipping)</li>
+                    <li><ExternalLink Href="https://maverickofficesupplies.com/">Maverick Office Supplies</ExternalLink> ($80 minimum purchase)</li>
+                    <li><ExternalLink Href="https://apply.wexinc.com/SelfRegister?pgm=WEXFleetFlex-8M8b&cc=GW7A&_gl=1*bs06w2*_gcl_au*MTg4NDI4NjE1OS4xNzUyNzg0NTMx*_ga*NDA5NzM3MDUuMTc1Mjc4NDUzMQ..*_ga_K3HRZM070M*czE3NTQ4NDMxMTkkbzIkZzAkdDE3NTQ4NDMxMjkkajUwJGwwJGgw">Wex Fleet FlexCard</ExternalLink> ($500 secured deposit)</li>
+                </ol>
+            </MudContainer>
+        </MudCardContent>
+    </MudCard>
+</MudStack>

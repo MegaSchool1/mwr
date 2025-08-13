@@ -182,6 +182,7 @@ public enum Content
     EstatePlanning = 96,
     F360Testimonial1 = 97,
     F360Overview = 98,
+    Membership8min = 99,
 }
 
 public enum Language
