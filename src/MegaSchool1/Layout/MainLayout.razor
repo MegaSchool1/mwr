@@ -58,7 +58,7 @@ else
                 </div>
             </div>
 
-            <input type="checkbox" title="Navigation menu" class="navbar-toggler" @bind-value="_navMenuChecked"  />
+            <input type="checkbox" title="Navigation menu" class="navbar-toggler" @bind-value="_navMenuOpen"  />
             <div class="nav-scrollable">
                 <CascadingValue Value="_appState">
                     <NavMenu />
@@ -175,7 +175,7 @@ else
     private bool _showInstallInstructions;
     private PersistingComponentStateSubscription persistingSubscription;
     private OneOf<PrerenderedState, None> _prerenderedState = new None();
-    private bool _navMenuChecked;
+    private bool _navMenuOpen;
     
     [SupplyParameterFromQuery(Name = "r")]
     public string? Redirect { get; set; }
@@ -355,9 +355,9 @@ else
             await Repo.SaveUserDataAsync(userData);
         }
 
-        if (_navMenuChecked)
+        if (_navMenuOpen)
         {
-            await JSRuntime.InvokeVoidAsync("toggleNavMenu");
+            _ = JSRuntime.InvokeVoidAsync("toggleNavMenu");
         }
     }
 
@@ -425,6 +425,7 @@ else
             "investment" => "Investment Strategy",
             "share360" => "Share360",
             "llc" => "LLC Formation",
+            "businesscredit" => "Business Credit & Funding",
             _ => string.Empty
         };
     }
