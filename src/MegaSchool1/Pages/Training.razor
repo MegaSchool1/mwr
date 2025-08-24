@@ -1,8 +1,10 @@
 ﻿@page "/training"
 @inherits PageBase
+@using Foundation.Model
 @using Foundation.UI.Components
 @using MegaSchool1.Components
 @using MegaSchool1.Model
+@using OneOf.Types
 @inject NavigationManager NavigationManager
 @inject UISettings UI
 
@@ -48,6 +50,7 @@
         <MudCardHeader>Compensation Plan</MudCardHeader>
         <MudCardContent>
             <MudStack Spacing="3">
+                <EmbeddedVideo Video="@((Video)new Vimeo("1110277030", new None()))" />
                 <Centered><ExternalLink Href="https://gamma.app/docs/Marketing-Director-Revenue-Sharing-Plan-c5tohtsimo7crh8?mode=doc">Comp Plan (English)</ExternalLink></Centered>
                 <Centered><ExternalLink Href="https://gamma.app/docs/Marketing-Director-Revenue-Sharing-Plan-Spanish-mhwxnid60bi4u7y?mode=doc">Comp Plan (Spanish)</ExternalLink></Centered>
             </MudStack>
