@@ -6,6 +6,8 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      minor-patch-updates:
-        patterns: ["FluentAssertions"]
-        update-types: ["minor", "patch"]  
+      open-source-license:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "FluentAssertions"
