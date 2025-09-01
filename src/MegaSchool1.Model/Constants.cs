@@ -183,6 +183,7 @@ public enum Content
     F360Testimonial1 = 97,
     F360Overview = 98,
     Membership8min = 99,
+    Membership7min = 100,
 }
 
 public enum Language
