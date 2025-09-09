@@ -184,6 +184,7 @@ public enum Content
     F360Overview = 98,
     Membership8min = 99,
     Membership7min = 100,
+    MWRCredibility = 101,
 }
 
 public enum Language
