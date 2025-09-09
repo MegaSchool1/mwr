@@ -185,6 +185,7 @@ public enum Content
     Membership8min = 99,
     Membership7min = 100,
     MWRCredibility = 101,
+    Share360Explainer = 102,
 }
 
 public enum Language
