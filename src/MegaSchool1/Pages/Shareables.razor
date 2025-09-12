@@ -25,6 +25,23 @@
                 {
                     <Fundable360CapturePageShareable/>
                 }
+                <MudCard Outlined="true">
+                    <MudCardContent>
+                        <Centered>
+                            <MudStack>
+                                <MudStack>
+                                    <ExternalLink Href="https://mwropportunity.com">MWRopportunity.com</ExternalLink>
+                                    <ExternalLink Href="https://mwrleveragesimulator.com">MWRleveragesimulator.com</ExternalLink>
+                                    <ExternalLink Href="https://mwrincomesimulator.com">MWRincomesimulator.com</ExternalLink>
+                                    <ExternalLink Href="https://mwrcredibility.com">MWRcredibility.com</ExternalLink>
+                                    <Loader Loaded="@(_selectedTeamMemberMarketingDirector != null)">
+                                        <ExternalLink Href="@Constants.JoinMakeWealthReal(_selectedTeamMemberMarketingDirector?.MemberId!, Language.English)">My Enrollment Link</ExternalLink>
+                                    </Loader>
+                                </MudStack>
+                            </MudStack>
+                        </Centered>
+                    </MudCardContent>
+                </MudCard>
                 @if (_selectedShareable == Content.CorporateBusinessOverview)
                 {
                     <MudCard Outlined="true">
