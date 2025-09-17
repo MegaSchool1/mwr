@@ -10,7 +10,7 @@
 
 <MudStack Spacing="3">
     <MudText Typo="Typo.h2" Align="Align.Center">Thank You!</MudText>
-    <Centered><EmbeddedVideo Video="@(Mappers.ShareableDtoToViewModel(Language == Spanish ? UI.SpanishLocale[Content.GivBuxCharity]!.Value : UI.EnglishLocale[Content.GivBuxCharity]!.Value, Constants.DefaultMarketingDirectorId).Video.MapT0(video => video.Video))" /></Centered>
+    <Centered><EmbeddedVideo Video="@(Mappers.ShareableDtoToViewModel(Language == Spanish ? UI.SpanishLocale[Content.GivBuxCharity]! : UI.EnglishLocale[Content.GivBuxCharity]!, Constants.DefaultMarketingDirectorId).Video.MapT0(video => video.Video))" /></Centered>
     <br />
     <MudText Align="Align.Center">Thanks again!  For more info, let's connect.</MudText>
     <MudText Align="Align.Center">Text '@ReferralId' to @QMDPhoneNumber</MudText>

@@ -118,8 +118,8 @@
             var mapper = new Mappers();
             var englishDto = UI.EnglishLocale[content];
             var spanishDto = UI.SpanishLocale[content];
-            var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto.Value, Constants.DefaultMarketingDirectorId) : new();
-            var spanish = spanishDto != null ? mapper.ShareableDtoToViewModel(spanishDto.Value, Constants.DefaultMarketingDirectorId) : english;
+            var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto, Constants.DefaultMarketingDirectorId) : new();
+            var spanish = spanishDto != null ? mapper.ShareableDtoToViewModel(spanishDto, Constants.DefaultMarketingDirectorId) : english;
 
             this.Description = english.AppDescription;
             this.Video = english.Video;

@@ -116,7 +116,7 @@
 
         return Task.CompletedTask;
     }
-
+    
     private Task PersistForecasts()
     {
         ApplicationState.PersistAsJson("fetchdata", _classes);
@@ -139,9 +139,8 @@
             if(_addShareableDialog.ValidEdit)
             {
                 var youTubeVideoId = GetYouTubeVideoId(_addShareableDialog.Shareable.Url!).AsT0;
-
-                var newShareable = default(ShareableDto)
-                with
+                
+                var newShareable = new ShareableDto()
                 {
                     ContentId = Content.Custom,
                     AppTitle = _addShareableDialog.Shareable.Title!,
