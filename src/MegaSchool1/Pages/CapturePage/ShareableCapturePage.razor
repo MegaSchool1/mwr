@@ -123,8 +123,6 @@
         {
             return;
         }
-
-        var sanity = new ShareableDto();
         
         _shareable = Mappers.ShareableDtoToViewModel(this.Language == Spanish ? UI.SpanishLocale[ContentValue]! : UI.EnglishLocale[ContentValue]!, Constants.DefaultMarketingDirectorId);
         _pageLoaded = true;
