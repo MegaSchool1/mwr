@@ -88,7 +88,7 @@
             var mapper = new Mappers();
             var englishDto = UI.EnglishLocale[content];
             var marketingDirectorId = CapturePage.Match(affiliate => affiliate.MemberId, none => Constants.DefaultMarketingDirectorId);
-            var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto.Value, marketingDirectorId) : new();
+            var english = englishDto != null ? mapper.ShareableDtoToViewModel(englishDto, marketingDirectorId) : new();
 
             this.Description = english.AppDescription;
             this.Video = english.Video;
