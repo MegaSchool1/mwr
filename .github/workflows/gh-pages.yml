@@ -23,12 +23,12 @@ jobs:
       with:
         scheme: calver
         increment: patch
-    - name: DotNet Bump Versions
-      uses: SiqiLu/dotnet-bump-version@2.0.0
+    - name: DotNet Bump Version
+      id: update
+      uses: vers-one/dotnet-project-version-updater@v1.7
       with:
-          version_files: "**/*.csproj"
-          version_mask: "1.1.1.1"
-          version_overwrite: "${{ steps.version.outputs.major-version }}.${{ steps.version.outputs.minor-version }}.${{ steps.version.outputs.patch-version }}.0" 
+        file: "src/**/*.csproj"
+        version: "${{ steps.version.outputs.major-version }}.${{ steps.version.outputs.minor-version }}.${{ steps.version.outputs.patch-version }}.0" 
     - name: .NET WASM Workload
       run: dotnet workload install wasm-tools
     - name: Publish with dotnet
