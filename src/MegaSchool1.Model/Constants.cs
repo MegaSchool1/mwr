@@ -187,6 +187,7 @@ public enum Content
     MWRCredibility = 101,
     Share360Explainer = 102,
     Ace = 103,
+    BizToolkit = 104,
 }
 
 public enum Language
