@@ -60,7 +60,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.9" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageReference Include="Microsoft.FeatureManagement" Version="4.3.0" />
-    <PackageReference Include="MudBlazor" Version="8.12.0" />
+    <PackageReference Include="MudBlazor" Version="8.13.0" />
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="OneOf.SourceGenerator" Version="3.0.271" />
     <PackageReference Include="PublishSPAforGitHubPages.Build" Version="3.0.3" />
