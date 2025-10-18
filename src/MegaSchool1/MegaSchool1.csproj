@@ -10,7 +10,7 @@
     <BlazorWasmPrerenderingDeleteLoadingContents>true</BlazorWasmPrerenderingDeleteLoadingContents>
 	<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>
     <BlazorWasmPrerenderingUrlPathToExplicitFetch>
-      /shareables;/prisonministry;/test;/ptest;/llc;businesscredit;
+      /shareables;/prisonministry;/test;/ptest;/llc;/businesscredit;/share360internship;
 
       /en/CollegeFund/MS1/megaschool/0;
       /en/CollegeFundingPique/MS1/SCHOLARSHIP/0;

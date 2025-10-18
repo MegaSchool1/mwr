@@ -1,0 +1,135 @@
+﻿@page "/share360internship"
+@using Foundation.UI.Components
+@using QRCoder
+@inherits PageBase
+
+<PageTitle>Share360 Teen Internship</PageTitle>
+
+<MudStack Spacing="3">
+    <MudContainer Style="height: 200px;"/>
+    <Centered><MudImage Src="https://megaschool.me/wp-content/uploads/2025/10/Slide1.png" Fluid="true"/></Centered>
+    <MudContainer Style="height: 200px;"/>
+    <Centered>
+        <video style="height: auto; width: 100%;" controls>
+            <source src="https://megaschool.me/wp-content/uploads/2025/10/Share360-Explainer.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </Centered>
+    <MudContainer Style="height: 200px;"/>
+    <MudContainer Style="width: 100%; height: 100vh;">
+        <MudStack Style="height: 100vh;">
+            <MudCarousel Class="mud-width-full" Style="height: 100%;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="_autocycle" TData="object">
+                <MudCarouselItem Transition="_transition">
+                    <MudImage Src="https://megaschool.me/wp-content/uploads/2025/10/Slide1.png" Fluid="true"/>
+                </MudCarouselItem>
+                <MudCarouselItem Transition="_transition">
+                    <MudImage Src="https://megaschool.me/wp-content/uploads/2025/10/share360-internship-1.png" Fluid="true"/>
+                </MudCarouselItem>
+                <MudCarouselItem Transition="_transition">
+                    <MudImage Src="https://megaschool.me/wp-content/uploads/2025/10/share360-internship-2.png" Fluid="true"/>
+                </MudCarouselItem>
+                <MudCarouselItem Transition="_transition">
+                    <MudImage Src="https://megaschool.me/wp-content/uploads/2025/10/share360-internship-3-scaled.png" Fluid="true"/>
+                </MudCarouselItem>
+            </MudCarousel>
+            <Centered><MudSwitch @bind-Value="_autocycle" Color="Color.Primary">Auto Cycle</MudSwitch></Centered>
+        </MudStack>
+    </MudContainer>
+    <MudContainer Style="height: 200px;"/>
+    <MudStack Row="true" Spacing="3">
+        <MudContainer Style="width: 75%; height: 100vh;">
+            <MudStack Style="height: 100vh;">
+                <MudSpacer/>
+                <MudImage Src="https://megaschool.me/wp-content/uploads/2025/10/Slide1.png" Fluid="true"/>
+                <MudSpacer/>
+            </MudStack>
+        </MudContainer>
+        <MudSpacer/>
+        <MudStack Style="width: 25%;">
+            <MudSpacer/>
+            <MudCard>
+                <MudCardContent>
+                    <MudStack Spacing="3">
+                        <MudImage Src="@($"data:image/png;base64,{_qrCodeDialog.Base64Image}")" Fluid="true"/>
+                        <MudText Align="Align.Center" Color="Color.Primary">Learn More or Apply NOW!</MudText>
+                    </MudStack>
+                </MudCardContent>
+            </MudCard>
+            <MudSpacer/>
+        </MudStack>
+    </MudStack>
+    <MudContainer Style="height: 200px;"/>
+    <MudStack Row="true" Spacing="3">
+        <video style="height: auto; width: 75%;" controls>
+            <source src="https://megaschool.me/wp-content/uploads/2025/10/Share360-Explainer.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <MudStack>
+            <MudSpacer/>
+            <MudCard>
+                <MudCardContent>
+                    <MudStack Spacing="3">
+                        <MudImage Src="@($"data:image/png;base64,{_qrCodeDialog.Base64Image}")" Fluid="true"/>
+                        <MudText Align="Align.Center" Color="Color.Primary">Learn More or Apply NOW!</MudText>
+                    </MudStack>
+                </MudCardContent>
+            </MudCard>
+            <MudSpacer/>
+        </MudStack>
+    </MudStack>
+    <MudContainer Style="height: 200px;"/>
+    <MudStack Row="true" Spacing="3">
+        <MudContainer Style="width: 75%; height: 100vh;">
+            <MudStack Style="height: 100vh;">
+                <MudCarousel Class="mud-width-full" Style="height: 100%;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="_autocycle" TData="object">
+                    <MudCarouselItem Transition="_transition">
+                        <MudImage Src="https://megaschool.me/wp-content/uploads/2025/10/Slide1.png" Fluid="true"/>
+                    </MudCarouselItem>
+                    <MudCarouselItem Transition="_transition">
+                        <MudImage Src="https://megaschool.me/wp-content/uploads/2025/10/share360-internship-1.png" Fluid="true"/>
+                    </MudCarouselItem>
+                    <MudCarouselItem Transition="_transition">
+                        <MudImage Src="https://megaschool.me/wp-content/uploads/2025/10/share360-internship-2.png" Fluid="true"/>
+                    </MudCarouselItem>
+                    <MudCarouselItem Transition="_transition">
+                        <MudImage Src="https://megaschool.me/wp-content/uploads/2025/10/share360-internship-3-scaled.png" Fluid="true"/>
+                    </MudCarouselItem>
+                </MudCarousel>
+                <Centered><MudSwitch @bind-Value="_autocycle" Color="Color.Primary">Auto Cycle</MudSwitch></Centered>
+            </MudStack>
+        </MudContainer>
+        <MudSpacer/>
+        <MudStack Style="width: 25%;">
+            <MudSpacer/>
+            <MudCard>
+                <MudCardContent>
+                    <MudStack Spacing="3">
+                        <MudImage Src="@($"data:image/png;base64,{_qrCodeDialog.Base64Image}")" Fluid="true"/>
+                        <MudText Align="Align.Center" Color="Color.Primary">Learn More or Apply NOW!</MudText>
+                    </MudStack>
+                </MudCardContent>
+            </MudCard>
+            <MudSpacer/>
+        </MudStack>
+    </MudStack>
+    <MudContainer Style="height: 200px;"/>
+</MudStack>
+@code {
+    private (bool Show, string Base64Image) _qrCodeDialog;
+    private Transition _transition = Transition.Slide;
+    private bool _autocycle = true;
+
+    protected override void OnInitialized()
+    {
+        var qrCodeContent = "https://megaschool.me/share360-internship/";
+        
+        using var qrGenerator = new QRCodeGenerator();
+        using var qrCodeData = qrGenerator.CreateQrCode(qrCodeContent, QRCodeGenerator.ECCLevel.Q);
+        using var qrCode = new Base64QRCode(qrCodeData);
+        var qrCodeImageAsBase64 = qrCode.GetGraphic(12);
+
+        _qrCodeDialog = (true, qrCodeImageAsBase64);
+        
+        base.OnInitialized();
+    }
+}

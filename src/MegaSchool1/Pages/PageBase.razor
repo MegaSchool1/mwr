@@ -8,6 +8,7 @@
         || navigationManager.Uri.Contains("/promo/", StringComparison.InvariantCultureIgnoreCase)
         || navigationManager.Uri.Contains("/thankyou/", StringComparison.InvariantCultureIgnoreCase)
         || navigationManager.Uri.Contains("/ptest", StringComparison.InvariantCultureIgnoreCase)
+        || navigationManager.Uri.Contains("/share360internship", StringComparison.InvariantCultureIgnoreCase)
         || Enum.GetValues<Content>().Any(content => navigationManager.Uri.Contains($"/en/{content}/", StringComparison.InvariantCultureIgnoreCase) ||  navigationManager.Uri.Contains($"/es/{content}/", StringComparison.InvariantCultureIgnoreCase));
 
     private static bool IsCarPurchasePage(NavigationManager navigationManager) => navigationManager.Uri.Contains("/carpurchase");
