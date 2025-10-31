@@ -4,7 +4,6 @@
 
 @code {
     internal static bool IsCapturePage(NavigationManager navigationManager) =>
-            true ||
         navigationManager.Uri.Contains("/72/")
         || navigationManager.Uri.Contains("/promo/", StringComparison.InvariantCultureIgnoreCase)
         || navigationManager.Uri.Contains("/thankyou/", StringComparison.InvariantCultureIgnoreCase)
