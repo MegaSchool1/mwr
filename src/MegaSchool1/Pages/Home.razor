@@ -99,7 +99,7 @@
 
     private PersistingComponentStateSubscription persistingSubscription;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         persistingSubscription = 
             ApplicationState.RegisterOnPersisting(PersistForecasts);
@@ -107,14 +107,12 @@
         if (!ApplicationState.TryTakeFromJson<ShareableDto[]>(
                 "fetchdata", out var restored))
         {
-            _classes = DefaultClientSettings.UI.EnglishLocale.Shareables.Where(s => s.ClassName != null).ToArray();
+            _classes = await this.GetClassesAsync();
         }
         else
         {
             _classes = restored!;
         }
-
-        return Task.CompletedTask;
     }
     
     private Task PersistForecasts()
@@ -374,37 +372,43 @@
     private async Task<ShareableDto[]> GetClassesAsync()
     {
         var loadedClientSettings = await this.GetClientSettingsAsync();
-
-        var defaultClientSettingsEnglish = DefaultClientSettings.UI.Localizations.First(l => l == DefaultClientSettings.UI.EnglishLocale);
         var loadedClientSettingsEnglish = loadedClientSettings.UI.Localizations.First(l => l == loadedClientSettings.UI.EnglishLocale);
-
-        // sync w/ modified standard shareables
+        var currentStandardClasses = DefaultClientSettings.UI.EnglishLocale.Shareables
+            .Where(s => s is { ClassName: not null, ContentId: not Content.Custom and not Content.None }).ToArray();
         var currentShareables = loadedClientSettingsEnglish.Shareables.ToList();
+        
+        // sync w/ modified standard shareables
         for (var i = 0; i < currentShareables.Count; i++)
         {
-            if (currentShareables[i].ContentId != Content.Custom)
+            var latestStandardShareable = currentStandardClasses.FirstOrDefault(s => s.ContentId == currentShareables[i].ContentId);
+            if (latestStandardShareable is not null)
             {
-                var latestStandardShareable = defaultClientSettingsEnglish.Shareables.FirstOrDefault(s => s.ContentId == currentShareables[i].ContentId);
-                currentShareables[i] = latestStandardShareable != default ? latestStandardShareable : currentShareables[i];
+                currentShareables[i] = latestStandardShareable;
             }
         }
 
         // sync w/ removed standard shareables
-        currentShareables = currentShareables.Where(s => s.ClassName != null).ToList();
-
-        // sync w/ added standard shareables
-        for (var i = defaultClientSettingsEnglish.Shareables.Length - 1; i >= 0; i--)
+        foreach (var currentShareable in currentShareables.ToArray())
         {
-            if (defaultClientSettingsEnglish.Shareables[i].ClassName != null && currentShareables.All(s => s.ContentId != defaultClientSettingsEnglish.Shareables[i].ContentId))
+            if (currentStandardClasses.All(s => s.ContentId != currentShareable.ContentId))
             {
-                currentShareables.Insert(0, defaultClientSettingsEnglish.Shareables[i]);
+                currentShareables.Remove(currentShareable);
+            }
+        }
+        
+        // sync w/ added standard shareables
+        for (var i = currentStandardClasses.Length - 1; i >= 0; i--)
+        {
+            if (currentShareables.All(s => s.ContentId != currentStandardClasses[i].ContentId))
+            {
+                currentShareables.Insert(0, currentStandardClasses[i]);
             }
         }
 
         // save synced shareables
         loadedClientSettingsEnglish.Shareables = currentShareables.ToArray();
         await SaveClientSettingsAsync(loadedClientSettings);
-
+        
         return currentShareables.ToArray();
     }
 

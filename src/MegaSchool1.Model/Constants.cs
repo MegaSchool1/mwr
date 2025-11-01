@@ -62,7 +62,6 @@ public enum Strategy
 {
     MegaSchool = 0,
     Corporate = 1,
-    ExtraDigitMovement = 2,
     FaithAndFinance = 3,
     RealEstate = 4,
     Latino = 5,
@@ -87,6 +86,8 @@ public enum Content
     MoneyChallenge = 1,
     MoneyChallengeFAQ = 2,
     CorporateBusinessOverview = 3,
+
+    // Delete Below =======================================
     EDMBusinessOverview = 4,
     EDMNeedMoreInfo = 5,
     ReduceMyTaxesExplainer = 6,
@@ -94,6 +95,12 @@ public enum Content
     InvestmentsExplainer = 8,
     TrustsExplainer = 9,
     RevenueShareExplainer = 10,
+    WealthWorksheet = 28,
+    EDMGivBux = 31,
+    HBBTaxBenefits = 50,
+    BusinessOwnerPique = 49,
+    // Delete Above =======================================
+
     Membership = 11,
     CreditRestoration = 12,
     HealthShare = 13,
@@ -111,14 +118,11 @@ public enum Content
     MichelleEliseHealthShare = 25,
     TeenCarPurchase = 26,
     MembershipBasedBusiness = 27,
-    WealthWorksheet = 28,
     GivBux = 29,
     GivBuxMerchant = 30,
-    EDMGivBux = 31,
     MegaSchoolAppInstall = 32,
     GivBuxOpportunity = 33,
     GivBuxCharity = 34,
-    EDMPique = 35,
     Opportunity202407 = 36,
     MS1Opportunity202407 = 37,
     GivBuxFundraiser = 38,
@@ -132,8 +136,6 @@ public enum Content
     PayoffMortgage = 46,
     MembershipOrientation = 47,
     MyRewards = 48,
-    BusinessOwnerPique = 49,
-    HBBTaxBenefits = 50,
     BizOwnerPique = 51,
     BitcoinPreview = 52,
     Custom = 53,
@@ -195,16 +197,6 @@ public enum Language
     None = 0,
     English = 1,
     Spanish = 2,
-}
-
-public enum ExtraDigitMovementPipeline
-{
-    None = 0,
-    Enqueue = 1,
-    Question = 2,
-    Connection = 3,
-    Invitation = 4,
-    Decision = 5,
 }
 
 public enum MegaSchoolPipeline
@@ -415,15 +407,6 @@ public class Constants(UISettings ui)
                     GetImageUrl(Image.MoneyChallengeLogo),
                     new(0, 1, 30),
                     ui.EnglishLocale[Content.MoneyChallenge]?.MinimalistUrl()!)
-        },
-        {
-            Strategy.ExtraDigitMovement,
-            new ($"72-Hour Money Challenge Overview",
-                    new(Shareable.VideoShareable("72-Hour Money Challenge!", ui.EnglishLocale[Content.EDMBusinessOverview]?.MinimalistUrl()!, new(0, 0, 15, 0)), "Shareable copied!", ui.EnglishLocale[Content.EDMBusinessOverview]?.MinimalistUrl()!),
-                    null,
-                    GetImageUrl(Image.MoneyChallengeLogo),
-                    new(0, 15, 0),
-                    ui.EnglishLocale[Content.EDMBusinessOverview]?.MinimalistUrl()!)
         },
         {
             Strategy.MegaSchool,
