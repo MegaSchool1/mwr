@@ -99,15 +99,17 @@
 
     private PersistingComponentStateSubscription persistingSubscription;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
+        base.OnInitialized();
+        
         persistingSubscription = 
             ApplicationState.RegisterOnPersisting(PersistForecasts);
 
         if (!ApplicationState.TryTakeFromJson<ShareableDto[]>(
                 "fetchdata", out var restored))
         {
-            _classes = await this.GetClassesAsync();
+            _classes = DefaultClientSettings.UI.EnglishLocale.Shareables.Where(s => s.ClassName is not null).ToArray();
         }
         else
         {
