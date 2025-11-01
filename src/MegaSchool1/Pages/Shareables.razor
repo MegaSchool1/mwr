@@ -130,19 +130,6 @@
                         </Loader>
                     </MudStack>
                 </MudTabPanel>
-                <MudTabPanel Tag="@Strategy.ExtraDigitMovement">
-                    <Loader Loaded="@(_edmEssentials.TeamMember != null)">
-                        <TeamMemberPicker Description="Shareable For:" User="AppState?.User" @bind-SelectedTeamMember="_edmEssentials.TeamMember">
-                            <MudSelect T="Content" Label="Shareable" @bind-Value="_edmEssentials.Content" ToStringFunc="@(content => (UI.EnglishLocale[content]?.AppTitle ?? content.ToString()).Replace("<br/>", " "))" Variant="MudBlazor.Variant.Outlined" Style="width:300px;">
-                                @foreach (var content in new Content[] { Content.EDMPique, Content.EDMNeedMoreInfo })
-                                {
-                                    <MudSelectItem Value="@content" />
-                                }
-                            </MudSelect>
-                            @ContentView(_edmEssentials.Content)
-                        </TeamMemberPicker>
-                    </Loader>
-                </MudTabPanel>
                 <MudTabPanel Tag="@Strategy.FaithAndFinance">
                     @ContentView(Content.FaithAndFinance)
                 </MudTabPanel>
@@ -236,14 +223,6 @@
                 </TeamMemberPicker>
             </Loader>
             <Fundable360CapturePageShareable/>
-            <CardShareableMulti Description="Extra Digit Wealth Worksheet" Url="https://5f35ec78-8acd-4f4f-9b98-5439adb647ec.usrfiles.com/ugd/5f35ec_811dce03aa9c440fbf22bcb2c3d3a602.pdf">
-                <Top>
-                    <ShareableContent Title="For Prospects" Tooltip="Copied Shareable" ImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)" TextToCopy="@($"Wealth Worksheet{Environment.NewLine}{Environment.NewLine}Print out before our meeting!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://5f35ec78-8acd-4f4f-9b98-5439adb647ec.usrfiles.com/ugd/5f35ec_811dce03aa9c440fbf22bcb2c3d3a602.pdf")" />
-                </Top>
-                <Bottom>
-                    <ShareableContent Title="For QMDs" Tooltip="Copied Shareable" ImageUrl="@Constants.GetImageUrl(Image.MWRGivBuxLogo)" TextToCopy="@($"Wealth Worksheet{Environment.NewLine}{Environment.NewLine}Print out before our meeting!{Environment.NewLine}{Constants.PointingDownEmoji}{Environment.NewLine}https://5f35ec78-8acd-4f4f-9b98-5439adb647ec.usrfiles.com/ugd/5f35ec_05b111199bee4d559058161fc236e7c8.pdf")" />
-                </Bottom>
-            </CardShareableMulti>
             <ShareableMultilingual Description="Income Goal Simulator"
                                         Url="https://www.mwrfinancial.com/simulator/"
 
@@ -280,9 +259,6 @@
     <Collapsable Title="Team Links" ExpandPrompt="Show">
         <StrategyChooser Label="Team" DefaultStrategy="Strategy.Latino" Strategies="@StrategyChooser.AllStrategies.Except([Strategy.Corporate]).ToArray()">
             <MudTabPanel Tag="@Strategy.MegaSchool">
-                <MudText Align="Align.Center">Coming Soon!</MudText>
-            </MudTabPanel>
-            <MudTabPanel Tag="@Strategy.ExtraDigitMovement">
                 <MudText Align="Align.Center">Coming Soon!</MudText>
             </MudTabPanel>
             <MudTabPanel Tag="@Strategy.FaithAndFinance">
@@ -324,7 +300,6 @@
     [
         (Category.Corporate, "Corporate"),
         (Category.MegaSchool, "Mega School"),
-        (Category.ExtraDigitMovement, "Extra Digit"),
         (Category.FaithAndFinance, "Faith & Finance"),
         (Category.RealEstate, "Real Estate"),
         (Category.Ark, "ARK"),
@@ -347,7 +322,6 @@
         Corporate = 1,
         BusinessOverview = 2,
         MegaSchool = 3,
-        ExtraDigitMovement = 4,
         FaithAndFinance = 5,
         RealEstate = 6,
         Services = 7,
@@ -365,7 +339,6 @@
     private bool _enableExperimentalFeatures;
 
     private readonly ShareableViewModel _megaSchoolEssentials = new() { Content = Content.GivBux };
-    private readonly ShareableViewModel _edmEssentials = new() { Content = Content.EDMPique };
     private readonly ShareableViewModel _corporateEssentials = new() { Content = Content.Opportunity202407 };
     private readonly ShareableViewModel _capturePage = new() { Content = Content.GivBux };
 
@@ -405,11 +378,6 @@
         (Content.PrisonMinistry, [Category.MegaSchool]),
         (Content.Taxed5Percent, [Category.MegaSchool]),
         (Content.CollegeFund, [Category.MegaSchool, Category.BusinessOverview]),
-        
-        (Content.EDMPique, [Category.ExtraDigitMovement, Category.BusinessOverview]),
-        (Content.BusinessOwnerPique, [Category.ExtraDigitMovement]),
-        (Content.RevenueShareExplainer, [Category.ExtraDigitMovement, Category.BusinessOverview]),
-        (Content.MoneyChallengeFAQ, [Category.Corporate, Category.ExtraDigitMovement]),
         
         (Content.FaithAndFinanceTeaser, [Category.FaithAndFinance]),
         (Content.FaithAndFinance, [Category.FaithAndFinance]),
@@ -507,7 +475,6 @@
         _selectedTeamMemberWebsite = AppState?.User;
 
         _megaSchoolEssentials.TeamMember = AppState?.User;
-        _edmEssentials.TeamMember = AppState?.User;
         _capturePage.TeamMember = AppState?.User;
         _corporateEssentials.TeamMember = AppState?.User;
     }

@@ -50,16 +50,11 @@
                             </MudContainer>
                         </MudStack>                    
                         <MudDivider />
-                        @ExtraDigitPlugin
                         @Headshot
                         @PayCard
                         @VirtualBusinessLaunch
                         @InHomeBusinessLaunch
                         @FirstRoundDraftChoice
-                        @PersonalActivityReport
-                        <MudCheckBox T="bool" @bind-Value="_viewModel.MegaSchool.ExecutiveDirector3Roadmap" Size="Size.Medium" Color="Color.Primary">
-                            <MudText Typo="Typo.h6">Print 4 Steps to 4 Figures Per Month:</MudText>Print <ExternalLink Href="https://www.extradigitmovement.com/resource_redirect/downloads/file-uploads/sites/13708/themes/2153043324/downloads/32a7256-8db4-2abf-7a2-3e1be235bd76_EDMQuickStartMay2024.pdf">4 Steps to 4 Figures Per Month</ExternalLink>
-                        </MudCheckBox>
                         <MudCheckBox Disabled="true" Value="_viewModel.FastStartInterviewPrint && _viewModel.FastStartInterviewFillOut" Size="Size.Medium" Color="Color.Primary">
                             <MudText Typo="Typo.h6">Fast Start Interview:</MudText>
                         </MudCheckBox>
@@ -107,26 +102,6 @@
                                 </MudContainer>
                             </MudStack>
                         </MudContainer>
-                        <MudCheckBox Disabled="true" Value="_viewModel.ExtraDigitMovement.SubscribedToFacebookPage && _viewModel.ExtraDigitMovement.SubscribedToFacebookGroup && _viewModel.ExtraDigitMovement.SubscribedToYouTube && _viewModel.ExtraDigitMovement.SubscribeToTelegram" ReadOnly="true" Size="Size.Medium" Color="Color.Primary">
-                            <MudText Typo="Typo.h6">Plugged In:</MudText>I am following Extra Digit Movement on the Social Media Platforms listed below to stay informed:
-                        </MudCheckBox>
-                        <MudStack Row="true">
-                            <MudSpacer />
-                            <MudContainer Style="width:80%;">
-                                <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.ExtraDigitMovement.SubscribedToFacebookPage" Size="Size.Small" Color="Color.Primary">
-                                    <ExternalLink Href="https://www.facebook.com/ExtraDigit">Facebook Page</ExternalLink>
-                                </MudCheckBox>
-                                <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.ExtraDigitMovement.SubscribedToFacebookGroup" Size="Size.Small" Color="Color.Primary">
-                                    <ExternalLink Href="https://www.facebook.com/groups/193851270779332/">Facebook Group</ExternalLink>
-                                </MudCheckBox>
-                                <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.ExtraDigitMovement.SubscribedToYouTube" Size="Size.Small" Color="Color.Primary">
-                                    <ExternalLink Href="@("https://www.youtube.com/@ExtraDigitMovement")">YouTube</ExternalLink>
-                                </MudCheckBox>
-                                <MudCheckBox Disabled="!_pageLoaded" Value="_viewModel.ExtraDigitMovement.SubscribeToTelegram" T="bool" ValueChanged="@(async value => { _viewModel.ExtraDigitMovement.SubscribeToTelegram = value; await SaveAsync(); })" Size="Size.Small" Color="Color.Primary">
-                                    <ExternalLink Href="@("https://t.me/+eHM4NJxWCYEzNTAx")">Telegram</ExternalLink>
-                                </MudCheckBox>
-                            </MudContainer>
-                        </MudStack>
                         <MudCheckBox Disabled="true" Value="_viewModel.ArkNation.SubscribedToGroupMe" ReadOnly="true" Size="Size.Medium" Color="Color.Primary">
                             <MudText Typo="Typo.h6">Plugged In:</MudText>I am following ARK Nation on the Social Media Platforms listed below to stay informed:
                         </MudCheckBox>
@@ -182,16 +157,6 @@
                 </Collapsable>
             </MudStack>
         </MudForm>
-    </MudTabPanel>
-    <MudTabPanel Tag="@Strategy.ExtraDigitMovement">
-        <MudStack>
-            @ExtraDigitPlugin
-            @Headshot
-            @PersonalActivityReport
-            <MudCheckBox T="bool" Disabled="true" Size="Size.Medium" Color="Color.Primary">
-                <MudText Typo="Typo.h6">3* Executive Director Guide</MudText>Execute EVERYTHING @@ <ExternalLink Href="https://www.extradigitmovement.com/2023memberhome">3* Executive Director Guide</ExternalLink>.
-            </MudCheckBox>
-        </MudStack>
     </MudTabPanel>
     <MudTabPanel Tag="@Strategy.FaithAndFinance">
         <MudText Align="Align.Center">Coming Soon!</MudText>
@@ -332,13 +297,6 @@
         <MudText Align="Align.Center">Print <ExternalLink Href="https://user.mwrfinancial.com/content/V22/MWR-First-Round-Draft-Choice-English.pdf">First Round Draft Choice PDF</ExternalLink></MudText>
     };
 
-    private RenderFragment ExtraDigitPlugin => __builder =>
-    {
-        <MudCheckBox @bind-Value="_viewModel.ExtraDigitMovement.EmailExtraDigit" Validation="@SaveAndValidateTrueAsync()" Size="Size.Medium" Color="Color.Primary">
-            <MudText Typo="Typo.h6">Get Connected:</MudText>Email your <span style="color:@(Theme.PaletteDark.Secondary);">NAME</span> and <span style="color:@(Theme.PaletteDark.Secondary);">STATE</span> to <MudLink Href="@("mailto:connect@extradigitmovement.com")">@("connect@extradigitmovement.com")</MudLink>.
-        </MudCheckBox>
-    };
-
     private RenderFragment VirtualBusinessLaunch => __builder =>
     {
         <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.VirtualBusinessLaunch" Validation="@SaveAndValidateTrueAsync()" Size="Size.Medium" Color="Color.Primary">
@@ -446,14 +404,6 @@
         <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.RestoreCredit" Validation="@SaveAndValidateTrueAsync()" Size="Size.Medium" Color="Color.Primary">
             <MudText Typo="Typo.h6">Restore My Credit:</MudText>I have ordered and upload my 3 credit reports via my <ExternalLink Href="https://member.mwrfinancial.com/membership/cashback.php">Membership Portal</ExternalLink>
         </MudCheckBox>
-    };
-
-    private RenderFragment PersonalActivityReport => __builder =>
-    {
-        <MudCheckBox Disabled="!_pageLoaded" @bind-Value="_viewModel.ExtraDigitMovement.PersonalActivityReport" Validation="@SaveAndValidateTrueAsync()" Size="Size.Medium" Color="Color.Primary">
-            <MudText Typo="Typo.h6">Personal Activity Report:</MudText>I printed the Personal Activity Report PDF & listed my 1st 30 prospects to contact immediately.
-        </MudCheckBox>
-        <MudText Align="Align.Center">Print <ExternalLink Href="https://s3.amazonaws.com/kajabi-storefronts-production/file-uploads/sites/13708/themes/2155551073/downloads/6ab4d-a06e-4421-0735-300ff6b327b_PAR_Sheet_2024.pdf">Personal Activity Report PDF</ExternalLink></MudText>
     };
 
     private RenderFragment Headshot => __builder =>
