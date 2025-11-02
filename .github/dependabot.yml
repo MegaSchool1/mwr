@@ -5,6 +5,8 @@ updates:
     target-branch: "dev"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "FluentAssertions"
     groups:
       open-source-license:
         patterns:
