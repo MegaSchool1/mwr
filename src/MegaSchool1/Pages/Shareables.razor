@@ -349,8 +349,8 @@
         (Content.F360Overview, [Category.Services, Category.Fundable360]),
         (Content.F360Testimonial1, [Category.Fundable360]),
 
-        (Content.MWRPique, [Category.Corporate]),
         (Content.CorporateBusinessOverview, [Category.Corporate]),
+        (Content.MWRPique, [Category.Corporate]),
         (Content.MWRCredibility, [Category.Corporate]),
         (Content.MembershipPique, [Category.Corporate, Category.Services]),
         (Content.Membership, [Category.Corporate, Category.Services]),
@@ -441,7 +441,7 @@
     private Content _selectedVideoShareable = Content.MoneyChallenge;
     private TeamMember? _selectedTeamMemberMarketingDirector;
     private TeamMember? _selectedTeamMemberWebsite;
-    private Content _selectedShareable = Content.MWRPique;
+    private Content _selectedShareable = Content.CorporateBusinessOverview;
     private Content _selectedInCompleteVideoLibrary = Content.MoneyChallenge;
     
     private IEnumerable<Content> GetSelectedContent(Category[] selectedCategories)
