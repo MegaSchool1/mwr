@@ -12,9 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.10" />
-        <PackageReference Include="MudBlazor" Version="8.13.0" />
+        <PackageReference Include="MudBlazor" Version="8.15.0" />
         <PackageReference Include="Serilog" Version="4.3.0" />
     </ItemGroup>
 
